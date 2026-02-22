@@ -2,6 +2,10 @@
 
 Our goal in this chapter is to derive the equation of motion for a charged particle interacting with electric and magnetic fields. We will begin with the familiar non-relativistic result, then show how it emerges naturally — and inevitably — from a relativistic Lagrangian built on four-vectors and the metric tensor. Along the way we will meet the electromagnetic field tensor $F_{\mu\nu}$, which packages $\vec{E}$ and $\vec{B}$ into a single covariant object, and we will recover the Lorentz force law as its physical consequence.
 
+### Conventions and notation
+
+Before we begin, let us fix our conventions. We work throughout in **Gaussian CGS units**, in which the speed of light $c$ appears explicitly in electromagnetic formulas. We adopt the **Minkowski metric** with signature $(+,-,-,-)$, so that $\eta_{\mu\nu} = \text{diag}(+1,-1,-1,-1)$. Greek indices ($\mu, \nu, \alpha, \ldots$) run over $0,1,2,3$; Latin indices ($i, j, k, \ldots$) run over the spatial values $1,2,3$. We use the **Einstein summation convention**: any index that appears once as a superscript and once as a subscript in a single term is implicitly summed over its range. For example, $A_\mu B^\mu \equiv \sum_{\mu=0}^{3} A_\mu B^\mu$.
+
 ---
 
 ## 1.1 The Non-Relativistic Starting Point
@@ -9,13 +13,13 @@ Our goal in this chapter is to derive the equation of motion for a charged parti
 Consider a point particle of rest mass $m_0$ and electric charge $q$ moving through space in the presence of an electric field $\vec{E}$ and a magnetic field $\vec{B}$. From experiment we know that the force on such a particle is
 
 $$
-\vec{F} = q\vec{E} + q\vec{V} \times \vec{B},
+\vec{F} = q\vec{E} + \frac{q}{c}\vec{V} \times \vec{B},
 $$
 
-the **Lorentz force**. In the non-relativistic limit, where $|\vec{V}| \ll c$, Newton's second law gives the equation of motion directly:
+the **Lorentz force** (written here in Gaussian units — note the explicit factor of $1/c$ multiplying the magnetic term). In the non-relativistic limit, where $|\vec{V}| \ll c$, Newton's second law gives the equation of motion directly:
 
 $$
-m_0 \frac{d\vec{V}}{dt} = q\vec{E} + q\vec{V} \times \vec{B}.
+m_0 \frac{d\vec{V}}{dt} = q\vec{E} + \frac{q}{c}\vec{V} \times \vec{B}.
 $$
 
 This expression is experimentally verified and conceptually straightforward: the electric field accelerates the particle along its direction, while the magnetic field deflects the particle perpendicular to its velocity without changing its speed. Our task now is to show that this result is not merely an empirical rule but follows from a variational principle — and that the same principle extends seamlessly to the relativistic regime.
@@ -46,7 +50,7 @@ We adopt the $(+,-,-,-)$ signature throughout. (The familiar Euclidean metric $\
 
 ### Index gymnastics
 
-The metric lowers an index:
+Recall our summation convention: repeated upper-lower index pairs are summed. The metric lowers an index:
 
 $$
 \dot{X}_\mu = \eta_{\mu\nu}\,\dot{X}^\nu.
@@ -90,13 +94,19 @@ The first term is a constant (the rest energy contribution) and will not affect 
 
 ### The four-potential
 
-To include the electromagnetic interaction we introduce the **four-potential**
+To include the electromagnetic interaction we introduce the **electromagnetic four-potential**. Its contravariant form is
 
 $$
-A_\mu = (A_0,\, \vec{A}),
+A^\mu = (\phi,\, \vec{A}),
 $$
 
-where $A_0$ is the scalar potential and $\vec{A}$ is the vector potential. A quick dimensional check confirms that $[A_\mu]$ has dimensions of energy $\times$ length, so the combination $qA_\mu\dot{X}^\mu/c$ has the dimensions of energy — exactly what we need for a term in the Lagrangian.
+where $\phi$ is the scalar (electrostatic) potential and $\vec{A}$ is the magnetic vector potential. Lowering the index with the metric gives the covariant components:
+
+$$
+A_\mu = \eta_{\mu\nu}A^\nu = (\phi,\, -\vec{A}).
+$$
+
+Note the sign flip on the spatial part — this is a direct consequence of the $(+,-,-,-)$ signature and will be important when we extract $\vec{E}$ and $\vec{B}$ later. In Gaussian units $\phi$ has dimensions of statvolt (erg/esu) and $\vec{A}$ has dimensions of statvolt $\cdot$ s/cm, so the combination $qA_\mu\dot{X}^\mu/c$ has the dimensions of energy — exactly what we need for a term in the Lagrangian.
 
 ### Constructing the Lagrangian
 
@@ -196,7 +206,7 @@ $$
 m_0\,\ddot{X}_\alpha = \frac{q}{c}\left(\partial_\alpha A_\mu - \partial_\mu A_\alpha\right)\dot{X}^\mu.
 $$
 
-The combination of derivatives on the right-hand side is antisymmetric in $\alpha$ and $\mu$. This is no accident — it is the hallmark of a new tensor.
+The combination $\partial_\alpha A_\mu - \partial_\mu A_\alpha$ on the right-hand side is **antisymmetric** in $\alpha$ and $\mu$: swapping the two indices flips the sign. This is not a coincidence. Physically, it reflects the fact that electromagnetic forces depend on the *differences* of how the potential varies in different spacetime directions — a gradient pointing one way versus another. An object that changes sign under index exchange cannot be reduced to a simpler scalar or vector; it is irreducibly a rank-2 antisymmetric tensor, and it deserves its own name.
 
 ---
 
@@ -205,94 +215,136 @@ The combination of derivatives on the right-hand side is antisymmetric in $\alph
 We define the **electromagnetic field tensor** as
 
 $$
-\boxed{F_{\alpha\nu} = c\left(\partial_\alpha A_\nu - \partial_\nu A_\alpha\right).}
+\boxed{F_{\alpha\nu} = \partial_\alpha A_\nu - \partial_\nu A_\alpha.}
 $$
 
-By construction $F_{\alpha\nu}$ is antisymmetric: $F_{\alpha\nu} = -F_{\nu\alpha}$. The equation of motion then takes the elegant covariant form
+By construction $F_{\alpha\nu}$ is antisymmetric: $F_{\alpha\nu} = -F_{\nu\alpha}$. With this definition, the equation of motion derived in Section 1.5 becomes
 
 $$
 \boxed{m_0\,\ddot{X}_\alpha = \frac{q}{c}\,F_{\alpha\mu}\,\dot{X}^\mu.}
 $$
 
-This single tensor equation encodes all the information about how a charged particle moves in an electromagnetic field, valid in any inertial frame.
+This single tensor equation encodes all the information about how a charged particle moves in an electromagnetic field.
 
-### A note on proper time
+### The covariant proper-time formulation
 
-For a fully relativistic treatment one replaces coordinate-time derivatives with proper-time derivatives. The proper time $\tau$ is related to coordinate time by
+The equation above uses coordinate-time derivatives $\dot{X}^\mu = dX^\mu/dt$, which are convenient for computation but are *not* components of a four-vector — they depend on the observer's choice of time coordinate. To obtain a manifestly Lorentz-covariant equation we pass to proper time $\tau$, defined by
 
 $$
-d\tau = \sqrt{1 - v^2/c^2}\;dt,
+d\tau = \sqrt{1 - v^2/c^2}\;dt, \qquad \text{so that} \quad \frac{d}{dt} = \frac{1}{\sqrt{1-v^2/c^2}}\,\frac{d}{d\tau} \equiv \gamma\,\frac{d}{d\tau}.
 $$
 
-and the four-acceleration $d^2 X^\alpha / d\tau^2$ transforms as a proper four-vector. The structure of the equation of motion remains unchanged — the field tensor $F_{\alpha\mu}$ simply contracts with the four-velocity $dX^\mu/d\tau$ instead of $\dot{X}^\mu$.
+The **four-velocity** $U^\mu = dX^\mu/d\tau$ and the **four-acceleration** $a^\mu = d^2X^\mu/d\tau^2$ are genuine four-vectors. The fully covariant equation of motion is then
+
+$$
+\boxed{m_0\,\frac{d^2 X_\alpha}{d\tau^2} = \frac{q}{c}\,F_{\alpha\mu}\,U^\mu,}
+$$
+
+which transforms correctly under Lorentz transformations and is the form one should regard as fundamental. The coordinate-time version used in our derivation is its non-covariant projection, valid in any single inertial frame but not manifestly frame-independent.
 
 ---
 
 ## 1.7 Decomposing the Field Tensor into $\vec{E}$ and $\vec{B}$
 
-The field tensor is a $4\times 4$ antisymmetric object and therefore has six independent components. These map exactly onto the three components of $\vec{E}$ and the three components of $\vec{B}$.
+The field tensor is a $4\times 4$ antisymmetric object and therefore has six independent components. These map exactly onto the three components of $\vec{E}$ and the three components of $\vec{B}$. To see how, we expand $F_{\alpha\nu} = \partial_\alpha A_\nu - \partial_\nu A_\alpha$ using the covariant components $A_\mu = (\phi, -\vec{A})$ established in Section 1.4.
 
 ### Identifying the electric field
 
-To isolate the electric field, consider the force component with $\nu = 0$ (the time-like part). Since $\dot{X}^0 = c$, the contribution to the spatial force $F_j$ from the time-like index is
+Consider the mixed time-space components $F_{0i}$. We have
 
 $$
-\frac{q}{c}\,(\partial_j A_0 - \partial_0 A_j)\,c \cdot \frac{\dot{X}^0}{c} = q\,(\partial_j A_0 - \partial_0 A_j)\,c \cdot 1.
+F_{0i} = \partial_0 A_i - \partial_i A_0.
 $$
 
-We recognize this as the $j$-th component of the electric field:
+Now $A_0 = \phi$, $A_i = -A^i$ (the sign flip from the metric), and $\partial_0 = (1/c)\,\partial/\partial t$. Substituting:
 
 $$
-\boxed{\vec{E} = \vec{\nabla}A_0 - \frac{1}{c}\frac{\partial \vec{A}}{\partial t}.}
+F_{0i} = \frac{1}{c}\frac{\partial(-A^i)}{\partial t} - \partial_i \phi = -\frac{1}{c}\frac{\partial A^i}{\partial t} - \partial_i \phi.
 $$
 
-Here $\partial_0 = (1/c)\,\partial/\partial t$, so $\partial_0 A_j = (1/c)\,\partial A_j/\partial t$.
+We recognize the right-hand side as the $i$-th component of the standard electric field in Gaussian units:
+
+$$
+\boxed{\vec{E} = -\vec{\nabla}\phi - \frac{1}{c}\frac{\partial \vec{A}}{\partial t},}
+$$
+
+so that $F_{0i} = E_i$ and, by antisymmetry, $F_{i0} = -E_i$.
 
 ### Identifying the magnetic field
 
-The remaining (space-like, $\nu = i$) part of the force involves the antisymmetric spatial components $\partial_j A_i - \partial_i A_j$. To connect these to the magnetic field we use the **Levi-Civita symbol** $\varepsilon_{ijk}$, the fully antisymmetric tensor in three dimensions.
-
-The key identity is
+The purely spatial components $F_{ij}$ form a $3\times 3$ antisymmetric matrix:
 
 $$
-\partial_j A_i - \partial_i A_j = \varepsilon_{jim}\,B^m \cdot c,
+F_{ij} = \partial_i A_j - \partial_j A_i = \partial_i(-A^j) - \partial_j(-A^i) = -\partial_i A^j + \partial_j A^i.
 $$
 
-which, after contracting with $\varepsilon^{kji}$ and using the identity $\varepsilon^{kji}\varepsilon_{jim} = 2\,\delta^k_m$, gives
+Any antisymmetric $3\times 3$ matrix has exactly three independent components and can therefore be written in terms of a three-vector. The **Levi-Civita symbol** $\varepsilon_{ijk}$ (fully antisymmetric, with $\varepsilon_{123} = +1$) provides the standard dictionary between antisymmetric matrices and vectors. We *define* the magnetic field $\vec{B}$ as the vector dual to $F_{ij}$:
 
 $$
-B^k \cdot c = \varepsilon^{kij}\,\partial_i A_j + \varepsilon^{kij}\,\partial_j A_i = 2\,\varepsilon^{kij}\,\partial_i A_j.
+F_{ij} = -\varepsilon_{ijk}\,B^k.
 $$
 
-The expression $\varepsilon^{kij}\,\partial_i A_j$ is precisely the $k$-th component of $\vec{\nabla}\times\vec{A}$, so we arrive at
+To extract $B^k$, contract both sides with $\varepsilon^{kij}$ and use the identity $\varepsilon^{kij}\varepsilon_{ijm} = 2\,\delta^k_m$:
 
 $$
-\boxed{\vec{B} = \frac{1}{c}\,\vec{\nabla}\times\vec{A}.}
+\varepsilon^{kij}F_{ij} = -\varepsilon^{kij}\varepsilon_{ijm}\,B^m = -2\,B^k.
 $$
+
+The left-hand side can be evaluated directly from the expression for $F_{ij}$:
+
+$$
+\varepsilon^{kij}F_{ij} = \varepsilon^{kij}(-\partial_i A^j + \partial_j A^i) = -2\,\varepsilon^{kij}\partial_i A^j = -2\,(\vec{\nabla}\times\vec{A})^k,
+$$
+
+where we used the antisymmetry of $\varepsilon^{kij}$ to combine the two terms. Equating:
+
+$$
+-2\,B^k = -2\,(\vec{\nabla}\times\vec{A})^k,
+$$
+
+and therefore
+
+$$
+\boxed{\vec{B} = \vec{\nabla}\times\vec{A}.}
+$$
+
+This is the standard Gaussian-unit relation: the magnetic field is the curl of the vector potential, with no factor of $1/c$. The entire derivation rests on a single mathematical fact — that an antisymmetric $3\times 3$ tensor is dual to a three-vector via the Levi-Civita symbol — combined with the explicit form of $F_{ij}$ in terms of $\vec{A}$.
 
 ---
 
 ## 1.8 Recovery of the Lorentz Force Law
 
-We are now in a position to reassemble the spatial components of the covariant force equation. Splitting the sum over $\nu$ into its time-like and space-like parts, the force on the $j$-th spatial component is
+We are now in a position to reassemble the spatial components of the covariant force equation $m_0\ddot{X}_\alpha = \frac{q}{c}F_{\alpha\mu}\dot{X}^\mu$. For a spatial index $\alpha = j$, we split the sum over $\mu$ into its time-like ($\mu = 0$) and space-like ($\mu = i$) parts.
+
+**Time-like contribution** ($\mu = 0$, with $\dot{X}^0 = c$):
 
 $$
-F_j = \frac{q}{c}\,E_j \cdot c + \frac{q}{c}\,\varepsilon_{jim}\,B^m \cdot c \cdot \dot{X}^i.
+\frac{q}{c}\,F_{j0}\,\dot{X}^0 = \frac{q}{c}\,(-E_j)\,c = -q\,E_j.
 $$
 
-Canceling factors of $c$:
+**Space-like contribution** ($\mu = i$). From Section 1.7, $F_{ij} = -\varepsilon_{ijk}B^k$, so by antisymmetry $F_{ji} = \varepsilon_{ijk}B^k$. Therefore:
 
 $$
-F_j = q\,E_j + q\,\varepsilon_{jim}\,\dot{X}^i\,B^m.
+\frac{q}{c}\,F_{ji}\,\dot{X}^i = \frac{q}{c}\,\varepsilon_{ijk}\,B^k\,\dot{X}^i.
 $$
 
-The second term is recognized as the $j$-th component of the cross product $\vec{V}\times\vec{B}$. In vector form:
+Now, $\varepsilon_{ijk}\dot{X}^i B^k = -\varepsilon_{jik}\dot{X}^i B^k = -(\vec{V}\times\vec{B})^j$, where the first equality swaps the first two indices of the Levi-Civita symbol (picking up a minus sign) and the second uses the definition of the cross product. Note also that $\ddot{X}_j = \eta_{jj}\ddot{X}^j = -\ddot{X}^j$. Combining both contributions:
 
 $$
-\boxed{\vec{F} = q\vec{E} + q\vec{V}\times\vec{B}.}
+-m_0\ddot{X}^j = -q\,E_j - \frac{q}{c}(\vec{V}\times\vec{B})^j,
 $$
 
-This is the **Lorentz force law**, now derived from first principles via the relativistic Lagrangian and the electromagnetic field tensor. What began as an empirical observation in Section 1.1 has been shown to be a necessary consequence of the principle of least action applied to a covariant Lagrangian coupling a charged particle to the four-potential $A_\mu$.
+$$
+m_0\ddot{X}^j = q\,E^j + \frac{q}{c}\left(\vec{V}\times\vec{B}\right)^j.
+$$
+
+In vector form:
+
+$$
+\boxed{\vec{F} = q\vec{E} + \frac{q}{c}\vec{V}\times\vec{B}.}
+$$
+
+This is the **Lorentz force law** in Gaussian units, now derived from first principles via the relativistic Lagrangian and the electromagnetic field tensor. What began as an empirical observation in Section 1.1 has been shown to be a necessary consequence of the principle of least action applied to a covariant Lagrangian coupling a charged particle to the four-potential $A_\mu$.
 
 ---
 
@@ -300,13 +352,14 @@ This is the **Lorentz force law**, now derived from first principles via the rel
 
 | Quantity | Symbol | Definition |
 |---|---|---|
-| Relativistic Lagrangian | $L$ | $\frac{1}{2}m_0 c^2 - \frac{1}{2}m_0\dot{X}^\mu\dot{X}_\mu - qA_\mu\dot{X}^\mu/c$ |
-| Field tensor | $F_{\mu\nu}$ | $c(\partial_\mu A_\nu - \partial_\nu A_\mu)$ |
-| Electric field | $\vec{E}$ | $\vec{\nabla}A_0 - \frac{1}{c}\frac{\partial\vec{A}}{\partial t}$ |
-| Magnetic field | $\vec{B}$ | $\frac{1}{c}\vec{\nabla}\times\vec{A}$ |
-| Covariant equation of motion | $m_0\ddot{X}_\alpha$ | $\frac{q}{c}F_{\alpha\mu}\dot{X}^\mu$ |
-| Lorentz force | $\vec{F}$ | $q(\vec{E} + \vec{V}\times\vec{B})$ |
+| Unit system | — | Gaussian CGS |
 | Metric signature | $\eta_{\mu\nu}$ | $(+1,\,-1,\,-1,\,-1)$ |
+| Relativistic Lagrangian | $L$ | $\frac{1}{2}m_0 c^2 - \frac{1}{2}m_0\dot{X}^\mu\dot{X}_\mu - qA_\mu\dot{X}^\mu/c$ |
+| Field tensor | $F_{\mu\nu}$ | $\partial_\mu A_\nu - \partial_\nu A_\mu$ |
+| Electric field | $\vec{E}$ | $-\vec{\nabla}\phi - \frac{1}{c}\frac{\partial\vec{A}}{\partial t}$ |
+| Magnetic field | $\vec{B}$ | $\vec{\nabla}\times\vec{A}$ |
+| Covariant equation of motion | $m_0\frac{d^2X_\alpha}{d\tau^2}$ | $\frac{q}{c}F_{\alpha\mu}U^\mu$ |
+| Lorentz force | $\vec{F}$ | $q\vec{E} + \frac{q}{c}\vec{V}\times\vec{B}$ |
 
 The chain of logic in this chapter is worth internalizing:
 
