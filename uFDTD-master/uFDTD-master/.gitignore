@@ -1,0 +1,8 @@
+*~
+*.o
+*.aux
+*.dvi
+*.log
+*.pdf
+Old/
+__MACOSX/
