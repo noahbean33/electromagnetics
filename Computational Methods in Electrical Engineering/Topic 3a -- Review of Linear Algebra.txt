@@ -1,0 +1,934 @@
+# tactiq.io free youtube transcript
+# Topic 3a -- Review of Linear Algebra
+# https://www.youtube.com/watch/d2hJ_sbd0Vg
+
+00:00:00.320 topic three a review of linear algebra
+00:00:03.780 this lecture is not intended to be a
+00:00:06.270 comprehensive treatise of linear algebra
+00:00:09.150 but more just to review some some of the
+00:00:12.269 main topics that we will be using in
+00:00:14.370 this computational methods class and
+00:00:16.289 really no more than that and the
+00:00:18.569 expectation is that almost everything in
+00:00:20.909 this lecture is review that you would
+00:00:23.009 have seen before somewhere before
+00:00:28.140 jumping into matrices I want to just
+00:00:30.749 take a small system of algebraic
+00:00:32.969 equations and solve them by hand without
+00:00:36.059 direct substitution and then draw the
+00:00:39.089 parallel when we solve that in matrix
+00:00:41.789 form and we we put those equations into
+00:00:44.519 matrices then we'll step through some
+00:00:47.550 matrix terminologies from special
+00:00:49.199 matrices like the identity matrix zero
+00:00:51.089 matrix we'll talk about matrix math
+00:00:54.089 addition subtraction multiplication pre
+00:00:56.909 division post division that sort of
+00:00:58.739 thing
+00:01:02.600 okay on to solving systems of equations
+00:01:05.328 so not matrices yet we start with a
+00:01:13.740 system of linear equations and we see
+00:01:16.530 these on the Left they are linear they
+00:01:18.450 don't contain any square roots or
+00:01:20.130 cosines or anything like that and very
+00:01:23.340 often in science and engineering will
+00:01:25.200 have a huge set of these equations and
+00:01:28.590 some very efficient algorithms have been
+00:01:31.049 developed for solving those and first we
+00:01:33.149 would usually cast those into matrix
+00:01:34.979 form to better understand what happens
+00:01:38.369 when we deal with matrices we first have
+00:01:40.770 to look at what happens with just our
+00:01:42.180 standard linear algebraic equation so we
+00:01:44.609 start here and let's say we want to
+00:01:46.829 solve this for all of our values of X
+00:01:49.820 X's in this case our unknown values the
+00:01:53.939 A's in these equations are our constants
+00:01:57.479 there should be numbers there and the
+00:02:00.060 B's on the right-hand side are also
+00:02:01.649 constants and they usually describe some
+00:02:04.409 kind of excitation if you're solving a
+00:02:06.990 problem in physics
+00:02:11.750 so for this example rather than solve a
+00:02:14.610 huge set of equations let's just take
+00:02:16.680 three so our goal here is to solve for
+00:02:19.920 the X's the methodical approach to this
+00:02:25.380 would be step one solve the first
+00:02:27.450 equation for X 1 then what we'll do is
+00:02:31.050 we'll take this expression for X 1 and
+00:02:33.480 we will subset into equations 2 &amp; 3 that
+00:02:37.980 will eliminate X 1 from equations 2 &amp; 3
+00:02:45.560 so when we do that we end up with a
+00:02:48.000 revised set of equations we have our
+00:02:50.700 original equation but we have two new
+00:02:53.459 equations that no longer contain X 1 and
+00:02:56.489 the information from that has been
+00:02:58.530 substituted into these other parameters
+00:03:00.870 that's why on the A's and the B's we see
+00:03:03.150 that superscript that indicates that
+00:03:05.370 those parameters have changed once the
+00:03:08.040 information from Equation 1 has been
+00:03:10.170 substituted into them at this point we
+00:03:18.000 will repeat the process but now the next
+00:03:20.700 equation we will solve equation 2 for X
+00:03:23.820 2 and we end up with this equation we
+00:03:26.970 will then take this expression for X 2
+00:03:29.160 and plug it into equation 3 to eliminate
+00:03:33.090 X 2 from the third equation after we do
+00:03:41.340 that we end up here and by the way every
+00:03:45.660 time we substituted X 1 or X 2 into the
+00:03:48.750 following equations we've been calling
+00:03:51.090 that forward substitution and we finally
+00:03:53.880 end up in this form and notice on the
+00:03:56.549 left-hand side this sort of looks like a
+00:03:58.850 upside-down triangle or something and
+00:04:01.859 this is going to come up again later if
+00:04:04.260 we were to put this into matrix form
+00:04:05.870 these terms would end up in the upper
+00:04:09.030 half of the matrix making a triangle we
+00:04:11.670 would call that an upper triangular
+00:04:13.200 matrix but we use forward substitution
+00:04:16.350 to end up in this form and as you'll see
+00:04:19.500 we are just about ready to solve this
+00:04:21.810 we've done most of the work
+00:04:26.840 the very last equation in that set of
+00:04:29.460 three equations we can easily solve for
+00:04:31.740 x3 and now we have all numbers and our
+00:04:35.129 B's and our A's and we get a numeric
+00:04:37.259 value for x3 at this point we'll take
+00:04:42.720 our value for x3 bring that back to the
+00:04:46.080 second equation and we can use that to
+00:04:48.389 solve for x2 we call that backward
+00:04:51.030 substitution this step is very quick and
+00:04:53.400 simple and then finally once we have
+00:04:58.620 values numerical values for x2 and x3 we
+00:05:02.130 could back substitute those into our
+00:05:03.960 equation 1 and solve for x1 so this was
+00:05:08.370 very fast and simple the forward
+00:05:10.319 substitution the first part of this
+00:05:11.789 there was more work there but once we
+00:05:14.099 got to that final form of three
+00:05:15.900 equations the backward substitution made
+00:05:18.150 it very fast to solve and that theme
+00:05:20.969 will come up over and over in this
+00:05:22.440 course so that's solving system of
+00:05:30.210 equations by hand now let's talk about
+00:05:32.849 what happens with matrices we'll go back
+00:05:39.479 to this system of linear algebraic
+00:05:41.849 equations and we have n of them and n
+00:05:45.509 can be any number we could have a huge
+00:05:47.159 set of equations and a huge set of
+00:05:49.440 unknowns we can always take this huge
+00:05:54.690 set of equations and write them in
+00:05:56.550 matrix form so all of these coefficients
+00:05:59.940 that likely had numerical values we lump
+00:06:03.000 into a big square matrix our unknowns
+00:06:06.449 end up in a column vector and any
+00:06:10.349 constants on the right-hand side of the
+00:06:12.029 equal sign our bees also end up in a
+00:06:14.940 column vector so the only two things
+00:06:16.979 that our column vectors here are the
+00:06:18.330 unknown and these constants on the right
+00:06:20.669 hand side that are probably some sort of
+00:06:22.529 excitation now this is a little bit more
+00:06:26.009 convenient to write but still not that
+00:06:27.599 convenient because there's a whole lot
+00:06:29.130 of numbers stuffed into these so what
+00:06:33.810 we'll do is we'll have a shorthand
+00:06:35.610 notation this big matrix for these a
+00:06:38.070 coffee
+00:06:38.700 we'll just call a and we can put them in
+00:06:41.520 square brackets to remind ourselves this
+00:06:43.500 is a matrix our column vector of X's
+00:06:46.620 we'll just write as an X the square
+00:06:48.630 brackets or column vector B will write
+00:06:50.670 this way now for a lot of things I used
+00:06:53.820 this notation a lot while we're starting
+00:06:55.500 out but I really don't like this
+00:06:56.790 notation with the square brackets
+00:06:58.440 because I really want to use the square
+00:07:00.240 brackets like I'm gonna use parentheses
+00:07:02.070 or braces and it eliminates one way of
+00:07:05.250 sectioning off parts of equations so I
+00:07:07.710 actually tend to prefer this notation
+00:07:09.930 where we use bold letters to represent
+00:07:12.530 matrices usually I use capital letters
+00:07:15.960 for big square rectangular matrices
+00:07:19.370 column and row vectors I tend to use
+00:07:21.750 lowercase letters but I use bold that
+00:07:24.360 makes them look big and fat like there's
+00:07:25.950 a bunch of numbers behind them but more
+00:07:28.200 importantly this leaves me the option to
+00:07:30.360 use square brackets to section off parts
+00:07:33.060 of equations if we look at a matrix we
+00:07:41.100 can look at the numbers formed in two
+00:07:42.750 rows and this top row is called Row one
+00:07:45.870 the second row Row 2 and so on and
+00:07:49.970 notice that the rows start with Row one
+00:07:52.680 not row 0 this is why in MATLAB MATLAB
+00:07:57.120 thinks everything is a matrix and that's
+00:08:00.120 why arrays and mat let's start at one
+00:08:02.130 and not zero like in other programming
+00:08:03.930 languages because MATLAB is accessing
+00:08:06.360 matrices whereas other languages or
+00:08:09.150 accessing arrays likewise we can look at
+00:08:15.720 the columns and they progress from left
+00:08:18.000 to right column 1 2 3 4 and so on it's
+00:08:26.070 also very common to talk about the
+00:08:28.770 diagonals of a matrix and usually when
+00:08:31.320 we just say the diagonal we're referring
+00:08:34.349 to the Center diagonal down a matrix but
+00:08:37.380 if we were at a number of these we would
+00:08:38.640 call this the zero diagonal and as we
+00:08:41.309 progress to the upper right we have our
+00:08:43.020 diagonal one diagonal two diagonal three
+00:08:45.960 and so on if it was larger and below
+00:08:48.510 that we have our diagonal negative 1
+00:08:50.190 negative 2
+00:08:51.460 three and so on and sometimes these
+00:08:54.820 diagonal elements are called the pivot
+00:08:57.130 elements and we won't talk too much
+00:08:58.930 about pivoting in this class that would
+00:09:01.510 be more for an advanced computational
+00:09:03.550 methods class we'll be using some
+00:09:11.050 special matrices and some special
+00:09:12.820 terminologies that will imply
+00:09:15.280 differences in how we solve the system
+00:09:17.110 of equations one is we can talk about a
+00:09:20.590 symmetric matrix so on a symmetric
+00:09:23.530 matrix what we do is we look for
+00:09:25.030 symmetry of the elements about the
+00:09:26.590 diagonals so we have a diagonal here and
+00:09:29.010 notice there's twos in these two
+00:09:31.690 positions
+00:09:32.470 there's nines in these two positions and
+00:09:35.920 then 5 and then fours of these opposite
+00:09:40.210 positions and then two eighths and two
+00:09:42.820 zeros so if we were to flop that matrix
+00:09:45.790 or spin that matrix around the diagonal
+00:09:48.870 we would end up with the same matrix
+00:09:51.130 again so we call that symmetric if we
+00:09:57.550 have what is called a diagonal matrix
+00:09:59.410 that means there's just numbers going
+00:10:01.870 down the diagonal everywhere else is
+00:10:04.390 just all zeros and when we start solving
+00:10:07.390 differential equations to find a
+00:10:08.830 difference method these diagonal
+00:10:10.180 matrices will come up at that point if
+00:10:15.460 we have a diagonal matrix but all of the
+00:10:19.300 numbers going down the diagonal are ones
+00:10:21.280 we call that the identity matrix this is
+00:10:24.580 as close to the number one as a matrix
+00:10:27.370 can get if we multiply any matrix by the
+00:10:29.380 identity matrix we just get that matrix
+00:10:31.870 back again well it makes sense if we
+00:10:36.640 have something equivalent to the number
+00:10:38.410 one a zero matrix is the equivalent to
+00:10:40.990 zero if we multiply any matrix by the
+00:10:43.900 zero matrix we get the zero matrix
+00:10:50.040 we have
+00:10:51.660 are called triangular matrices in this
+00:10:53.760 case we have an upper triangular matrix
+00:10:55.800 and remember when we were solving that
+00:10:58.020 system of linear algebraic equations I
+00:11:00.240 pointed to that the set up of
+00:11:02.310 coefficients on the left how it formed a
+00:11:03.870 triangle this is what it would look like
+00:11:06.090 if we cast that system of equations into
+00:11:08.370 matrix form so anytime we see triangular
+00:11:11.580 matrices we immediately think to
+00:11:13.170 ourselves this is a a set of equations
+00:11:15.750 that is almost solved and all we really
+00:11:18.150 have to do is this very fast backward
+00:11:20.610 substitution step likewise we can get a
+00:11:25.560 lower triangular matrix and we think of
+00:11:27.390 this as the same way it's a almost solve
+00:11:30.230 matrix we can have what's called a
+00:11:35.730 banded matrix it's a bit like a diagonal
+00:11:38.250 matrix
+00:11:38.940 but there's numbers running along more
+00:11:41.010 of the diagonals but not all of the
+00:11:43.050 diagonals and if we look at the span
+00:11:48.150 over which we have diagonals nonzero
+00:11:51.450 diagonals we refer to this as the
+00:11:54.090 bandwidth of the matrix so bad that
+00:11:58.350 matrices will come up all the time in
+00:12:00.450 physics and science any time we solve a
+00:12:04.380 system of equations using finite
+00:12:06.300 differences or finite elements will get
+00:12:08.910 banded matrices there's also what's
+00:12:15.420 called a vandermonde matrix and we'll
+00:12:17.340 run across these when we fit data to
+00:12:19.230 polynomials and what I guess one thing I
+00:12:23.640 wanted to point out here is when they
+00:12:24.990 get very large they become
+00:12:26.910 ill-conditioned and this ill-conditioned
+00:12:29.070 word is something we'll talk about next
+00:12:31.020 that has to do with the health of a
+00:12:32.670 matrix some matrices are just better
+00:12:34.650 than others and so when these
+00:12:36.660 vandermonde matrix you get very large
+00:12:38.550 there can be some problems and we don't
+00:12:41.820 have to worry about it in this course we
+00:12:43.230 won't be solving very large matrices but
+00:12:45.030 there's very well-known fixes to all of
+00:12:46.680 that block matrices we can think of
+00:12:55.260 these as matrices of matrices so right
+00:12:58.320 here I'm showing a 2 by 2 matrix however
+00:13:01.560 each of those elements of the 2 by 2
+00:13:03.930 matrix is also its
+00:13:05.400 self a 2x2 matrix so if we put all this
+00:13:08.340 together we can see that we have a four
+00:13:10.080 by four matrix but thinking in terms of
+00:13:13.560 block matrices it lets us calculate and
+00:13:16.320 construct these little matrices that are
+00:13:18.000 probably easier to construct and then
+00:13:20.310 from that construct bigger and probably
+00:13:23.190 uglier matrices and we'll definitely
+00:13:25.050 make use of this later in the semester
+00:13:31.340 sparse matrices sparse matrices is when
+00:13:35.760 your matrix contains almost all zeros so
+00:13:39.150 I'm showing something here that contains
+00:13:40.890 mostly zeros there's a few ones in here
+00:13:43.380 but in fact as your matrix size gets
+00:13:45.930 larger it's very common to have a matrix
+00:13:47.640 that's a hundred thousand by a hundred
+00:13:49.200 thousand elements and maybe there's only
+00:13:51.210 numbers going down three of the
+00:13:53.190 diagonals so most of the time when we're
+00:13:55.920 solving differential equations our
+00:13:57.480 matrices are 99.999% all zeros it does
+00:14:02.760 not make sense to store those zeros as
+00:14:05.490 double floating-point precision numbers
+00:14:07.860 that takes up a lot of memory so what a
+00:14:10.410 sparse matrix is it's still a matrix but
+00:14:13.560 what we do is only store the nonzero
+00:14:16.340 elements so in a way we have more
+00:14:19.590 information to store we not only have
+00:14:21.240 the numbers but we have where they go in
+00:14:23.970 the matrix so if you have a full matrix
+00:14:26.760 or a matrix that just has a lot of
+00:14:28.620 numbers and you store it as sparse it
+00:14:31.230 could actually end up taking more memory
+00:14:33.210 but most of the time your matrices are
+00:14:35.220 99.9% sparse and there is lots of
+00:14:38.610 literature out there on algorithms that
+00:14:40.590 are optimized for sparse matrices if
+00:14:42.600 you're using MATLAB you're in luck all
+00:14:44.790 you have to do is tell MATLAB that a
+00:14:46.800 matrix is sparse and then you can forget
+00:14:49.110 about it MATLAB does everything else for
+00:14:50.880 you but rest assure there is lots and
+00:14:53.220 lots of literature for very optimized
+00:14:55.080 algorithms dealing with sparse matrices
+00:15:03.230 another way
+00:15:04.590 I like to think about a matrix equation
+00:15:07.590 is just in terms of its size and just by
+00:15:11.040 looking at it we can see a lot about it
+00:15:13.560 so here we're looking at a matrix
+00:15:15.360 equation we see there's just as many
+00:15:17.130 rows as there are columns this means we
+00:15:20.100 have just as many equations as there are
+00:15:22.890 unknowns that means we can solve this
+00:15:25.530 with very well-established algorithms
+00:15:28.250 we're for solving node analysis or loop
+00:15:31.950 analysis and circuit theory or solving
+00:15:34.530 differential equations or fitting to
+00:15:37.560 polynomials we end up with a square
+00:15:39.600 matrix that's very easy to solve and
+00:15:41.580 this really is what we were talking
+00:15:43.170 about before when we were solving just
+00:15:44.610 that standard set of algebraic equations
+00:15:46.820 we were solving something that had just
+00:15:49.140 as many equations as it has unknowns so
+00:15:51.840 this comes up most of the time in linear
+00:15:55.500 algebra there's also times where we will
+00:16:00.030 have more equations than we have
+00:16:02.460 unknowns so we have more rows than we
+00:16:05.640 have columns this happens in curve
+00:16:08.760 fitting you may have a whole bunch of
+00:16:10.860 samples of data and you want to fit
+00:16:12.510 those to a line or a Gaussian or
+00:16:15.270 something like that
+00:16:16.320 and this is not solvable by the standard
+00:16:19.710 algorithms that we talked about with
+00:16:21.330 these square matrices and there actually
+00:16:24.420 is no exact solution here and we solve
+00:16:26.820 this type of set of equations as a best
+00:16:30.540 fit the most common is solving this in
+00:16:33.180 the sense of least squares and this is
+00:16:35.100 something we will do when we get the
+00:16:36.990 curve fitting well there's the other
+00:16:41.100 situation where we have more unknowns
+00:16:43.590 than we have equations so we don't even
+00:16:46.440 have enough information to solve our
+00:16:48.420 problem
+00:16:49.230 this happens in optimization and we will
+00:16:53.580 definitely get to that before the end of
+00:16:54.960 the semester now let's talk
+00:17:01.670 the health of a matrix all matrices are
+00:17:04.640 not the same so let's look at this
+00:17:07.339 system of equations which we've also
+00:17:08.869 cast in the matrix form and let's ask
+00:17:10.880 the question is this a solvable system
+00:17:14.270 of equations so go ahead and pause the
+00:17:17.000 video and give this some thought and
+00:17:18.410 then hit play again and we'll say the
+00:17:20.900 answer and talk about it this is not a
+00:17:27.680 solvable system of equations that's
+00:17:30.710 because the first equation and the
+00:17:32.990 second equation are the same equation so
+00:17:35.630 effectively we really only have two
+00:17:37.280 equations here that first or the second
+00:17:40.850 equation is not providing new
+00:17:43.250 information to solve this we need three
+00:17:46.280 equations that are all providing new
+00:17:48.380 information let's look at this system of
+00:17:53.420 equations is this system of equations
+00:17:55.790 solvable so go ahead and pause the video
+00:17:57.830 and come back and you'll get the answer
+00:18:05.650 this is not a solvable system of
+00:18:08.360 equations notice that the second
+00:18:11.270 equation is just two times the first
+00:18:14.210 equation so really that second equation
+00:18:17.180 is not providing new information so this
+00:18:20.900 system of equations is not solvable we
+00:18:23.240 would not call this square matrix on the
+00:18:25.430 left
+00:18:25.880 a healthy matrix it is not solvable okay
+00:18:32.780 what about this system of equations is
+00:18:35.150 this solvable go ahead and pause the
+00:18:37.670 video and think about this this is also
+00:18:45.260 not solvable although maybe this is
+00:18:47.240 harder to figure out why not but in this
+00:18:50.060 case the second equation is simply the
+00:18:53.270 sum of the first and the third equations
+00:18:56.830 now that's hard to see maybe I would
+00:19:00.080 have caught that or maybe not
+00:19:01.490 but the point is since then is the
+00:19:03.680 second equation is the sum of the first
+00:19:05.240 and the third again our second equation
+00:19:07.280 is not providing new information to this
+00:19:10.310 and so it's not solvable and that matrix
+00:19:13.370 is not a healthy matrix
+00:19:18.820 is this system of equations solvable go
+00:19:23.930 ahead and pause the video and think
+00:19:25.190 about it this is not solvable notice we
+00:19:31.790 have a column entirely of zeros so
+00:19:35.240 that's not providing any information
+00:19:37.100 about how Y is affecting things here so
+00:19:40.580 we can't have any columns that are all
+00:19:42.260 zeros there's a lot of things to look
+00:19:47.720 for and when we start talking about
+00:19:49.930 different combinations of multiple
+00:19:52.400 equations that gets really really hard
+00:19:54.230 to tell and so it will be really nice if
+00:19:57.290 there is a test and there is a nice
+00:19:58.700 simple test to see if a system of
+00:20:00.500 equations is solvable but in general all
+00:20:02.990 of the rows have to provide new
+00:20:05.060 information this means they all have to
+00:20:07.370 be linearly independent we can't have
+00:20:10.100 any rows that are all zeros that's just
+00:20:12.350 a 0 equation doesn't provide any new
+00:20:14.570 information no columns can be all zeros
+00:20:18.040 so what is the one simple test that we
+00:20:20.720 can do well ax equals B is solvable if
+00:20:25.700 the determinant of the a matrix is not
+00:20:28.580 equal to 0 if the determinant is 0 that
+00:20:31.460 means we violated one of these rules and
+00:20:33.320 it's not solvable now we could be
+00:20:36.590 solving by best fit and optimization and
+00:20:38.900 other techniques but it's not directly
+00:20:41.240 solvable so what about this system of
+00:20:50.000 equations is this solvable in this case
+00:20:53.510 notice the first and second equations
+00:20:56.150 are essentially the same except one of
+00:21:00.050 the the one coefficient in front of the
+00:21:02.210 X is now a one point zero zero zero one
+00:21:04.460 and on the on the right hand side
+00:21:06.620 instead of an eight it's an eight point
+00:21:08.060 zero zero zero one so the first and
+00:21:10.760 second equations are different but not
+00:21:14.150 very different so what does this mean
+00:21:21.520 well we would call this ill-conditioned
+00:21:24.010 and it's this idea that a matrix can be
+00:21:27.280 more or less solvable that it's not
+00:21:29.290 necessarily a binary thing some systems
+00:21:32.170 of equations are just better conditioned
+00:21:35.380 than others this would not be well
+00:21:37.420 conditioned because the first and second
+00:21:39.790 rows are almost the same just a very
+00:21:42.370 very small difference and when we have a
+00:21:44.710 situation like this we expect our matrix
+00:21:47.080 equation to be very touchy we will
+00:21:49.330 change our coefficients maybe just a
+00:21:52.390 little tiny bit and the answer might
+00:21:53.710 change a lot and that's a rather
+00:21:55.780 unstable unstable touchy sort of thing
+00:21:58.690 and if we were to solve that with a
+00:21:59.980 iterative algorithm for example that
+00:22:02.350 iterative algorithm may never converge
+00:22:04.390 or be very very slow so this is lumped
+00:22:10.660 into something called the condition
+00:22:12.010 number of a matrix we won't deal with
+00:22:14.080 this a whole lot in this course I
+00:22:15.550 consider this a more advanced topic but
+00:22:17.380 we'll mention it and it's really the
+00:22:19.120 ratio of the smallest to largest
+00:22:20.620 singular value I think I said that
+00:22:22.720 backwards the ratio are the largest to
+00:22:24.220 the smallest singular value don't worry
+00:22:27.160 too much about the math of how this is
+00:22:29.380 constructed just understand there's this
+00:22:31.450 thing called a condition number and in
+00:22:34.000 MATLAB you can just type in Co ND and
+00:22:36.280 then put your matrix in parentheses and
+00:22:38.050 calculate what the condition number is
+00:22:39.790 and it's a measure of how touchy the
+00:22:42.400 matrix is the bigger the number the more
+00:22:44.980 touchy it is the more ill-conditioned it
+00:22:47.380 is let's go through some examples to
+00:22:50.530 give you a feel of condition numbers and
+00:22:55.290 we'll use matrices that we discussed
+00:22:57.760 before I believe this was our first
+00:22:59.020 matrix that we figured out was not
+00:23:01.120 solvable because the first and second
+00:23:04.059 rows were the same so what is the
+00:23:05.530 condition number of this it turns out at
+00:23:08.410 something 10 to the 16 that's
+00:23:09.880 essentially infinity to the numerical
+00:23:13.510 precision of the computer so that's a
+00:23:14.920 really really high condition number
+00:23:16.570 something is seriously wrong with this
+00:23:18.280 matrix and we can see it it's obvious to
+00:23:20.500 see in this case the first and second
+00:23:22.450 rows are the same and not contributing
+00:23:24.040 new information okay what about this
+00:23:29.110 equation or this matrix
+00:23:35.260 that's a fine matrix so each each
+00:23:39.080 equation provides new and unique
+00:23:40.940 information and the condition number was
+00:23:42.920 in the range of seven to eight about
+00:23:49.340 this one this matrix is the first matrix
+00:23:52.880 just with one of the elements changed by
+00:23:55.370 a little tiny bit condition number in
+00:24:00.830 this case is 10 to the 5 again we can
+00:24:03.440 look at that condition number and see
+00:24:05.480 that something's horrible about it
+00:24:07.520 there's something really bad and looking
+00:24:11.390 at the a matrix we can tell this
+00:24:13.130 intuitively now but if the different
+00:24:15.380 rows end up being integer combinations
+00:24:17.150 of others and there's maybe some
+00:24:18.650 multiple small changes it can get very
+00:24:21.020 very difficult to see the conditioning
+00:24:23.390 but the condition number will tell you
+00:24:25.610 all that information same thing now I
+00:24:31.490 just made the change in that one element
+00:24:33.620 a little bit smaller so it should be
+00:24:36.680 better conditioned and it is it's 10 to
+00:24:40.670 the 3 this is probably very solvable on
+00:24:50.120 to matrix operations I think we can move
+00:24:52.520 pretty fast here because this should be
+00:24:54.560 mostly review addition when we're adding
+00:25:00.260 two matrices we add them element by
+00:25:02.510 element so for the very upper left
+00:25:05.060 element we'll take a 1-1 add it to b11
+00:25:08.480 and that gives us the upper element in
+00:25:10.850 our new matrix so we just each element
+00:25:13.220 we add it's an element by element
+00:25:14.750 addition it makes sense to be the same
+00:25:18.830 thing for subtraction we are doing an
+00:25:20.540 element by element subtraction very easy
+00:25:26.200 multiple case
+00:25:27.500 by a scaler we just bring that scaler
+00:25:30.050 into the matrix and multiply every
+00:25:31.970 single element in that matrix by that
+00:25:34.430 scalar multiplying two matrices to get
+00:25:40.520 together hopefully this is a review but
+00:25:42.770 we do this weird row column thing so to
+00:25:45.290 get the the very upper left element the
+00:25:47.960 one one element in this matrix we will
+00:25:50.960 take the first row and a and multiply it
+00:25:54.260 element by element with the first column
+00:25:56.960 and B so it's a 1 1 times B 1 1 a 1 2
+00:26:01.220 times V 2 1 a 1 3 times B 3 1 and we get
+00:26:06.170 this element and we work our way through
+00:26:08.330 the matrix doing these row column
+00:26:11.210 operations and eventually get our answer
+00:26:13.580 so I could talk a lot more about this
+00:26:16.990 but I really hope this is review if it's
+00:26:19.370 not please go to Google search for
+00:26:21.800 matrix multiplication and know that very
+00:26:24.440 well it's not hard but you need to know
+00:26:27.650 it the one thing I do want to point out
+00:26:30.110 before we move on that matrix
+00:26:31.730 multiplication is not an element by
+00:26:34.580 element multiplication in other words
+00:26:36.770 the element here the 1 1 element and our
+00:26:39.410 answer is not just a 1 1 times B 1 1
+00:26:41.930 it's more complicated than that we're
+00:26:43.790 doing row column operations matrix
+00:26:50.240 transpose here's an animation on the
+00:26:53.600 right where we are we're flipping the
+00:26:56.210 matrix about its diagonal and when we do
+00:26:59.870 that we get the transpose and real
+00:27:02.570 compact way of writing that is a IJ in
+00:27:06.260 our new matrix our transpose matrix is
+00:27:08.660 AJ I in the original matrix and I even
+00:27:12.830 color-coded the Blues here it's these
+00:27:15.380 upper and lower triangles that
+00:27:17.240 essentially invert around each other and
+00:27:19.400 the way to visualize it I've animated so
+00:27:22.940 I'll let this run for another second or
+00:27:24.680 two but watch that and to keep the
+00:27:27.080 orientation in mind also added a little
+00:27:29.090 colored circles
+00:27:34.190 very similar to a matrix transpose is
+00:27:36.890 what's called a hermitian transpose
+00:27:38.200 sometimes just called the hermitian
+00:27:40.270 sometimes called the complex transpose
+00:27:42.860 but it is a transpose operation followed
+00:27:46.220 by a complex conjugate of every single
+00:27:48.320 number in the matrix very often when we
+00:27:51.560 are solving differential equations and
+00:27:53.540 we have complex numbers when we want to
+00:27:56.210 do a transpose it really needs to be a
+00:27:58.100 hermitian transpose in that case
+00:28:05.680 determinants what is a determinate boy
+00:28:08.210 it's very difficult to to express the
+00:28:11.120 physical meaning of a determinant
+00:28:12.830 because it depends on the physics of
+00:28:14.600 what you're what built the matrix to
+00:28:17.360 begin with but if we were to try to give
+00:28:21.200 it a to of the feel of what this is we
+00:28:22.640 can think of the determinant as sort of
+00:28:24.320 a magnitude or a volume of the matrix
+00:28:27.230 but it comes up a lot in linear algebra
+00:28:29.840 we've already seen it as a way to tell
+00:28:31.490 if a system of equations is solvable we
+00:28:37.220 have matrix inverses and we'll learn
+00:28:39.860 later how to calculate matrix inverses
+00:28:41.920 but if we for example have the inverse
+00:28:45.440 of the a matrix and multiply that by the
+00:28:47.630 a matrix we'll get the identity matrix
+00:28:49.340 remember the identity matrix is the
+00:28:52.160 matrix version of the number one so
+00:28:54.680 matrix inverses come up all the time
+00:28:56.630 when we're solving systems of equations
+00:28:59.060 and so the ability to calculate the
+00:29:01.040 inverses is very important matrix
+00:29:05.630 division this is a source of confusion
+00:29:10.270 so let's look at these two equations in
+00:29:13.250 both cases we are dividing by a however
+00:29:17.000 in the first equation we are pre
+00:29:19.760 dividing by a and in the second equation
+00:29:22.820 we are post dividing by a and these give
+00:29:26.390 two different answers we are not allowed
+00:29:28.430 to reverse the order of this we have to
+00:29:30.500 retain that order so in MATLAB we can
+00:29:33.950 actually use both of the slashes to
+00:29:36.310 distinguish what's happening here if we
+00:29:38.750 use the backward slash it's a inverse
+00:29:42.260 times B and if we do the forward slash
+00:29:45.530 that's B times a
+00:29:48.020 verse now there's also something very
+00:29:50.270 special here it looks as if we might
+00:29:53.480 calculate the inverse of a and then
+00:29:56.420 either pre multiply or pre divide and it
+00:29:59.630 turns out that's not the case when we
+00:30:01.910 see systems of equations like this we do
+00:30:04.700 not calculate the inverse of a that
+00:30:06.500 would be a very very slow process
+00:30:08.110 instead there's very optimized and
+00:30:10.700 efficient algorithms for doing the
+00:30:12.620 matrix division which never actually
+00:30:15.740 explicitly gives you the inverse of a
+00:30:18.200 and so it's much faster in fact I would
+00:30:21.800 say in linear algebra it's quite rare
+00:30:24.050 that we actually calculate the inverse
+00:30:25.910 of matrices normally we're just backward
+00:30:28.940 dividing two different matrices and we
+00:30:31.640 never explicitly need the inverse so if
+00:30:34.430 you're ever typing computer code and
+00:30:36.820 calculating the inverse of a matrix
+00:30:38.890 really ask yourself should I be
+00:30:41.660 calculating this this matrix inverse
+00:30:43.670 because if you do it's much much slower
+00:30:46.340 than ordinary matrix division so
+00:30:49.280 something to be cautious of matrix
+00:30:55.970 multiplication a very similar thing we
+00:30:58.040 can pre multiply or post multiply and
+00:31:01.520 these are not the same
+00:31:03.440 a times B does not equal B times a we're
+00:31:06.860 not free to reverse that order now
+00:31:09.400 sometimes we can for example when both a
+00:31:13.130 and B are diagonal matrices when each
+00:31:16.460 only has numbers going down their center
+00:31:18.740 diagonal in that case we actually are
+00:31:20.900 free to reverse the order but in general
+00:31:23.210 we are not free to reverse the order I
+00:31:25.730 could also say the same thing for
+00:31:27.530 division if both a and B are diagonal we
+00:31:30.740 are free to reverse that order but in
+00:31:34.100 general we're not when we are
+00:31:41.150 manipulating matrix equations we can
+00:31:44.540 treat the matrices as variables but they
+00:31:46.790 follow a slightly different form of
+00:31:49.220 algebra laws the commutator of laws we
+00:31:53.810 can reverse the order of additions
+00:31:55.460 that's not a problem that's just element
+00:31:57.590 by element but when it comes to
+00:31:59.390 multiplication because we're doing these
+00:32:01.490 column operations we are not free to
+00:32:04.700 reverse that order of multiplication
+00:32:06.670 except in the one case where both of the
+00:32:09.350 the matrices are diagonal there might be
+00:32:11.390 other special cases where maybe you get
+00:32:13.429 lucky in this works but in general do
+00:32:15.890 not reverse the order of multiplication
+00:32:20.380 the associative laws once we write a
+00:32:23.570 chain of additions or products as long
+00:32:26.630 as we keep the matrices themselves in
+00:32:29.030 the same order we can change the order
+00:32:31.730 that we're doing the multiplication so
+00:32:34.250 for example in the multiplication we
+00:32:36.800 have a times B times C we can choose to
+00:32:39.410 first multiply a times B and then
+00:32:42.440 multiply that product by C or we can
+00:32:46.010 multiply B times C but then we have to
+00:32:48.770 pre multiply a times that product we
+00:32:51.620 just calculated so as long as we're
+00:32:53.870 keeping the matrices themselves in the
+00:32:55.820 same order we can do the math in
+00:32:58.190 whatever order we want the distributive
+00:33:04.070 laws this works exactly like
+00:33:05.960 distributive laws for regular algebra
+00:33:07.700 but we need to be very careful about the
+00:33:09.980 order that we're keeping the order for
+00:33:12.080 example if we have the sum of two
+00:33:13.880 matrices multiplying a third matrix we
+00:33:16.850 can distribute this out but we have to
+00:33:18.559 keep C post multiplying both a and B
+00:33:23.050 likewise if we have a matrix pre
+00:33:25.670 multiplying a sum we are free to bring
+00:33:28.370 the a in here but the a has to pre
+00:33:30.710 multiply both B and C and we can talk
+00:33:38.090 about a bunch of different properties of
+00:33:39.530 matrix inverses if we divide a matrix by
+00:33:42.170 itself in any way we get the identity
+00:33:44.390 matrix if this doesn't happen then we
+00:33:46.640 probably didn't have the inverse of the
+00:33:48.200 matrix correct to begin with the inverse
+00:33:50.809 of the inverse of a matrix is that
+00:33:52.550 matrix itself now here's a strange one
+00:33:55.670 if we have the product of two matrices
+00:33:57.200 and we invert the product we can write
+00:34:01.309 this as the inverse of the two matrices
+00:34:03.440 multiplying each other but we're
+00:34:05.179 reversing the order the inverse of the
+00:34:10.310 transpose is the same thing as the
+00:34:12.500 transpose of the inverse so we can
+00:34:14.060 actually reverse
+00:34:15.270 the order of the operation the transpose
+00:34:18.600 of a transpose is the matrix again we
+00:34:22.800 can take the transpose of the sum of two
+00:34:24.840 matrices and that's simply the transpose
+00:34:27.690 of each individual matrix added together
+00:34:29.610 and then a bit like this law with
+00:34:32.668 inverses where when we inverted the
+00:34:34.649 product of two matrices we had to
+00:34:36.270 reverse their order same thing with the
+00:34:38.159 transpose if we were multiplying two
+00:34:40.320 matrices we take its transpose we write
+00:34:43.020 that as the individual transposes but
+00:34:45.510 multiplied and in a reverse order than
+00:34:47.730 they were over here so that's an easy
+00:34:49.918 one to miss not reversing the order
+00:34:56.750 addition with a scalar if we have a
+00:34:59.370 scalar number added to a matrix that
+00:35:02.520 really doesn't make sense if we forced
+00:35:05.580 it in some languages I believe if we do
+00:35:07.470 this in MATLAB it adds that scalar to
+00:35:10.020 every single element but really that
+00:35:12.570 should not make sense we we need to do
+00:35:15.150 math with things that are of compatible
+00:35:17.040 size so really if we were to add a scare
+00:35:20.160 of a matrix probably what we meant to
+00:35:22.200 say is the scalar times the identity
+00:35:24.360 matrix notice this will give us a matrix
+00:35:27.480 with alphas running down the diagonal
+00:35:29.160 and that we can add to the matrix a and
+00:35:31.860 so we're adding alphas down the diagonal
+00:35:40.330 application with a scaler well we sort
+00:35:42.670 of have a distributive law here we can
+00:35:44.110 take this alpha and bring it in and once
+00:35:46.420 it's a scalar it doesn't really make
+00:35:48.700 sense the thing about post or pre
+00:35:50.890 multiplication or division we can just
+00:35:54.700 associate this scalar with each one on
+00:35:56.680 either side typically will write the
+00:35:58.300 scalar to the left but that's just
+00:35:59.710 convention and then if we're multiplying
+00:36:03.160 a scalar by a product we can associate
+00:36:05.560 that that scalar with either one of the
+00:36:07.990 matrices that that doesn't matter and
+00:36:14.550 last some special operations with our or
+00:36:17.740 operation with special matrices if we
+00:36:19.450 multiply any matrix by the zero matrix
+00:36:21.520 whether that is a pre multiply or post
+00:36:24.040 multiply we get zero any matrix times
+00:36:27.370 the identity matrix is just that matrix
+00:36:29.110 back again and of course if we add the
+00:36:31.720 zero matrix to any matrix we just get
+00:36:34.090 that majors back and if we subtract two
+00:36:36.280 matrices we get the zero matrix let's
+00:36:42.880 practice some of these matrix algebra
+00:36:45.460 rules with an example let's say we want
+00:36:48.430 to simplify the following expression and
+00:36:50.620 notice I'm using the notation with bold
+00:36:52.750 letters instead of the square bracket
+00:36:55.090 letters not a big deal so how do we
+00:36:58.180 simplify this well first I might
+00:37:01.600 recognize that there's a D added to both
+00:37:04.270 sides so what I'll do is subtract D from
+00:37:09.010 both sides so then on both sides I have
+00:37:11.920 a D minus D which we know is the zero
+00:37:14.500 matrix so we have a zero matrix on both
+00:37:17.170 sides
+00:37:17.860 well the zero matrix added to any other
+00:37:20.350 matrix is just that matrix again so we
+00:37:23.320 can just drop the zeros from the matrix
+00:37:24.730 equation and end up here so what's next
+00:37:30.630 well what I did was invert both sides so
+00:37:34.690 on the Left we already have an inverse
+00:37:36.790 so the inverse of the inverse is just
+00:37:39.550 this expression here so we just have C
+00:37:42.340 inverse times a but we have the inverse
+00:37:45.070 of BC now remember how we do that we
+00:37:48.160 reverse the order of B and C so we have
+00:37:50.620 C times B but then we invert them
+00:37:53.260 individual
+00:37:55.740 okay what's next
+00:37:58.530 well I'll recognize that we are pre
+00:38:01.660 dividing both sides of this equation by
+00:38:03.700 C so what I can do is pre multiply both
+00:38:08.080 sides of this equation by C and now I
+00:38:10.960 have a C times C inverse on both sides
+00:38:13.750 and this is the identity matrix so we
+00:38:17.080 have an identity matrix on both sides
+00:38:18.670 but the identity matrix times any other
+00:38:20.560 matrix is just that matrix and so we
+00:38:23.770 simplified this this first matrix
+00:38:26.800 equation just down to a equals B inverse
+00:38:33.660 very quickly I want to go through some
+00:38:36.070 common linear algebra problems and come
+00:38:39.460 up with some general conclusions very
+00:38:43.900 often we will get an ax equals B this
+00:38:47.650 happens in physics and engineering when
+00:38:50.590 we have a problem that has some kind of
+00:38:52.480 excitation and there's only one answer
+00:38:54.820 so maybe we're solving a circuit Theory
+00:38:57.760 problem trying to calculate the voltage
+00:38:59.560 across a resistor or something like that
+00:39:01.540 and so we have power sources and those
+00:39:04.120 power sources end up being lumped into
+00:39:05.920 the B here but the point is there is one
+00:39:08.740 specific answer to this so here's an
+00:39:17.200 example of how we end up with ax equals
+00:39:19.330 B solving a differential equation this
+00:39:21.370 is something we're doing later in the
+00:39:22.840 semester so we start off with a
+00:39:24.250 differential equation that we want to
+00:39:26.140 solve and in this case F is our unknown
+00:39:29.080 and B is an excitation of some sort what
+00:39:34.150 we'll do is approximate those
+00:39:36.070 derivatives with finite differences that
+00:39:38.230 lets us write that finite difference
+00:39:40.480 equation as a set of linear algebraic
+00:39:43.900 equations and the process going from the
+00:39:47.040 differential equation that set of
+00:39:48.880 equations that's something we'll cover
+00:39:50.110 in detail later but suffice to say now
+00:39:52.540 we have a huge set of linear algebraic
+00:39:55.510 equations well we can put those into
+00:39:58.690 matrix form and there is our ax equals B
+00:40:02.110 form and we solve that using a backward
+00:40:06.580 division
+00:40:08.070 and once we have the answer we process F
+00:40:11.130 and learn something hopefully but the
+00:40:14.010 point is it had an excitation and only
+00:40:16.170 one answer another thing that can arise
+00:40:23.130 is something called an eigenvalue
+00:40:24.810 problem the most common is the standard
+00:40:27.900 eigenvalue problem but there's also a
+00:40:29.640 generalized eigenvalue problem think of
+00:40:32.460 this as a test we have some differential
+00:40:34.650 equation and we're asking the question
+00:40:36.510 what could happen so we're asking for
+00:40:38.970 possibilities here not one specific
+00:40:40.860 answer so we make a guess so if we have
+00:40:45.270 this big ugly matrix we pre-multiply x
+00:40:48.150 and if in doing that we get the exact
+00:40:50.910 same answer back just scaled by a
+00:40:53.640 constant that's a valid answer but we're
+00:40:57.270 asking about possibilities and it turns
+00:40:59.610 out there is always an infinite number
+00:41:01.440 of eigenvalues and eigenvectors or
+00:41:04.950 solutions to an eigenvalue problem
+00:41:07.140 however because we're solving these
+00:41:09.240 numerically our matrix a is only so
+00:41:11.790 large we'll only be able to resolve that
+00:41:14.370 many answers we'd have to add more
+00:41:16.230 numbers more rows and columns to a to
+00:41:18.090 get more answers so think of this as
+00:41:20.430 asking a question how can a guitar
+00:41:22.230 string resonate well it can resonate
+00:41:24.060 where the whole string is just going up
+00:41:27.510 and down in an arc or it could resonate
+00:41:31.080 as a second-order mode where the left
+00:41:32.670 half and the right half earth going up
+00:41:34.830 and down an opposite proportion and then
+00:41:37.110 there's the third and fourth and fifth
+00:41:38.910 mode and there's an infinite number of
+00:41:40.320 ways that a guitar string can resonate
+00:41:42.330 we just keep going to a higher and
+00:41:44.250 higher frequency we can come up with
+00:41:45.510 more of these complicated modes so
+00:41:48.240 eigenvalue problems are just asking for
+00:41:50.330 possibilities and so there's multiple
+00:41:53.040 correct answers and no source no
+00:41:55.350 excitation for an eigenvalue problem
+00:42:02.570 determinant
+00:42:03.720 talk a little bit about this we think of
+00:42:05.490 this as sort of a magnitude or volume of
+00:42:07.740 a matrix but really the physical meaning
+00:42:09.510 can come once you know the physics of
+00:42:12.300 what built your matrix a what built the
+00:42:14.400 matrix equation so the determinant of a
+00:42:17.160 2x2 matrix is simply the product of
+00:42:20.490 these two elements minus the product of
+00:42:23.640 those two elements that's our
+00:42:25.170 determinant and we can go to larger
+00:42:27.420 matrices so for example determinant of a
+00:42:29.970 3x3 matrix what we'll do is we'll pick a
+00:42:31.859 row we'll pick the top row and we'll say
+00:42:34.560 this is a 1 1 times the determinant of
+00:42:37.830 this matrix minus a 1 2 times the
+00:42:43.320 determinant of a 2 by 2 matrix composed
+00:42:45.540 of this column and this column and then
+00:42:49.140 plus a 1 3 times the determinant of this
+00:42:53.340 matrix and we could go on to larger
+00:42:55.680 matrices and we walk across a row will
+00:42:58.920 have elements times the 3 by 3 matrix
+00:43:01.109 and then walk across those that it's
+00:43:03.119 it's a hugely complicated thing to do by
+00:43:05.160 hand for large matrices but the computer
+00:43:07.590 can do this very fast and efficient and
+00:43:13.109 lasses Kramer's rule this is a easy way
+00:43:16.050 by hand for solving a set of linear
+00:43:18.270 algebraic equations no real need to go
+00:43:20.220 through that here this is even discussed
+00:43:22.320 in high school many times so that's it I
+00:43:25.170 hope this lecture is useful to you

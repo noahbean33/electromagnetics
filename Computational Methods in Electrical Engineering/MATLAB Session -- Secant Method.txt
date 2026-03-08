@@ -1,0 +1,196 @@
+# tactiq.io free youtube transcript
+# MATLAB Session -- Secant Method
+# https://www.youtube.com/watch/1fJbbtcrXco
+
+00:00:01.580 in this MATLAB session we are going to
+00:00:04.410 implement the secant method to find the
+00:00:06.660 root of in this case the sine function
+00:00:09.269 yes we all know what the roots are of
+00:00:11.550 the sine function but let's pretend that
+00:00:13.259 we don't for this example so we'll name
+00:00:16.470 this demo secant method and I've already
+00:00:18.539 saved it the first thing I like to do is
+00:00:21.840 initialize MATLAB and I will close all
+00:00:28.289 the figure windows I will clear the
+00:00:30.960 command window and I will clear all the
+00:00:34.170 variables from memory the most important
+00:00:35.969 one being that last step at this point I
+00:00:40.110 want to set up my dashboard this is all
+00:00:43.110 of the hard-coded numbers in the program
+00:00:45.000 we're not going to perform any work here
+00:00:47.070 and the idea is that we can control
+00:00:49.289 everything about our program just
+00:00:51.390 through this dashboard and not have to
+00:00:53.430 dive into the code to change anything
+00:01:02.600 so I like to make big dramatic text here
+00:01:08.360 to separate my sections of code it just
+00:01:10.190 helps me okay so the first thing we'll
+00:01:13.460 need in our dashboard is the function
+00:01:15.350 that we're finding the root of and I'm
+00:01:21.619 going to use something called a handle
+00:01:23.090 or a pointer and func
+00:01:27.160 will become a pointer to the sine
+00:01:30.650 function and the reason I'm doing this
+00:01:32.450 is we're going to have to call the sine
+00:01:34.430 function many times in our algorithm but
+00:01:37.640 if I want then to find the root of a
+00:01:39.289 cosine function or a tangent function or
+00:01:41.360 something else if I didn't do this
+00:01:43.759 I'd have to go find reference to sine
+00:01:46.190 and in all the different lines of my
+00:01:47.930 code and change it to cosine or tan and
+00:01:50.240 that can be rather cumbersome and I
+00:01:53.270 might miss one and make a mistake this
+00:01:55.640 way I just define the sine function
+00:01:57.560 upfront and for the rest of the code I
+00:01:59.780 can use func as the sine function so
+00:02:03.440 let's go ahead and run this so I can
+00:02:07.310 type in sine of 0.1 or func of 0.1 func
+00:02:11.959 now acts exactly like sine so in
+00:02:16.400 addition to the code that I'm writing
+00:02:17.750 also watch the manner that I write this
+00:02:20.180 code I'm always writing a few lines
+00:02:22.220 testing a few lines writing a few lines
+00:02:24.320 testing a few lines and that's the best
+00:02:26.660 way to do it you never want to write the
+00:02:28.250 entire program and when you're finished
+00:02:30.470 hit run for the very first time it
+00:02:32.390 becomes much more difficult to find your
+00:02:34.280 mistakes next thing we'll need in our
+00:02:38.720 dashboard if you recall from the secant
+00:02:41.150 method hopefully you watch the lecture
+00:02:42.680 videos so you have the theoretical basis
+00:02:44.600 for the secant method but we need two
+00:02:47.360 initial guesses as to where the root is
+00:02:52.870 we'll define these as X 1 and X 2 and
+00:02:55.640 let's pretend we don't know the root of
+00:02:57.680 sine we just know it's somewhere in the
+00:03:00.829 3 and 1/2 is forest kinds of range so
+00:03:05.299 we'll let X 1 be 3 point 9 and X 2
+00:03:11.010 he I will let that be 3.9 and the other
+00:03:13.530 one 4.0 the only other thing we'll need
+00:03:20.790 in a dashboard to control our function
+00:03:23.010 is the tolerance we will iterate we will
+00:03:25.909 iterally improve our solution and the
+00:03:29.159 tolerance will tell the program to stop
+00:03:31.650 when the changes in our answer are small
+00:03:33.840 enough so let's set it 10 to the minus 6
+00:03:46.280 I'll go ahead and run that just make
+00:03:48.299 sure we don't get any errors okay always
+00:03:50.819 good on to the next section of code and
+00:03:59.099 we'll change this to implement secant
+00:04:03.599 method so the first step in the secant
+00:04:09.239 method is to evaluate the function at
+00:04:12.109 point 1
+00:04:20.000 we'll call it f1 funk x1 now the reason
+00:04:25.910 we do this if we didn't if we didn't say
+00:04:28.520 f1 equals funk of x1 and just in our
+00:04:31.460 code constantly referred to funk of x1
+00:04:34.220 and constantly evaluating that imagine
+00:04:36.920 for example every call to funk would
+00:04:38.900 take three days to calculate this way we
+00:04:42.080 just save that answer in f1 and every
+00:04:44.600 time we need it we just call f1 and
+00:04:47.120 don't call funk of x1 each time so it'll
+00:04:50.060 make the code run faster when those
+00:04:52.130 calculations are slow now in this case
+00:04:54.740 the calculation is almost instantaneous
+00:04:56.330 to us and you won't see any difference
+00:04:58.550 here but if funk we're slow this is
+00:05:01.250 definitely the best way to do it at this
+00:05:05.090 point we want to enter into the main
+00:05:06.500 loop and I will use a while loop and
+00:05:16.060 while something so in the secant method
+00:05:20.240 we have this DX it's how much we've
+00:05:22.400 changed our X so I might look at the
+00:05:25.100 absolute value of those changes and when
+00:05:27.200 those changes or while those changes are
+00:05:30.080 greater than our tolerance we will do
+00:05:32.960 the stuff inside of our while loop well
+00:05:37.130 one thing now we enter our while loop we
+00:05:39.380 need the X we haven't defined it DX is
+00:05:41.660 something we calculate inside the loop
+00:05:43.610 every time we change X we look at how
+00:05:45.770 far it moved so just to make sure that
+00:05:48.860 our while loop runs that first time we
+00:05:51.830 can set DX to infinity that way it'll
+00:05:53.840 work for any tolerance that we might
+00:05:55.700 enter in
+00:06:01.490 another thing we might like to do is
+00:06:03.590 count how many iterations this took so
+00:06:07.669 let's define it err and set it to zero
+00:06:10.610 and then at the very beginning we can
+00:06:13.789 count our iterations simply by adding
+00:06:15.889 one to that now let's set DX to zero
+00:06:23.750 that's just a little trick to make sure
+00:06:25.639 that the while loop ends if we run it
+00:06:28.400 yes it ends and our inner count should
+00:06:31.340 be just one the next thing we need to do
+00:06:35.660 is calculate the function at point X to
+00:06:41.560 evaluate
+00:06:46.790 so we'll say f2 and his funk of x2 and
+00:06:50.860 we'll use f2 if we need it again in
+00:06:54.260 place a funk too so we're not constantly
+00:06:56.020 evaluating funk at x2 each time now I'm
+00:07:04.400 not going to derive this equation but
+00:07:06.170 the next step is to calculate this
+00:07:07.730 change in X to tell us how far away our
+00:07:10.850 new value of x is and I'm borrowing this
+00:07:18.080 equation straight from the notes
+00:07:28.110 but let's quickly remember what actually
+00:07:31.200 happened here we have two points X 1 and
+00:07:33.210 X 2 we evaluate the function we fit that
+00:07:36.180 to a line and we projected the line down
+00:07:39.330 to the x-axis to see where that would
+00:07:41.130 cross and that's our next guess of where
+00:07:43.470 the route might be and DX is how much we
+00:07:46.470 have to change X or how far away it is
+00:07:49.740 from X 2 to our new point where we think
+00:07:52.170 the route might be or we hope let's go
+00:07:56.550 ahead and run this
+00:07:58.160 let's leave the semicolon off so we can
+00:08:00.840 see what value we calculated and I can't
+00:08:04.020 tell if that's right or wrong what I'm
+00:08:05.460 looking for at this point is that a n a
+00:08:07.560 n or an infinity or something that tells
+00:08:10.260 us we've done our calculation
+00:08:11.550 incorrectly but it seems like a
+00:08:13.290 reasonable number to me so we move on to
+00:08:16.920 the next step and at this point we've
+00:08:20.340 calculated a third point so we would
+00:08:23.460 like to make the new first point our old
+00:08:27.020 second point
+00:08:39.460 now this is one of the reasons why we
+00:08:42.309 calculated F 1 and F 2 rather than keep
+00:08:44.200 calling func if I didn't do that I would
+00:08:46.779 have had to call func at X 2 and
+00:08:48.640 actually do that evaluation twice
+00:08:50.980 remember pretend each call to func would
+00:08:53.620 take three days and this we wouldn't
+00:08:57.070 have to call it again we're just reusing
+00:08:58.779 the number we've already calculated now
+00:09:05.140 we're going to update the position of
+00:09:06.760 the second point
+00:09:13.340 and essentially this is moving the
+00:09:15.650 second point to where we just projected
+00:09:18.410 down onto the x-axis getting to a line
+00:09:25.090 and we'll go ahead and run this make
+00:09:27.350 sure we're getting a reasonable value
+00:09:28.760 for x2 I don't know if that's right or
+00:09:32.090 wrong but it does look wrong it's not an
+00:09:34.700 na n it's not an infinity or something
+00:09:36.440 like that
+00:09:37.720 at this point we hope the algorithm is
+00:09:41.660 correct and we'll know soon because if
+00:09:43.460 we run it and it freezes up on us then
+00:09:46.580 something's obviously wrong so let's go
+00:09:48.350 ahead and run it and hey it finished
+00:09:51.890 almost instantaneously for us let's see
+00:09:56.570 what the route is and really are the
+00:09:58.370 best guess that the route comes out
+00:09:59.570 being x2 will type in x2 and look that
+00:10:03.320 is pi sine of pi is 0
+00:10:06.200 we knew that ahead of time but we
+00:10:08.210 pretended that we didn't know about that
+00:10:11.410 so that is the secant method I hope this
+00:10:14.390 helps

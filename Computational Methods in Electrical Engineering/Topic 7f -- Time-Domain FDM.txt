@@ -1,0 +1,1178 @@
+# tactiq.io free youtube transcript
+# Topic 7f -- Time-Domain FDM
+# https://www.youtube.com/watch/HIh3DUFojQM
+
+00:00:00.060 topic 7f time domain finite difference
+00:00:02.939 method you will find this method in the
+00:00:06.750 implementation strikingly different than
+00:00:09.150 what we've been talking about we're
+00:00:11.190 really not going to use any linear
+00:00:13.019 algebra now to solve this it'll look
+00:00:16.289 much more like when we talked about a
+00:00:18.449 numerical finite a numerical
+00:00:21.420 differentiation across the grid so we'll
+00:00:24.000 find a difference method how we've been
+00:00:25.470 talking we write a finite difference
+00:00:27.210 equation for every point on a grid we
+00:00:29.910 assemble that into a large matrix and
+00:00:31.980 solve that by backward division we have
+00:00:34.170 our answer with a time to make finite
+00:00:37.170 difference method while we could still
+00:00:38.760 do something like that it's beneficial
+00:00:40.860 not to we will assemble a very similar
+00:00:44.370 set of finite difference equations so
+00:00:47.070 numerically the behavior is the same
+00:00:48.660 however we will set up a big for loop
+00:00:52.559 and essentially enforce each one of them
+00:00:55.260 one at a time and then go back and keep
+00:00:58.230 doing that so the implementation looks
+00:01:00.629 very different but the numerical
+00:01:04.019 behavior is very similar because they're
+00:01:05.850 based off almost the same exact
+00:01:07.619 equations okay let's dive into this
+00:01:11.250 I want to introduce some preliminary
+00:01:14.610 concepts about a time domain solution
+00:01:16.860 and then by example I'll show you what a
+00:01:20.790 time domain solution of the heat
+00:01:22.410 equation looks like and then we'll also
+00:01:24.300 talk about a time domain solution to
+00:01:26.100 Maxwell's equations for electro
+00:01:27.990 magnetics following a bit like what
+00:01:38.100 we've been doing the algorithm for
+00:01:41.180 finite difference time domain or a time
+00:01:43.619 domain finite difference method is
+00:01:45.000 really broken into two parts the first
+00:01:47.369 is the formulation so we start with the
+00:01:50.070 basic governing equation and we derive
+00:01:53.100 and we take that as far as we possibly
+00:01:54.899 can until we have the final set of
+00:01:57.990 equations that we will implement in
+00:02:00.030 MATLAB or whatever programming language
+00:02:02.910 you're using then we'll talk about the
+00:02:05.310 implementation so for the formulation we
+00:02:08.699 identify the governing equation like
+00:02:11.280 before we will approximate that with
+00:02:13.230 finite differences after that the
+00:02:16.019 formulation changes compared to what
+00:02:18.090 we're used to now what will happen our
+00:02:21.390 finite difference equations will also
+00:02:23.130 contain a time derivative so we will
+00:02:25.470 have a function value at a previous time
+00:02:27.750 step and a function value at the next
+00:02:30.360 time step and we will solve that
+00:02:33.090 equation for the function value at the
+00:02:35.910 next time step or the future time value
+00:02:38.730 and we will call that an update equation
+00:02:41.160 so we can calculate the function value
+00:02:43.470 at the next time step based on all the
+00:02:46.650 information at the previous time step
+00:02:48.950 when we derived that equation what we'll
+00:02:51.480 see is we sometimes have a bunch of
+00:02:53.010 constants and coefficients that collect
+00:02:55.140 that don't change over time and it
+00:02:57.570 doesn't make sense to keep calculating
+00:02:59.430 them every iteration and so once we
+00:03:01.890 derive them that becomes something we
+00:03:04.440 can calculate before the iteration so
+00:03:07.230 we'll lump these update coefficients
+00:03:09.810 into their own equations we'll write our
+00:03:12.570 final update equation and those are what
+00:03:14.640 we implement inside of this main loop
+00:03:16.650 that iterates over time that's the
+00:03:20.489 formulation the algorithm follows
+00:03:23.430 similarly to what we're used to
+00:03:25.080 there's a dashboard where we have all
+00:03:26.550 the hard-coded numbers but no work will
+00:03:29.220 calculate our grid we'll build the
+00:03:31.350 device on the grid at that point we have
+00:03:34.170 the equations for the update
+00:03:35.640 coefficients we have all the information
+00:03:37.890 we need we will calculate the update
+00:03:40.320 coefficients and every point on the grid
+00:03:42.540 has its own set of update coefficients
+00:03:45.140 the unknown functions will initialize to
+00:03:48.060 their starting values usually this is
+00:03:50.070 just all 0 but could be different when
+00:03:52.440 we talk about thermal analysis maybe you
+00:03:55.320 set the temperature across some object
+00:03:57.330 to some starting configuration then we
+00:04:00.990 enter the main loop and we have a loop
+00:04:04.290 over time that's our big loop then
+00:04:06.300 inside of that we also have a loop over
+00:04:08.280 space and inside that second loop is
+00:04:11.040 where we've enforced our find a
+00:04:13.080 difference equation across the entire
+00:04:14.880 grid and of course that little loop is
+00:04:17.370 in this big time loop so we keep
+00:04:18.930 repeating the little loop and this
+00:04:20.790 repeats over and over and over and we
+00:04:22.320 can watch stuff move around on the grid
+00:04:24.240 and create little animations and it's
+00:04:25.890 very neat and in the end we have the
+00:04:28.170 answer that we can post-process we can
+00:04:30.180 visualize and do neat things with so
+00:04:34.320 that's how we'll do analysis and the
+00:04:36.210 time domain the formulation and the
+00:04:37.770 implementation some notes about time
+00:04:43.830 domain algorithms in general we can
+00:04:47.340 certainly implement a time domain code
+00:04:49.440 using linear algebra but there's
+00:04:51.480 benefits if we don't and this ties into
+00:04:54.540 the scalability and if we solve a
+00:04:58.440 problem using linear algebra things tend
+00:05:00.960 to scale not linearly they scale
+00:05:03.590 exponentially so if we double the number
+00:05:06.270 of points in our grid the number of
+00:05:08.220 calculations could go up by 8 or 16
+00:05:10.860 times whereas with a time domain code if
+00:05:13.979 we double the number of points on our
+00:05:15.570 grid it's really just doubles the number
+00:05:17.729 of calculations so I already touched on
+00:05:23.790 this scales near linearly the reason I
+00:05:28.380 say nearly is that okay if we double the
+00:05:31.169 number of points we double the number of
+00:05:32.580 calculations but it then also takes
+00:05:35.640 twice the amount of time for
+00:05:38.110 some signal or wave or phenomenon to
+00:05:41.200 propagate its way across the grid so we
+00:05:43.990 have twice as many calculations for
+00:05:45.970 twice as long so it's not quite scaling
+00:05:49.330 linearly but very very close
+00:05:54.000 so the time to make fun a difference
+00:05:56.410 method this seems to be Thor's hammer
+00:05:59.170 for numerical modeling when a problem
+00:06:01.720 just becomes too big too bad too ugly
+00:06:04.090 for anything else people throw a time to
+00:06:07.240 main finite difference method at it's
+00:06:08.710 very easy to to parallel eyes and to
+00:06:12.250 solve big ugly large problems so it's
+00:06:14.470 very excellent for that I can't think of
+00:06:15.910 a technique that's better
+00:06:18.780 of course if you want to know the
+00:06:21.880 transient response of a device and I'll
+00:06:24.100 talk more about that in the next slide -
+00:06:26.230 to better understand what that is but
+00:06:29.170 usually when a device is first excited
+00:06:32.350 there are some fields bouncing around
+00:06:34.150 and doing some crazy things until
+00:06:36.430 finally they settle into this answer
+00:06:39.060 that would be what things look like
+00:06:41.350 after a very long time has passed so
+00:06:43.780 after a long time that's the steady
+00:06:45.730 state response in a sense the analysis
+00:06:48.850 we've been doing have been a steady
+00:06:50.560 state response but if we want to know
+00:06:52.720 what happens upfront the transient
+00:06:54.580 response the time two main methods are
+00:06:57.400 absolutely excellent for doing this if
+00:07:02.680 we have nonlinear properties or
+00:07:05.650 materials such as diodes or just
+00:07:07.990 nonlinear materials that could be done
+00:07:11.140 in the frequency domain but it's very
+00:07:13.780 easy and inherently simple in the time
+00:07:17.350 domain so for nonlinear properties
+00:07:19.810 seeking time two main method I love time
+00:07:26.320 two main methods for understanding and
+00:07:29.230 learning physical phenomena once your
+00:07:31.210 simulation is working you can literally
+00:07:32.980 watch your waves or your heat fronts or
+00:07:36.310 other things move around and interact
+00:07:38.650 with the materials so it's a great
+00:07:40.930 learning tool as well
+00:07:45.289 so I mentioned that great learning tool
+00:07:47.399 great for visualization okay so I think
+00:07:50.669 I've sold the time domain method here
+00:07:56.460 I'm showing two different simulations on
+00:07:59.099 the top is what we would call the
+00:08:00.719 steady-state response and on the bottom
+00:08:02.939 is the transient response so if we were
+00:08:05.729 to solve an electromagnetic problem here
+00:08:07.740 it's scattering from a slab with a
+00:08:09.689 frequency domain model we would jump
+00:08:12.449 immediately to the answer on the top
+00:08:14.689 whereas on the bottom we understand we
+00:08:17.159 actually have to excite this with a
+00:08:19.169 source that source hits the first
+00:08:21.659 interface some bounces off it hits the
+00:08:23.789 second interface some bounces off of
+00:08:25.289 this this energy sort of swashing back
+00:08:27.990 and forth but over time that transient
+00:08:31.680 response settles into the steady-state
+00:08:34.500 response so in a frequency domain
+00:08:37.500 simulation we jump immediately to that
+00:08:39.539 steady-state response and we miss
+00:08:41.219 everything that happens in the beginning
+00:08:42.630 and that's sort of a shame the transient
+00:08:45.959 response we see that and so these time
+00:08:48.360 domain methods can do that and show us
+00:08:51.060 the transient response and very often
+00:08:53.339 there's a lot that we can learn from
+00:08:54.930 that and in this simulation on the
+00:08:57.209 bottom maybe you notice that the
+00:08:58.970 behavior went from red sorry from blue
+00:09:01.649 to red and I'm just trying to show the
+00:09:04.709 transition between the transient and the
+00:09:07.769 steady state response once the line is
+00:09:09.779 red on the bottom it was the steady
+00:09:12.240 state response so you can rewind the
+00:09:14.160 video and watch that over again so
+00:09:22.610 nothing is better than an example to
+00:09:24.810 teach this method so let's look at the
+00:09:26.519 time domain solution of the heat
+00:09:28.380 equation see what that might look like
+00:09:33.740 so first we have to set up our problem
+00:09:36.240 let's say we have this bar of some
+00:09:39.209 strange material and at first it has
+00:09:43.380 held all at 0 degrees C but suddenly at
+00:09:47.490 time 0 that right-hand side of the bar
+00:09:50.850 is held at 350 degrees C so clearly that
+00:09:55.769 end of the bar will be
+00:09:57.020 eating up and we should be able to watch
+00:09:59.810 the temperature profile on this bar
+00:10:02.300 change with time and we would like to
+00:10:05.420 see that to make this a little bit more
+00:10:08.090 strange the thermal diffusivity which
+00:10:10.460 sort of characterizes how quickly he can
+00:10:12.290 move up and down this bar is described
+00:10:15.230 by this parameter alpha and that is not
+00:10:19.070 a constant here it's a function of the
+00:10:20.900 length over the over the wire or the bar
+00:10:23.620 so that's our problem let's see how we
+00:10:26.390 would solve this using the finite
+00:10:28.490 difference method what we have to
+00:10:33.950 identify our starting equation and in
+00:10:36.290 this case it's the time two main form of
+00:10:38.240 the heat equation now on this equation
+00:10:41.120 the capital T is temperature and that is
+00:10:43.820 a function of X although I'm not showing
+00:10:45.680 that explicitly in the equation the
+00:10:47.770 little T the lowercase T that's time and
+00:10:51.730 alpha is the thermal diffusivity talked
+00:10:54.410 about on the previous slide and just to
+00:10:56.960 give you some a feel of the numbers I've
+00:10:59.720 listed that for several items so wood
+00:11:02.720 for example does not conduct heat very
+00:11:04.430 well at all so that has a very very
+00:11:06.260 small thermal diffusivity whereas metal
+00:11:09.050 is more 10 to the minus 4 of the del
+00:11:12.950 operator the little upside-down triangle
+00:11:15.080 that's sort of a three-dimensional
+00:11:16.550 derivative and so del squared that's
+00:11:18.770 called the laplacian it's a second-order
+00:11:21.700 three-dimensional derivative of the
+00:11:23.870 temperature now we're analyzing a bar so
+00:11:26.900 one of the first things we want to do is
+00:11:28.820 reduce this to a one-dimensional problem
+00:11:30.980 instead of a three-dimensional problem
+00:11:33.170 but the equation on this slide is for
+00:11:35.600 full three dimensions and this is our
+00:11:37.430 starting point so we call it the
+00:11:38.600 governing equation
+00:11:43.839 so we'd like to reduce this to one
+00:11:46.069 dimension because we have the skinny
+00:11:47.959 little bar now if that bar were very fat
+00:11:50.239 this may not be an accurate thing to do
+00:11:52.910 so for skinny bar this is a pretty
+00:11:55.399 accurate way to analyze the problem and
+00:11:57.410 simplifies our math so the first thing
+00:12:01.610 we do is we expand this into so we can
+00:12:04.999 see the full three dimensionality of
+00:12:07.100 this to expanded our laplacian and we
+00:12:10.579 will assume that this is a
+00:12:11.929 one-dimensional problem across X and
+00:12:14.149 that's a good approximation if the
+00:12:16.129 dimensions of that bar in y and z are
+00:12:18.769 very small so if the temperature and the
+00:12:22.549 y and z directions rather instantaneous
+00:12:24.799 we can just cross off those derivatives
+00:12:27.139 and we've reduced our problem to one
+00:12:29.540 dimension so here is our revised
+00:12:33.170 governing equation now reduced to one
+00:12:36.350 dimension and here I explicitly put in
+00:12:38.929 what these different variables are a
+00:12:40.910 function of so temperature T is a
+00:12:44.029 function of position and time that
+00:12:46.850 thermal diffusivity is only a function
+00:12:49.369 of position so let's move on with this
+00:12:52.970 and see how we can solve it so there's
+00:12:59.179 our governing equation from the previous
+00:13:01.040 slide
+00:13:03.639 we'll make a first guess at how we could
+00:13:07.100 solve this using finite differences so I
+00:13:09.919 took a stab at the finite difference for
+00:13:12.079 the first term but the derivative of
+00:13:14.540 temperature with respect to time and
+00:13:16.069 then also the second term which is a
+00:13:18.259 second-order derivative with respect to
+00:13:20.119 space and these are finite differences
+00:13:22.790 that we have been discussing for a while
+00:13:25.809 now remember our fundamental rule when
+00:13:29.299 they find a difference equation every
+00:13:31.040 term in the equation has to exist at the
+00:13:33.949 same point in time and space so we need
+00:13:38.029 to look at these terms and see what's
+00:13:40.369 happening so our first term if we look
+00:13:45.589 at our coefficients we have a t plus
+00:13:47.600 delta T and a T and so if we interpret
+00:13:51.049 that as a central finite difference we
+00:13:53.089 see that that
+00:13:54.110 ermm exists at t plus delta T over to
+00:13:57.610 now our alpha term is not a function of
+00:14:00.560 T so we really can let it exist wherever
+00:14:02.450 we want to I'll call it T then our last
+00:14:06.380 finite difference equation
+00:14:08.060 that's a second-order finite difference
+00:14:10.100 equation if we interpret that as a
+00:14:12.170 central finite difference it exists at t
+00:14:14.720 so right away we see we have a bit of a
+00:14:17.570 problem that first term does not exist
+00:14:20.300 at the same time as the other terms in
+00:14:23.810 the equation and so that's a problem we
+00:14:27.200 need to talk about there's three main
+00:14:32.360 ways that we can do this and the first
+00:14:34.970 two are kind of simple and maybe
+00:14:37.399 cheating in a way let's just look at
+00:14:39.980 that first finite difference and
+00:14:41.329 interpret it as a backward finite
+00:14:43.010 difference instead of a central finite
+00:14:45.380 difference so we can just declare that
+00:14:47.630 term to exist at time T and that fixes
+00:14:50.300 our problem and we can do this and in
+00:14:52.970 fact we will do this when we actually do
+00:14:54.950 our solution because it's very easy and
+00:14:56.600 it can work a lot of times but it is not
+00:14:59.000 necessarily unconditionally stable there
+00:15:01.699 are times where this could blow up on us
+00:15:03.380 so it's not necessarily the best but it
+00:15:06.529 is very simple similarly we can
+00:15:10.880 interpret that first term as a forward
+00:15:13.160 finite difference we can write the T and
+00:15:16.699 the T plus delta-t t minus delta t parts
+00:15:18.980 a little bit differently to make this
+00:15:21.050 work but again we just simply define
+00:15:24.769 that as existing at time T and that
+00:15:26.660 fixes our problem very simple answer but
+00:15:29.630 not necessarily unconditionally stable
+00:15:35.949 there's a third way and this is probably
+00:15:39.350 the better way we can look at that
+00:15:41.630 second term the Alpha times the second
+00:15:44.420 order derivative and we can interpolate
+00:15:46.880 that to exist at the midpoint if we do
+00:15:51.350 that every term in this equation exists
+00:15:54.019 at t plus delta T over 2 so this is a
+00:15:57.170 healthy way to do this probably the best
+00:15:59.600 way to do it but you can see from the
+00:16:01.820 equation that it is a bit more
+00:16:03.380 complicated
+00:16:05.329 solving this way is called the crank
+00:16:07.410 Nicolson scheme however we're going to
+00:16:11.399 proceed with one of the ones on the
+00:16:13.170 previous slide instead of this one just
+00:16:15.360 due to the simplicity in the math so
+00:16:21.480 let's go with solution one and so all
+00:16:25.319 terms now exist at time T simply because
+00:16:27.720 we just declared it to be that for the
+00:16:29.639 first term so instead of writing this
+00:16:34.069 explicitly as functions of X and T let's
+00:16:37.829 now write this in terms of array indices
+00:16:39.870 so the array index I is position an
+00:16:43.350 array index K is the time stamp so K
+00:16:48.449 just refers to the current time step k
+00:16:51.899 plus 1 refers to the temperature at the
+00:16:55.170 next time step so we only have one term
+00:16:58.649 like that here so you can imagine
+00:17:00.000 solving this for t at k plus 1 in terms
+00:17:03.899 of the t's at the previous time step and
+00:17:06.179 that's our update equation but it looks
+00:17:08.669 a little bit better written in terms of
+00:17:10.079 the array indices instead of explicitly
+00:17:12.209 X and T so we solve that for T at the
+00:17:18.569 future time step and we arrive at our
+00:17:21.179 update equation and we will implement
+00:17:24.089 that equation for every point on our
+00:17:27.089 grid as a function of X so if we have a
+00:17:29.909 hundred points in our grid we write this
+00:17:32.280 equation a hundred different times very
+00:17:34.110 much like we did when we did numerical
+00:17:35.940 differentiation we'll put that in a big
+00:17:38.370 loop and we will update all the values
+00:17:40.710 of T before we solve that notice we had
+00:17:49.799 this collection of terms and these terms
+00:17:53.250 are not changing over time so why do
+00:17:57.120 that calculation at every point at every
+00:18:00.150 iteration that doesn't make sense so we
+00:18:02.940 will call that an update coefficient we
+00:18:05.309 will calculate it ahead of time now
+00:18:08.309 since that alpha term is a function of
+00:18:10.799 position the update equation is a
+00:18:13.020 function of position and in fact we
+00:18:14.640 store that as
+00:18:15.810 arrey which I'm implying with that
+00:18:18.240 subscript I so before we even get into
+00:18:21.720 our main loop over time we will
+00:18:24.390 calculate the update coefficients and
+00:18:26.520 then implement this update equation at
+00:18:29.970 every point on the grid we have a
+00:18:36.180 stability condition there's a lot we
+00:18:37.770 could say here but if we look at the
+00:18:40.170 numerix just numerically every time step
+00:18:43.920 it is impossible for a disturbance to go
+00:18:47.040 more than one cell in a single time step
+00:18:49.880 so we have to make sure that this heat
+00:18:53.370 front would not physically need to
+00:18:56.160 travel faster than that because they
+00:18:58.470 can't do that numerically so we set our
+00:19:01.590 time step so that the actual heat wave
+00:19:04.710 would be slower than one cell per time
+00:19:08.070 step so that's the simple answer for
+00:19:10.530 this and we get a stability condition
+00:19:12.360 and that's how we calculate our time
+00:19:14.340 step and as long as it's smaller than
+00:19:16.020 that certain value we will have a stable
+00:19:19.190 code given all that we can revise our
+00:19:26.190 algorithm so we'll have our dashboard
+00:19:29.220 initialized MATLAB all that sort of
+00:19:30.990 stuff up front the first work we'll do
+00:19:33.600 outside of the dashboard is a calculator
+00:19:35.460 grid how many points and what is the
+00:19:37.710 cell size step four we build the device
+00:19:41.220 on the grid in this case it's just
+00:19:43.500 calculating that that alpha the thermal
+00:19:45.660 diffusivity as a function of position
+00:19:47.760 across our grid so we'll have an array
+00:19:49.830 alpha then we need to calculate a stable
+00:19:53.790 time step so what is DT we'll use D T to
+00:19:57.930 be our time step and we might want to
+00:20:00.300 calculate an NT the total number of time
+00:20:02.970 steps we could do it that way or we
+00:20:05.820 could just run our code and checking the
+00:20:08.670 changes in temperature as a function of
+00:20:10.710 position and what we don't see changes
+00:20:12.690 anymore we can stop the function so
+00:20:15.120 either way it works is a good stock
+00:20:16.380 condition here I'm just saying we'll
+00:20:18.060 calculate total number of iterations
+00:20:21.440 so before we enter our main loop we want
+00:20:24.300 to calculate our update coefficients
+00:20:26.490 because these don't change over time and
+00:20:28.590 this will be stored in an array at that
+00:20:31.560 point we'll initialize our arrays so
+00:20:33.960 we're setting the temperature to zero
+00:20:35.850 notice we have a tea and a tea - I'm
+00:20:39.120 using tea - as the temperature at the
+00:20:41.880 future time step because we'll have to
+00:20:43.530 store both and that's because we don't
+00:20:45.660 want if we're in the middle of updating
+00:20:48.090 our temperatures then on one side we
+00:20:51.030 would be using new values of temperature
+00:20:52.680 on the other side we will be using old
+00:20:54.720 values and it's not proper to do that so
+00:20:57.420 we'll calculate the new temperatures in
+00:20:59.400 tea - only from the old temperatures
+00:21:02.250 stored in T so we have to initialize
+00:21:04.590 both of them to 0 to start with at this
+00:21:07.350 point we enter our main loop so this
+00:21:09.480 iterates over time inside the main loop
+00:21:14.100 there's another loop so this is step
+00:21:16.260 eight a and this is when we loop over X
+00:21:18.870 and we implement that update equation at
+00:21:21.750 every point in our grid once we've done
+00:21:25.560 that we probably our numbers may have
+00:21:28.230 changed at the first and last cell but
+00:21:31.260 the statement of our problem we're
+00:21:33.060 holding the left side of our bar at 0
+00:21:35.370 and the right side of the bar at 350 so
+00:21:38.340 we have to go in and overwrite the
+00:21:39.750 values in the on the first point in the
+00:21:41.520 endpoint to enforce those boundary
+00:21:43.920 conditions at that point the update is
+00:21:47.730 done we might want to do some other
+00:21:48.960 things maybe we want to record
+00:21:50.550 intermediate results maybe we want to
+00:21:52.680 visualize the results we want to watch
+00:21:54.270 the temperature as a function of time
+00:21:57.320 well after the time loop is over the
+00:22:00.750 simulation really is over and we
+00:22:03.840 recorded some things probably now we can
+00:22:06.060 post-process them to learn something
+00:22:07.950 maybe we visualize the results maybe
+00:22:09.900 we've been rendering a movie and we have
+00:22:11.520 this movie of temperature as a function
+00:22:12.840 of time but that's it and really all
+00:22:15.780 time domain finite difference methods
+00:22:17.970 follow a very similar flow they'll just
+00:22:20.910 have different numbers or calculating
+00:22:22.620 different update coefficients but they
+00:22:25.200 all really have the same same flow to
+00:22:27.840 them
+00:22:31.660 okay now let's talk about time - main
+00:22:35.270 solution of Maxwell's equations so the
+00:22:42.740 time - main solution of Maxwell's
+00:22:43.940 equations is called finite-difference
+00:22:45.500 time-domain
+00:22:46.640 now from that title that really says
+00:22:49.160 nothing that is actually
+00:22:50.240 electromagnetics but if you're reading
+00:22:52.460 and you read the words finite-difference
+00:22:53.810 time-domain
+00:22:54.650 almost always they're talking about an
+00:22:56.600 electromagnetic solution in this case
+00:23:00.110 the information primarily comes from two
+00:23:03.290 of Maxwell's equations that are called
+00:23:05.270 the curl equations and I've written them
+00:23:07.550 here and the two equations are working
+00:23:11.090 in concert with each other now
+00:23:13.370 physically everything's happening at the
+00:23:16.340 same time but to implement this in time
+00:23:19.250 domain we're going to pretend that one
+00:23:21.080 equation happens before the other and so
+00:23:24.440 perhaps we start on the left and we will
+00:23:28.220 calculate the curl of the electric field
+00:23:31.690 based on that curl we will update our
+00:23:35.390 value of H because we can see a time
+00:23:37.850 domain derivative there and you can
+00:23:39.350 imagine solving for H for the future
+00:23:41.570 time step there and then the MU the
+00:23:44.120 permeability is just a proportionality
+00:23:46.130 constant it tells us how much H changes
+00:23:48.530 in response to a curl in the electric
+00:23:51.590 field so on this first step we're
+00:23:54.080 updating H based on the curl of e now
+00:23:57.190 very similar in the second step we will
+00:24:01.040 then calculate the curl of the H field
+00:24:03.710 and update the electric field based on
+00:24:06.500 the curl of H so we update H based on
+00:24:11.810 the curl of e then update a II based on
+00:24:14.480 the curl of H and then we go back and
+00:24:16.670 update H on the curl of E and it's a
+00:24:18.980 back forth algorithm sometimes called a
+00:24:20.990 leapfrog algorithm so it's eh-eh-eh-eh
+00:24:23.750 and it's constantly bouncing back and
+00:24:25.190 forth back and forth back and forth and
+00:24:26.890 this iterates over time now each one of
+00:24:30.920 those equations also has a little tiny
+00:24:32.930 loop going over space and that's the
+00:24:36.290 heartbeat of finite-difference
+00:24:37.520 time-domain
+00:24:41.039 now for three-dimensional problems we
+00:24:43.929 talked a bit in other lectures about how
+00:24:45.580 we stagger our unknown variables well we
+00:24:48.159 have two unknowns here an electric field
+00:24:50.559 and a magnetic field their vectors and
+00:24:52.809 have XY and Z components and in fact we
+00:24:55.539 stagger them in the manner I'm showing
+00:24:57.279 on this slide that's called the Yi cell
+00:24:59.320 or the Yi algorithm and we use that to
+00:25:03.190 discretize and write our finite
+00:25:04.960 differences so I'm not going to talk
+00:25:07.390 about these spatial finite differences
+00:25:09.400 you've seen that in previous lectures
+00:25:11.260 but I can talk a little bit about the
+00:25:13.270 time derivative we now have two
+00:25:16.360 equations and since we've staggered them
+00:25:19.179 in space it makes a little bit of sense
+00:25:21.100 that we would also stagger these in time
+00:25:23.230 and we will define the electric fields
+00:25:26.500 to be a time step 0 delta T 2 delta T
+00:25:30.429 I'll call that the integer time steps
+00:25:33.360 the magnetic field H will be defined to
+00:25:37.090 exist that delta T over 2 3 delta T over
+00:25:40.870 2 5 delta T over 2 I'll call those the
+00:25:44.230 half time steps so E&amp;H are not only
+00:25:47.049 staggered in space but staggered in time
+00:25:49.570 and that lets us write really nice
+00:25:52.140 finite difference equations so at this
+00:25:57.130 step all we've done was do a finite
+00:25:59.500 difference approximation for our time
+00:26:01.210 derivatives and we talked about
+00:26:03.250 staggering E&amp;H in time as well as you
+00:26:06.279 can see from those equations given our
+00:26:13.950 equations we did our finite difference
+00:26:16.330 for time also in this step we would have
+00:26:19.899 done our finite differences for the curl
+00:26:21.549 I'm not going to write that so we take
+00:26:24.190 these two equations and we solve for the
+00:26:27.399 field values at the future time steps
+00:26:29.919 and we arrive at the update equation for
+00:26:32.950 electro magnetics we'll see the Delta T
+00:26:36.760 over mu and the delta T over Epsilon
+00:26:39.190 those are our update coefficients that
+00:26:42.399 is also something that we can calculate
+00:26:44.110 ahead of time to help speed our
+00:26:46.299 simulation so those are our update
+00:26:49.059 coefficients
+00:26:52.480 we have a similar stability condition
+00:26:55.400 that we had for heat for
+00:26:57.260 electromagnetics but it's the same thing
+00:26:58.820 it's physically impossible for a
+00:27:01.010 disturbance to travel farther than one
+00:27:04.010 cell in one time step just due to how
+00:27:06.650 we've structured our finite differences
+00:27:08.770 therefore we have to make sure that the
+00:27:11.060 physical wave would not need to
+00:27:13.520 propagate faster than that so we choose
+00:27:16.220 a small enough delta T that the physical
+00:27:18.410 wave would not travel more than one cell
+00:27:21.260 in one time step or it can go unstable
+00:27:24.260 so the basic current stability condition
+00:27:27.410 is this middle term
+00:27:28.760 now I've modified it a little bit to
+00:27:30.890 something easier and also a little bit
+00:27:32.690 more useful I incorporated a minimum
+00:27:35.180 refractive index across the grid because
+00:27:38.540 sometimes if we don't have air
+00:27:40.670 everywhere maybe we have a refractive
+00:27:42.620 index material that's higher than than
+00:27:44.630 one over the entire grid sometimes we
+00:27:48.410 can get away with a larger time step and
+00:27:50.570 that's neat to account for other times
+00:27:53.600 if we're simulating metamaterials or
+00:27:55.850 having doing some kind of effective
+00:27:57.920 medium thing whether the effective
+00:27:59.990 refractive Niskanen one the original
+00:28:03.170 current stability condition will not
+00:28:05.150 work and we really do need to account
+00:28:06.890 for the minimum also rather than have
+00:28:10.790 the Delta X Delta Y Delta Z those are
+00:28:12.890 our grid resolution parameters I just
+00:28:14.870 find the smallest one of those and call
+00:28:17.000 that Delta min and use that in the
+00:28:18.920 equation so it's a it's an easier
+00:28:20.540 equation to use and also accounts for
+00:28:23.300 the minimum refractive ik so in practice
+00:28:25.640 and my codes I use this for the current
+00:28:28.460 stability condition and I just make sure
+00:28:30.530 that my time step is smaller than that
+00:28:37.810 so when I have students implement the
+00:28:40.520 finite-difference time-domain algorithm
+00:28:42.830 we had those two basic update equations
+00:28:44.990 I call that the heartbeat of finite
+00:28:46.910 difference time domain I have them
+00:28:48.980 implement that and so we're updating Eve
+00:28:52.250 from each age from eehh back and we're
+00:28:54.620 back and we're back and forth and if we
+00:28:56.660 look at the simulation on this slide
+00:28:58.190 we're simulating but nothing's happening
+00:29:00.290 and that's exactly what should happen
+00:29:01.760 right now
+00:29:02.350 nothing should happen is something we're
+00:29:04.179 happening there be some kind of problem
+00:29:06.240 because everything starts at zero so if
+00:29:09.100 we update if he is all zeros and we
+00:29:11.559 figure out our new h8 should still be
+00:29:13.990 all zeros so it's a good check to make
+00:29:16.660 sure that you're your initial heartbeat
+00:29:19.120 is correct if we get all 0 that doesn't
+00:29:22.840 necessarily guarantee correctness but if
+00:29:25.720 we saw something happening here that
+00:29:27.340 would definitely mean that something is
+00:29:28.780 wrong so we are running eh-eh-eh back
+00:29:31.690 and forth back and forth back and forth
+00:29:32.740 but nothing's happening that's exactly
+00:29:35.230 what should happen now suddenly we start
+00:29:37.929 throwing numbers into the grid somehow
+00:29:40.059 and we're updating backwards eh-eh-eh-eh
+00:29:42.640 now we can start seeing those numbers
+00:29:44.610 travel across the grid that's the next
+00:29:47.289 step so we add what's called a simple
+00:29:52.000 soft source we'll talk more about what a
+00:29:53.950 soft source a hard source is later but
+00:29:56.049 this is just the simplest way to get
+00:29:58.419 energy or power into our simulation so
+00:30:01.210 we did something in the middle
+00:30:02.470 we just over wrote with a value and
+00:30:04.179 suddenly we see stuff travel left and
+00:30:07.059 right the blue lines the electric field
+00:30:09.880 the red line is the magnetic field and
+00:30:13.000 we just use simple deras a battery
+00:30:15.280 conditions so they reflect off of the
+00:30:17.289 edges and everything seems to be working
+00:30:20.289 those aren't exploding we got energy
+00:30:23.049 into our simulation and that's about
+00:30:25.750 really all we should see at this point
+00:30:28.860 let's go on to the next step
+00:30:36.880 we don't want those pulses to reflect
+00:30:41.330 off of the boundaries so we added an
+00:30:43.160 absorbing boundary condition in this
+00:30:45.350 case it's a it's a perfect boundary
+00:30:46.940 condition and it just makes it looks
+00:30:49.160 like these waves go off to infinity now
+00:30:52.010 if we zoomed in on the y-axis we would
+00:30:55.040 see that something reflects off that
+00:30:56.870 there's really no such thing as an
+00:30:58.610 absolutely perfect boundary condition
+00:31:00.650 but what reflects maybe six orders of
+00:31:03.230 magnitude down and that's usually
+00:31:05.120 perfectly fine for a simulation so
+00:31:09.260 really this soft source that we're using
+00:31:11.600 isn't really what we want
+00:31:13.250 it's just something really simple to do
+00:31:15.440 to throw power against our boundaries to
+00:31:18.290 make sure that our boundaries work so
+00:31:20.810 our boundaries work now now we can get a
+00:31:26.990 little more sophisticated with the
+00:31:28.310 source and we do what's called a total
+00:31:31.130 field scattered field source an easier
+00:31:34.400 way to think about this as just a
+00:31:35.810 one-way source we only want to throw
+00:31:38.150 power in one direction because normally
+00:31:41.840 when we inject power it's all the way to
+00:31:43.880 the left hand side of our simulation
+00:31:45.530 that's where we inject our power we
+00:31:48.110 throw it to the right it bounces and
+00:31:50.720 resonates with inside some kind of
+00:31:52.550 device and we record what gets reflected
+00:31:54.950 and transmitted so since we move our
+00:31:57.890 source all the way over to the left we
+00:31:59.750 don't want to propagate anything
+00:32:01.400 backwards because of two reasons one we
+00:32:04.460 have less control over where the power
+00:32:06.530 is going in our grid but secondly that
+00:32:08.960 backward energy some will reflect off
+00:32:11.480 that interface because we can't really
+00:32:13.790 have a perfect boundary condition so
+00:32:15.920 something will reflect off of that
+00:32:17.480 boundary and we don't want that and we
+00:32:19.070 don't have to have it so by using this
+00:32:21.500 total field scatter field technique
+00:32:23.180 we're able to incorporate a one-way
+00:32:25.640 source they give it like a flashlight
+00:32:27.020 you turn on a flashlight the beam goes
+00:32:29.330 one way and not backward so it's a great
+00:32:32.060 way to implement a source in the finite
+00:32:34.040 difference method
+00:32:38.230 now we want to move that source all the
+00:32:40.960 way over to the left and so we're
+00:32:43.870 throwing the power to the right nothing
+00:32:45.940 goes in backwards we can see our
+00:32:48.340 electric and magnetic field at this
+00:32:50.380 point we're just transmitting through
+00:32:52.060 air so we'll add our calculation of
+00:32:55.870 transmission and reflection and since
+00:32:58.540 we're only simulating air we should see
+00:33:01.180 100 percent transmission zero percent
+00:33:04.240 reflection and that really is exactly
+00:33:06.580 what we see here and by the way what
+00:33:09.490 looks like a little bit of noise behind
+00:33:11.590 that pulse really isn't noise it's just
+00:33:14.530 one MATLAB draws the graphics there's a
+00:33:16.660 field guy right on the threshold between
+00:33:18.400 two pixels and and that's what you're
+00:33:20.110 seeing but there really is not that
+00:33:22.120 noise in the simulation so we're getting
+00:33:26.170 100% reflection 0% reflection and this
+00:33:29.230 is something I always do with the new
+00:33:30.970 numerical method i transmit transmission
+00:33:33.160 through nothing and that means we should
+00:33:35.140 get 100% transmission and 0% reflection
+00:33:38.800 it's a great check to make sure that the
+00:33:40.960 calculations aren't correct
+00:33:42.520 and like before if we do get 100%
+00:33:46.000 transmission
+00:33:46.990 0% reflections that isn't a hundred
+00:33:48.910 percent guarantee that things are
+00:33:50.260 correct but certainly if we didn't get
+00:33:52.720 that answer that would mean that things
+00:33:54.670 are wrong now we're finally ready to add
+00:34:00.670 a device in there so we can add a device
+00:34:02.740 we can watch our fields interact with it
+00:34:05.650 and we're calculating transmission and
+00:34:08.170 reflection now watch what happens we now
+00:34:12.550 suddenly see this dashed black line the
+00:34:15.340 dashed black line is transmission plus
+00:34:18.630 reflection that should be 100% all the
+00:34:22.480 way across and it's not and that's crazy
+00:34:24.639 what on earth is going on here well
+00:34:27.010 what's going on is we're simulating a
+00:34:28.810 resonant device there's still energy
+00:34:31.210 stuck inside that device there's waves
+00:34:33.219 bouncing back and forth and
+00:34:35.489 unfortunately in a time domain
+00:34:37.179 simulation the only thing we can do is
+00:34:39.670 let this run and run and run until
+00:34:41.860 finally it leaks out either as
+00:34:44.710 transmission and reflection and
+00:34:46.710 eventually we will see that conservation
+00:34:49.389 line that flies
+00:34:50.560 line settle out to be a flat line and
+00:34:54.130 once that's flat we know that our
+00:34:55.510 simulation is finished and if it never
+00:34:57.850 does become flat we know that something
+00:35:00.640 is wrong with our simulation this is
+00:35:02.440 something I always do with my personal
+00:35:04.150 simulations is plot that conservation
+00:35:06.790 line now clearly if you've incorporated
+00:35:09.820 gain or loss into your simulation then
+00:35:13.030 your conservation would not be at 100%
+00:35:15.040 it would come below or above if it was
+00:35:18.280 loss or gain so one thing I do in my
+00:35:21.190 simulations is if I want to incorporate
+00:35:23.230 loss or gain I'll get everything working
+00:35:25.720 I'll write my code but I'll turn that
+00:35:28.060 gain or loss off so I'll run a
+00:35:30.940 simulation with no loss no gain I'll
+00:35:33.130 make sure that I get my 100%
+00:35:36.300 conservation then I'll turn on the loss
+00:35:39.010 or gain it's just sort of an extra level
+00:35:41.080 of assurance that things are right
+00:35:43.000 within your model so we're done we've
+00:35:48.520 developed a full one dimensional finite
+00:35:50.740 difference time domain algorithm another
+00:35:53.620 thing that I want to point out is notice
+00:35:55.450 the sequence that I developed this in
+00:35:57.820 and when I'm developing codes this is
+00:36:00.640 the type of sequence that I would use I
+00:36:02.950 would never ever jump into programming
+00:36:05.080 what you're seeing here so this is sort
+00:36:07.360 of the final big bad ugly simulation and
+00:36:10.150 if I wait it until I got all the code
+00:36:12.310 written to hit run that first time I
+00:36:14.380 would have a really really hard time
+00:36:16.360 figuring out where my errors are whereas
+00:36:19.150 if I write my code and steps like this
+00:36:21.670 I'm much better able to catch my errors
+00:36:24.730 as I go okay so that's one dimensional
+00:36:28.150 finite difference time domain now
+00:36:33.670 because you can't run movies in the
+00:36:35.590 electronic notes I just did a sort of a
+00:36:38.020 freeze-frame conceptual image of what
+00:36:41.110 each each step was talking about so
+00:36:44.110 nothing new here just still images let's
+00:36:50.320 talk about the different types of
+00:36:51.460 sources this is a simple hard source so
+00:36:54.550 I go into the grid and I just overwrite
+00:36:56.410 a value somewhere with the source now
+00:36:58.390 watch what happens when a pulse hits
+00:37:00.550 that it reflects off of it
+00:37:02.650 and that's because I'm just doing a
+00:37:04.600 brute-force overwriting of information
+00:37:07.600 on that point and things can't pass
+00:37:10.180 through it and this is usually bad
+00:37:13.330 because if my waves bounce off that
+00:37:15.340 artificially then they're gonna re-enter
+00:37:17.950 my problem and probably disrupt my
+00:37:20.380 results so the simple hard source is by
+00:37:23.440 far the simplest source but it's also by
+00:37:26.020 far the worst source and probably only
+00:37:28.870 talked about academically I'm not sure
+00:37:30.580 people actually use this source for
+00:37:32.140 anything real
+00:37:38.230 so rather than just overwrite with our
+00:37:40.940 source what if we just took whatever
+00:37:43.250 field value was there and added the
+00:37:45.230 source this is called a soft source and
+00:37:49.430 watch what happens
+00:37:50.620 reflected waves pass through it as if it
+00:37:53.810 was not there so we call that a simple
+00:37:56.450 soft source this is much much more
+00:37:58.490 useful than the hard source because
+00:38:03.290 waves would just pass through it
+00:38:15.740 you
+00:38:29.430 then a specific case of the soft source
+00:38:32.859 is the one-way source and I use the
+00:38:35.920 total field scatter field technique to
+00:38:37.719 implement that one-way source it's a
+00:38:41.229 soft source so when power reflects of
+00:38:43.989 our device we inject this one-way wave
+00:38:45.939 when power reflects off something when
+00:38:48.759 it goes back it's able to pass through
+00:38:50.920 that region where we injected the source
+00:38:52.900 if that were a hard source that would
+00:38:55.689 not be the case the one-way source also
+00:38:59.529 gives us the ability to better control
+00:39:01.689 the amplitude of the field that we're
+00:39:03.880 injecting and it doesn't send any energy
+00:39:06.729 backward that would hit that left
+00:39:08.769 boundary some would still artificially
+00:39:11.650 reflect it would come back and you know
+00:39:13.900 caused a little bit of noise in our
+00:39:15.369 simulation would that be tolerable in
+00:39:17.859 most cases probably yes but it's simple
+00:39:20.680 to implement to eliminate that here so
+00:39:23.469 I'm a big fan of this total field
+00:39:25.150 scatter fill technique for injecting
+00:39:26.709 one-way sources that works really well
+00:39:28.449 for me it's not the only way now for
+00:39:36.489 calculating transmission and reflection
+00:39:37.689 let's say the simulation is running in
+00:39:39.959 the dashed red line on the left and the
+00:39:43.209 back blue line on the right I am
+00:39:44.709 recording what gets reflected and what
+00:39:47.499 gets transmitted now notice I excited
+00:39:51.309 this slab of dielectric with an impulse
+00:39:53.559 a short impulse that means when I'm
+00:39:57.249 recording I am recording the impulse
+00:39:59.920 response and so then if we Fourier
+00:40:03.819 transform the impulse response then I
+00:40:07.959 get my reflection and transmission
+00:40:09.429 spectrum a little bit more to say on how
+00:40:12.880 we do things here but that's the short
+00:40:14.589 story we're recording the impulse
+00:40:16.329 response and we're Fourier transforming
+00:40:19.059 it to get reflectance and transmittance
+00:40:26.780 so here's a block diagram of a one
+00:40:30.060 dimensional finite difference time to
+00:40:31.740 main algorithm a little bit more going
+00:40:33.570 on here so other than all the dashboard
+00:40:36.150 initialized MATLAB kind of stuff we come
+00:40:39.090 into the main algorithm step one we're
+00:40:42.300 calculating all of our grid stuff so
+00:40:44.369 we're calculating how many points we
+00:40:47.010 have the cell size then we move down and
+00:40:51.090 we build our device on the grid so our
+00:40:53.550 device could have a permittivity and a
+00:40:55.170 permeability at every point on our grid
+00:40:57.270 so we go ahead and do that once we have
+00:41:00.570 that we're ready to calculate the time
+00:41:02.190 step that's the current stability
+00:41:04.530 condition that ensures that our physical
+00:41:06.480 wave would not need to be faster than we
+00:41:09.690 can actually make the wave move across
+00:41:11.520 our grid that pump would calculate the
+00:41:14.670 source we're using a Gaussian source and
+00:41:17.580 really the only two tricks here first we
+00:41:20.099 want to make sure that the Gaussian is
+00:41:21.630 narrow enough or quick enough that it
+00:41:24.150 includes all the frequencies we want and
+00:41:26.369 the second thing is we don't want to
+00:41:29.099 start our source right in the middle of
+00:41:31.050 that Gaussian so we want to offset that
+00:41:32.880 Gaussian in time so when the simulation
+00:41:35.369 starts everything's zero and we sort of
+00:41:37.440 ease in and ease out of that source
+00:41:40.580 otherwise it's just calculating a simple
+00:41:43.200 Gaussian well now we can calculate our
+00:41:46.650 update coefficients at every point we
+00:41:48.930 have to update equations so we have to
+00:41:51.330 update coefficients and a more
+00:41:53.369 complicated codes the update
+00:41:55.500 coefficients they get uglier and there
+00:41:57.720 becomes more of them for each update
+00:41:59.760 equation so in in higher dimensional
+00:42:01.920 codes this can be more work we then set
+00:42:05.970 all of our fields to zero we have some
+00:42:08.849 boundary terms also to fit to zero
+00:42:11.160 that's not something we're talking about
+00:42:12.390 here but that's how we handle this
+00:42:13.980 perfectly absorbing boundary then we
+00:42:17.640 enter our main loop so we have a main
+00:42:19.410 loop that's iterating over time the
+00:42:22.680 first thing inside that main loop is
+00:42:24.599 another loop that iterates over our grid
+00:42:27.839 and here's where we update H from the
+00:42:30.869 curl of e once we've updated that across
+00:42:35.130 the entire grid we come out of that loop
+00:42:37.410 and update these terms at the boundaries
+00:42:40.020 to help us do those the perfectly
+00:42:41.490 absorbing boundaries then we enter a
+00:42:44.550 second little loop over the entire grid
+00:42:47.610 where we update e from the curl of H
+00:42:51.170 when that is done we have some boundary
+00:42:53.760 terms to update at this point we've
+00:42:56.700 updated the fields everywhere and so now
+00:42:59.310 we want to inject our source so
+00:43:02.600 electromagnetically we're done here the
+00:43:04.530 only other thing we might want to do is
+00:43:06.180 visualize the fields or record something
+00:43:09.330 happening and then our main time loop
+00:43:11.940 goes and goes and goes and we're
+00:43:13.260 constantly going back about the eh-eh-eh
+00:43:15.270 and injecting a source somewhere and
+00:43:17.540 absorbing waves at the boundaries and
+00:43:19.680 then we watch things move around we
+00:43:21.600 record we learn and we're finished and
+00:43:24.750 that's it that is finite-difference
+00:43:26.670 time-domain so this is something that
+00:43:33.900 can happen called numerical dispersion
+00:43:35.850 so let's let's look at this first
+00:43:38.520 animation on the top so here's what we
+00:43:41.640 want to happen we want to inject the
+00:43:43.380 source and we want to watch that source
+00:43:45.470 propagate all the way across and those
+00:43:48.120 pulses always stay those pulses that's
+00:43:51.120 what should happen now if we don't do
+00:43:54.390 things very well when we set up our grid
+00:43:57.030 maybe we have poor resolution on our
+00:43:59.580 grid or there's some other things that
+00:44:01.380 can do this let's watch what happens we
+00:44:04.950 inject those same pulses but watch what
+00:44:08.040 happens as is propagating notice these
+00:44:09.720 little ringing tails developing on the
+00:44:12.030 back end that's not physical that that
+00:44:14.910 wouldn't happen with a physical wave not
+00:44:18.210 traveling through air anyway and so this
+00:44:20.850 is just a numerical artifact and this
+00:44:23.250 can lead to a lot of errors so that's
+00:44:28.350 called numerical dispersion and all time
+00:44:30.810 domain algorithms will suffer from
+00:44:32.850 something similar to that and we really
+00:44:35.250 need to take care when we set up our
+00:44:37.290 grid parameters and time steps to ensure
+00:44:40.470 that that artifact is small enough that
+00:44:42.990 it won't cause any problems the
+00:44:45.540 simulation or the movie that's happening
+00:44:47.130 at the top there is still numerical
+00:44:49.170 dispersion there it's just small enough
+00:44:51.900 that we don't
+00:44:52.829 serve it over the scale of our
+00:44:54.239 simulation so in a practical sense we've
+00:44:56.880 eliminated it but it's never eliminated
+00:44:59.039 it's just reduced now to develop a two
+00:45:07.549 dimensional finite difference time
+00:45:09.660 domain we go through a similar set of
+00:45:11.789 steps now I'm not showing the first step
+00:45:14.130 here where I would have a student just
+00:45:15.900 implement the update equations where
+00:45:17.369 nothing's happening that's kind of
+00:45:19.589 boring but that is definitely a first
+00:45:21.119 step here what we're doing is a simple
+00:45:24.209 soft source on a two-dimensional grid
+00:45:26.640 and we're using simple deras lay down
+00:45:29.700 during conditions so you'll notice at
+00:45:31.650 the beginning of the simulation that
+00:45:33.690 poles started at some point on the grid
+00:45:35.279 when it hit the edges it bounced off so
+00:45:38.430 we're about to see this for a second
+00:45:39.900 time simple soft source somewhere in our
+00:45:42.180 grid and when that wavefront hits the
+00:45:45.150 edge it bounces off so we use a daresay
+00:45:49.559 boundary condition so we're expecting
+00:45:51.029 that bouncing that's not a problem
+00:45:52.829 really what we're looking for here is to
+00:45:55.019 make sure that the fields aren't
+00:45:56.489 exploding everything here is on the
+00:45:58.890 order between zero and one if we start
+00:46:01.319 seeing 10 to the 4 10 to the 6 and 10 to
+00:46:03.569 the 34 or whatever we would say that our
+00:46:06.859 simulation is going unstable and that
+00:46:09.569 can happen even if we make just a simple
+00:46:11.459 sign error somewhere so this is just a
+00:46:14.459 great check to make sure things are
+00:46:15.989 right we don't really like this source
+00:46:18.209 that we're doing but it's a simple
+00:46:20.130 convenient way just the throw power at
+00:46:22.440 these boundaries so that we can test
+00:46:25.349 them then we can also test our periodic
+00:46:30.989 boundary condition now and here now when
+00:46:34.049 that wavefront hits the edge it doesn't
+00:46:35.849 reflect it enters from the other side so
+00:46:40.559 now we have periodic boundaries so it
+00:46:43.890 turns out these the last slide and this
+00:46:46.920 slide steps one and two are pretty easy
+00:46:50.150 we want a way to absorb the waves at the
+00:46:53.729 boundary and the boundary condition we
+00:46:55.529 use for the one dimensional finite
+00:46:57.150 difference time domain does not work for
+00:46:59.099 two dimensions and instead the state of
+00:47:01.890 the art is something called a perfectly
+00:47:03.449 matched layer and unfortunately a finite
+00:47:05.969 difference time
+00:47:06.570 I mean this is just a tough tough
+00:47:08.400 boundary condition it really makes the
+00:47:10.950 code tedious it makes it not clean it's
+00:47:16.460 unfortunately because the PML is a
+00:47:18.450 frequency-domain concept when we bring
+00:47:20.640 it into the time demand it gets a little
+00:47:22.200 bit ugly conceptually looking at the
+00:47:24.630 simulation not much new will be
+00:47:26.730 happening but the codes a lot bigger and
+00:47:29.340 uglier once we do that okay so now we
+00:47:32.130 build in this perfectly matched layer to
+00:47:34.440 make a very long story short we've built
+00:47:36.060 in loss in the outer cells of our grid
+00:47:39.170 so when that ring hits those boundaries
+00:47:41.820 it gets absorbed
+00:47:43.440 instead of being reflected simple
+00:47:46.920 conceptually but this is a very ugly
+00:47:49.230 step in our code for fun at different
+00:47:51.690 times of name but a great illustration
+00:47:53.310 of of what a perfectly matched layer is
+00:47:56.760 and also a great way to test our
+00:47:58.920 perfectly match layer okay at this point
+00:48:07.380 maybe we want to simulate a periodic
+00:48:09.840 structure so we'll use periodic boundary
+00:48:12.330 conditions on the left and the right of
+00:48:13.920 PML on the top and the bottom and now
+00:48:16.980 we're going to incorporate a total field
+00:48:18.810 scatter field source or this one-way
+00:48:20.640 source and I always like to first inject
+00:48:24.270 the source in the middle of the grid
+00:48:25.920 just so I can easily see if there's
+00:48:28.200 anything that's traveling backwards it's
+00:48:30.450 a great way to test my source I don't
+00:48:33.120 want it in the middle I will eventually
+00:48:34.500 move it up to the top but this is an
+00:48:37.350 intermediate step that I do just to make
+00:48:39.390 sure everything is working at this point
+00:48:46.350 we can move that total field scatter
+00:48:47.880 field source to the top we still have
+00:48:49.770 air everywhere and now we've added the
+00:48:52.530 ability to calculate reflectance and
+00:48:54.450 transmittance so if everything's working
+00:48:57.090 correctly we should see 100%
+00:48:59.250 transmission and zero percent reflection
+00:49:02.040 because we're just simulating
+00:49:02.970 transmission through air so another
+00:49:06.300 intermediate step so everything's
+00:49:10.560 working here so we're ready to add a
+00:49:12.120 real device and that's the last step
+00:49:17.220 here we add a diffraction grading a wave
+00:49:19.230 hits that if the fraks does some crazy
+00:49:21.450 stuff and we're calculating transmission
+00:49:24.510 at reflection and now that we have a
+00:49:26.580 device in there we can see some crazy
+00:49:28.410 behavior in that conservation line the
+00:49:30.600 dash black line and it's not at a
+00:49:33.360 hundred percent that's because there's
+00:49:35.010 still power energy resonating in our
+00:49:37.710 device and we have keep running this
+00:49:39.810 until it leads to my knowledge there's
+00:49:42.660 not really a clever solution to this
+00:49:44.640 other than to let the simulation run and
+00:49:47.580 run and run but it does eventually
+00:49:50.010 flatten out if it didn't flatten out
+00:49:57.000 that something would be wrong so we can
+00:49:59.880 conclude okay we have now a working two
+00:50:02.580 dimensional finite difference time
+00:50:03.900 domain and notice we took it through a
+00:50:06.150 very similar set of incremental steps
+00:50:08.940 like we did for the one-dimensional fun
+00:50:10.950 a different time to make and this is
+00:50:13.050 very representative of how I write my
+00:50:15.000 own codes the more steps I can add the
+00:50:17.640 better I never ever just jumped into the
+00:50:20.370 big bad ugly thing that I have in mind I
+00:50:22.710 build it in steps of increasing
+00:50:25.740 complexity that's a very very big deal
+00:50:28.710 and great advice to you writing your own
+00:50:31.950 codes
+00:50:44.080 so because you can't run animations in
+00:50:47.030 the electronic notes here's just sort of
+00:50:49.400 a freeze-frame of each step and what it
+00:50:51.740 looks like the last slide I'll show you
+00:50:58.850 this is a simulation done by some
+00:51:01.100 brilliant students a number of years ago
+00:51:02.900 as their final project for the
+00:51:04.460 finite-difference time-domain class and
+00:51:06.230 it's a simulation of a radar system and
+00:51:08.750 you can see two little fighter aircraft
+00:51:10.820 that were we're hit with a radar beam
+00:51:13.010 and they reflect it and on the right is
+00:51:15.520 what the receiver is seeing and in
+00:51:18.860 principle we would process that signal
+00:51:21.770 from the radar and learn something about
+00:51:24.470 what we're looking at another thing this
+00:51:30.080 is very good for is the visualization
+00:51:32.380 even though this is a pretty complicated
+00:51:35.000 thing we're doing visually it's very
+00:51:37.580 simple of a sixth grader could look at
+00:51:40.100 this and understand what's happening and
+00:51:42.370 that's one of the beauties of finite
+00:51:44.630 difference time to mate it really lets
+00:51:46.370 you understand what's happening
+00:51:49.070 understand the physics of devices
+00:51:51.080 because you can watch the field bounce
+00:51:52.880 around great movies to show people - and
+00:51:56.210 I love that part of this method so
+00:52:00.800 that's it that is time - main finite
+00:52:03.260 difference method I hope this is helpful

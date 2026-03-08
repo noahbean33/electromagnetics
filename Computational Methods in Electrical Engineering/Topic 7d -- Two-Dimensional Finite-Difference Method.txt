@@ -1,0 +1,1322 @@
+# tactiq.io free youtube transcript
+# Topic 7d -- Two-Dimensional Finite-Difference Method
+# https://www.youtube.com/watch/zNBkvYr5CNA
+
+00:00:00.160 topic seven D two dimensional finite
+00:00:03.429 difference method in this lecture we're
+00:00:08.140 going to build on previous lectures and
+00:00:10.780 show how to build derivative matrices on
+00:00:13.960 a two dimensional grid instead of a one
+00:00:16.630 that mention of grid I am certainly
+00:00:19.749 going to give examples for the
+00:00:21.039 derivative matrices applying that
+00:00:24.029 examples for applying it to solve two
+00:00:26.380 dimensional problems will be in the
+00:00:28.210 following lecture and not here because
+00:00:29.979 this one just got to be a little bit too
+00:00:31.630 long I'll first start off talking in
+00:00:34.390 general about the finite difference
+00:00:35.680 method in two dimensions to generalize
+00:00:37.660 some of the concepts you already know
+00:00:39.280 and then after that our big task is to
+00:00:42.490 build these derivative matrices that are
+00:00:44.440 now operating on a two dimensional grid
+00:00:45.910 and there's two ways of doing this where
+00:00:49.480 we can use a co-located grid meaning
+00:00:52.060 every all of your functions are defined
+00:00:53.980 to be at the same point and then there's
+00:00:55.990 the staggered grid in two dimensions
+00:00:57.850 where you have two or more functions and
+00:01:00.160 they're residing at different points
+00:01:01.540 we're staggering them to improve our
+00:01:03.760 finite differences like in our previous
+00:01:05.319 lectures once we get through that some
+00:01:08.499 final notes on derivative matrices and
+00:01:10.299 then how to generalize this or to teach
+00:01:14.649 you how to use your two-dimensional
+00:01:17.229 derivative matrices for solving 1d
+00:01:20.139 problems now why is that important
+00:01:22.299 because I don't want to have to I don't
+00:01:25.030 want to have to write two different
+00:01:26.020 functions one to create derivative
+00:01:27.909 matrices for a 1d grid and another to
+00:01:30.850 operate on a 2d grid it turns out we can
+00:01:33.189 generate those same derivative matrices
+00:01:35.409 just using our 2d code and in fact what
+00:01:39.310 we're not talking about it here but if
+00:01:41.170 we were to jump into three dimensions
+00:01:42.909 you can use that same function to
+00:01:46.060 generate derivative matrices for 2d
+00:01:47.859 grids and 1d grids and it's always good
+00:01:51.069 practice to do things with just one
+00:01:52.689 function if you can onto some just
+00:01:58.359 general concepts about the finite
+00:02:00.159 difference method for two dimensional
+00:02:02.020 problems we went through this before but
+00:02:09.340 I'd like to go through this again just
+00:02:10.508 as a way to look at our major
+00:02:13.900 and try to interpret what the rows and
+00:02:16.480 columns are doing so we start off in on
+00:02:19.209 the left just with a system of three
+00:02:21.220 equations and three unknowns that we
+00:02:22.840 cast into matrix form so it turns out we
+00:02:27.370 can ascribe some meaning to the rows and
+00:02:30.489 columns and for the rows we will
+00:02:34.480 interpret this as the equation for X the
+00:02:38.530 next row is the equation for y in the
+00:02:40.870 next row the equation for Z now from a
+00:02:44.530 purely mathematical perspective that
+00:02:47.260 first row has nothing more to do with X
+00:02:49.870 than it does y&amp;z this is just a
+00:02:52.659 convenient way to think about it now
+00:02:55.120 when we're implementing the finite
+00:02:56.409 difference method there will be a finite
+00:02:58.450 difference equation hiding behind each
+00:03:00.579 point and maybe that lake's makes a
+00:03:02.889 little bit more sense that that finite
+00:03:04.299 difference equation would be written for
+00:03:06.159 a specific point on the grid but
+00:03:08.049 interpreting our rows this way is very
+00:03:10.150 helpful and find a difference method
+00:03:11.909 last the columns the first column will
+00:03:15.790 be the relation to X second column
+00:03:19.660 relation to Y and the third column
+00:03:21.699 relation to Z so we could go pick a
+00:03:24.280 parameter a two three this parameter is
+00:03:27.519 residing in the equation for y and
+00:03:30.150 describes how y is related to Z and we
+00:03:34.750 could do this for each parameter in that
+00:03:36.609 matrix just like we said for
+00:03:43.299 one-dimensional functions a real
+00:03:45.940 function contains an infinite amount of
+00:03:47.889 information that we can't store we have
+00:03:50.709 to break space up into small cells but
+00:03:54.310 even within one of those cells there is
+00:03:56.349 still an infinite amount of information
+00:03:58.109 so in fact we can only store the
+00:04:00.579 function at one infinitely small point
+00:04:03.209 inside each one of those cells so if we
+00:04:07.090 were trying if we were to try to
+00:04:08.680 visualize how the finite difference
+00:04:10.659 method stores a function it would look
+00:04:13.750 like this last thing here and well we
+00:04:17.260 tend to draw it more like one of these
+00:04:19.238 first ones but really in memory this
+00:04:21.760 last picture is the most representative
+00:04:24.480 of what's actually stored on a finite
+00:04:27.180 difference grid we don't know the value
+00:04:29.940 of the functions between those points
+00:04:31.860 now we can do a good job interpolating
+00:04:34.470 but there out is we just don't store
+00:04:36.630 that information and we don't know it
+00:04:38.580 and we try to get away without knowing
+00:04:40.800 it as much as we can so if we look at
+00:04:46.890 one cell it now has not only a delta X
+00:04:50.070 it has a Delta Y so it has a width and a
+00:04:52.920 height even though we're only storing
+00:04:55.140 the function value at one point and in
+00:04:57.270 this case in the middle and it's not
+00:04:59.400 necessarily that we store the function
+00:05:00.870 at the middle it could be at any place
+00:05:02.280 within this cell but it's it's common to
+00:05:04.740 put it in the middle so our cells now
+00:05:07.050 have two grid resolution parameters that
+00:05:09.570 Delta X and a Delta Y and they can be
+00:05:13.320 different we tend to want them to be as
+00:05:15.990 similar as possible but we can make them
+00:05:18.870 different and there's most of the time
+00:05:20.580 they are slightly different and there's
+00:05:22.470 reasons for that that we'll get into
+00:05:24.540 when we start simulating devices in the
+00:05:26.880 next lecture so even though we're moving
+00:05:33.720 into two dimensions and we're storing
+00:05:35.910 our unknowns in a two dimensional array
+00:05:37.800 we still store all of them in a one
+00:05:41.070 dimensional column vector now that's
+00:05:43.830 easy to imagine for 1d systems because
+00:05:46.170 we already have a 1d array but with a
+00:05:48.390 2-d system even though we have a 2d
+00:05:51.450 array in memory it's stored serially
+00:05:54.030 anyway so maybe the picture that but
+00:05:56.640 what we do is we raster through this in
+00:05:58.590 some way and then just list all of those
+00:06:01.170 in a one-dimensional array we call that
+00:06:03.960 reshaping on the next slide I have a way
+00:06:06.900 to visualize this if you're struggling
+00:06:08.940 with this concept so imagine we have
+00:06:13.560 unknown stored in a two dimensional
+00:06:16.200 array now imagine we run a string
+00:06:20.670 through them and then pull that string
+00:06:23.310 straight we would end up with a one
+00:06:27.210 dimensional array of all the elements in
+00:06:29.580 the 2d array and by the way in MATLAB
+00:06:32.520 that's real easy to reshape any
+00:06:34.350 dimensional array to a column vector
+00:06:37.130 we just say e parentheses : and that
+00:06:39.980 reshapes an array e always to a
+00:06:42.410 one-dimensional column vector and so
+00:06:46.610 that might look something like this
+00:06:48.080 so typically we'll draw something
+00:06:51.020 reshape it to a column vector we'll do
+00:06:53.720 all of our linear algebra stuff we'll
+00:06:55.970 get an answer that answer comes out in a
+00:06:58.490 column vector and then what we want to
+00:07:00.680 do before we can visualize it is reshape
+00:07:03.530 it back to a two-dimensional array and
+00:07:06.670 we can use matlab's reshape command to
+00:07:09.770 do that and in fact we can toggle back
+00:07:11.960 and forth Yocum 2d the one be back to 2d
+00:07:14.660 and so forth we use the column vectors
+00:07:17.510 when we're doing linear algebra stuff we
+00:07:20.330 reshape back to the arrays when we want
+00:07:22.370 to visualize and try to interpret our
+00:07:24.590 answer there's two types of grids that
+00:07:33.500 we'll talk about in two dimensions we
+00:07:35.420 have what's called a co-located grid
+00:07:37.340 that means all of the functions are
+00:07:39.860 stored at the same points on the grid so
+00:07:42.740 we might have multiple unknowns F G H
+00:07:45.320 and more but we're always storing them
+00:07:48.080 at the same point in which case the
+00:07:50.990 finite differences we have written on
+00:07:52.280 the slide are the finite differences
+00:07:53.780 that we use there are all central finite
+00:07:56.120 differences and they're all spanning
+00:07:58.340 three cells calculating the derivative
+00:08:01.250 or the second-order derivative at the
+00:08:03.200 midpoint so I would recommend pausing
+00:08:06.140 the movie here and and looking at those
+00:08:09.860 finite differences and and try to
+00:08:11.720 understand what's happening for X&amp;Y
+00:08:13.870 derivatives the Y derivative is new cuz
+00:08:18.050 we have an added direction here the
+00:08:24.230 second type of grid is called a
+00:08:26.600 staggered grid and just like in one
+00:08:29.690 dimension when we had multiple variables
+00:08:31.850 we found that it's usually good practice
+00:08:35.630 to stagger our multiple variables that
+00:08:38.539 way we're calculating our finite
+00:08:40.039 differences over a shorter span on the
+00:08:42.020 grid and we get better accuracy however
+00:08:44.390 it required us to stagger where our
+00:08:46.310 functions are so looking at this first
+00:08:50.700 we have an unknown F stored at these
+00:08:53.610 these blue points and if we use the
+00:08:56.820 finite differences shown over to the
+00:08:58.740 left here and if we interpret these as
+00:09:01.080 central finite differences what you'll
+00:09:03.900 see is that they're calculating the
+00:09:05.580 derivative at the midpoint between the
+00:09:08.370 function values F so if we look at this
+00:09:10.860 first finite difference we see an F and
+00:09:13.380 I plus 1 minus F at I that means this
+00:09:16.740 finite difference exists right here at
+00:09:19.320 the midpoint between those two F's and
+00:09:22.340 we can look at the Y derivative and we
+00:09:24.930 can see this this finite difference
+00:09:27.000 would exist at the midpoint between two
+00:09:29.790 function values F so we're doing this
+00:09:33.540 probably because if we have another
+00:09:35.400 unknown here it's residing at these two
+00:09:39.270 points then we can also do our
+00:09:44.210 derivatives really in the other
+00:09:46.080 direction these first ones we call
+00:09:47.610 right-hand derivatives because when
+00:09:49.950 we're calculating a derivative in one
+00:09:51.870 cell it's actually reaching to the
+00:09:53.670 function value to the right to calculate
+00:09:56.220 the finite difference whereas over here
+00:09:58.110 we're calculating a finite difference
+00:10:00.090 associated with this cell but we reach
+00:10:01.800 to the left to get the next value but
+00:10:06.450 it's still calculating the central
+00:10:08.430 finite differences in the mid points but
+00:10:11.160 that mid point is to the left
+00:10:12.780 whereas right-handed derivatives that
+00:10:14.370 mid points to the right of the function
+00:10:16.440 value so that's the background no
+00:10:24.030 worries if you're still a little bit
+00:10:25.170 confused we have lots of slides ahead to
+00:10:27.450 explain these finite differences and how
+00:10:29.610 we build the derivative matrices so
+00:10:32.730 right now we're talking about a
+00:10:33.930 co-located grid that's a bit easier than
+00:10:36.000 the staggered grid and we'd like to know
+00:10:38.310 about the derivative matrix for
+00:10:39.900 calculating a derivative in the
+00:10:41.550 x-direction so we define a grid that's
+00:10:47.070 four points wide three points tall why
+00:10:49.500 did I choose that that's just a mood I
+00:10:51.510 was in but we can apply the same concept
+00:10:53.580 to any sized grid so for a co-located
+00:10:57.180 grid we have the finite difference that
+00:10:59.340 we're using at the bottom and notice
+00:11:01.470 it's f in the next cell
+00:11:04.440 - F in the previous cell divided by two
+00:11:07.710 times the grid spacing that means we're
+00:11:10.590 actually calculating the derivative at F
+00:11:13.230 I so let's go one at a time here and we
+00:11:18.480 write our finite difference equation for
+00:11:20.610 every single point on this grid there's
+00:11:22.590 twelve points total so we have twelve
+00:11:25.710 equations what we want to do now is go
+00:11:28.530 one at a time and explain what's going
+00:11:30.690 on so we're writing our finite
+00:11:35.490 difference equation for F 1 1 so here's
+00:11:40.230 our finite difference equation looking
+00:11:42.360 at the finite difference equation at the
+00:11:43.650 bottom we see it's f I plus 1 so in that
+00:11:46.680 case that's f - 1 minus F at I minus 1
+00:11:51.180 so it's the F out here which doesn't
+00:11:52.830 actually exist so that's why we see F -
+00:11:56.310 1 - 0 we're using d-rush lay bound
+00:11:58.620 recondition x' divided by the grid
+00:12:00.780 spacing - Delta X Y 2 Delta X because
+00:12:04.680 our finite difference is actually
+00:12:06.060 spanning two Delta X's but the finite
+00:12:09.270 difference exists at the midpoint now we
+00:12:15.510 move over to the next point so it's F 3
+00:12:18.150 1 minus F 1 1 over 2 Delta X and of
+00:12:23.880 course that's calculating the derivative
+00:12:25.530 at the point of F 2 1 no boundary
+00:12:30.030 conditions were needed because we didn't
+00:12:32.100 have to reach the outside of the grid we
+00:12:36.900 move over to point F 3 1 so we interpret
+00:12:39.810 this as the finite difference equation
+00:12:41.640 for F 3 1 well that is simply F 4 1
+00:12:45.710 minus F 2 1 it spans to Delta X so we
+00:12:50.250 divide by 2 Delta X and the finite
+00:12:52.650 difference exists at point F 3 1 now we
+00:12:57.330 move on to the final difference equation
+00:12:59.040 for F 4 1 which is the function value
+00:13:03.540 out here which does not exist so we just
+00:13:05.610 put a 0 in for dear Ashley boundary
+00:13:07.560 condition so it's the zero - this
+00:13:10.350 function value divided by the spacing -
+00:13:13.290 Delta X
+00:13:16.440 we go on to the next point to find a
+00:13:18.690 difference equation for f12
+00:13:20.670 well it's F - 2 - a function value from
+00:13:24.060 outside the grid which doesn't exist we
+00:13:25.920 put a 0 in there divided by 2 Delta X
+00:13:28.620 that's calculating a finite difference
+00:13:30.959 that exists at the point F 1 2 so
+00:13:34.649 hopefully you're getting the pattern
+00:13:35.850 here we move to the next point F 3 2
+00:13:39.540 minus F 1 2 divided by 2 Delta X and the
+00:13:43.589 finite difference exists at the point F
+00:13:45.540 2 2 and we go on to the next point at 4
+00:13:49.500 2 minus F 2 2 over 2 Delta X now we're
+00:13:54.480 at the boundary again so we have a 0 in
+00:13:56.939 our finite difference equation which is
+00:13:59.009 the value outside of the grid and we
+00:14:01.019 force it to be zero for using D really
+00:14:02.790 boundary conditions now we move down to
+00:14:06.089 the next row we're running the finite
+00:14:07.769 difference equation for point F 1 3 but
+00:14:11.189 this also has a boundary condition
+00:14:12.990 problem on the left so we put a 0 in
+00:14:16.110 that finite difference expression when
+00:14:17.910 we need to access something outside the
+00:14:19.500 grid so F 2 3 - the 0 divided by the
+00:14:23.370 spacing at 3 3 minus F 1 3 over 2 Delta
+00:14:28.889 X that exists at F 2 3 F 4 3 minus F 2 3
+00:14:34.470 divided by 2 Delta X and that exists at
+00:14:37.620 F 3 3 and the last one a field from
+00:14:41.279 outside of the grid that we write as 0 4
+00:14:43.550 minus F 3 3 divided by the grid spacing
+00:14:46.759 so we've taken this finite difference
+00:14:49.350 expression at the bottom of the slide
+00:14:50.880 and wrote it for every point on the grid
+00:14:54.000 at some points where we had to reach to
+00:14:56.519 the outside we use d-rush lay down dry
+00:14:59.040 conditions and just put a 0 in so now we
+00:15:05.220 have this large set of finite difference
+00:15:08.490 equations we would like to put them into
+00:15:10.980 matrix form and figure out what is that
+00:15:13.980 big square matrix that we would pre
+00:15:17.850 multiply our column vector of the
+00:15:19.829 function values reshape to a 1d array
+00:15:22.250 what goes in here such that we get this
+00:15:26.639 answer so we're storing our finite
+00:15:28.589 differences in the
+00:15:29.699 column vector those are what we just
+00:15:32.249 derived I factored out the one over two
+00:15:34.079 Delta X and so we need to fill in this
+00:15:37.079 matrix such that we get this answer so
+00:15:44.339 this is what it looks like we notice in
+00:15:46.439 the first row there's only an F to one
+00:15:48.899 so there's a 1 in the column
+00:15:51.720 corresponding to F 2 1 in the second row
+00:15:55.889 there's an F 3 1 and an F 1 1 a minus F
+00:15:59.730 1 1 so we have a 1 in the column
+00:16:02.759 corresponding to F 3 1 and a negative 1
+00:16:05.910 in the column corresponding to F 1 1 and
+00:16:08.790 so we can go each row at a time and make
+00:16:11.459 this same argument and I definitely
+00:16:13.470 recommend pausing the video and looking
+00:16:16.350 at each row and showing how both the
+00:16:18.389 ones and zeros and negative ones are
+00:16:20.399 placed into that big matrix when we're
+00:16:25.379 done this that big matrix also pre
+00:16:28.679 multiplied by the 1 over 2 Delta X that
+00:16:31.529 is our derivative matrix that would
+00:16:33.749 calculate a derivative in the X
+00:16:36.329 direction of that two-dimensional
+00:16:38.910 function now let's look at the
+00:16:45.449 derivative matrix for a collocated grid
+00:16:47.549 but this time for the second order
+00:16:49.649 derivative and what you'll see is this
+00:16:52.079 is very similar the same steps we just
+00:16:54.689 went through we just have a different
+00:16:56.939 finite difference equation because it's
+00:16:58.649 approximating a second order derivative
+00:17:00.839 instead of a first order derivative so
+00:17:05.880 here's the same grid a new finite
+00:17:08.789 difference equation which is of course
+00:17:10.619 approximating a second order derivative
+00:17:13.159 so we write that finite difference
+00:17:15.809 equation once for each of the 12 points
+00:17:18.750 on this grid and we end up with a big
+00:17:21.809 set of finite difference equations and
+00:17:24.648 again we can go one at a time and look
+00:17:27.809 at these finite difference equations so
+00:17:31.470 here we're writing the finite difference
+00:17:33.149 equation for the point 1 1 where F 1 1
+00:17:37.019 is stored we want to evaluate the
+00:17:39.360 second-order derivative there so it
+00:17:43.500 is this function value minus two times
+00:17:46.830 this function value plus this function
+00:17:49.770 value but of course since the first one
+00:17:51.870 is outside the grid we put a zero in
+00:17:53.610 because we're using various a boundary
+00:17:55.170 conditions and so we end up with a zero
+00:17:57.360 minus 2 F 1 2 F 1 1 plus 2 F sorry let
+00:18:03.420 me just start over with us and we have a
+00:18:04.440 0 minus 2 f 1 1 plus F 2 1 all that
+00:18:08.760 divided by Delta x squared so that
+00:18:11.310 approximates the second order derivative
+00:18:13.470 at point F 1 1 so we move to the next
+00:18:18.660 point and we're evaluating the finite
+00:18:22.140 difference at Point F 2 1 so we call
+00:18:24.240 this the equation for point F 2 1 and so
+00:18:27.630 it's F 1 1 minus 2 F 2 1 plus F 3 1 all
+00:18:32.550 divided by Delta x squared no problems
+00:18:36.690 because there was no boundary conditions
+00:18:38.130 we had to sort out we move on to the
+00:18:40.860 next point F 2 1 minus 2 times F 3 1
+00:18:45.600 minus F 4 1 divided by Delta x squared
+00:18:48.750 that's the finite difference equation at
+00:18:51.030 the point at 3 1 now at the right-hand
+00:18:55.140 side of the grid we have another
+00:18:56.400 boundary condition problem so we put a 0
+00:18:59.190 in since we're using d-rush lay bound
+00:19:01.350 ring conditions so we end up with F 3 1
+00:19:03.680 minus 2 times F 4 1 plus 0 because the F
+00:19:08.910 5 1 if you will would be outside of the
+00:19:11.280 grid next point we move down to the next
+00:19:16.290 row and we have a boundary condition
+00:19:18.330 problem here as well because we're
+00:19:19.710 reaching to the left and we have a 0 in
+00:19:21.870 the finite difference equation this is
+00:19:23.910 the finite difference equation for the
+00:19:25.290 point F 1 2 next line no boundary
+00:19:30.660 condition problem I'm going to start
+00:19:32.820 moving a little bit faster hopefully
+00:19:34.260 you're getting the pattern by this point
+00:19:36.230 we belong to the finite difference
+00:19:38.100 equation for F 2 3 and then for find a
+00:19:41.970 difference equation for point F 4 2 and
+00:19:44.160 we have a boundary condition issue here
+00:19:45.900 because we're reaching to the right and
+00:19:47.490 so in the place of F 5/2
+00:19:50.070 which doesn't exist we put in a 0 and we
+00:19:54.750 move to the last row
+00:19:56.670 we have a boundary condition problem
+00:19:58.049 again on the left because there is no
+00:19:59.640 f03 find a difference equation for F 2 3
+00:20:06.049 find a difference equation for F 3 3 and
+00:20:09.440 finally the last finite difference
+00:20:11.549 equation for point F 4 3 and we're
+00:20:14.549 reaching to the right outside of the
+00:20:15.929 grid there is no F 5 3 so we put in a 0
+00:20:18.870 for it so there we are with our large
+00:20:23.429 set of equations again we would like to
+00:20:25.830 put this into matrix form and first on
+00:20:29.250 the right we fill in our column vector
+00:20:31.470 with the answers that we want to get and
+00:20:33.570 on the Left we write a big blank matrix
+00:20:36.570 pre multiplying our column vector of
+00:20:38.850 function values reshape to a 1d array
+00:20:41.640 and we ask ourselves what has to go in
+00:20:44.309 this big blank matrix such that we get
+00:20:47.280 the answer on the right which is our
+00:20:49.080 finite difference equations that we just
+00:20:50.790 derived one for every point on the grid
+00:20:55.190 well here's what it looks like let's
+00:20:58.799 jump to the second row here we have an F
+00:21:01.350 1 1 minus 2 F 2 1 plus F 3 1 so we have
+00:21:07.320 a 1 in the F 1 1 column negative 2 and
+00:21:11.190 the F 2 1 column and a 1 in the F 3 1
+00:21:14.040 column now on the first row we sort of
+00:21:18.030 want to have a 1 over here but due to
+00:21:19.620 the boundary conditions there's a 0 so
+00:21:22.169 we only have a minus 2 F 1 1 and an F 2
+00:21:25.230 1 and that's the two numbers sitting
+00:21:26.700 here due to our dearest lay binary
+00:21:29.190 conditions so we can we can look for
+00:21:32.280 this one row at a time
+00:21:33.390 and figure out what goes in the matrix
+00:21:35.760 on the left I definitely recommend
+00:21:37.080 pausing the video and working through
+00:21:39.419 this on your own
+00:21:40.020 one row at a time to see that the
+00:21:42.270 numbers in the big matrix to the left
+00:21:44.040 really do reproduce what's in this final
+00:21:47.340 column vector after we do that we call
+00:21:52.830 this big matrix our derivative matrix
+00:21:55.410 for second order derivatives and don't
+00:21:57.150 forget to include this 1 over Delta x
+00:21:58.919 squared that has to multiply everything
+00:22:00.750 in this matrix without that it's not a
+00:22:03.600 correct matrix
+00:22:05.530 so we already have two of our derivative
+00:22:07.990 matrices for the co-located grid now on
+00:22:15.970 to the derivative matrix for a why
+00:22:17.830 derivative so now we're taking
+00:22:19.240 derivatives in the vertical direction
+00:22:21.370 let's see what happens so we have the
+00:22:26.230 same grid we did for our X derivatives
+00:22:29.410 but we have a slightly different fun at
+00:22:31.780 difference equation notice it's the J
+00:22:34.690 array index that's changing now so we're
+00:22:37.060 actually using where we're spanning in
+00:22:40.330 the vertical direction now but the
+00:22:43.180 procedure we did before we're going to
+00:22:45.340 follow exactly we're going to work for
+00:22:47.020 this grid one point at a time and write
+00:22:49.750 that find a difference equation for each
+00:22:51.610 point on the grid when we do that we get
+00:22:56.020 this large set of finite difference
+00:22:58.330 equations that we will again go through
+00:23:00.700 one at a time to explain where they're
+00:23:02.680 coming from first thing we need to write
+00:23:07.480 the finite difference equation for our
+00:23:09.010 very first point f11 so we would call
+00:23:12.370 this first finite difference equation to
+00:23:14.260 find a difference equation for point f11
+00:23:17.050 and what we see is that it will be f12 -
+00:23:22.540 what would be an f10 but that doesn't
+00:23:25.810 exist we're using D really boundary
+00:23:27.460 conditions divided by the spacing -
+00:23:30.250 Delta Y so that's what's over here at
+00:23:32.320 f12 - a zero due to the dear Schley
+00:23:35.800 boundary conditions divided by two Delta
+00:23:38.530 Y then we move on to the next point
+00:23:42.790 a similar thing is happening here we're
+00:23:46.210 reaching outside the grid on the top
+00:23:48.700 that term doesn't exist we will need to
+00:23:51.430 use the original a boundary conditions
+00:23:52.960 so we're finding a difference equation
+00:23:54.670 it's just f2 - - what would be an F -
+00:23:58.540 zero but that doesn't exist we just put
+00:24:00.520 in zero divided by the spacing - Delta Y
+00:24:02.890 so in fact all of these top points have
+00:24:05.800 that boundary condition problem on the
+00:24:07.690 top we can move to the finite difference
+00:24:10.120 equation for F 31 and to find a
+00:24:13.840 difference equation for F 4 1 at this
+00:24:16.929 point we come
+00:24:19.049 back around two point F one two so
+00:24:23.429 similar to the X derivative matrices
+00:24:25.499 were rastering through our grid writing
+00:24:27.629 the finite differences in the same order
+00:24:29.580 that we did before it's just that the
+00:24:31.889 finite differences equations are
+00:24:33.629 different they're reaching two different
+00:24:35.129 points in the grid so here we are
+00:24:37.259 writing to find a difference equation
+00:24:38.519 for point f12 and that answer is f 1 3
+00:24:43.190 minus F 1 1 divided by the grid spacing
+00:24:47.639 and of course that finite difference
+00:24:49.739 exists at the midpoint at F 1 2 1 to the
+00:24:55.109 next point F 2 3 minus F 2 1/2 Delta Y
+00:24:59.820 because we're spanning two points find a
+00:25:03.600 difference equation for F 3 to find a
+00:25:07.859 difference equation for F 4 2 now we
+00:25:11.970 move to the last row we have another
+00:25:14.460 boundary condition problem because now
+00:25:16.200 we're reaching below the grid in this
+00:25:18.779 case we would like to access an f-14 but
+00:25:22.169 that does not exist so using d-rush lay
+00:25:24.389 bound ring conditions we simply put a 0
+00:25:27.090 in the place of it so we have our 0
+00:25:31.399 minus F 1 2 divided by the spacing 2
+00:25:35.789 Delta Y and of course all of the
+00:25:39.989 remaining points on this row we're going
+00:25:41.669 to have that same boundary condition
+00:25:43.080 problem because they're always reaching
+00:25:44.999 below the grid so we have our 0 minus F
+00:25:49.440 2 2 but of course that's calculating a
+00:25:51.480 finite difference that exists at F 2 3 0
+00:25:57.389 minus F 3 2 and of course that finite
+00:25:59.789 difference exists at F 3 3 0 minus F 4 2
+00:26:04.139 which is to find a difference equation
+00:26:05.999 at Point F 4 3 so on the right we have
+00:26:12.720 all of our finite difference equations
+00:26:14.669 the finite difference equations written
+00:26:16.409 once for every point on the grid we
+00:26:18.960 would like to figure out what our
+00:26:20.220 derivative matrix looks like so we start
+00:26:23.100 off by writing a big blank matrix that
+00:26:25.139 pre multiplies our column vector F and
+00:26:27.480 if this is correct we want that to give
+00:26:30.359 us the answer on the right
+00:26:31.960 all of the finite difference equations
+00:26:33.850 that we just wrote so here's what goes
+00:26:40.000 in that matrix and this looks a little
+00:26:41.470 bit different than the X derivatives so
+00:26:44.530 in the first row we just have an F 1/2
+00:26:47.190 so there's actually a 1 way over here
+00:26:50.560 this first position was F 1 1 2 1 3 1 4
+00:26:55.120 1 and then finally F 1 2 in this column
+00:26:58.960 so that's why the 1 goes there and let's
+00:27:02.620 work down let's look at the 5th row now
+00:27:04.240 we have an F 1 3 minus F 1 1 so we have
+00:27:09.610 a 1 in the F 1 3 place and a minus 1 in
+00:27:13.780 the F 1 1 column
+00:27:15.940 I recommend pausing the video again here
+00:27:19.480 and going through this row by row and
+00:27:22.420 seeing how the finite difference in that
+00:27:25.120 last column vector on the right is
+00:27:27.180 calculated on the left by proper
+00:27:29.740 position of the zeros ones and negative
+00:27:31.750 ones in that big matrix on the left so
+00:27:38.160 that big matrix on the left that is our
+00:27:40.750 derivative matrix that would calculate a
+00:27:42.670 derivative in the Y direction and our
+00:27:50.440 final derivative for the collocated grid
+00:27:53.280 it'll look exactly like the other one
+00:27:55.750 with the one exception being a different
+00:27:58.060 finite difference equation but we'll
+00:27:59.530 raster through the grid in the same way
+00:28:01.270 and construct the derivative matrix in
+00:28:03.700 the same way we have the same grid
+00:28:08.400 different finite difference
+00:28:10.090 approximation now and we're changing the
+00:28:13.090 indices on J which is the vertical
+00:28:15.220 position so we're doing a bi derivative
+00:28:18.450 so we take that finite difference
+00:28:20.890 expression and write it at every single
+00:28:23.440 point in our grid and we get a big set
+00:28:27.160 of finite difference equations like
+00:28:30.040 before we'll go through these one at a
+00:28:32.050 time the first point which is reaching
+00:28:37.420 above the grid so there's a boundary
+00:28:39.190 condition issue we're not storing f1 0
+00:28:42.000 so we set it to 0 following our dearest
+00:28:45.730 boundary condition rules so we'll have
+00:28:48.520 our our 0 minus f1 1 plus f1 2 divided
+00:28:56.770 by Delta Y squared so Delta Y's are grid
+00:28:59.650 spacing here move on to the next point
+00:29:03.490 we have a similar boundary condition
+00:29:05.320 problem because it's reaching above the
+00:29:06.850 grid so we just have the 0 minus f2 1
+00:29:10.690 sorry minus 2 times f2 1 plus F 2 3
+00:29:14.800 divided by Delta y squared we want to
+00:29:18.190 our find that difference equation for f3
+00:29:19.990 1 still have a boundary condition
+00:29:21.430 problem move on to our finite difference
+00:29:25.840 equation for F 4 to still have a
+00:29:28.270 boundary condition problem because we're
+00:29:29.740 reaching above the grid when we're done
+00:29:33.490 here
+00:29:34.050 we move to the next row here's our
+00:29:36.700 finite difference equation for point F 1
+00:29:38.590 2 there's no boundary condition problems
+00:29:41.080 here so this is simply just F 1 1 minus
+00:29:46.270 2 times F 1 2 plus F 1 3 all divided by
+00:29:51.190 Delta Y squared here's our finite
+00:29:55.060 difference equation for F 2 to find a
+00:29:59.020 difference equation for point F 3 to
+00:30:02.370 find a difference equation for 0.42 now
+00:30:06.460 we wrap around to the next row and we're
+00:30:09.100 back to having boundary condition
+00:30:10.780 problems again we would like to access f
+00:30:13.210 1 4 that doesn't exist so we set it to 0
+00:30:16.840 in the finite difference equation so we
+00:30:19.540 still have F 1 2 minus 2 times F 1 3
+00:30:23.220 plus the 0 divided by Delta Y squared
+00:30:29.640 here's our finite difference equation
+00:30:31.930 for F 2 3 find a difference equation for
+00:30:36.220 F 3 3 and our finite difference equation
+00:30:40.000 for F 4 3 and so we end up with our
+00:30:46.200 giant list of finite difference
+00:30:48.460 equations one for each point in the grid
+00:30:50.440 and now we're at the point where we
+00:30:52.450 would like to figure out what our
+00:30:53.590 derivative matrix looks like so we start
+00:30:55.990 off with a blank derivative matrix
+00:30:58.110 pre-multiply
+00:30:59.240 our column vector of function values and
+00:31:01.160 if whatever is in this matrix is correct
+00:31:03.470 it should give us this answer this last
+00:31:06.080 column vector is all of the finite
+00:31:07.940 difference equations that we just wrote
+00:31:12.340 and if we do it correctly it looks like
+00:31:15.260 this so I would recommend pausing the
+00:31:19.490 video here looking at the rows one at a
+00:31:22.460 time and understanding how the numbers
+00:31:24.679 that we've put into the derivative
+00:31:26.000 matrix do give us the answer that's on
+00:31:29.030 the right hand side here and don't
+00:31:31.160 forget about the one over Delta Y
+00:31:32.480 squared on the outside that I factored
+00:31:34.190 out if we do this what we're left with
+00:31:39.500 is our derivative matrix for the Y
+00:31:41.809 direction for the second-order
+00:31:44.240 derivative to really fully learn this I
+00:31:49.970 highly recommend writing going through
+00:31:53.720 the same procedure for different sized
+00:31:55.640 grids and see where all the numbers end
+00:31:58.010 up lying and once you get the pattern
+00:32:00.070 you'll be able to write a function in
+00:32:02.660 MATLAB to build these derivative
+00:32:04.460 matrices for you and of course once you
+00:32:06.800 have that solving new differential
+00:32:09.080 equations becomes very very easy so it's
+00:32:11.690 a very powerful function to write now we
+00:32:17.720 need to talk about derivative matrices
+00:32:20.570 when we have a staggered grid and before
+00:32:24.920 we get to the specific specifics of the
+00:32:27.530 staggering that's really application
+00:32:30.559 driven we'll have to know what equation
+00:32:32.660 it is we're solving and what variables
+00:32:35.090 are involved to do the specifics of how
+00:32:38.390 the staggering works but before that we
+00:32:41.270 can in general talk about derivatives
+00:32:43.400 that are right-handed or left-handed
+00:32:44.559 does the derivative reach to the cell to
+00:32:48.080 the right or the next higher array index
+00:32:51.350 cell to calculate the derivative or does
+00:32:53.540 it reach to the left so right now we're
+00:32:57.050 going to build derivative matrices that
+00:32:58.970 reach to the right and we call that a
+00:33:01.429 right hand derivative and so we'll be
+00:33:03.830 building right hand derivative matrices
+00:33:06.080 so in this case we're in the X direction
+00:33:10.499 so I chose a 3x3 grid because I guess
+00:33:14.019 that's the mood I was in and here's the
+00:33:16.659 finite difference equation that we want
+00:33:18.339 to write once for each point now notice
+00:33:20.739 the array indices on I we're changing
+00:33:23.409 the array indices on I because we're
+00:33:25.989 taking a derivative in the x-direction
+00:33:27.509 but notice we have an I plus 1 minus an
+00:33:31.899 I that's calculating the finite
+00:33:34.929 difference at the midpoint between these
+00:33:36.940 two values so if we're looking at these
+00:33:39.219 two points we're calculating our fine a
+00:33:42.429 difference right here at the midpoint
+00:33:44.200 and you'll see this conveyed when we go
+00:33:46.329 through these one at a time so we take
+00:33:48.549 this finite difference equations we
+00:33:49.809 write it from each of the nine points in
+00:33:52.299 this grid and we end up here so let's
+00:33:56.259 look at these one at a time so we are
+00:34:01.299 highlighting the two points that we're
+00:34:03.429 using into our finite difference and the
+00:34:05.469 arrow is telling us where the finite
+00:34:08.018 difference is calculating the derivative
+00:34:10.379 we still interpret this as the equation
+00:34:14.018 for F one one however is calculating the
+00:34:17.980 derivative at the midpoint so in terms
+00:34:21.279 of array indices we still write it with
+00:34:24.129 an F 1 1 here however that derivative
+00:34:26.649 itself exists at the midpoint between
+00:34:29.289 the two so you could think of it as F 1
+00:34:31.268 point 5 comma 1 but since those are
+00:34:35.079 array indices and not positions that
+00:34:37.119 actually have to leave them integers
+00:34:39.690 okay so in this case we have an F 2 1
+00:34:44.489 minus F 1 1 divided by the grid spacing
+00:34:47.918 which is just Delta X now because we're
+00:34:49.989 only spanning one cell this is very
+00:34:53.079 different than with a co-located grid
+00:34:55.089 when we were spanning two cells which is
+00:34:57.730 why if you can get away with this it's a
+00:35:00.309 more accurate approach for implementing
+00:35:02.049 the finite difference method let's move
+00:35:05.680 on to the next point here we're writing
+00:35:09.279 the finite difference equation
+00:35:10.539 associated with F 2 1 but it reaches out
+00:35:13.450 to F 3 1 so our finite difference is f 3
+00:35:15.700 1 minus F 2 1 which calculates the
+00:35:18.460 derivative at the midpoint between those
+00:35:20.470 two functions
+00:35:22.070 so what happens next we're still writing
+00:35:26.820 a finite difference equation at cell 31
+00:35:29.400 so what's the equation for F 3 1 however
+00:35:33.119 we'd like to be accessing an F 4 1 and
+00:35:36.599 we'd have an F 4 1 minus F 3 1 divided
+00:35:40.320 by the spacing however that's outside
+00:35:42.599 our grid so using theory of a boundary
+00:35:44.700 conditions we put a 0 in here so we're
+00:35:47.160 just left with 0 minus F 3 1 over Delta
+00:35:50.490 X and that's how we handle the boundary
+00:35:52.770 condition notice we did not have a
+00:35:55.230 boundary condition at the left hand side
+00:35:57.390 of the grid due to the staggering we
+00:36:00.450 only have boundary condition problem at
+00:36:02.220 one side of the grid for this day on to
+00:36:05.670 that point we don't have a boundary
+00:36:08.070 condition problem here because we're
+00:36:09.390 always reaching to the right because
+00:36:11.190 we're talking about right-handed
+00:36:12.510 derivatives so here it's f2 2 minus f1 2
+00:36:18.480 divided by the spacing Delta X our
+00:36:23.869 equation at F 2 2
+00:36:26.070 it's f 3/2 minus F 2 2 calculating the
+00:36:29.820 derivative at the mid point no boundary
+00:36:31.890 condition problem
+00:36:33.619 the last cell we have a boundary
+00:36:35.910 condition problem because we would like
+00:36:37.470 to access and F 4 1 but that doesn't
+00:36:40.230 exist we'll set it to 0 so we have a 0
+00:36:42.839 minus F 3/2 divided by the Delta X now
+00:36:49.200 we're writing our finite difference
+00:36:50.220 equation for F 1 3 and so that's F 2 3
+00:36:53.849 minus F 1 3 the finite difference exists
+00:36:57.180 at the midpoint no boundary condition
+00:36:59.280 problem F 3 3 minus F 2 3 gives us our
+00:37:04.680 derivative at the midpoint and this is
+00:37:06.990 the fine a difference equation for F 2 3
+00:37:08.760 no boundary condition problem and of
+00:37:12.390 course the last point has a boundary
+00:37:13.980 condition problem because we would like
+00:37:15.480 to access an F 4 3 but that doesn't
+00:37:19.230 exist so we've now written for all nine
+00:37:24.570 points in this grid our finite
+00:37:26.580 difference equations and we do the same
+00:37:28.859 procedure to figure out what the
+00:37:30.420 derivative matrix looks like we start
+00:37:32.310 off with a big blank matrix multiplying
+00:37:35.070 our column
+00:37:35.859 of F's and we want to fill in numbers
+00:37:38.769 here such that we get these answers on
+00:37:42.130 the right which are our finite
+00:37:43.630 difference equations that we wrote once
+00:37:45.609 for each point on our grid and that's
+00:37:49.960 what it looks like and this looks pretty
+00:37:52.119 similar to the derivative matrices we
+00:37:54.249 saw for our one dimensional grid there's
+00:37:56.349 an exception here we've got zero
+00:37:58.559 interrupting our diagonal of ones at
+00:38:00.730 another zero and in fact if the grid
+00:38:02.680 were larger we'd see more zeros down
+00:38:04.779 that row so I recommend pausing the
+00:38:10.150 video going through this one row at a
+00:38:12.670 time and seeing how each each row on the
+00:38:16.900 right is represented by numbers over
+00:38:19.210 here so we'll do a few here the very
+00:38:22.029 first row we have an F 2 1 minus F 1 1
+00:38:25.539 so we have a positive 1 in the F 2 1
+00:38:28.720 column and the negative 1 and the F 1 1
+00:38:31.749 column let's jump down to this row we
+00:38:36.940 have a 0 minus F 3 2 so we have a minus
+00:38:41.589 1 in the F 3 2 column and then of course
+00:38:45.640 there's a 0 so nothing else appears in
+00:38:47.470 that row so when we've done this we've
+00:38:51.609 built our derivative matrix for doing a
+00:38:54.009 right-handed derivative in the
+00:38:56.079 x-direction now since our derivatives
+00:39:00.130 look different left and right I have the
+00:39:01.930 F superscript and later on we'll have a
+00:39:04.480 G superscript and so we're using F and G
+00:39:07.749 to represent right and left maybe I
+00:39:09.670 should have used an R and an L but I
+00:39:11.829 decided to use F and G here because it
+00:39:13.630 just made more sense since we're taking
+00:39:15.640 derivatives of functions so that's our
+00:39:18.789 derivative matrix in the x-direction for
+00:39:21.460 right-handed derivatives now to build
+00:39:26.019 this for larger arrays here's the rules
+00:39:29.109 of thumb that you'll need we always have
+00:39:31.539 these two same diagonals and so when I
+00:39:34.089 build these matrices I'll go ahead and
+00:39:36.609 just insert all negative ones down the
+00:39:38.739 center diagonal and all positive ones in
+00:39:41.410 that upper diagonal and then go back and
+00:39:44.559 fix them and where do I insert them well
+00:39:47.230 you'll notice their spacing there
+00:39:48.960 big NX apart that's the width of our
+00:39:51.270 grid and that would continue all the way
+00:39:54.300 down so we can go back and just insert
+00:39:56.940 zeros where we accidentally put in ones
+00:39:59.310 and we would have a correct derivative
+00:40:01.859 matrix another thing to note notice
+00:40:05.760 we're only divided by Delta X we're not
+00:40:07.740 dividing by 2 Delta X anymore now we
+00:40:16.470 want to build the derivative matrix
+00:40:18.240 still for a right-handed derivative but
+00:40:20.490 in the Y direction the vertical
+00:40:22.530 direction in our grid so we have our
+00:40:27.750 same 3x3 grid and now here is the finite
+00:40:31.560 difference approximation we'll be using
+00:40:33.359 notice it's the J index now that's
+00:40:35.700 changing and also notice that this
+00:40:38.609 exists at the midpoint between J plus 1
+00:40:42.150 and J so if we are calculating finite
+00:40:45.000 difference for these two points the
+00:40:47.160 finite difference itself the derivative
+00:40:49.020 will be evaluated at the midpoint so if
+00:40:52.800 we write that finite difference equation
+00:40:54.930 for each point on our grid we end up
+00:40:58.410 here and like before we'll highlight
+00:41:01.500 these one at a time but hopefully by now
+00:41:03.900 we can move a little bit faster so we're
+00:41:08.490 writing our finite difference equation
+00:41:09.960 for the point F 1 1 and our finite
+00:41:13.140 difference will be F 1 2 minus F 1 1
+00:41:17.040 divided by the spacing Delta Y just 1
+00:41:21.030 cell now Delta Y naught 2 so again this
+00:41:24.000 is a better derivative to use than on
+00:41:26.160 the co-located grid because it they're
+00:41:28.140 the points are tighter up against where
+00:41:29.880 we're evaluating our derivative and it
+00:41:33.180 exists at the midpoint the little blue
+00:41:34.650 arrow is saying where we've evaluated
+00:41:36.450 our second order derivative no boundary
+00:41:39.150 condition problems on this side of the
+00:41:40.920 grid you'll notice the boundary
+00:41:42.750 condition problems happen at the bottom
+00:41:44.670 of the grid now but like the X
+00:41:47.339 derivative the boundary condition
+00:41:49.020 problems are only at one side all right
+00:41:53.609 let's move on to the finite difference
+00:41:55.109 equation written at point F 2 1 and so
+00:41:59.010 that'll be F 2 2 minus F 2 1 divided by
+00:42:02.520 spacy delta-y here's our fun a
+00:42:07.680 difference for the point at three one
+00:42:09.300 and it's F 3 to minus F 3 1 divided by
+00:42:12.060 Delta Y now we move down to the next row
+00:42:15.870 this is the finite difference equation
+00:42:17.910 written at the point where F 1 2 is but
+00:42:21.900 it evaluates the derivative at the
+00:42:23.310 midpoint between F 1 2 and F 1 3 so it's
+00:42:27.300 F 1 3 minus F 1 2 divided by the spacing
+00:42:30.800 Delta Y same story for the equation
+00:42:35.040 written at the point where F 2 2 exists
+00:42:38.420 here's to find a difference equation for
+00:42:40.920 point F 3 2 and now that we're at the
+00:42:45.060 bottom of the grid now we have the
+00:42:46.980 boundary condition problem we're trying
+00:42:49.080 to access an f-14 but of course that
+00:42:51.930 doesn't exist so using the Irish Lee
+00:42:53.970 battery conditions we just put a 0 in
+00:42:56.040 its place so now we have 0 minus F 1 3
+00:43:01.070 divided by the spacing Delta Y all
+00:43:06.630 points along the bottom have the same
+00:43:08.790 boundary condition so we're going to
+00:43:10.110 have a 0 minus F 2 3 over Delta Y we're
+00:43:14.610 writing that finite difference equation
+00:43:16.020 for point F 2 3 but it's actually
+00:43:18.510 evaluating the derivative slightly
+00:43:19.950 outside the grid and then the last point
+00:43:23.450 0 minus F 3 3 divided by Delta Y so we
+00:43:30.090 have written the finite difference
+00:43:31.380 equations for every point on the grid
+00:43:33.300 and we would like to figure out what the
+00:43:35.370 derivative matrix looks like that does
+00:43:37.470 that so we start off with a big blank
+00:43:39.810 matrix that pre multiplies our column
+00:43:42.600 vector of function values and we want to
+00:43:44.910 know what numbers go in here such that
+00:43:47.130 we get this answer after doing the
+00:43:49.380 multiplication and of course in that
+00:43:51.240 column vector is all of our finite
+00:43:53.160 difference equations that we just wrote
+00:43:57.650 so here's the numbers that we insert in
+00:44:00.390 there
+00:44:00.870 I recommend pausing the video and going
+00:44:03.840 through one row at a time to see how the
+00:44:06.060 numbers inserted in the matrix on the
+00:44:08.010 Left
+00:44:08.490 really do give us the answer that we
+00:44:10.530 have on the right after doing that
+00:44:15.830 this and also being pre multiplied by 1
+00:44:18.110 over Delta Y but this big matrix is our
+00:44:20.990 derivative matrix right-handed
+00:44:23.210 derivative matrix in the Y direction so
+00:44:31.070 for larger grits let's look at the
+00:44:32.810 anatomy for this we have all negative
+00:44:35.330 ones going down the center diagonal and
+00:44:37.070 all ones going down another diagonal
+00:44:39.620 that's actually big and X shifted over
+00:44:42.800 so whatever NX is you know where to
+00:44:45.620 place that next diagonal and as far as
+00:44:48.950 the boundary condition goes we could
+00:44:50.480 just insert those diagonals we don't
+00:44:52.460 have to go back and fix where there was
+00:44:54.530 zeros that occurred when we had the X
+00:44:57.620 derivative we had some zeros in this
+00:44:59.330 diagonal but this diagonal is actually
+00:45:00.890 over here at the time we don't have to
+00:45:02.570 do that we can just insert two diagonals
+00:45:04.370 and we're done all right our
+00:45:11.210 second-to-last derivative matrix this is
+00:45:13.160 a lot of work isn't it so this is a
+00:45:15.680 left-handed derivative matrix in the X
+00:45:19.340 direction so we have our same 3x3 grid
+00:45:24.820 here is the finite difference
+00:45:26.600 approximation that we'll be using
+00:45:28.490 notice it's the index on I that's
+00:45:31.190 changing and also notice we used to have
+00:45:33.530 an I plus 1 minus and I now we have I
+00:45:37.390 minus I minus 1 so we're actually
+00:45:40.970 reaching to the left here which is why
+00:45:42.770 it's called a left-handed finite
+00:45:44.630 difference so let's write this for each
+00:45:48.350 point on the grid and if we do that we
+00:45:51.410 get a set of 9 equations let's go
+00:45:54.230 through these one at a time so first
+00:45:57.890 we're in the cell containing g1 1 and we
+00:46:02.060 would like to have a g1 1 minus a g0 1
+00:46:06.350 divided by the spacing Delta X but of
+00:46:09.080 course the the G 0 1 doesn't exist
+00:46:12.500 using d-rush Lee boundary conditions
+00:46:14.330 will have a 0 in its place so it's G 1 1
+00:46:17.750 minus the 0 over Delta X I'll compare
+00:46:22.280 again compared to our co-located grid we
+00:46:25.520 had to span two points across the grid
+00:46:28.010 to calculate the spot
+00:46:29.540 it's now we only span one so it's it's a
+00:46:32.720 better way of doing it because our the
+00:46:34.700 points that we're using to evaluate the
+00:46:36.620 derivative or tighter up against where
+00:46:39.290 we're evaluating the derivative and
+00:46:41.000 where is that a derivative evaluated at
+00:46:43.250 the midpoint between G 0 1 and G 1 1
+00:46:47.420 which is right here a little bit outside
+00:46:49.130 the grid now we move to the second point
+00:46:55.070 we're writing our finite difference
+00:46:56.480 equation in the second cell where G 2 1
+00:46:59.570 exists and as G 2 1 minus G 1 1 divided
+00:47:04.040 by the spacing Delta X and of course the
+00:47:06.140 actual find a difference that we
+00:47:07.220 calculate ends up calculating the
+00:47:09.260 derivative right here at the midpoint
+00:47:10.850 between G 2 1 and G 1 1 move on to our
+00:47:18.110 final difference equation for G 3 1 this
+00:47:20.750 is the last point on the right hand side
+00:47:22.820 of the grid but since we're reaching to
+00:47:24.860 the left there is no boundary condition
+00:47:27.260 problem it's just G 3 1 minus G 2 1
+00:47:30.740 divided by the spacing okay we come back
+00:47:34.370 around to the left-hand side of the grid
+00:47:36.530 so we have a boundary condition problem
+00:47:38.300 at this side of the grid and so it's G 1
+00:47:40.880 2 minus what we would like to be a G 0 2
+00:47:44.900 but that doesn't exist and so we put a 0
+00:47:48.050 in its place so it's G 1 2 minus 0
+00:47:51.310 divided by the spacing Delta X and it
+00:47:54.140 evaluates the derivative just slightly
+00:47:56.180 to the left and outside of the grid move
+00:48:02.120 over to the center point in our grid G 2
+00:48:04.100 2 so it's G 2 2 minus G 1 2 divided by
+00:48:07.430 Delta X which makes that derivative
+00:48:09.640 evaluated at the midpoint between G 2 2
+00:48:12.830 and G 1 2 now we're at the far right
+00:48:17.810 point on the grid no boundary condition
+00:48:20.570 problem because we're reaching to the
+00:48:22.010 left for a front of difference so it's
+00:48:23.630 just G 3 2 minus G 2 2 divided by the
+00:48:27.380 spacing Delta X back to the left side of
+00:48:32.210 the grid where we have a boundary
+00:48:33.260 condition problem again we'd like to
+00:48:35.330 write this as G 1 3 minus G 0 3 but the
+00:48:39.800 G 0 3 doesn't exist we put a 0 in its
+00:48:41.960 place for dearest
+00:48:43.099 boundary conditions and we just end up
+00:48:44.989 with g1 3-0 over Delta X and it's
+00:48:49.579 evaluating that derivative here just
+00:48:51.650 slightly to the left of the grid find a
+00:48:55.789 difference equation for G 2 3 which is G
+00:48:58.400 2 3 minus G 3 its G 2 3 minus G 1 3
+00:49:03.019 divided by Delta X find a difference
+00:49:05.539 exists at the midpoint between those two
+00:49:07.190 points and the same argument for the
+00:49:10.220 last point G 3 3 minus G 2 3 divided by
+00:49:14.269 Delta X making the derivative exist at
+00:49:17.690 the midpoint between those two points
+00:49:21.640 well we have our set of 9 equations what
+00:49:24.680 does the derivative matrix look like so
+00:49:27.349 we'll write a big blank matrix equation
+00:49:29.269 where we leave our derivative matrix
+00:49:30.710 blank is pre multiplying our column
+00:49:33.559 vector of G's now that's to remind us we
+00:49:36.170 have left-handed derivatives and we
+00:49:38.749 would like to fill in numbers here such
+00:49:41.089 that we get this column vector on the
+00:49:43.130 right which of course is the finite
+00:49:45.349 difference equations that we just
+00:49:46.789 derived with the 1 over Delta X factored
+00:49:49.249 out so what goes in that big blank
+00:49:51.380 matrix this is what it looks like this
+00:49:55.670 looks rather similar to our right-handed
+00:49:59.059 derivative in the X direction
+00:50:00.589 except we had for the the right-handed
+00:50:04.069 derivative we had positive ones going
+00:50:05.900 down this +1 diagonal and negative ones
+00:50:08.569 down the center now look what's
+00:50:09.950 happening we have positive ones in the
+00:50:11.539 center diagonal and negative ones in the
+00:50:14.150 lower diagonal and there's also these
+00:50:16.130 little Corrections that we'll have to go
+00:50:17.690 back and do talk a bit about that at the
+00:50:20.210 end but I recommend pausing the video
+00:50:23.469 looking at the numbers in this matrix
+00:50:25.640 and seeing how they recreate our finite
+00:50:28.309 difference answers on the right so if we
+00:50:34.099 do this correctly that is our derivative
+00:50:36.289 matrix for a left-handed derivative in
+00:50:39.079 the X direction we can summarize this by
+00:50:45.440 talking about the anatomy we see two
+00:50:47.630 diagonals we have all ones going down
+00:50:49.640 the center diagonal and almost all ones
+00:50:52.069 going down the lower diagonal so when I
+00:50:54.499 build these I insert all negative one
+00:50:56.869 and then go back and fix where I've
+00:50:58.609 goofed and you can see that the spacing
+00:51:01.039 between these Corrections is NX that's
+00:51:03.950 the number of points wide the grid is
+00:51:06.319 and we're doing that because we're using
+00:51:08.269 d-rush lay bound recondition z' finally
+00:51:15.229 the last derivative matrix that we'll
+00:51:16.999 discuss
+00:51:17.420 it's another left-handed derivative
+00:51:19.039 matrix but this is in the y-direction
+00:51:21.170 the vertical direction through our grid
+00:51:25.450 will use the same 3x3 grid we just have
+00:51:29.269 a new finite difference equation now
+00:51:31.819 notice we're changing the J index so
+00:51:34.190 it's G in the same cell minus G and the
+00:51:37.940 previous cell but in the y-direction so
+00:51:40.519 if we were looking at this finite
+00:51:41.660 difference with these two points we
+00:51:43.910 would be evaluating that derivative at
+00:51:45.829 the mid point so if we write that finite
+00:51:50.569 difference equation for each of those
+00:51:52.219 nine points this is what we get so like
+00:51:56.119 before we'll go through these one at a
+00:51:57.859 time so that we can see each one you
+00:51:59.690 could pause the video and see what's
+00:52:01.819 going on for any of the steps that you
+00:52:03.799 want okay
+00:52:07.880 now we're writing the finite difference
+00:52:09.829 equation for the first point on the grid
+00:52:11.599 that's where G 1 1 exists and so our
+00:52:15.529 final difference will be G 1 1 minus G 1
+00:52:19.009 0 which is of course outside the grid
+00:52:21.769 does not exist so we put a 0 in its
+00:52:24.769 place using garishly boundary conditions
+00:52:26.869 so we just have G 1 1 minus 0 divided by
+00:52:31.880 the spacing Delta Y so we have our
+00:52:35.869 boundary condition here at the top of
+00:52:37.700 the grid remember when we did the
+00:52:39.829 right-hand derivative matrix for the
+00:52:42.349 y-direction we had the boundary
+00:52:44.150 condition problem at the bottom of the
+00:52:45.979 grid so due to the staggering and the
+00:52:49.369 handedness of these matrices they have
+00:52:51.229 the boundary condition problems at the
+00:52:52.849 opposite side of the grid let's move to
+00:52:57.049 the second point G 2 1 minus what we
+00:53:00.890 would like to be a G 2 0 divided by the
+00:53:04.700 spacing Delta Y but of course g20
+00:53:08.180 doesn't exist
+00:53:09.700 we set it to zero and we just have a g21
+00:53:12.520 over delta y and the last point that
+00:53:17.110 we'll have that has a boundary condition
+00:53:18.760 problem g3 one minus g3 zero which does
+00:53:22.720 not exist so we put a zero in its place
+00:53:25.060 so we have a g3 one over Delta Y and of
+00:53:28.750 course all of these finite differences
+00:53:30.880 existed at a half grid cell above the
+00:53:33.880 top of the grid now on to the finite
+00:53:39.130 difference equation for G 1/2 and this
+00:53:41.980 is G 1 2 minus G 1 1 divided by the
+00:53:46.540 spacing Delta Y and of course that's
+00:53:48.790 evaluating a derivative that exists at
+00:53:50.740 the midpoint that's where the arrow is
+00:53:53.050 pointing now our finite difference
+00:53:56.530 equation for G 2 2 which is G 2 2 minus
+00:54:00.190 G 1 over Delta Y and it exists at the
+00:54:04.000 midpoint find a difference equation for
+00:54:07.420 G 3 2 which is G 3 2 minus G 3 1 divided
+00:54:11.530 by the spacing Delta Y and the last row
+00:54:16.360 are fine a difference equation for G 1 3
+00:54:18.730 and that's G 1 3 minus G 1 2 divided by
+00:54:25.210 the spacing Delta Y G 2 3 minus G 2 2
+00:54:31.180 over Delta Y that's our finite
+00:54:33.010 difference equation for 0.23 and it
+00:54:36.040 exists at the midpoint between those two
+00:54:37.540 points and our very last equation its
+00:54:41.260 define a difference equation for G 3 3
+00:54:43.570 and it's G 3 3 minus G 3 2 divided by
+00:54:48.670 the spacing Delta Y so we have our set
+00:54:54.820 of 9 finite difference equations now we
+00:54:57.580 would like to figure out what the
+00:54:58.870 derivative matrix looks like to do this
+00:55:00.940 so we write a matrix equation with a big
+00:55:03.460 blank matrix pre multiplying our G's
+00:55:06.640 reshape to a column vector and that has
+00:55:09.670 to equal a column vector containing 2
+00:55:11.530 finite difference equations that we just
+00:55:14.080 evaluated so we ask the question what
+00:55:16.630 goes in here that would give us this
+00:55:20.260 answer
+00:55:23.099 and this is what it looks like recommend
+00:55:27.390 pausing the video and looking through
+00:55:29.400 this row-by-row to justify why these
+00:55:32.369 numbers are what they are to get the
+00:55:35.069 answers we see on the right hand side
+00:55:39.799 after we've done this we have
+00:55:42.690 constructed our derivative matrix or
+00:55:45.569 left handed derivative matrix in the Y
+00:55:48.440 direction and looking at the anatomy of
+00:55:55.170 this so that we know how to build it for
+00:55:56.700 any size grid we will always have ones
+00:55:59.160 going down the center diagonal positive
+00:56:01.019 ones but we're gonna have negative ones
+00:56:03.420 going down a certain number diagonal
+00:56:06.029 below that and it turns out this
+00:56:08.130 distance is big n X and of course don't
+00:56:10.859 forget to divide everything by Delta Y
+00:56:14.180 so this is our hint for building our
+00:56:17.849 derivative matrix left handed derivative
+00:56:19.739 matrix in the y-direction we simply just
+00:56:21.420 insert two diagonals there's no need to
+00:56:23.700 go back and correct for any kind of
+00:56:25.799 boundary condition problems some final
+00:56:32.999 notes on the staggered grids on this
+00:56:38.249 slide I'm just summarizing the anatomy
+00:56:40.619 of all four derivative matrices that we
+00:56:42.989 had to construct for our staggered grid
+00:56:45.440 so there's no new information on the
+00:56:47.579 slide just a summary in one place so
+00:56:50.099 when you're writing your MATLAB code you
+00:56:51.359 can refer to this slide rather than have
+00:56:53.400 to page through everything here's what
+00:56:59.009 the matrices look like for a four by
+00:57:01.019 four grid notice now it's even more
+00:57:04.019 obvious how many zeros there are this is
+00:57:06.839 another justification that we really
+00:57:09.269 really want to do sparse matrices here
+00:57:11.279 in fact we absolutely must use sparse
+00:57:14.039 matrices or you'll easily run out of
+00:57:15.869 memory the larger the grid the greater
+00:57:18.809 the fraction of these containing all
+00:57:20.579 zeros we don't want to store those zeros
+00:57:22.469 as double floating-point so always
+00:57:24.630 always at every step use sparse matrices
+00:57:27.599 don't at any point store these as a full
+00:57:30.509 matrix where you'll run into trouble
+00:57:36.230 so skills you'll need for building these
+00:57:38.610 matrices one is inserting diagonals and
+00:57:42.170 declaring sparse matrices Mattala is
+00:57:45.120 very good about sparse matrices we need
+00:57:47.070 to do little more than just say hey
+00:57:48.900 MATLAB this matrix is sparse and then we
+00:57:51.780 just do our normal algebra with it and
+00:57:53.850 underneath the hood MATLAB recognizes
+00:57:56.490 that it's a sparse matrix and it's
+00:57:58.140 calling algorithms optimized for sparse
+00:58:00.510 matrices which is another neat
+00:58:02.550 discussion but it's not something that
+00:58:03.900 we have to really deal with at this
+00:58:05.670 point
+00:58:06.860 so we declare the size of the matrix
+00:58:10.530 we'll make a sparse matrix of all zeros
+00:58:13.520 we'll create a one dimensional array
+00:58:15.720 containing all ones those are the
+00:58:17.910 numbers that will go down the diagonal
+00:58:19.350 they don't all have to be ones we could
+00:58:21.420 create a one dimensional array that goes
+00:58:23.070 one two three four or whatever numbers
+00:58:25.440 we want to this last command is what
+00:58:28.290 inserts the diagonal into a sparse
+00:58:30.330 matrix so SPD eggs we give it the array
+00:58:33.900 of numbers that we want to insert in the
+00:58:35.640 diagonal we tell it which diagonal to
+00:58:38.130 assert into and we give it the matrix to
+00:58:40.920 start with so at first we just pass it
+00:58:43.440 the zero matrix and it inserts those
+00:58:45.390 ones down the center diagonal of all the
+00:58:47.100 zero matrix and we end up with this well
+00:58:52.530 we could do something else too we could
+00:58:54.960 insert the diagonal twice we could
+00:58:56.970 insert negative ones and positive ones
+00:58:59.730 in the negative one and positive one
+00:59:01.950 diagonal and we would end up with a
+00:59:03.570 matrix that looks like this
+00:59:05.100 so SP diag is really your workhorse
+00:59:08.040 function for building these derivative
+00:59:10.770 matrices I won't spend a lot of time on
+00:59:18.300 this slide because this is something
+00:59:19.710 we've discussed before but I'm covering
+00:59:22.620 here the transpose operation the
+00:59:24.210 hermitian transpose which is a transpose
+00:59:26.880 and then accomplice conjugate but what I
+00:59:29.130 wanted to point out is these staggered
+00:59:31.740 or left-handed right-handed derivatives
+00:59:33.390 they're related if we've calculated an a
+00:59:36.480 right-handed derivative matrix in the X
+00:59:38.940 direction we can immediately usually
+00:59:41.820 immediately calculate the left-handed
+00:59:43.590 derivative matrix it's just the negative
+00:59:45.780 for Michigan and that holds for most
+00:59:49.910 the boundary conditions I've tried when
+00:59:52.190 I built in Neumann boundary conditions I
+00:59:54.319 noticed that this does not work there
+00:59:56.480 might be another relation there it's
+00:59:57.950 just not something that I've
+00:59:58.970 investigated
+00:59:59.990 so this halves your work for just
+01:00:02.329 eriously boundary conditions this works
+01:00:03.710 fine and it has your work you really
+01:00:05.809 only have to build the right-handed
+01:00:07.430 derivative matrices and you can
+01:00:09.559 calculate the left-handed ones just with
+01:00:11.839 the negative for michigan transpose so
+01:00:14.240 that's very useful one final slide and I
+01:00:22.250 hinted to it in the beginning but we
+01:00:24.680 don't have to write separate functions
+01:00:26.270 to build derivative matrices for 1d
+01:00:28.280 grids and then 2d grid and then 3d grids
+01:00:30.410 I'm only gonna show how to get the 1d
+01:00:33.740 derivative matrices from a function that
+01:00:36.680 would give you derivative matrices for
+01:00:38.510 2d grids for the most part if you write
+01:00:44.030 a function to build the 2d derivative
+01:00:46.640 matrices it's just worse really without
+01:00:48.589 modification the one thing that we have
+01:00:51.289 to keep in mind though we have to do a
+01:00:53.420 special check when we're doing the X
+01:00:55.369 derivative matrices if the if the size
+01:00:59.869 is only 1 we need to make an all zeros
+01:01:04.369 matrix if you if you don't do that
+01:01:09.770 you'll end up with a 1 or 1 or 2
+01:01:12.289 diagonals in your matrix so for when NX
+01:01:15.170 is just size 1 and it's also an X
+01:01:17.809 derivative your derivative matrices
+01:01:19.910 should be all 0 assuming you're using
+01:01:21.920 d-rush a binary conditions similarly if
+01:01:26.420 you're doing a derivative in the Y
+01:01:28.099 direction but the size of the grid in
+01:01:30.440 the Y Direction is only 1 again you'll
+01:01:33.020 force those matrices to all zeros and so
+01:01:38.839 they'll take up almost no memory because
+01:01:41.150 if we're storing these as sparse
+01:01:42.380 matrices very very light on memory don't
+01:01:46.309 store those as full matrices

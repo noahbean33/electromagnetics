@@ -1,0 +1,508 @@
+# tactiq.io free youtube transcript
+# Topic 8b -- Single Variable Optimization
+# https://www.youtube.com/watch/cu7bMB_b06w
+
+00:00:00.220 topic 8b single variable optimization so
+00:00:05.200 by single variable we only have one
+00:00:07.450 independent variable something like X
+00:00:09.400 and we're trying to find either a
+00:00:11.530 maximum or minimum as a function of X
+00:00:14.499 what value of x leads to that minimum or
+00:00:17.410 maximum before we get into that I want
+00:00:23.500 to cover some mathematical preliminaries
+00:00:25.470 about extrema so minimums and maximums
+00:00:28.740 first derivative test second derivative
+00:00:31.270 test those sorts of things because we
+00:00:33.339 will use them when we talk about
+00:00:34.929 optimization the remainder of this
+00:00:37.690 lecture is just talking about single
+00:00:39.879 variable optimization and we'll talk
+00:00:41.890 about three different types the first
+00:00:43.329 two are quite simple and the third one
+00:00:45.729 will go into more detail and it's pretty
+00:00:47.469 neat I think you'll find in the lecture
+00:00:50.739 following we'll talk about multi
+00:00:52.719 variable optimization and what you'll
+00:00:54.789 see is a lot of them are based on this
+00:00:58.719 lecture a one-dimensional optimization
+00:01:01.210 and we can talk a little bit in more
+00:01:03.129 generality when we get the 2d
+00:01:04.750 optimizations by saying stuff like will
+00:01:07.300 perform a 1d optimization in this
+00:01:09.460 direction then another one in this
+00:01:10.840 direction and we'll do something else so
+00:01:12.550 the 2d optimizations is very often built
+00:01:15.310 on top of 1d optimizations all right so
+00:01:22.300 some mathematical preliminaries we have
+00:01:28.540 the first derivative test and the
+00:01:32.350 derivative is the slope of a function so
+00:01:35.230 if a function has a maximum or a minimum
+00:01:40.650 right on that maximum or minimum that
+00:01:43.480 slope must go to zero
+00:01:45.730 so this gives us one way to potentially
+00:01:48.460 find that minimum or maximum the
+00:01:50.560 derivative has to be zero there it has
+00:01:53.410 to be zero because the function itself
+00:01:55.060 has to turn around and so it has to pass
+00:01:57.430 through zero slope now the second
+00:02:03.430 derivative test the second derivative is
+00:02:05.830 the slope of slope or we can think of it
+00:02:07.990 as curvature and we can use this to tell
+00:02:11.050 whether once we've located an extrema
+00:02:14.190 extreme is the generalized term for
+00:02:15.900 Maxima or minima so given that we found
+00:02:18.690 that extrema we can tell whether it is a
+00:02:21.000 maximum or a minimum if that second
+00:02:23.790 derivative is positive we found a
+00:02:26.400 maximum and when it's negative we found
+00:02:29.310 a minimum and from our discussion of the
+00:02:32.880 Merit function we can formulate our
+00:02:34.710 merit functions two that we're
+00:02:36.420 optimizing by either maximizing or
+00:02:39.360 minimizing that merit function so which
+00:02:42.660 way you do that's really up to you and
+00:02:44.310 all these algorithms can usually be
+00:02:46.440 turned around to work just as well for
+00:02:47.970 finding minimums as maximums but these
+00:02:51.390 derivative tests give us ways to find
+00:02:53.550 them and identify whether they are a
+00:02:55.560 minimum or a maximum
+00:03:01.340 so our first optimization method is
+00:03:04.590 parabolic interpolation I think you'll
+00:03:06.750 find this very easy and intuitive if
+00:03:08.910 you're comfortable with fitting
+00:03:10.820 polynomials to discrete points so it's
+00:03:19.080 as simple as this we have a smattering
+00:03:20.880 of points usually three points we fit it
+00:03:23.190 to a polynomial now we have a closed
+00:03:25.739 form equation that describes those three
+00:03:27.959 points and we can take the derivative of
+00:03:30.450 that set that equal to zero find the
+00:03:33.420 value of x that maximizes that
+00:03:35.220 polynomial and we're done so let's step
+00:03:38.970 through that in a little bit more detail
+00:03:41.780 so step one we have three points could
+00:03:45.150 be more than three points the point is
+00:03:47.340 we really have some smattering of points
+00:03:49.230 that we fit to a polynomial the
+00:03:51.510 assumption here is though that these are
+00:03:53.550 spanning some kind of extrema that there
+00:03:55.830 is a minima or a maximum somewhere
+00:03:58.380 between these three points so once we
+00:04:03.780 have those three points the second step
+00:04:05.519 is then to fit it to a polynomial and
+00:04:07.860 just to remind you we write the equation
+00:04:10.320 for the polynomial once for each of our
+00:04:12.150 points we put that set of equations in
+00:04:14.700 matrix form and then we backward divide
+00:04:17.190 to find the polynomial coefficients once
+00:04:20.640 we do that now we have a closed form
+00:04:23.190 expression for a function passing
+00:04:25.830 through those three points that we
+00:04:27.419 originally
+00:04:28.020 specified and it's quite easy to find
+00:04:30.780 the extrema of a closed form expression
+00:04:35.360 so arm to the on to the third step and
+00:04:38.789 we will use the first derivative test to
+00:04:41.310 find the extrema so we differentiate our
+00:04:44.129 polynomial to arrive at its derivative
+00:04:47.090 we then set that derivative equal to
+00:04:50.069 zero and solve for our value of x that
+00:04:53.669 gives us where that extrema occurs and
+00:04:56.610 if we wanted to we could then apply the
+00:04:58.889 second derivative test to determine
+00:05:00.870 whether that extrema is a minimum or a
+00:05:03.659 maximum now if we spend a lot of time on
+00:05:11.190 this and work through the algebra we
+00:05:13.139 don't necessarily have to form these
+00:05:15.300 matrices and do all that work
+00:05:16.919 everything's boiled down into this one
+00:05:19.020 single equation here so if you have a
+00:05:21.389 symbolic editor you can go through this
+00:05:23.819 and it'll spit out that equation to find
+00:05:26.610 the extrema so in practice I would
+00:05:29.759 probably build the matrix backward
+00:05:31.440 divided and then say negative a1 over 2a
+00:05:34.710 rather than type out this big long ugly
+00:05:36.810 equation but in the end that's the
+00:05:38.729 calculations that would happen anyway so
+00:05:42.330 that's it that's the the polynomial
+00:05:44.610 method let's visualize what's happening
+00:05:47.069 here though so in this case the blue
+00:05:53.099 line is the true function and it's not
+00:05:55.199 exactly a polynomial and the solid blue
+00:05:58.440 lines are our three discrete points so
+00:06:02.310 since that isn't a polynomial when we
+00:06:05.039 fit a polynomial to it we get a slightly
+00:06:08.279 different function so this dashed red
+00:06:10.080 line that's the polynomial that we fit
+00:06:12.270 to that to that and those three points
+00:06:14.130 if we then run the optimization it puts
+00:06:18.659 the peak of that polynomial right here
+00:06:20.909 well the true peak is over there so
+00:06:23.430 there is some error here and so what if
+00:06:27.210 we wanted to reduce that error well
+00:06:28.919 certainly the more closely we can space
+00:06:31.500 those points to where the extreme is the
+00:06:34.500 more accurate we will be and also the
+00:06:36.960 more polynomial looking that original
+00:06:39.419 function is
+00:06:40.479 the better a polynomial can approximate
+00:06:42.999 it and we could imagine doing this with
+00:06:45.219 a third order polynomial or really other
+00:06:47.559 functions that might fit the true
+00:06:50.050 function better where you can use that
+00:06:52.240 to find the extrema so you could do a
+00:06:54.879 curve fit maybe you do a nonlinear
+00:06:56.710 regression to fit a Gaussian to a set of
+00:06:58.719 data and then you can find right where
+00:07:00.759 the match where the Gaussian is so you
+00:07:02.949 can choose your function based on the
+00:07:05.650 physics of what you're analyzing try to
+00:07:07.419 come with something a bit more
+00:07:08.469 consistent so just demonstrating here
+00:07:11.740 with a polynomial on to Newton's method
+00:07:19.659 not to be confused with the
+00:07:22.270 newton-raphson method that we talked
+00:07:24.729 about when we did route finding but what
+00:07:27.039 you'll see is Newton's method is a small
+00:07:30.039 little twist to the newton-raphson
+00:07:31.779 method so let's remember the
+00:07:38.349 newton-raphson method that was when we
+00:07:40.689 were finding roots we wanted to find
+00:07:42.849 values of X that forced our function f
+00:07:45.849 to 0 so given that function f and given
+00:07:50.560 its derivative we derived an update
+00:07:53.080 equation and we kept repeating that
+00:07:55.569 equation over and over and over until
+00:07:57.419 finally that value of x converged to
+00:08:00.520 wherever that root would be and we
+00:08:04.029 looked at how quickly or how how much it
+00:08:06.879 moved from iteration to iteration to
+00:08:08.620 control how accurate our answer was in
+00:08:10.629 the end so that was the newton-raphson
+00:08:12.789 method however for finding extrema we're
+00:08:17.860 not finding roots we are finding
+00:08:20.439 minimums or maximums so let's remember
+00:08:26.770 the first derivative test the first
+00:08:29.709 derivative test says there's a Maxima or
+00:08:32.169 minima where the derivative equals 0 so
+00:08:37.568 maybe to find an extreme ofor of
+00:08:39.849 function rather than work on that
+00:08:43.510 function directly let's work on the
+00:08:45.069 derivative let's do route finding on the
+00:08:47.380 functions derivative and so that's what
+00:08:50.199 Newton's method is we'll calculate an
+00:08:52.180 auxilary function G which is just
+00:08:54.240 derivative of F and perform
+00:08:56.610 route-finding then on this auxilary
+00:08:58.649 function that's Newton's method so
+00:09:01.649 Newton's method and newton's newton
+00:09:03.450 raphson method are almost the same thing
+00:09:05.760 it's just that the newton raphson
+00:09:07.560 operates on the function directly to
+00:09:09.899 find roots Newton's method does the
+00:09:14.010 newton-raphson method on the derivative
+00:09:16.200 to find extrema so we end up with an
+00:09:21.810 update equation now where instead of the
+00:09:24.330 function we're using G's are auxiliary
+00:09:26.550 functions and we can replace those with
+00:09:28.890 our original derivative and so we would
+00:09:32.130 write the update equation this way so we
+00:09:34.170 have the derivative of F in the
+00:09:35.430 numerator and the second derivative in
+00:09:38.010 the denominator so the Newton's method
+00:09:40.770 is simply newton raphson method finding
+00:09:43.620 roots of the derivative instead of the
+00:09:46.020 function itself so that's pretty neat so
+00:09:49.260 knowing the newton raphson method it's a
+00:09:51.839 very quick thing now to teach you a
+00:09:53.430 whole new method now let's talk about
+00:10:00.180 the golden section search I think you'll
+00:10:02.760 find this a pretty neat method and we'll
+00:10:04.649 go into a bit more detail on this than
+00:10:07.380 the previous methods so let's get
+00:10:09.420 started now this starts looking a little
+00:10:14.790 bit like the bracketing methods that we
+00:10:16.740 talked about for route finding and
+00:10:19.560 there'll be a twist here but it starts
+00:10:21.959 off the same way we define an interval
+00:10:24.149 will define a lower limit and an upper
+00:10:27.089 limit and make the assumption that
+00:10:29.880 somewhere between those limits our
+00:10:32.010 function reaches an extrema
+00:10:34.500 so for this example we're finding a
+00:10:36.720 maximum of F not a minimum of F and I'll
+00:10:39.240 try to point out what you would do
+00:10:40.980 differently to find a minimum IRS's a
+00:10:43.170 maximum but the algorithm itself can do
+00:10:45.540 either we just with a simple little
+00:10:47.520 tweak okay so we define our interval
+00:10:51.000 that's step one the next thing we'll
+00:10:55.950 want to do is evaluate the function at
+00:10:58.350 those endpoints and to understand and
+00:11:03.000 appreciate why we want to minimize the
+00:11:06.029 number of
+00:11:06.600 times we evaluate that function put
+00:11:09.029 yourself in the mindset of every time we
+00:11:11.399 evaluate the function at a value of x it
+00:11:13.680 takes an hour maybe that's a simulation
+00:11:16.139 or something else that puts you in a a
+00:11:18.630 healthy mindset in our attempt to
+00:11:22.500 minimize the number of times we have to
+00:11:24.420 call that function so here we called it
+00:11:26.790 twice so we're doing two hours of
+00:11:28.500 computation for example so we evaluate
+00:11:31.110 the function at the bounds at this point
+00:11:36.630 and this seems like a weird step later
+00:11:38.519 on we'll derive the math here but we
+00:11:41.579 calculate two intermediate points x1 and
+00:11:44.819 x2 and we do it in sort of a strange way
+00:11:48.180 we're placing x2 as some distance from
+00:11:51.870 the lower limit so x2 some distance from
+00:11:56.430 the lower limit and we're looking at
+00:11:58.589 placing x1 some distance back from the
+00:12:01.470 upper limit and both are coming from a
+00:12:04.199 distance D and that seems a little
+00:12:05.940 strange and we calculate this distance D
+00:12:09.300 as this function R or constant R times
+00:12:13.110 the total span and it turns out this
+00:12:15.509 value R is the very very famous known
+00:12:18.089 from antiquity the golden ratio so yes
+00:12:21.360 that's the same golden ratio that
+00:12:23.040 Leonardo da Vinci put into his artwork
+00:12:25.290 and is all over the place it's neat do a
+00:12:28.589 Google search for that and look up
+00:12:29.910 golden ratio and it has a pretty cool
+00:12:31.980 history so that's the number and that's
+00:12:34.079 where it appears here and later we'll
+00:12:36.180 derive it and explain why that's
+00:12:38.160 important here but anyway we calculate
+00:12:41.610 these two intermediate points using this
+00:12:43.829 golden ratio then we'll evaluate the
+00:12:49.740 function at those two intermediate
+00:12:51.810 points so along the lines of our mindset
+00:12:54.600 of this taking well that's now two more
+00:12:56.310 hours of computation so it's solely up
+00:12:58.649 to this point four hours of computation
+00:13:00.800 because we have four points and we had
+00:13:03.509 to evaluate the function at each of
+00:13:05.310 those now in the remaining iterations we
+00:13:09.750 really want to minimize how many times
+00:13:11.939 we call the function and this is really
+00:13:13.529 the purpose of this golden ratio let's
+00:13:15.329 see how this works okay so we've
+00:13:18.209 evaluated the function at these four
+00:13:19.769 points
+00:13:20.320 now we want to figure out really what
+00:13:23.920 side of this limit where is that extrema
+00:13:26.860 so let's think about how we identify
+00:13:29.079 that visually we can see that it's to
+00:13:33.040 the right
+00:13:33.459 but algorithmically we just look at the
+00:13:35.980 values of f1 and f2 so we're looking at
+00:13:40.120 these two values and if f1 is bigger
+00:13:43.360 than F to the extreme we'll be on the
+00:13:46.540 left now in this case we have f2 that's
+00:13:49.660 bigger than F 1 so the extremest to the
+00:13:52.779 right so if we're looking at which one's
+00:13:55.449 bigger and moving to that side we're
+00:13:58.120 finding a maximum now if we were finding
+00:14:00.880 a minimum we would look at which one of
+00:14:02.500 those is smaller and realize that the
+00:14:04.839 minimum is on that side but here in the
+00:14:07.600 context of finding the maximum we're
+00:14:09.790 looking at which one's bigger so f2 is
+00:14:12.490 bigger and so we move our new interval
+00:14:15.430 now over to the right hand side and we
+00:14:17.819 eliminate this entire section of our
+00:14:21.190 original interval and it turns out
+00:14:23.620 that's about just under 40% of the total
+00:14:26.560 span we've eliminated and so now what we
+00:14:30.100 do is we close in on that we move our
+00:14:32.500 limit in on that span we have
+00:14:34.630 highlighted in gray now something
+00:14:40.060 happened we'll talk a little bit more
+00:14:41.649 but we move our limits in recalculate
+00:14:45.610 those intermediate points and something
+00:14:48.010 sort of magical happened our lower limit
+00:14:51.459 moved up to a previous point and
+00:14:55.350 unfortunately I can't go back and forth
+00:14:57.370 and these in these slides because it'll
+00:15:00.279 erase what I'm saying right now this
+00:15:03.339 point fell on a previous point the upper
+00:15:07.060 limit didn't move so that's on a
+00:15:08.740 previous point we only have one new
+00:15:11.500 point here so to get the function at our
+00:15:14.560 four points we only have to evaluate the
+00:15:16.720 function at that new x2 and so therein
+00:15:21.699 lies really the magic of why we're using
+00:15:23.589 this golden ratio we've adjusted our
+00:15:25.420 interval but we only have one real new
+00:15:28.389 point to calculate
+00:15:33.570 now we compare f1 to f2 f1 is now a
+00:15:36.839 bigger value so we know that the extrema
+00:15:40.110 happens to the left of f2 and we close
+00:15:43.320 in our interval on that so we close in
+00:15:47.100 our integral evaluate a new x1 and x2
+00:15:49.649 and there's only one new point here all
+00:15:53.519 the other points coincide the points
+00:15:55.589 from the previous iteration and so
+00:15:59.089 here's sort of a freeze-frame of a bunch
+00:16:01.800 of different iterations and we can watch
+00:16:04.050 our lower upper limit converge and we
+00:16:07.110 can check those at the lower and upper
+00:16:09.089 limit if the change from iteration
+00:16:10.380 iteration falls below some tolerance
+00:16:13.139 we'll say that we're done so in the end
+00:16:20.519 our upper or lower limits are probably
+00:16:23.880 still some small distance apart
+00:16:25.860 one thing you can do is just average
+00:16:28.290 them and say that's my final extrema
+00:16:30.920 another thing you could do is fit those
+00:16:33.329 to a polynomial and use the polynomial
+00:16:35.970 interpolation form of optimization to
+00:16:38.490 make that final last estimate of where
+00:16:40.920 the extrema would be so you can imagine
+00:16:43.350 now combining different optimization
+00:16:45.510 methods so this is just one and probably
+00:16:48.209 the easiest so overall here is the
+00:16:54.000 algorithm so step one we define our
+00:16:57.510 bounds step two we evaluate the function
+00:17:02.819 at those bounds step three using the
+00:17:07.349 golden ratio we calculate two
+00:17:09.270 intermediate points step four we
+00:17:13.470 evaluate the function at those two
+00:17:15.270 points step 5 we look at the function
+00:17:21.240 value at points 1 and 2 we figure out
+00:17:24.240 which is bigger or which is smaller if
+00:17:26.280 we're looking for the minima well we
+00:17:28.409 figure out which is bigger and we move
+00:17:30.330 our interval over to that side and what
+00:17:33.809 you'll notice is that we're copying over
+00:17:35.370 a lot of information we only have to
+00:17:37.650 evaluate the function at one new point
+00:17:40.350 and depending which side we move to is
+00:17:43.679 depends which information we copy over
+00:17:45.870 to what per
+00:17:47.220 so we adjust our interval and then we
+00:17:50.500 check the distance on step six and we
+00:17:52.750 see if we've converged and if we've
+00:17:54.940 converged we'll calculate our final
+00:17:57.310 answer and we'll say that we're done and
+00:17:59.290 we found an extremist so that is the
+00:18:04.360 golden section search let's look a
+00:18:07.240 little bit more deeply at some details
+00:18:11.190 so here's an animation that I put
+00:18:13.810 together and watching this you'll really
+00:18:15.910 see how the points from one iteration
+00:18:18.790 and the next iteration lie on top of
+00:18:21.220 each other let's go ahead and run it so
+00:18:22.660 here's the the start of this where we
+00:18:26.500 have our limits and our two intermediate
+00:18:28.630 points so we're going to the next
+00:18:32.290 iteration so I just sort of slowly slide
+00:18:35.050 the new points and you can see where
+00:18:37.780 they coincide with the old points those
+00:18:40.360 dashed vertical lines that reminds us
+00:18:43.330 where the points were on the previous
+00:18:44.740 iteration and what you can see is that
+00:18:47.470 the new points three of those new points
+00:18:51.040 lie on three of the old points there's
+00:18:53.140 only one new value go ahead and play
+00:18:56.350 this one more time remember the dashed
+00:18:59.890 lines are our previous points and in the
+00:19:03.370 next iteration three of those line up we
+00:19:05.950 don't have to reevaluate the function
+00:19:07.750 there because we already know it
+00:19:15.090 so anyway that's my little animation of
+00:19:18.730 the golden section search now
+00:19:25.460 derived the golden ratio in the context
+00:19:27.830 of this method and so we lay out our
+00:19:30.760 upper lower limits and we will define
+00:19:34.370 the total span between the upper and
+00:19:36.740 lower limit as L sub 0 and then we have
+00:19:40.490 an l1 and an l2 and so we can define our
+00:19:44.450 ELLs in terms of our x-values here ok so
+00:19:48.289 that's the first step in this now our
+00:19:52.340 real goal here is when we we update and
+00:19:56.270 we move or we squeeze in our interval on
+00:19:59.120 one side or the other here that the
+00:20:02.539 points over ly are new points over ly on
+00:20:05.299 the old points so we don't have to
+00:20:06.890 re-evaluate the function so we have some
+00:20:11.330 conditions to conditions that will turn
+00:20:13.190 out to ensure this one we need to make
+00:20:16.610 sure that our l0 covers the entire span
+00:20:19.250 so L 0 has to be l1 plus l2 maybe that's
+00:20:23.840 kind of obvious this next one maybe
+00:20:29.029 isn't so obvious and we really have to
+00:20:30.919 look at our our points before and after
+00:20:35.929 we've adjusted them to understand this
+00:20:38.000 but the ratio of L 1 to L 0 has to be
+00:20:42.860 the same as the ratio of L 2 to L 1
+00:20:45.890 that's the condition that ensures when
+00:20:48.740 we adjust our points that we over lie on
+00:20:52.789 to our old points or at least three of
+00:20:54.470 them overlap we only have one new one so
+00:20:57.440 these are the two conditions that we
+00:20:59.090 have to ensure so that this this golden
+00:21:01.490 section search can do it's magical stuff
+00:21:06.190 okay so up top we have a repeat of these
+00:21:09.320 two necessary conditions so what we'll
+00:21:12.200 do is we'll take L 2 plus L 1 for L
+00:21:16.700 naught and substitute that in here so
+00:21:18.500 that's what we have so we've combined
+00:21:20.270 the two above equations now we're going
+00:21:24.799 to do some algebra on this let's define
+00:21:27.830 a constant R that turns out this is the
+00:21:30.020 golden ratio let's define that constant
+00:21:32.779 as L 2 over L 1 well what we'll do is
+00:21:36.080 we'll take this equation it has l2 and
+00:21:38.000 l1 and just
+00:21:38.809 some algebra on it until II end up with
+00:21:41.809 a form that only has that ratio of l2 to
+00:21:45.080 l1 we can then replace those ratios with
+00:21:48.169 R and then from that form a quadratic
+00:21:52.100 equation so we can solve the quadratic
+00:21:55.100 equation to find what R is so our R
+00:22:00.169 using the quadratic formula is negative
+00:22:03.019 1 plus or minus square root of 5 over 2
+00:22:05.450 and what we'll do to keep our positive
+00:22:09.139 is take the positive sign from the
+00:22:11.149 square root and that gives us our very
+00:22:14.360 famous golden ratio so in one slide here
+00:22:23.690 is the magic of the golden section
+00:22:25.429 search which I've said a few times so
+00:22:27.289 you should get it by now but here's
+00:22:29.269 iteration I and here's the next
+00:22:31.580 iteration so in the next iteration we've
+00:22:33.950 we've closed in on one side of the
+00:22:36.619 previous iteration but notice how the
+00:22:39.950 lines coincide our new lower limit is x1
+00:22:44.480 from the previous iteration our x1 our
+00:22:48.470 new X 1 is X 2 from the previous
+00:22:51.740 iteration and our upper limit is the
+00:22:54.740 upper limit from the previous iteration
+00:22:56.889 we have a new x2 that's at a new point
+00:23:00.259 that's the only one for this next
+00:23:02.450 iteration where we have to evaluate the
+00:23:04.490 function and every iteration we
+00:23:08.299 eliminate almost 40% of the total span
+00:23:11.440 so that's pretty cool we eliminate
+00:23:13.549 almost half of the span and we only have
+00:23:16.429 to evaluate the function at one new
+00:23:18.409 point if we didn't use that golden ratio
+00:23:21.379 we'd have to evaluate it at at least two
+00:23:24.289 more points so we're doubling the number
+00:23:26.809 we're doubling the time for this
+00:23:28.399 algorithm to converge and again keep
+00:23:31.100 yourself in the mindset that every time
+00:23:33.019 you evaluate this function it takes
+00:23:35.450 about an hour and very often real
+00:23:38.629 computation is that way because it's not
+00:23:40.519 really an equation you're using that
+00:23:42.679 evaluation of the function could be a
+00:23:44.210 simulation or something else it just
+00:23:46.279 takes a long time so that's the golden
+00:23:49.309 section search

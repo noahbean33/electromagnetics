@@ -1,0 +1,448 @@
+# tactiq.io free youtube transcript
+# MATLAB Session -- Numerical Integration
+# https://www.youtube.com/watch/2Xdhwy6k_TA
+
+00:00:00.560 in this MATLAB session we are going to
+00:00:03.689 implement numerical integration for
+00:00:06.240 different ways the assumption is is that
+00:00:08.670 you've worked through the lecture videos
+00:00:10.260 otherwise some of what we do here may
+00:00:12.599 not make much sense so we're going to do
+00:00:15.120 discrete integration trapezoidal
+00:00:17.220 integration Simpsons one-third rule and
+00:00:19.800 simpson's three-eighth rule there's lots
+00:00:22.260 of other ways to do numerical
+00:00:23.490 integrations that's what we're going to
+00:00:25.350 do in this MATLAB session in a following
+00:00:28.740 MATLAB session we will add graphics to
+00:00:30.960 this and visualize the numerical
+00:00:32.790 integrations but here we'll implement
+00:00:34.890 them and also talk about convergence so
+00:00:38.850 let's go ahead and get started and as
+00:00:40.559 usual the first thing I like to do is
+00:00:42.570 initialize MATLAB and I do that by
+00:00:48.360 closing all the figure windows clearing
+00:00:51.510 the command window and the most
+00:00:53.399 important one is clear memory at this
+00:00:57.480 point will enter the dashboard this is
+00:01:02.129 where we're going to define everything
+00:01:03.899 about the function that we want to
+00:01:05.430 integrate the interval over which we
+00:01:07.979 want to integrate a number of points etc
+00:01:12.979 so let's define our function function
+00:01:16.140 and interval so let's call it func and
+00:01:20.299 let's integrate sign and let's integrate
+00:01:24.840 it from let's say from A to B let's say
+00:01:29.939 a equals zero and B equals PI we want to
+00:01:34.560 integrate the sine function from zero to
+00:01:36.840 pi if we need anything else in our
+00:01:40.500 dashboard that we forgot about we can
+00:01:43.110 come back and add that but right now
+00:01:44.670 that's sufficient oh yeah one thing
+00:01:47.960 number of points
+00:01:53.080 so let's call that n and let's make it
+00:01:56.220 ten points right now and we can play
+00:01:58.960 with that number later to see if it's
+00:02:00.970 high enough that's when we talk about
+00:02:02.530 convergence I'm going to go ahead and
+00:02:04.600 run this just to make sure there's no
+00:02:05.890 errors nothing too interesting should
+00:02:08.080 happen but I should be able to type in a
+00:02:10.449 and B and C zero and PI and I should be
+00:02:13.900 able to type in func of and just give it
+00:02:15.910 a number and so sine of 0.1 should be
+00:02:19.510 0.09 nine eight so at this point we are
+00:02:24.340 ready to jump into our first numerical
+00:02:27.190 integration and my preference most of
+00:02:30.130 the time and that's discrete integration
+00:02:41.500 so the first thing we'll need to do is
+00:02:43.660 compute the positions of the points
+00:02:54.350 oh man
+00:02:56.569 okay so we want to create an array X
+00:03:00.700 that will tell us the center position of
+00:03:05.299 all of these rectangles remember
+00:03:07.400 discrete integration we don't start
+00:03:10.099 exactly on a and do not end exactly on B
+00:03:13.459 we have to come in a half a half and a
+00:03:17.720 half of DX so what I like to do is first
+00:03:21.590 define DX which is our total span that
+00:03:26.120 we're covering divided by the number of
+00:03:29.120 points then I can create my array X I
+00:03:33.950 will go from 0.5 to n minus 0.5 at this
+00:03:40.970 point we just have an array that goes
+00:03:42.939 point five one point five two point five
+00:03:46.760 all the way up to n minus point five so
+00:03:51.620 if I multiply by DX I will have the
+00:03:54.500 center positions of each rectangle if I
+00:03:57.859 run this I can type in X and I see that
+00:04:03.560 I'm starting at something close to zero
+00:04:05.389 but it's 1/2 DX away from zero and
+00:04:09.099 something close to PI but it's 1/2 DX
+00:04:12.109 before PI and that's because these are
+00:04:15.169 the center positions of the rectangles
+00:04:18.048 under my curve that I actually want to
+00:04:19.699 integrate so once we have that now we
+00:04:25.699 want to calculate the function at each
+00:04:28.099 of those discrete points
+00:04:36.530 so we'll say y equals funk X and funk is
+00:04:39.620 the sine function and just to make sure
+00:04:42.050 we'll write when correct we will say
+00:04:44.330 plot X comma Y go ahead run this and we
+00:04:50.560 see the first hump of our sign we
+00:04:53.600 haven't done a lot of to dress up those
+00:04:55.430 graphics we don't need to do that right
+00:04:57.500 now we're just testing to make sure that
+00:04:59.630 our code is working we might also go to
+00:05:03.800 a command prompt and look at Y make sure
+00:05:06.080 we don't have any any ends or infinities
+00:05:08.150 or something crazy like that and these
+00:05:10.490 all look like numbers that would come
+00:05:11.930 out of the sine function now we perform
+00:05:17.240 the integration and after we type this
+00:05:25.100 you'll see why I like discrete
+00:05:27.290 integration of the most so we'll call
+00:05:29.930 the integration I I for integration we
+00:05:34.220 will simply add every value that's in y
+00:05:37.870 and x DX that's it very short and simple
+00:05:44.210 so we can type I to give us what the
+00:05:46.660 integral is let's run it and we see 2.0
+00:05:52.760 and if you've watched the lectures you
+00:05:54.680 understand that if we integrate sine
+00:05:56.720 from 0 to pi the answer is exactly 2
+00:05:59.360 we're not exactly at 2 because this is a
+00:06:01.880 numerical integration there's some error
+00:06:03.800 in here and we describe that in the
+00:06:06.470 lecture series and in the following
+00:06:08.060 MATLAB session we will visualize this
+00:06:10.160 will visualize the numerical integration
+00:06:11.570 and the error regions but for now we're
+00:06:14.300 not going to do that what we probably
+00:06:17.810 want to do now is some sort of
+00:06:19.910 convergence study so let's go ahead and
+00:06:23.870 do convergence study in fact we should
+00:06:27.530 probably do this upfront you know up
+00:06:29.990 here somewhere
+00:06:30.979 yeah let's go ahead just do it up there
+00:06:32.540 because this is something we would do
+00:06:34.430 once and then not again so maybe what we
+00:06:38.000 can do is come up with a clever way to
+00:06:39.620 turn this section of code on and off so
+00:06:42.260 what we just said if one
+00:06:43.969 and end it's always going to run what's
+00:06:47.239 inside of here but I could just easily
+00:06:49.429 go back and put a zero there and then it
+00:06:52.129 won't run what's inside of here so we
+00:06:56.089 want to do a convergence study and
+00:06:57.499 figure out what value of Big M gives us
+00:07:01.129 an accurate integration so let's go
+00:07:04.099 ahead and initialize a red end at this
+00:07:07.249 will be an array of what values of big
+00:07:09.739 and we want to use so let's go one two
+00:07:12.949 hundred then we will store ID at Ritz
+00:07:18.889 let's get the length of n debt and
+00:07:23.199 initialize an ID ad this is where we're
+00:07:25.610 going to store the number we get for our
+00:07:28.219 numerical integration so it has to be
+00:07:33.529 the same length of end dad
+00:07:35.149 you'll call this section initialize
+00:07:38.709 arrays
+00:07:46.500 we'll call this section sweep n this
+00:07:49.090 we're going to set up a loop and for
+00:07:51.070 every number inside end that we will do
+00:07:53.950 our complete numerical integration and
+00:07:55.990 we have to do everything we have to
+00:07:57.190 calculate our points evaluate the
+00:07:59.680 function perform the integration go to
+00:08:02.110 the next larger value of n and keep
+00:08:03.970 doing that so let's say for little n
+00:08:07.330 equal 1 to L now inside here I want to
+00:08:17.110 set n n will be end at little n so the
+00:08:22.420 nth value and end at so the first time
+00:08:24.850 through this loop big ends going to be 1
+00:08:27.510 at this point I want to repeat
+00:08:31.390 everything that's down here so why don't
+00:08:33.520 I just copy and paste this and then call
+00:08:38.559 this perform integration I will indent
+00:08:46.030 all of this and delete the spaces and
+00:08:52.000 the comments because it's simple enough
+00:08:53.890 and now you followed it I align my equal
+00:08:57.880 signs only because I'm strange that way
+00:09:00.840 so now we have a loop where we're
+00:09:03.640 calculating our numerical integration
+00:09:05.890 for eat for increasing values of big n
+00:09:08.920 what we need to save that and we're
+00:09:11.980 saving this an idaite then what i would
+00:09:17.860 like to do is display that
+00:09:22.810 so we're gonna go ahead and plot end at
+00:09:27.130 eye depth and we'll do a drawl now so
+00:09:31.810 that we see it and I don't need to
+00:09:34.450 perform the actual numerical integration
+00:09:36.760 after this so I'll put a return
+00:09:37.960 statement here and that will force
+00:09:40.150 MATLAB to end let's run this and see
+00:09:43.360 what it looks like make sure we didn't
+00:09:44.860 get any errors we could have made a
+00:09:46.000 mistake somewhere hopefully we did
+00:09:55.770 and then oh we left the zero there I was
+00:09:59.130 confused for a second so it never did
+00:10:01.200 run okay now let's try this again
+00:10:06.140 notice it pretty quickly flatlines at
+00:10:09.420 two I might call convergence somewhere
+00:10:12.900 around N equals twenty maybe what we can
+00:10:16.920 do is set the access limit to limit it
+00:10:19.800 between the one point nine five and two
+00:10:22.800 point one let's see what this looks like
+00:10:37.810 and for now yeah we'll call convergence
+00:10:40.300 around 20 that means up here we can
+00:10:45.009 simply set that to 20 we now no longer
+00:10:48.370 have to do our convergence study and if
+00:10:51.490 we run it our integration is 2.00
+00:10:55.839 to now if we wanted more greater
+00:10:58.990 convergence you know what we can turn
+00:11:00.670 this up to 100 segments oops
+00:11:03.870 100 segments and we our answer should
+00:11:06.220 get closer to 22.000 one so if you have
+00:11:15.759 an application that requires a certain
+00:11:17.800 amount of precision you could do your
+00:11:20.620 convergence study and go way off into
+00:11:23.319 that convergence curve until the changes
+00:11:25.509 in the answer fall well below your
+00:11:27.730 tolerance requirement and that's how you
+00:11:30.339 pick your place on the on the
+00:11:31.629 convergence curve so if you're designing
+00:11:34.389 somebody's pacemaker for example you
+00:11:36.459 probably want to be way out on that
+00:11:38.410 convergence curve if you're just doing
+00:11:40.059 some rough studies need some approximate
+00:11:41.949 numbers you might even be able to get
+00:11:43.870 away with just let's try five points
+00:11:49.990 wow that's still pretty close to two so
+00:11:52.689 somewhere around 10 to 20 I would call
+00:11:54.939 convergence I'll call it 20 just for
+00:11:57.670 good luck
+00:11:58.529 so that is discrete integration
+00:12:01.589 now the other integrations we would do
+00:12:04.209 the convergence study the same way I
+00:12:06.160 won't do that for the other integration
+00:12:08.620 schemes we'll just go ahead and
+00:12:09.850 implement it and understand you would
+00:12:11.800 create a loop like we just did to study
+00:12:14.800 where they converge as well so our next
+00:12:19.720 form of integration is trapezoidal
+00:12:27.620 trapezoidal integration so our first
+00:12:33.080 step just like discrete integration was
+00:12:35.630 positions of the points in fact we can
+00:12:38.300 copy and paste this code and just change
+00:12:41.300 it down here that'll prevent us to have
+00:12:42.950 to do some typing so we could do DX and
+00:12:47.840 dy in a similar way if I was calculating
+00:12:49.970 DX for trapezoidal I would need an N
+00:12:53.540 minus 1 in the denominator and that's
+00:12:56.420 because we're placing our endpoints
+00:12:58.520 exactly on a and B before that wasn't
+00:13:01.970 the case but there's another way that's
+00:13:04.280 maybe a little safer if we don't want to
+00:13:06.260 think through this or we're not
+00:13:07.430 confident how to formulate this let's
+00:13:11.090 not do it that way let's calculate X
+00:13:14.440 using the linspace command so we'll go
+00:13:17.090 from A to B with endpoints and then
+00:13:22.550 we'll calculate DX is simply the second
+00:13:25.130 value of X minus the first and so it
+00:13:28.040 extracts the spacing between our X
+00:13:29.990 values and sometimes I like doing things
+00:13:33.290 this way just in case I messed up that
+00:13:35.120 previous equation not such a big deal
+00:13:37.310 here hopefully you get the clock so we
+00:13:40.160 have our our values of X we now evaluate
+00:13:43.040 the function at each of the points we
+00:13:44.450 don't have to change that but we do have
+00:13:46.820 to change how we're doing our numerical
+00:13:49.010 integration so for trapezoidal remember
+00:13:53.540 we have different weights that we've
+00:13:55.370 assigned to each function value this is
+00:13:57.170 one of those things that won't make much
+00:13:58.490 sense unless you watch the lecture
+00:14:00.590 videos so I want to come up with the
+00:14:02.840 weight what value we multiply each
+00:14:05.390 function by such that when we add them
+00:14:07.790 all up we get the numerical integration
+00:14:09.760 so at point five followed by a bunch of
+00:14:13.130 ones how many ones
+00:14:16.420 big-big and -2 + y -2 because we've
+00:14:22.250 already included a weight for the first
+00:14:24.130 function value the weight for the last
+00:14:26.360 this is just all of the interior ones
+00:14:28.880 and so we've already covered two of them
+00:14:30.410 so we subtract two and W now we run this
+00:14:35.860 should be 20 numbers the first one to
+00:14:39.110 0.5
+00:14:40.420 rest our ones until we get to the very
+00:14:42.160 end and we see another point five
+00:14:45.029 now our numerical integration is sum of
+00:14:49.480 the weights times our function values
+00:14:52.930 all added up with the sum command times
+00:14:56.290 DX and I'll go ahead and just type I so
+00:15:00.910 we can see what that integration is we
+00:15:04.540 get a one point nine nine five four now
+00:15:08.139 if we use a fewer number of points that
+00:15:11.529 should be farther away from - unless we
+00:15:13.630 just coincidentally hit on a sweet spot
+00:15:17.040 okay a little bit worse we use four
+00:15:20.500 points that integration even worse if we
+00:15:24.639 go ahead and use a hundred points
+00:15:26.230 we should get very close to two one
+00:15:29.440 point nine nine nine eight roughly the
+00:15:32.110 same as discrete integration and I argue
+00:15:34.420 trapezoidal integration and discrete
+00:15:36.790 integration have the same exact accuracy
+00:15:39.279 if you just use one more additional
+00:15:42.010 rectangle in the discrete integration
+00:15:44.110 and I justified that in the lecture
+00:15:45.610 video so that's trapezoidal now let's
+00:15:50.949 move on to Simpsons one-third rule I
+00:15:55.140 will copy and paste everything here I
+00:15:58.949 don't have to retype it delete that I
+00:16:05.760 call this Simpsons one-third rule
+00:16:10.949 integration
+00:16:15.089 first step again is to calculate the
+00:16:17.430 positions of the points just like
+00:16:20.040 trapezoidal integration we're actually
+00:16:21.779 stopping and starting exactly on a and B
+00:16:24.779 and so we calculate DX the same way that
+00:16:29.069 code doesn't need to change we evaluate
+00:16:31.499 our function in the exact same way but
+00:16:33.209 we're going to perform our numerical
+00:16:35.550 integration the same way now we have
+00:16:38.759 something else that's happening here we
+00:16:40.829 need to think about how many points were
+00:16:42.839 using and it turns out for Simpsons 1/3
+00:16:46.319 rule we need to have an odd number
+00:16:48.809 because we're going in groups of three
+00:16:50.850 across our grid and it won't work out if
+00:16:53.430 we have an even number so let's go ahead
+00:16:56.069 make this nine we have an odd number
+00:17:03.529 okay so we need to set up a loop we'll
+00:17:09.480 set up n we're gonna go through all of
+00:17:11.609 our points we'll start at the first
+00:17:13.409 point but in order to do Windows of
+00:17:16.169 three with the last point in our first
+00:17:19.648 window of three corresponds to our first
+00:17:22.529 point in our second window of three
+00:17:24.559 we're increasing this by two each time
+00:17:27.349 and we'd like to go all the way to the
+00:17:29.490 end but I'll do an end - - just so we
+00:17:33.090 don't accidentally go over so that's our
+00:17:38.820 for loop so what we'll do is we'll go in
+00:17:42.149 these intervals of three use the
+00:17:44.610 Simpsons one-third rule to integrate
+00:17:46.350 under that group of three and keeping
+00:17:48.929 adding it to our overall tally for the
+00:17:51.539 two integration so I will initialize our
+00:17:54.270 integration to zero the start then I'll
+00:17:59.580 calculate little a this is just the
+00:18:02.450 integration under our three points that
+00:18:05.100 we're currently looking at inside of our
+00:18:06.960 loop following Simpsons one-third rule
+00:18:09.330 it's simply this yn plus 4 times y and
+00:18:15.649 plus 1 plus y n plus 2 now of course we
+00:18:22.110 should multiply this by DX over 3
+00:18:25.169 however there's no need to
+00:18:27.470 do that each iteration I can add all
+00:18:29.270 these up and just do that once at the
+00:18:31.580 end that's a little bit numerically more
+00:18:33.559 efficient I plus a we add as we go and
+00:18:40.270 then finally to get a correct answer
+00:18:43.250 we'll need to say I was I times three
+00:18:46.700 times DX
+00:18:47.690 whoops sorry DX Cobra three in my mind I
+00:18:50.570 jumped immediately at the sentence three
+00:18:52.159 a troll so DX over three
+00:18:56.530 I'll leave the semicolon off and we can
+00:18:59.539 run it and see what we get something
+00:19:04.070 very close to two we only use nine
+00:19:07.220 points let's see what would happen if we
+00:19:08.840 put in an even number
+00:19:10.450 it'll probably yell out us something
+00:19:12.740 about our array index out of bounds oh
+00:19:15.289 we got lucky there let's try twelve oh
+00:19:20.919 man we're getting lucky all right I'm
+00:19:25.520 not gonna worry about getting that to
+00:19:26.720 fail right now so let's crank up to a
+00:19:30.890 lot of numbers
+00:19:31.760 let's do 101 we should be really really
+00:19:34.909 close to two okay
+00:19:39.400 very close to 2 that is Simpsons 1/3
+00:19:42.980 rule now we move on to simpson's
+00:19:46.010 three-eighth rule I'll go ahead and put
+00:19:51.770 a semicolon there so we don't see that
+00:19:53.390 anymore
+00:19:54.169 and this is simpson's three-eighth rule
+00:19:57.970 we calculate our points the same way
+00:20:01.360 evaluate our function the same way the
+00:20:04.280 way we're performing our integration is
+00:20:06.380 also very similar however now we're
+00:20:09.350 going in groups of four points where the
+00:20:12.080 last point in the first group of four
+00:20:14.120 overlaps with the first point in the
+00:20:16.220 second group of four so that means I
+00:20:18.440 increased by three each time and so I'll
+00:20:21.350 go up to n big n minus three the
+00:20:25.460 integration under my group of four
+00:20:27.530 points is now Y n plus three times i n
+00:20:33.289 plus one plus three times y and
+00:20:37.530 oh I made a mistake here look at that
+00:20:39.840 that should have been a n plus 2 and n
+00:20:44.190 plus 2 and then we have one more to do
+00:20:48.780 here that's Y of n plus 3 and then we
+00:20:55.380 add to our tally and to finish we need
+00:20:58.530 to multiply by three times DX over 8/3
+00:21:03.750 times DX over 8/8 not eighty-seven let's
+00:21:09.510 go ahead and run this you see we have
+00:21:13.200 one point nine eight one fun thing we
+00:21:17.160 could do
+00:21:17.760 let's leave the semicolon off each of
+00:21:20.040 these and so we'll see the answers in
+00:21:23.190 order and maybe we can compare their
+00:21:24.930 accuracy so let's do five points so for
+00:21:33.240 discrete integration we got a 2.0 three
+00:21:35.900 trapezoidal integration interestingly we
+00:21:39.060 got a slightly worse number for
+00:21:43.770 simpson's roll two point zero four six
+00:21:46.340 that's quite a bit better than the
+00:21:48.420 discrete integration and I think
+00:21:51.870 something's going wrong with our
+00:21:54.080 three-eighths rule let's take a closer
+00:21:56.460 look at what's going on here we got a yn
+00:21:59.100 plus three Y n plus one plus three Y M
+00:22:02.790 plus 2 plus y n plus three adding to our
+00:22:06.810 tally three times DX over eight let's
+00:22:13.080 see what's going wrong here
+00:22:17.960 okay so a small mistake was we have to
+00:22:23.700 consider the number of points for the
+00:22:26.160 three-eighths rule because we're doing
+00:22:28.440 this in groups of four points and it
+00:22:31.290 turns out that we need for the
+00:22:36.060 three-eighths rule our n needs to be
+00:22:38.640 three times some number plus one that
+00:22:42.690 ensures a perfect fit to when we group
+00:22:44.760 things off by four so if we put in a
+00:22:48.030 three here for example that
+00:22:49.740 9 we would need 10 points so we can
+00:22:53.490 always just calculate our number this
+00:22:55.440 way and not even use that first one if
+00:22:59.340 we run it what we see is that we still
+00:23:01.320 get a pretty bad value for that
+00:23:03.570 integration but as we crank up this
+00:23:06.210 number let's now think about 10 we're
+00:23:11.340 getting closer to 2 of the others seem
+00:23:13.590 to be actually converging faster the 1/3
+00:23:15.780 rule is doing really well now let's use
+00:23:19.500 300 some points this would be 301 points
+00:23:22.350 and this last one is converging much
+00:23:27.270 slower than the others let's try 1500 1
+00:23:34.170 points and so all of the integration
+00:23:38.970 schemes are converging to do 2 - if
+00:23:42.030 we're using enough points so that's it
+00:23:46.050 that is numerical integration I hope
+00:23:48.150 this helps

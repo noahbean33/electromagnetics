@@ -1,0 +1,590 @@
+# tactiq.io free youtube transcript
+# Topic 5b -- Nonlinear regression
+# https://www.youtube.com/watch/7V9KP7BkO1M
+
+00:00:00.770 topic 5b nonlinear regression in the
+00:00:05.340 last lecture we talked about linear
+00:00:07.229 regression where we are fitting straight
+00:00:09.420 lines to a set of measured data points
+00:00:12.210 well what if this isn't a straight line
+00:00:14.340 what if it's a sine function or a square
+00:00:17.010 root or something that we can't cast our
+00:00:19.920 set of equations into matrix form how
+00:00:22.500 then do we do a curve fit and that is
+00:00:25.140 what nonlinear regression is I want to
+00:00:31.199 set up the problem and then cover some
+00:00:33.749 background material which is
+00:00:35.159 specifically multi-parameter Taylor
+00:00:37.350 series you likely have seen the Taylor
+00:00:39.479 series but what about the Taylor series
+00:00:41.460 for multiple parameters armed with that
+00:00:45.030 we're ready to formulate nonlinear
+00:00:47.370 regression and it looks kind of strange
+00:00:48.989 and intimidating at first but then when
+00:00:51.600 we step through the algorithm I think
+00:00:53.219 you'll see that it's actually quite easy
+00:00:54.959 to implement now this is a finicky
+00:00:57.719 algorithm and when you watch the MATLAB
+00:01:00.149 session you'll see that it can fail a
+00:01:01.769 lot particularly if you don't feed it a
+00:01:04.140 good initial guess so we'll talk about
+00:01:06.630 the algorithm and then we'll run through
+00:01:08.160 an example and you can code your own
+00:01:10.650 example at home and and match the data
+00:01:13.280 that we're getting in this example so
+00:01:17.670 onward
+00:01:20.810 so let's set up our problem let's say we
+00:01:24.470 have a function f of X but it's maybe
+00:01:27.650 something strange and it has a bunch of
+00:01:30.140 curve fit parameters is a naught a 1 a n
+00:01:33.259 that somehow define f of X and we get Y
+00:01:36.800 from that and we can do a number of
+00:01:39.350 things for example our a coefficients
+00:01:41.630 could be a B and C in this function over
+00:01:45.530 here are a coefficients would be also a
+00:01:49.759 B and C and the third function again
+00:01:53.090 these a coefficients that we're trying
+00:01:55.009 to find would be a B and C the
+00:01:58.700 difference between this and what we did
+00:02:00.440 last lecture is that these are not
+00:02:02.810 linear functions and we have to do
+00:02:05.420 something very special to cast them into
+00:02:07.490 matrix form so that we can come up with
+00:02:09.709 an iterative algorithm to do the curve
+00:02:11.660 fit the way that we will convert our set
+00:02:18.380 of nonlinear equations to a set of
+00:02:20.390 linear equations is using the Taylor
+00:02:22.700 series however since we have multiple
+00:02:25.040 parameters we need to learn how to do
+00:02:27.200 the Taylor series with multiple
+00:02:28.700 parameters man there's a lot of detail
+00:02:31.100 we could go into here but we're gonna
+00:02:32.810 drop all the higher-order terms and not
+00:02:35.450 go so far into the depth of Taylor
+00:02:38.120 series so up front here we have a one
+00:02:42.079 parameter single parameter Taylor series
+00:02:44.209 this is probably something that you've
+00:02:45.709 seen in your background and it's a way
+00:02:47.810 of approximating F with a series of
+00:02:51.410 terms and we choose another term that I
+00:02:54.680 put a little tilde over top and that's
+00:02:57.140 the term that we are writing our Taylor
+00:02:59.780 series about we're estimating at a value
+00:03:03.170 of F but we're using information at a
+00:03:07.130 value of x tilde and so then we have the
+00:03:10.900 first order term second order term third
+00:03:13.400 order term and so and there's an
+00:03:14.510 infinite number of terms we can
+00:03:19.430 generalize this to two parameters it has
+00:03:22.790 the same basic form where we have our
+00:03:24.590 function we have our first order terms
+00:03:26.900 we'll have our second order terms and
+00:03:29.239 that would go on and on and on and it
+00:03:31.010 gets quite crazy but it turns out for
+00:03:34.200 us we're going to drop all of the
+00:03:36.090 higher-order terms that only retain
+00:03:38.160 those first order terms at this point we
+00:03:43.560 can generalize to an end parameter
+00:03:45.810 Taylor series so we want some way to
+00:03:49.069 estimate a function of multiple
+00:03:51.330 variables so that equals a function
+00:03:54.090 written about specific numbers that
+00:03:57.300 we'll be able to put numbers to plus
+00:03:59.250 these terms that we'll be doing our
+00:04:01.380 approximation and you'll notice these
+00:04:04.380 difference terms
+00:04:06.180 I have lumped into Delta X and Delta X
+00:04:10.230 is simply the difference between one of
+00:04:12.630 our unknowns and the value that we're
+00:04:15.150 doing our Taylor series about we're
+00:04:19.108 going to use this to convert our
+00:04:21.029 nonlinear functions into linear
+00:04:23.700 functions so onto the formulation and
+00:04:29.669 just to warn you again the the equations
+00:04:31.680 here seem rather complicated and
+00:04:33.419 intimidating but when I step you through
+00:04:35.520 the implementation I think you'll see
+00:04:37.350 that this simplifies down to something
+00:04:38.820 quite palatable we start our formulation
+00:04:44.729 by writing our function at every single
+00:04:47.280 one of our measured sample points so if
+00:04:50.490 we have M samples we will write our
+00:04:53.330 equation in different times we're also
+00:04:56.729 going to include these residual terms to
+00:04:58.979 remind us that these these equations
+00:05:01.350 without this are not exact there's
+00:05:03.150 there's error here
+00:05:04.940 the other thing we'll do that's a little
+00:05:07.410 bit of shorthand rather than keep
+00:05:09.090 writing explicitly these curve fit
+00:05:11.340 parameters in our function we just won't
+00:05:13.740 write them and we'll write this in a
+00:05:15.510 much more compact notation here but all
+00:05:18.450 that is is our set of equations with our
+00:05:21.030 function written at each one of our
+00:05:23.400 sample points now that set of equations
+00:05:30.870 are nonlinear maybe it contains a square
+00:05:33.630 root or an exponential or something like
+00:05:35.789 that so in order to convert it over to
+00:05:38.340 something that is a linear algebraic
+00:05:40.350 equation we will convert each one of
+00:05:43.140 those to a Taylor series
+00:05:45.280 and so it's the same end equations we're
+00:05:48.610 just approximating our function with the
+00:05:50.590 multi-parameter Taylor series so here we
+00:05:55.720 are and we still have the residual terms
+00:05:57.970 on to the next step that large set of
+00:06:04.450 linear equations can now be cast into
+00:06:07.240 matrix form this first column vector R
+00:06:10.660 containing our measured values of y this
+00:06:15.310 is a column vector of our evaluated
+00:06:17.800 functions and our measured values of X
+00:06:21.480 we then have this big ugly matrix where
+00:06:24.970 all of the derivatives from the Taylor
+00:06:26.830 series have collected and we will call
+00:06:28.600 this our Z matrix we then have a column
+00:06:33.190 vector of the Delta A's when we
+00:06:35.860 formulate our iterative algorithm we
+00:06:38.500 will be solving for that column vector
+00:06:40.660 and that will tell us how much to change
+00:06:42.850 our curve fit parameters from what
+00:06:45.580 iteration to the next and then of course
+00:06:48.190 the last column vector are our residuals
+00:06:55.140 at this point we won't keep writing that
+00:06:58.360 big ugly matrix although sometimes will
+00:07:00.340 expand on Z and we end up here that is
+00:07:04.300 the equation from the last slide now
+00:07:06.640 since we're developing an iterative
+00:07:08.320 algorithm we can drop these residual
+00:07:11.919 terms because we will iteratively
+00:07:13.900 improve on our solution so we drop that
+00:07:16.570 for now the next step is we'll bring
+00:07:19.900 this column vector of our function
+00:07:22.060 evaluations we'll bring that over to the
+00:07:23.919 left-hand side and notice now these are
+00:07:27.280 our measured values minus R evaluated
+00:07:31.210 values this is really telling us the
+00:07:33.880 error in our measurements and so we'll
+00:07:36.160 call that D and that's really an error
+00:07:38.289 term at this point we have more
+00:07:42.220 equations that we have unknowns and we
+00:07:44.350 can solve this using least squares which
+00:07:47.919 means we pre multiply both sides by the
+00:07:50.080 transpose of Z and then we're solving
+00:07:53.380 for this Delta a column vector telling
+00:07:56.320 us how much we will change our
+00:07:58.630 perfect parameters from one iteration to
+00:08:00.610 the next and here's our solution in the
+00:08:03.550 sense of least squares on this slide I
+00:08:12.040 just want to note again that we've
+00:08:13.810 solved for the Delta a column vector so
+00:08:16.870 from iteration to iteration we're not
+00:08:19.240 solving for our new set of curve fit
+00:08:22.390 parameters those we store in the column
+00:08:25.030 vector a when we solve that matrix
+00:08:27.820 equation by least squares it's Delta a
+00:08:30.850 is how much we have to change a in order
+00:08:34.000 to calculate our new curve fit
+00:08:35.530 parameters and so we iteratively do this
+00:08:42.720 onto the algorithm and I think more of
+00:08:45.580 what we discussed in the formulation
+00:08:47.320 will make sense as we discuss this in
+00:08:49.330 the framework of being an algorithm step
+00:08:55.690 zero in our algorithm we have to
+00:08:57.850 populate that big ugly Z matrix that
+00:09:00.130 contains all those derivatives so
+00:09:02.260 analytically on paper before we even get
+00:09:04.780 to the computer we need to derive
+00:09:06.790 partial derivatives of F with respect to
+00:09:09.850 each one of our curve fit parameters so
+00:09:13.150 in this case that's going to be a naught
+00:09:15.190 a 1 all the way up to a n however many
+00:09:18.250 of those we have we have to evaluate
+00:09:20.500 that many analytical derivatives once we
+00:09:26.620 have that we need to make an initial
+00:09:29.530 guess of our curve fit parameters now
+00:09:32.380 this iterative algorithm is very touchy
+00:09:34.570 to our initial guess and the more we can
+00:09:37.720 do to make an intelligent guess the
+00:09:39.790 better when we get to the example of a
+00:09:41.950 Gaussian I can show you one way to make
+00:09:44.200 an intelligent guess and hopefully you
+00:09:46.360 know something about the function you're
+00:09:47.950 fitting to to help you make that
+00:09:49.930 intelligent guess otherwise you'll just
+00:09:52.090 have to try a bunch of different things
+00:09:53.530 and keep rerunning your code until it
+00:09:56.140 does converge when we get to the matlab
+00:09:58.480 sessions you will see how finicky this
+00:10:00.400 algorithm can be
+00:10:04.410 once we have those curve fit parameters
+00:10:07.569 our initial guess we want to evaluate
+00:10:10.300 the function at each one of our values
+00:10:13.269 of X using our current curve fit
+00:10:16.410 parameter so at first this won't be such
+00:10:19.329 a great curve fit and by the way I'm
+00:10:22.209 using a notation on this slide that you
+00:10:24.190 may or may not have seen I'm writing
+00:10:26.500 these column vectors as row vectors but
+00:10:29.949 then I write a little transpose
+00:10:31.509 operation this is not implying that we
+00:10:34.420 actually want to take the transpose this
+00:10:36.339 is just a shorthand notation that
+00:10:38.560 written lets us write a column vector
+00:10:40.800 horizontally across the screen once we
+00:10:47.709 have evaluated our function at each one
+00:10:51.430 of our point X using our curve fit
+00:10:53.740 parameters we can now calculate that
+00:10:56.050 error term D and that will be the
+00:10:58.810 difference between our measured values
+00:11:01.000 and our evaluated values so MATLAB this
+00:11:04.209 is just one line of code step four and
+00:11:13.269 this is the step that seems rather
+00:11:15.459 complicated and crazy but I think you'll
+00:11:18.279 find that this isn't so crazy once we
+00:11:21.130 get to our example and implementation
+00:11:23.019 but this is all the derivatives that
+00:11:25.209 came out of the Taylor series and we
+00:11:28.569 need to populate this with numbers in
+00:11:30.819 our algorithm once we do that we have
+00:11:36.699 our Z matrix now we're ready to solve
+00:11:39.220 our matrix equation by least squares and
+00:11:42.100 calculate the column vector Delta a that
+00:11:45.370 tells us how much we need to change our
+00:11:47.800 curve fit parameters in order to get the
+00:11:50.230 values for the next iteration
+00:11:56.420 we have Delta a then we simply just
+00:11:58.820 adjust our curve fit parameters by
+00:12:01.070 adding the deltas to it and by
+00:12:04.100 calculating it this way that also gives
+00:12:06.050 us something that we can check if our
+00:12:07.639 algorithm has converged when the Delta a
+00:12:10.070 is dipped below a certain threshold we
+00:12:11.990 can say that our algorithm is finished
+00:12:17.529 so we check that and we look at the
+00:12:21.139 relative change in Delta a and we can
+00:12:23.990 look at the largest change we can add
+00:12:26.389 them all up and look at the overall
+00:12:28.190 change we can do a number of things but
+00:12:30.380 essentially when that falls below some
+00:12:33.079 tolerance that we've defined for all of
+00:12:35.329 the the curve fit parameters we can say
+00:12:38.209 their algorithm has converged here's a
+00:12:44.810 block diagram of the method and above
+00:12:47.930 the blue dashed line this is what we do
+00:12:51.170 on paper before we actually get to the
+00:12:52.970 algorithm and the first thing is
+00:12:54.519 evaluating the partial derivatives of
+00:12:56.959 our function with respect to each of our
+00:12:59.510 curve fit parameters then the first
+00:13:03.980 thing in our algorithm is to make an
+00:13:06.050 intelligent guess for our curve fit
+00:13:08.120 parameters and the more you know about
+00:13:10.130 the physics of what you're fitting to or
+00:13:11.959 the function that you're fitting to the
+00:13:13.790 better job you can do alright next step
+00:13:16.880 evaluate the function and each one of
+00:13:19.730 our values of x given the curve fit
+00:13:22.550 parameters we just made an initial guess
+00:13:24.230 for once we've evaluated that we can
+00:13:28.040 look at the difference between our
+00:13:29.390 measured values and our evaluated values
+00:13:32.420 and that difference is our error term
+00:13:35.440 then we build our z matrix now given D
+00:13:40.220 and Z we can calculate Delta a by
+00:13:44.540 following least squares once we have
+00:13:47.600 Delta a we can update the column vector
+00:13:50.180 a which are actually the curve fit
+00:13:52.610 parameters and then we can check has
+00:13:55.699 this Delta a has that fallen below some
+00:13:58.190 threshold if it has then we're finished
+00:14:01.040 if not we repeat this iterative cycle
+00:14:04.100 and slowly our perp that parameters
+00:14:07.430 should improve if the algorithm is can
+00:14:09.930 urging and this can go crazy and not
+00:14:12.120 converge some final notes on nonlinear
+00:14:19.680 regression as we presented it we really
+00:14:22.440 can fit any curve to any set of data the
+00:14:25.620 only requirement is that the first
+00:14:28.320 derivative has to exist and why is that
+00:14:30.089 because we have to populate that Big Z
+00:14:31.890 matrix which contains all of those
+00:14:34.170 derivatives that came out of a Taylor
+00:14:36.029 series I also mentioned before this
+00:14:39.300 method is rather finicky and it doesn't
+00:14:41.339 always converge and it may take several
+00:14:43.350 attempts in order to get an answer out
+00:14:45.180 of this and a lot of this goes back to
+00:14:47.700 the initial guess the better or more
+00:14:50.040 intelligent we can do job we can do it
+00:14:52.709 getting that initial guess the better
+00:14:54.120 this algorithm will work another thing
+00:14:56.880 that we could do is instead of using a
+00:15:00.690 nonlinear function like a sine or cosine
+00:15:02.100 we could put in the equation of a
+00:15:03.750 straight line and we would actually see
+00:15:06.510 that this nonlinear regression algorithm
+00:15:08.940 reduces to linear regression linear
+00:15:11.399 regression is a special case of
+00:15:13.610 nonlinear regression well there's
+00:15:20.610 nothing better than an example to see
+00:15:22.410 how all of this comes together and in
+00:15:24.720 this example I'm also providing actual
+00:15:27.209 numbers so if you implement this MATLAB
+00:15:29.880 you can compare back to this to see if
+00:15:31.709 you're getting the right answers so what
+00:15:33.930 we'll do is we'll fit a bunch of
+00:15:35.550 measurements to a Gaussian along the
+00:15:42.540 bottom those are the actual points X and
+00:15:45.000 F and I've plotted them and it's a
+00:15:47.220 smattering of points and we want to fit
+00:15:49.980 this to the Gaussian function that I'm
+00:15:51.930 showing in the upper left and if we look
+00:15:54.810 at our data we can kind of see that
+00:15:57.270 there's a Gaussian happening here but
+00:15:59.520 obviously this data is quite noisy so
+00:16:03.839 that's the set up of our problem the
+00:16:09.779 first thing we'll need to do is identify
+00:16:11.579 all of the unknown parameters what what
+00:16:14.760 parameters are we using for the curve
+00:16:16.380 fit and then later on we'll be taking
+00:16:18.480 partial derivatives with respect to each
+00:16:20.130 one of those
+00:16:21.070 but right now we just want to identify
+00:16:22.330 what those are in a case of this
+00:16:26.590 Gaussian it is simply a X naught and
+00:16:29.860 Sigma so our column vector a will
+00:16:33.940 contain the capital A the X naught and
+00:16:37.030 the Sigma those are the curve fit
+00:16:39.970 parameters in this case now we need
+00:16:48.100 we're not even in the code yet we need
+00:16:49.990 to derive expressions for the
+00:16:53.080 derivatives to populate our Z matrix so
+00:16:57.640 if we look at the first column we can
+00:16:59.770 see that we're always taking the partial
+00:17:01.690 derivative with respect to capital a
+00:17:04.060 it's just that we evaluate it at
+00:17:06.400 different points x1 x2 all the way up to
+00:17:09.550 XM so we just need to take the partial
+00:17:13.180 derivative of F with respect to a and
+00:17:16.209 when we do that we get our original
+00:17:18.099 Gaussian back divided by a so it's just
+00:17:21.099 our original function divided by a and
+00:17:23.500 we could have written it as the
+00:17:25.150 exponential function with all this stuff
+00:17:27.490 divided by a but it turns out this will
+00:17:29.800 be a more convenient form to write this
+00:17:33.040 in because we will have already
+00:17:34.810 evaluated F and we can simply just
+00:17:37.390 divide it by a we look at the second
+00:17:42.070 column here we're taking the partial
+00:17:44.470 derivative with respect to the X naught
+00:17:46.510 curve fit parameter so we work through
+00:17:49.660 that math and again where we find our
+00:17:52.180 original Gaussian back we just replace
+00:17:54.730 it with f of X and this will become a
+00:17:56.560 convenient form to write that partial
+00:17:59.320 derivative the last column is the
+00:18:03.880 partial derivative of F with respect to
+00:18:06.130 the last curve that parameter Sigma and
+00:18:08.710 you'll also see we're putting F back in
+00:18:11.320 where the we had the original
+00:18:12.690 exponential for our Gaussian and that's
+00:18:15.280 the most convenient form for this so
+00:18:19.480 we've derived the partial derivatives so
+00:18:23.200 that we can populate our Z matrix
+00:18:29.560 so putting those answers into the Z
+00:18:32.690 matrix we have this and this looks
+00:18:35.300 rather intimidating and difficult and it
+00:18:38.210 turns out the MATLAB code to do this
+00:18:40.160 will be quite simple and we're going to
+00:18:44.360 write this in a slightly different form
+00:18:46.610 we have this bolded X this bolded X will
+00:18:49.850 be a column vector of our measured
+00:18:52.100 values of X so if we apply our function
+00:18:56.120 to that column vector will get another
+00:18:58.160 column vector which is our evaluated
+00:19:00.680 function this is something we've
+00:19:01.970 calculated in a previous step so to get
+00:19:05.120 the entire first column of our Z matrix
+00:19:07.730 will just take this column vector and
+00:19:10.220 divide by a likewise over here we'll
+00:19:14.270 take that column vector we'll calculate
+00:19:16.700 this and do a point-by-point
+00:19:19.240 multiplication and get a new column in
+00:19:21.980 our Z matrix and very similar thing here
+00:19:25.760 just slightly different math in this
+00:19:27.500 term on the side and that will let us do
+00:19:30.830 this in MATLAB
+00:19:31.670 very simply as you'll see in a minute
+00:19:38.350 okay so we know everything about how to
+00:19:40.550 populate the Z matrix we're ready for
+00:19:42.290 that and now we need to think about how
+00:19:44.390 we make an intelligent initial guess
+00:19:47.140 well we know ahead of time that we're
+00:19:49.460 fitting to a Gaussian and so we can look
+00:19:52.670 at our samples and maybe look at the
+00:19:55.310 maximum value from that and say you know
+00:19:57.770 what that's probably a good first guess
+00:19:59.840 for that amplitude term a and in fact
+00:20:02.810 that's how I did it in my MATLAB code we
+00:20:09.170 need to know our first guess for X
+00:20:11.120 naught well we have our measured values
+00:20:14.840 of x over some range maybe we just
+00:20:17.990 guessed that it's at the center of that
+00:20:19.580 by taking the average maybe we look at
+00:20:22.790 this previous step where we found the
+00:20:25.160 maximum value and figure out where that
+00:20:27.080 happened and wherever that happened we
+00:20:29.360 could make that our value for x naught
+00:20:31.700 that's a possibility as well that last
+00:20:37.940 we need to give a guess for Sigma the
+00:20:39.890 width now
+00:20:40.880 we can maybe do some analysis on our
+00:20:42.500 samples and make a guess at that instead
+00:20:44.990 what I did is I looked at the entire
+00:20:46.490 span of x-values and said that Sigma
+00:20:49.700 will be half of that and that seemed
+00:20:52.310 like a good place to start so here's my
+00:20:55.970 MATLAB code for doing that
+00:20:57.470 my first guess for a is just a maximum
+00:21:00.350 value of my measured values of F the the
+00:21:04.700 offset or the center position of the
+00:21:06.530 Gaussian I just took the average value
+00:21:08.630 of my measured x-values and for the
+00:21:13.340 width the Sigma parameter the standard
+00:21:16.220 deviation of the Gaussian if you will I
+00:21:17.990 looked at the total span and X and just
+00:21:21.230 set it to half of that now we enter the
+00:21:30.290 main loop step a or the first thing we
+00:21:33.500 do in our main loop is evaluate the
+00:21:35.660 function and all of our values of X
+00:21:38.260 using our current curve fit parameters
+00:21:41.600 though ax naught and Sigma so we can do
+00:21:45.290 this that's just one line of code in
+00:21:46.910 MATLAB because a X naught and an X s
+00:21:50.930 sorry is your single numbers X M is a
+00:21:54.860 column vector of all of our different
+00:21:56.630 values of x so f comes out being a
+00:21:59.960 column vector of our function evaluated
+00:22:01.940 at each each value in that column vector
+00:22:05.900 X M so running over ten iterations
+00:22:08.410 here's what the function value looks
+00:22:10.700 like for each of those iterations so our
+00:22:12.770 first iteration is the first column
+00:22:14.380 second iteration the second column third
+00:22:16.520 fourth and so on so one line of code to
+00:22:19.760 evaluate the function at each value of x
+00:22:26.980 now that we know that value of x that's
+00:22:30.710 stored in column vector F and an input
+00:22:33.350 to our algorithm are the measured values
+00:22:36.110 of f of Y what we're calling those Y and
+00:22:39.110 the difference between those is our
+00:22:41.870 error and so we look at that we
+00:22:44.420 calculate our error function it's the
+00:22:46.280 difference between our measured values
+00:22:47.810 and our current fit and at the bottom
+00:22:50.810 I'm showing values in the column vector
+00:22:53.150 D for every
+00:22:54.550 in the loop up to ten iterations third
+00:23:02.410 step in the main loop is building this Z
+00:23:05.400 matrix which seems daunting but that
+00:23:08.770 MATLAB code I'm showing any upper right
+00:23:10.540 that's it that's what builds the Z
+00:23:12.370 matrix so remember the first column in
+00:23:16.060 our Z matrix was our function evaluated
+00:23:19.660 all the values of X which we did a
+00:23:21.760 couple steps ago we just divide those by
+00:23:24.340 a so over in MATLAB z1 becomes a column
+00:23:28.240 vector and it's just our evaluated
+00:23:31.000 values divided by a little Z 2 is our
+00:23:35.740 second column in Z and look at the
+00:23:39.640 relation between our expression and over
+00:23:42.670 here so one line of code to evaluate
+00:23:46.240 that column vector Z 3 very similar
+00:23:50.470 thing we calculate the third column in X
+00:23:53.500 and this is why when we found the
+00:23:56.020 exponential in our derivative we
+00:23:58.540 replaced it just with F because we don't
+00:24:01.120 have to be calculating an exponential
+00:24:02.920 now we just fill in that column vector
+00:24:05.290 of the evaluated values of F into those
+00:24:08.350 equations that we don't have to
+00:24:09.490 recalculate that it's a lot faster again
+00:24:11.860 put yourself in the mentality of every
+00:24:14.410 time you evaluate that function maybe it
+00:24:16.090 takes a long time so once we calculate
+00:24:19.390 those three column vectors we stick it
+00:24:21.820 into Z and get our big matrix Z so
+00:24:25.210 here's what Z looks like on the first
+00:24:26.620 iteration not enough room to show all
+00:24:28.720 the iterations but here's what Z looks
+00:24:31.000 like at the 10th iteration
+00:24:42.560 well now the big ugly step is done
+00:24:44.850 building the Z matrix we have D our
+00:24:47.730 error column vector and our square
+00:24:50.070 matrix Z sorry that's not square it's
+00:24:52.440 actually a rectangular matrix and we
+00:24:54.570 need to solve this in the sense of least
+00:24:56.340 squares to get the Delta a column vector
+00:24:59.370 that tells us how much to change our
+00:25:02.220 curve fit parameters so solving by least
+00:25:04.740 squares just one simple line of MATLAB
+00:25:07.290 code and it gives us a column vector of
+00:25:09.870 how much to change the curve fit
+00:25:12.000 parameters by to get to the next
+00:25:13.740 iteration and here's what Delta a looks
+00:25:15.990 like for ten iterations and we notice
+00:25:19.500 that those changes are getting smaller
+00:25:21.660 and smaller and that's suggesting that
+00:25:23.490 our algorithm is converging once we know
+00:25:31.740 Delta a we can update our value of a
+00:25:35.370 simply by adding the Delta a to a now
+00:25:40.020 for me rather than storing our curve fit
+00:25:43.140 parameters in a column vector I like to
+00:25:45.600 store them separately because they're
+00:25:47.070 used separately so that means I update
+00:25:49.560 them separately and I need to refer to
+00:25:51.930 the specific elements in this column
+00:25:53.760 vector da separately and so now I'm
+00:25:57.780 showing if I were to put these in a
+00:25:59.880 column vector what the curve fit
+00:26:01.800 parameters are over ten iterations and
+00:26:04.530 what we can see is that the values are
+00:26:07.250 starting to converge to and and looking
+00:26:10.140 the same as we go iteration to iteration
+00:26:11.880 so that's also telling us that our
+00:26:14.340 algorithm is converging very last thing
+00:26:21.570 we look at that da and we take that
+00:26:24.600 column vector da will divide by the
+00:26:26.940 values so we're doing a point-by-point
+00:26:29.160 division to get the relative changes of
+00:26:32.610 each of our curve fit parameters we want
+00:26:34.680 to ignore signs we take the absolute
+00:26:36.000 value and I chose to look at the maximum
+00:26:38.490 one and make that the error and so when
+00:26:42.330 that error dips below a certain
+00:26:43.770 threshold we can say that we're done and
+00:26:46.530 in the bottom I'm showing that er are
+00:26:49.050 over ten iterations we can see that
+00:26:51.690 number getting smaller and smaller and
+00:26:53.070 smaller and
+00:26:55.020 indicates that our algorithm is
+00:26:56.490 converging at this point our algorithm
+00:27:03.270 is done and we can say those are the
+00:27:06.060 curve fit parameters so we can throw
+00:27:08.070 those into our equation of a Gaussian
+00:27:09.660 and end up here and that lets us plot a
+00:27:12.540 nice smooth line that goes through our
+00:27:15.240 data points and we can see that that is
+00:27:18.510 the Gaussian that those data points are
+00:27:21.540 representing as best as we can
+00:27:23.040 extrapolate in the presence of noise in
+00:27:25.650 those samples and that's it that is
+00:27:29.040 nonlinear regression here's a
+00:27:35.100 visualization of nonlinear regression
+00:27:36.720 happening over the first 10 iterations
+00:27:39.720 and you can see it getting better and
+00:27:42.300 better and better and it may jump around
+00:27:44.130 a little bit at first but it will start
+00:27:46.530 to converge to the correct answer

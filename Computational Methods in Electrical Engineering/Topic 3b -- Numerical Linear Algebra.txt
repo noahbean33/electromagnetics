@@ -1,0 +1,848 @@
+# tactiq.io free youtube transcript
+# Topic 3b -- Numerical Linear Algebra
+# https://www.youtube.com/watch/KtLLeifUJR0
+
+00:00:01.050 this is topic 3b in computational
+00:00:04.540 methods and electrical engineering the
+00:00:06.220 name of this topic is numerical linear
+00:00:08.170 algebra the purpose of this lecture is
+00:00:11.740 not to present a comprehensive treatise
+00:00:14.530 on numerical linear algebra but instead
+00:00:17.980 just to give you a small taste of what
+00:00:21.190 is underneath the hood of all of these
+00:00:23.080 different algorithms that MATLAB is
+00:00:25.360 running or other types of numerical
+00:00:27.789 packages primarily we'll be talking
+00:00:30.609 about solving matrix problems like ax
+00:00:33.579 equals B or calculating matrix inverses
+00:00:36.600 because those tend to be the fundamental
+00:00:39.249 building blocks of more advanced
+00:00:41.409 algorithms roughly we can divide these
+00:00:47.170 methods into two different parts the
+00:00:50.769 direct solution methods and the
+00:00:53.170 iterative solution methods in the direct
+00:00:56.379 solution methods we set up a loop and we
+00:00:59.019 ramp through that loop and in exactly
+00:01:00.999 let's say a hundred steps we have our
+00:01:02.619 answer
+00:01:03.219 where as an iterative algorithm we
+00:01:06.970 probably make a guess at the answer and
+00:01:09.040 then we have another loop but we
+00:01:12.330 successively improve on that until the
+00:01:15.880 changes in that answer fall below a
+00:01:17.920 certain threshold and then we say we've
+00:01:19.810 converged on the answer and there's
+00:01:22.360 always the chance that the iterative
+00:01:23.710 methods do not converge a lot of people
+00:01:26.920 tend to prefer those four very large
+00:01:28.300 matrices and say that they're more
+00:01:30.130 accurate and can get to the answer
+00:01:31.420 faster however if you have poorly
+00:01:34.630 conditioned matrices the direct solution
+00:01:36.640 methods are much more robust albeit they
+00:01:39.640 can be slower when you have very very
+00:01:41.350 large matrices and last we'll generalize
+00:01:45.520 all these algorithms for calculating
+00:01:47.170 matrix inverses our first method is
+00:01:52.300 called naive Gauss elimination and it is
+00:01:55.150 naive in the sense that we are about to
+00:01:57.640 implement the simplest and most
+00:01:59.400 brute-force way of solving a matrix
+00:02:01.870 equation and there are some problems
+00:02:04.150 that can arise we won't worry about them
+00:02:07.240 we'll just pretend like they're not even
+00:02:08.709 going to be problems they're easily
+00:02:10.840 fixable but when we don't fix them we
+00:02:13.030 just call
+00:02:13.510 naive Gauss elimination our goal with
+00:02:18.579 naive Gauss elimination is to solve the
+00:02:21.220 problem ax equals B and as I mentioned
+00:02:24.610 there are some problems that can arise
+00:02:25.780 it's fixable with a technique called
+00:02:27.879 pivoting I'll mention it later on when
+00:02:30.760 when I can point out that that happens
+00:02:32.620 but we won't worry about it in this
+00:02:34.480 algorithm we're just implementing the
+00:02:35.920 naive version of Gauss elimination so we
+00:02:42.489 have to start off with a matrix problem
+00:02:44.319 here I'm just showing three equations
+00:02:46.780 with three unknowns put into matrix form
+00:02:49.269 but you can generalize what we're going
+00:02:51.310 to do to any matrix size so for
+00:02:53.799 illustration purposes we're starting
+00:02:55.420 here with an ax equals B problem three
+00:02:58.329 unknowns our next step what we would
+00:03:04.510 like to do is eliminate references to
+00:03:07.930 the unknown x1 from equations two and
+00:03:11.859 three which will be in rows two and
+00:03:13.810 three so we want to somehow eliminate
+00:03:16.989 this a21 and a31 we will do that by
+00:03:22.410 subtracting Row one from rows two and
+00:03:26.919 three however we have to scale it in a
+00:03:29.620 way that will give us a zero in the
+00:03:31.959 positions for a 2 1 and a 3 1 so I have
+00:03:37.239 here for Row two we will calculate a new
+00:03:39.760 Row two and that will be the old Row 2
+00:03:42.790 minus Row 1 scaled by a to 1 divided by
+00:03:49.930 a 1 1 when we do this scaling and then
+00:03:53.980 the subtraction we're guaranteed to get
+00:03:56.530 a 0 in this a 2 1 position then for Row
+00:04:01.720 3 we do a very similar thing we take the
+00:04:03.909 old Row 3 and subtract Row 1
+00:04:06.970 now however scaled by a 3 1 over a 1 1
+00:04:11.379 and that's what guarantees that we get a
+00:04:13.750 0 in the a 3 1 position so if we were to
+00:04:18.820 be very brief in our language we would
+00:04:20.440 just say we eliminate X 1 from rows 2 &amp;
+00:04:23.740 3
+00:04:33.680 the next thing we would like to do is
+00:04:36.120 now eliminate any reference of x2 from
+00:04:40.560 Row three in other words we would like
+00:04:43.230 to get a zero in the a3 to position and
+00:04:46.890 we'll do this using the same technique
+00:04:49.320 we did on the previous slide we will
+00:04:51.300 take the old Row 3 and now subtract Row
+00:04:55.140 two scaled by a 3-2 / a2 2 and the prime
+00:05:00.930 superscript on a is indicating that
+00:05:03.810 those are our new values of a 3-2 and a2
+00:05:07.770 2 that we arrived on the previous slide
+00:05:11.000 at this point we will have a 0 in the a3
+00:05:15.300 2 position notice now our matrix where
+00:05:20.640 was the a matrix is now an upper
+00:05:23.220 triangular matrix we've mentioned this
+00:05:26.250 before that when we have a triangular
+00:05:28.230 matrix we're looking at a matrix that is
+00:05:30.210 almost solved and in fact what you'll
+00:05:33.870 see when we calculate X 3 X 2 X 1 from
+00:05:36.630 this from this point it's very very fast
+00:05:39.480 and simple so onto the next step with
+00:05:46.950 this upper triangular matrix if you look
+00:05:49.290 at the equation on the very bottom row
+00:05:52.020 that is easily solved for X 3 X 3 is now
+00:05:55.740 just b3 over a 3 3 and the double prime
+00:06:00.620 superscript is to indicate those are our
+00:06:03.030 most recent values of those that were
+00:06:05.910 calculated on the previous slide so
+00:06:08.040 that's trivial to do then once we have a
+00:06:15.240 3 now we can go to the second equation
+00:06:18.450 and easily calculate x2 after that we
+00:06:23.250 now have values for X 3 and X 2 we can
+00:06:27.150 then go back to the first equation and
+00:06:29.040 calculate X 1 this process is called
+00:06:32.160 back substitution and it's very easy
+00:06:34.500 once you have an upper triangular matrix
+00:06:40.620 in this slide this is dedicated to our
+00:06:44.439 observation that triangular matrices are
+00:06:47.349 almost solved the majority of the work
+00:06:50.169 and solving ax B is in the forward
+00:06:52.719 substitution process and that was gives
+00:06:55.689 us these this triangular matrix but once
+00:06:57.849 we have that it's very fast and almost
+00:07:00.189 trivial to solve and this is why
+00:07:02.590 triangular matrices upper and lower
+00:07:04.629 triangular matrices find their way into
+00:07:07.539 so many linear algebra algorithms
+00:07:09.250 because they're so rapid to solve and
+00:07:11.590 you'll see that in this lecture I also
+00:07:18.219 wanted to point out while we were doing
+00:07:21.400 the forward substitution part we had to
+00:07:24.460 scale the rows before we did
+00:07:27.099 subtractions and if you noticed those
+00:07:29.770 scales were highlighted in blue or made
+00:07:33.099 of blue color and they're repeated here
+00:07:35.080 I just want to point these out so that
+00:07:37.659 you can remember where they came from
+00:07:39.000 because they'll come up again when we
+00:07:41.110 talk about Lu decomposition our next
+00:07:46.990 method is the Gauss Jordan method this
+00:07:49.300 is an excellent method for solving ax
+00:07:51.699 equals B by hand or calculating matrix
+00:07:55.180 inverses by hand so those are really the
+00:08:01.389 two goals of this method solving ax
+00:08:03.789 equals B and calculating matrix inverses
+00:08:06.180 you'll find it very similar to Gauss
+00:08:10.029 elimination we just talked about with
+00:08:12.250 one difference in Gauss elimination we
+00:08:14.740 were forming an upper triangular matrix
+00:08:17.050 we'll do the same types of row
+00:08:20.020 manipulations and subtracting one row
+00:08:22.089 from the next but our goal will be to
+00:08:24.219 construct an identity matrix instead of
+00:08:27.099 a triangular matrix and you'll see that
+00:08:29.770 as we step through the algorithm so step
+00:08:35.049 one we start with our matrix equation
+00:08:37.958 again I'll only be doing a three by
+00:08:39.909 three matrix here but this can be
+00:08:41.409 generalized to matrices of any size so
+00:08:44.320 this is our starting point
+00:08:49.030 once we enter the algorithm proper we
+00:08:51.100 have our matrix equation ax equals B
+00:08:53.910 what we want to do is form what is
+00:08:56.260 called an Augmented matrix and that's
+00:08:58.840 what's being shown at the bottom of this
+00:09:00.610 slide and it is a combination of the a
+00:09:02.800 matrix on the left and the B column
+00:09:05.890 vector on the right it's we can think of
+00:09:09.100 it as a block matrix and our goal here
+00:09:12.400 now is to do row manipulations until
+00:09:15.490 where we see the a matrix presently we
+00:09:19.300 do our row operations until we get an
+00:09:21.730 identity matrix on the left and when
+00:09:24.130 that happens this last column will
+00:09:26.740 actually contain our answer the X 1 X 2
+00:09:29.380 and X 3 but for right now we just have
+00:09:31.750 this Augmented matrix and we go on to
+00:09:34.060 the next step this is a methodical
+00:09:42.640 approach so we set up a loop that will
+00:09:45.790 go Row 1 Row 2 Row 3 through all of the
+00:09:48.940 rows that you might have and once we're
+00:09:51.520 inside this main loop the first step we
+00:09:54.070 want to do whichever row we're in we
+00:09:57.010 want to normalize that row by dividing
+00:09:59.500 by the diagonal element since we're in
+00:10:02.020 the first row that diagonal element is a
+00:10:04.660 1 1 which means we divide this entire
+00:10:07.960 row by a 1 1 and that gives us a 1 in
+00:10:12.640 this position and of course everything
+00:10:14.680 else is just divided by a 1 1 and it
+00:10:17.290 ends up being whatever numbers we end up
+00:10:19.480 with there so rather than keep writing
+00:10:22.900 all of those parameters divided by a 1 1
+00:10:25.740 we're just going to calculate a new a 1
+00:10:28.960 to a new a 1 3 and a new B 1 and put the
+00:10:32.710 prime superscript on those to remind us
+00:10:35.650 that are those are not the original a 1
+00:10:37.870 2 A 1 3 and B ones but they have
+00:10:40.540 information absorbed into in this case
+00:10:42.640 they've been divided by a 1 this step
+00:10:48.820 mirror is very much what we did in Gauss
+00:10:50.470 elimination our goal here is to
+00:10:52.930 eliminate reference to X 1 from all of
+00:10:56.200 the other rows so we're going to set up
+00:10:58.210 a loop that iterates through all of the
+00:10:59.980 other rows and in this case it's rows 2
+00:11:02.860 and threes and our goal is to subtract
+00:11:05.770 Row one scaled by something such that we
+00:11:09.430 will get zeros in the a21 and a31
+00:11:12.690 position when we do that we get a new
+00:11:16.540 augmented matrix and you'll notice that
+00:11:19.210 I'm using prime superscripts to indicate
+00:11:21.610 that we now have new values there after
+00:11:24.430 doing this operation and so what you'll
+00:11:26.950 see for the new Row two we will take the
+00:11:29.590 old Row 2 and subtract Row 1 scaled by
+00:11:34.030 an a21
+00:11:34.900 and that's what guarantees we have a 0
+00:11:37.060 in the a 2 position after that
+00:11:39.250 subtraction same thing for Row 3 it's
+00:11:42.190 the old Row 3 minus Row 1 however the
+00:11:45.250 Row 1 is now scaled by an 8-3 1 such
+00:11:48.670 that after we subtract we get a 0 in
+00:11:50.920 that a 3 1 position
+00:12:03.730 the next step the main loop in our
+00:12:07.490 program that is going Row 1 2 &amp; 3 now
+00:12:10.940 we're in the second row and so we
+00:12:13.160 normalize that row by divided by the
+00:12:15.470 diagonal element in this case our
+00:12:18.230 diagonal element is a 2 2 Prime and the
+00:12:22.040 prime again indicates that that is not
+00:12:23.930 the original a 2 2 there's been some
+00:12:26.570 numbers absorbed into that so we divide
+00:12:28.850 the entire row by a 2 2 and that gives
+00:12:32.930 us a 1 in the a 2 2 position now we're
+00:12:37.250 ready to go on to the next step now we
+00:12:46.610 enter our second loop which is inside
+00:12:48.710 the first loop and the second loop
+00:12:50.780 iterates through all of the other rows
+00:12:52.610 and in this case that is rows 1 &amp; 3 the
+00:12:56.030 goal is to eliminate reference to X 2
+00:12:59.470 from equations 1 &amp; 3 which means we want
+00:13:03.980 to get a 0 in the a 1/2 position in the
+00:13:07.370 a 3 2 position we will do that by
+00:13:10.610 subtracting Row two from rows 1 &amp; 3 but
+00:13:14.960 we have to scale it by the right
+00:13:16.340 constant to ensure that we get zeros
+00:13:18.920 into a 1 2 and a 3 2 position so Row 1
+00:13:22.940 is the old Row 1 minus Rho 2 scaled by
+00:13:28.820 the a 1/2 constant that ensures we'll
+00:13:32.000 get a 0 in the a1 to position Row 3 is
+00:13:37.250 the old Row 3 also minus Row 2 now
+00:13:41.450 however scaled by a 3 2 and that scaling
+00:13:45.350 is what guarantees we get a 0 in the a 3
+00:13:48.470 2 position now we have our new augmented
+00:13:52.370 matrix and you can start to see that the
+00:13:55.100 left side of this is starting to look
+00:13:56.810 like the identity matrix and we're
+00:13:59.720 always doing this in two steps we
+00:14:01.070 normalize the row we subtract that
+00:14:03.440 parameter from all the other rows and we
+00:14:05.300 keep doing this
+00:14:30.170 now we're on to the third row and so we
+00:14:35.040 normalize the third row by dividing by
+00:14:37.500 the diagonal element in this case it's a
+00:14:39.840 three three double Prime
+00:14:41.640 when we divide all terms by a 3 3 double
+00:14:44.370 Prime
+00:14:45.180 we get a 1 in the diagonal position now
+00:14:55.260 our goal is to iterate through all the
+00:14:58.020 other rows in this case that is rows 1 &amp;
+00:15:01.230 2 to eliminate reference 2x3 from
+00:15:05.010 equations 1 &amp; 2 which is in rows 1 &amp; 2
+00:15:07.560 so we do this for Row 1 we will take the
+00:15:11.490 old Row 1 and subtract Row 3 however
+00:15:15.750 scaled by this constant a 1 3 and that's
+00:15:18.930 what guarantees we'll have a 0 in the a
+00:15:21.210 1 3 position our new Row 2 will be the
+00:15:26.430 old Row 2 minus Row 3 scaled by the a 2
+00:15:31.140 3 that's what guarantees we'll have a 0
+00:15:34.500 in the a 2 3 position now you'll notice
+00:15:38.190 we have the identity matrix in the left
+00:15:41.040 part of the Augmented matrix
+00:15:47.100 so the last part of this algorithm is to
+00:15:50.050 extract that very last column of the
+00:15:53.500 Augmented matrix and this is our answer
+00:15:56.830 it's very important to do this
+00:15:58.840 extraction don't do the Gauss Jordan
+00:16:01.480 method with your Augmented matrix at the
+00:16:03.339 very end circle the Augmented matrix
+00:16:05.860 because that is not the answer the
+00:16:08.320 answer is hiding in that Augmented
+00:16:10.029 matrix and in this case it's in that
+00:16:11.770 last column so when you pull it out now
+00:16:14.860 you have your answer let's look at an
+00:16:21.760 example with actual numbers so we're
+00:16:23.890 trying to solve ax equals B we want to
+00:16:25.930 find X and so we start our algorithm
+00:16:28.779 with an A and a B so remember we have
+00:16:34.779 two nested loops this first loop will go
+00:16:38.230 rows 1 2 3 the second loop inside of
+00:16:42.160 that iterates through all of the other
+00:16:43.660 rows so here what we do we form the
+00:16:47.560 Augmented matrix you'll notice a is that
+00:16:49.750 the left B is on the right and now we
+00:16:51.820 can start these loops and it starts by
+00:16:55.960 normalizing Row 1 by dividing by the
+00:16:58.870 diagonal element in this case by
+00:17:01.360 coincidence the diagonal element was a 1
+00:17:03.610 so in fact the first row doesn't change
+00:17:06.189 at all
+00:17:08.310 we then iterate through rows 2 &amp; 3 and
+00:17:12.270 subtract Row 1 from them however we're
+00:17:15.099 doing the scaling in a way that gives us
+00:17:17.679 the zeros in these two positions and
+00:17:21.130 that's where X 1 will be referenced by
+00:17:23.380 rows 2 &amp; 3 that we wanted to get rid of
+00:17:28.349 now we move on to the next row we
+00:17:30.940 normalize Row 2 by dividing by the
+00:17:33.610 diagonal element that gives us a 1 in
+00:17:36.070 the diagonal position then we start our
+00:17:39.429 next loop that goes through the other
+00:17:40.840 rows and we subtract Row two from rows 1
+00:17:44.950 &amp; 3 in a way that gives us zeros in
+00:17:48.220 these two positions
+00:17:54.660 now we move on to Row 3 again dividing
+00:17:57.540 by the diagonal element and we enter our
+00:18:01.560 other loop which removes reference to X
+00:18:04.020 3 from rows 1 &amp; 2 and now we see that we
+00:18:08.040 have the identity matrix on the left so
+00:18:10.590 that must be our answer
+00:18:12.330 hiding on the right of the Augmented
+00:18:14.370 matrix and remember we're not done here
+00:18:16.650 we can't circle the Augmented matrix as
+00:18:19.260 our answer we must extract the answer
+00:18:22.080 out and then we have our answer Oh 2 4
+00:18:25.800 in this case is the answer to so X 1
+00:18:27.690 will be 0 X 2 would be 2 and X 3 would
+00:18:31.860 be 4 here's a written version of the
+00:18:39.600 algorithm so step 1 we defined a and B
+00:18:42.410 step 2 we constructed the Augmented
+00:18:45.180 matrix at this point we entered into our
+00:18:48.360 two nested loops the very first one will
+00:18:50.610 iterate through the rows and in our
+00:18:53.100 matrix only had 3 rows so step 3 would
+00:18:55.380 be a for M equals 1 2 3 the first step
+00:19:00.210 in that was normalizing the Dagda row by
+00:19:03.510 divided by the diagonal element then our
+00:19:06.360 next loop started which iterated through
+00:19:07.950 all the other rows and this is where
+00:19:10.920 we've subtracted to put zeros above and
+00:19:14.280 below where we had a 1 in the diagonal
+00:19:16.530 position and we iterate through all the
+00:19:19.080 rows when that is done the last column
+00:19:22.620 in our Augmented matrix contains our
+00:19:24.600 answer we have to subtract that out and
+00:19:27.450 that's the gauss-jordan method we can
+00:19:33.780 generalize this method instead of
+00:19:35.700 solving ax equals B let's use it to find
+00:19:38.880 the inverse of a matrix and we'll talk a
+00:19:41.160 little bit more about this at the end of
+00:19:43.170 this lecture but now we only have to
+00:19:46.260 define matrix a we don't need B anymore
+00:19:48.690 because we're not finding an answer X we
+00:19:51.060 just want to invert a so we form an
+00:19:54.210 Augmented matrix and on the left is a
+00:19:56.430 just like it always was but on the right
+00:19:59.280 we're going to insert an identity matrix
+00:20:01.470 that this that is the same size as a
+00:20:04.790 then we do our Gauss Jordan stuff we
+00:20:07.410 iterate through all the rows
+00:20:08.490 we have our nested loops everything
+00:20:10.050 looks the same and we do that until
+00:20:12.720 where the a matrix was originally
+00:20:14.490 inserted will look like the identity
+00:20:16.710 matrix and now what's on the right-hand
+00:20:19.440 side of the matrix is the inverse of a
+00:20:21.900 and we're not done we have to extract
+00:20:24.300 that out of the Augmented matrix and
+00:20:26.610 then we'll have our matrix inverse so
+00:20:29.550 it's probably the best method I know of
+00:20:31.410 for calculating matrix inverses by hand
+00:20:36.410 our next method is called Lu
+00:20:38.820 decomposition and recognizing that
+00:20:41.340 triangular matrices are very rapid to
+00:20:44.160 solve the ability to decompose a matrix
+00:20:47.010 into lower and upper triangular matrix
+00:20:49.530 is a fundamental building block of many
+00:20:51.420 many numerical algorithms the first step
+00:20:57.450 in Lu decomposition is calculating the
+00:21:01.290 upper triangular matrix so we're going
+00:21:03.929 to start with our standard 3x3 matrix
+00:21:06.450 that we've been working with and if you
+00:21:08.610 remember back to when we were doing
+00:21:10.260 Gauss elimination we started with this
+00:21:12.270 we did a forward substitution procedure
+00:21:15.960 and we ended up with a matrix on the
+00:21:18.540 left that was upper triangular that is
+00:21:21.510 what we do to come up with this upper
+00:21:24.540 triangular matrix so our a matrix has
+00:21:27.960 changed it's now are u matrix are upper
+00:21:30.660 triangular matrix and what was our B
+00:21:33.360 column vector there's also new numbers
+00:21:35.640 there that we will call D our next step
+00:21:42.090 is to determine the lower triangular
+00:21:44.040 matrix L and I think this is a pretty
+00:21:45.990 interesting thing it turns out there is
+00:21:49.710 a lower triangular matrix we can pre
+00:21:52.830 multiply this upper triangular matrix
+00:21:55.200 and get our a matrix back and even more
+00:21:58.470 interesting is what's inside this L
+00:22:00.780 matrix it has zeros in the entire upper
+00:22:04.530 triangular part it has ones going down
+00:22:08.040 the diagonal and this lower triangular
+00:22:11.400 part are those L terms that I
+00:22:13.650 highlighted when we are talking about
+00:22:15.090 Gauss elimination so in fact there
+00:22:18.360 really isn't even any extra work we have
+00:22:20.309 to do to construct our L may
+00:22:22.020 tricks those L terms fall out of the
+00:22:24.210 process when we're constructing the
+00:22:26.640 upper triangular matrix so in a sense it
+00:22:29.250 comes out of the process for free at
+00:22:34.620 this point we want to start with our
+00:22:37.680 original ax equals B equation I'm then
+00:22:41.670 going to take the B column vector and
+00:22:43.890 move it over to the left side of the
+00:22:45.600 equal sign so we end up here at this
+00:22:48.990 point I'm replacing a with L times U the
+00:22:55.230 next step is to factor this l term out
+00:22:58.290 from both terms in this equation so i
+00:23:00.810 factor out an L and what that means is I
+00:23:03.330 need an L inverse pre multiplying B at
+00:23:07.950 this point I can recognize that this L
+00:23:10.410 inverse B is actually our d column
+00:23:13.710 vector from the previous slide so we put
+00:23:16.410 our d column vector here so here is the
+00:23:25.050 Lu decomposition algorithm the first
+00:23:27.960 thing we do in step one is decompose a
+00:23:29.820 into L and U and we use Gauss
+00:23:32.430 elimination to construct that upper
+00:23:34.920 triangular matrix
+00:23:36.230 during those calculations we're storing
+00:23:39.660 these L terms and in fact from there we
+00:23:43.200 can build directly the lower triangular
+00:23:45.270 matrix just from those L terms now a
+00:23:48.690 neat thing is done to make this a little
+00:23:50.460 bit more efficient remember in the L
+00:23:52.380 matrix
+00:23:53.190 it had ones going down the diagonal and
+00:23:55.740 zeros in the upper triangular part of
+00:23:58.680 that so in a sense we already know those
+00:24:01.230 numbers we don't have to store them so
+00:24:03.540 instead we can just put in the numbers
+00:24:05.940 for the upper triangular matrix and the
+00:24:08.850 upper triangular matrix had all zeros in
+00:24:11.250 the lower triangular so we might as well
+00:24:13.350 just store the L terms there so in fact
+00:24:16.080 it's a very efficient thing to do is
+00:24:17.700 just store L&amp;U all in the same matrix
+00:24:20.370 but recognize that they are actually
+00:24:22.650 separate entities
+00:24:25.160 now if we want to solve ax equals B
+00:24:27.500 given Ln U it's a two-step process that
+00:24:30.740 are very very fast and efficient the
+00:24:32.660 first is we're solving the LD equals B
+00:24:35.240 and since we have a triangular matrix
+00:24:37.490 that's very very fast once we have D we
+00:24:42.140 can then use it to solve UX equals D 4x
+00:24:45.260 which is our original unknown and that
+00:24:47.810 is also very very fast that completes
+00:24:53.810 our discussion of direct solvers I now
+00:24:57.470 want to talk about iterative solvers and
+00:24:59.720 the first one we'll talk about is called
+00:25:01.310 the Jacobi method so as I mentioned
+00:25:09.020 before we tend to be interested in
+00:25:11.300 iterative solvers when the matrix size
+00:25:13.280 is very very large or perhaps when we
+00:25:16.880 have a pretty good idea of what the
+00:25:18.620 answer is and we can make a very good
+00:25:20.570 guess in which case if we have a good
+00:25:23.060 guess it will take very few iterations
+00:25:24.920 to refine that answer and get it down to
+00:25:28.250 whatever accuracy that we want but this
+00:25:30.500 is an iterative algorithm and in general
+00:25:32.900 an all iterative algorithms for solving
+00:25:34.580 ax equals B we'll start off somehow with
+00:25:37.220 an initial guess we'll calculate some
+00:25:39.980 sort of adjustment that we have to make
+00:25:41.810 to X then of course we make the
+00:25:44.450 adjustment to X and we check if that
+00:25:46.580 adjustment is sufficiently small that's
+00:25:48.740 10 to the minus 10 or something like
+00:25:50.960 that we can say you know what we're
+00:25:52.520 finished the details and that certainly
+00:25:55.130 changes from algorithm to algorithm but
+00:25:57.110 all iterative algorithms have this basic
+00:25:59.450 flow to them one thing we need to be
+00:26:05.480 careful of with the Jacobi method is
+00:26:07.640 that the the matrix we're solving the a
+00:26:10.130 matrix needs to be what is called
+00:26:11.960 diagonally dominant and the algorithm is
+00:26:15.050 very very picky about this so when you
+00:26:17.870 write the Jacobi method highly
+00:26:19.970 reccommend and the start of your code
+00:26:22.090 write in a little script to check and
+00:26:25.520 make sure it's diagonally dominant and
+00:26:27.440 if not return an error message that will
+00:26:29.990 be much more meaningful than when your
+00:26:32.360 code errors out because it was not
+00:26:34.580 dominant and then it's harder to find so
+00:26:40.370 what do we mean by diagonally dominant
+00:26:43.960 we need to make sure that each row is
+00:26:47.899 diagonally dominant and the way we do
+00:26:49.820 that we ignore signs we just take the
+00:26:51.710 absolute value of all the numbers and we
+00:26:54.230 look at the diagonal element and then we
+00:26:56.840 look at the sum of all the other numbers
+00:26:59.120 in that row except the diagonal element
+00:27:02.179 we need to make sure the diagonal is
+00:27:04.309 greater than the sum of all the other
+00:27:06.380 numbers in the row and we have to make
+00:27:08.419 sure that's satisfied for all rows in
+00:27:10.760 the matrix when that's the case we call
+00:27:13.279 it diagonally dominant so let's go
+00:27:15.769 through a bunch of examples we have a
+00:27:19.490 little two-by-two matrix is this
+00:27:22.480 diagonally dominant it turns out this is
+00:27:30.019 not diagonally dominant if we look in
+00:27:32.600 that first row the diagonal element is a
+00:27:35.360 1 if we sum all of the other elements in
+00:27:39.409 that row in this case there's only one
+00:27:41.000 other one it's a 2
+00:27:42.289 well that too happens to be greater than
+00:27:44.360 1 so the diagonal here is not dominant
+00:27:47.350 the second row that satisfies being
+00:27:50.240 diagonally dominant but all rows have to
+00:27:52.399 satisfy this so that matrix is not
+00:27:55.070 diagonally dominant
+00:27:58.389 here's another matrix and the question
+00:28:01.850 is is this matrix diagonally dominant
+00:28:12.809 this is also not diagonally dominant the
+00:28:16.320 first row and the third rows are
+00:28:18.539 diagonally dominant however look at the
+00:28:21.149 second row the diagonal element is a 1
+00:28:23.639 and if we sum all of the other elements
+00:28:27.389 in that row we get a 1 in which case
+00:28:29.970 that sum is equal to the diagonal
+00:28:32.610 element and that's not sufficient to
+00:28:34.499 call your matrix diagonally dominant so
+00:28:38.220 this matrix is not diagonally dominant
+00:28:42.379 next example is this matrix diagonally
+00:28:46.529 dominant it turns out yes we have some
+00:28:58.679 negative signs in here but since we're
+00:29:00.749 taking the absolute value of all of the
+00:29:03.029 arguments or elements in the matrix we
+00:29:04.799 ignore that we can pretend that they're
+00:29:06.149 all just positive numbers and the first
+00:29:08.669 row we have a for the sum of the other
+00:29:11.009 elements is 3 4 is greater than 3 in the
+00:29:15.720 second row we have a 3 in the diagonal
+00:29:17.999 position if we sum all the other
+00:29:20.369 elements we get 2 and 3 is certainly
+00:29:22.740 greater than 2 and in the last row we
+00:29:25.139 have an 8 in the diagonal position and
+00:29:28.049 the sum of all the other numbers is 5 8
+00:29:31.019 is certainly bigger than 5 so we have
+00:29:33.090 another diagonally dominant matrix last
+00:29:39.960 example is this matrix diagonally
+00:29:42.899 dominant and the answer is no and in
+00:29:52.559 this case we have two rows that violate
+00:29:56.100 our rule for being diagonally dominant
+00:29:57.509 but it only takes one row to not satisfy
+00:30:00.960 our rule and the matrix is not
+00:30:02.970 diagonally dominant
+00:30:04.230 so the Jacobi method absolutely must
+00:30:06.539 have a diagonally dominant matrix in
+00:30:08.639 order for it to be guaranteed to
+00:30:10.710 converge
+00:30:16.900 so before we discuss how to implement
+00:30:18.520 the method I want to derive the
+00:30:20.470 equations used in the method so of
+00:30:22.450 course we're starting off with our
+00:30:23.530 typical matrix equation ax equals B just
+00:30:26.260 three by three in this case and again
+00:30:28.270 the algorithm is extendable or
+00:30:30.160 generalizable to any any size matrix the
+00:30:33.790 first thing we'll do here is take that 3
+00:30:35.830 by 3 matrix and expand it into the three
+00:30:38.740 component equations that the matrix
+00:30:40.720 equation represents the next thing we'll
+00:30:46.540 do we'll take the first equation and
+00:30:48.840 we'll solve it for X 1 we get this
+00:30:52.330 answer then we take our second equation
+00:30:55.380 solve it for X 2 we'll take our third
+00:30:59.260 equation and solve it for X 3 it turns
+00:31:04.840 out these are the equations that we will
+00:31:07.540 iterate we'll have some initial guess
+00:31:09.610 for X 1 X 2 X 3 and then we'll use these
+00:31:13.180 three equations to calculate our next
+00:31:15.690 version or hopefully improved version of
+00:31:18.220 X 1 X 2 X 3 and we keep doing this over
+00:31:20.920 and over and over and what we'll see is
+00:31:23.320 that the changes from iteration to
+00:31:25.150 iteration will get smaller and smaller
+00:31:26.590 and we iterate until that is
+00:31:28.780 sufficiently small now let's talk about
+00:31:35.500 the implementation so at the start of
+00:31:38.350 this we have to feed into our algorithm
+00:31:40.240 a and B because that defines the matrix
+00:31:43.630 equation we want to solve next we have
+00:31:47.980 to come up with an initial guess for X
+00:31:50.910 ideally you know something about the
+00:31:53.680 physics or the science or whatever it
+00:31:55.750 was that created a and B to begin with
+00:31:58.000 that lets you come up with a good guess
+00:32:00.280 if not you're forced to just try
+00:32:02.980 different things maybe you set X to all
+00:32:05.020 zeros
+00:32:05.620 maybe you define random numbers and X
+00:32:09.310 maybe you can make good guesses as to
+00:32:11.920 just some of the elements in X and not
+00:32:13.840 others and you use random numbers you
+00:32:16.030 may have to try different things if you
+00:32:18.850 don't have a good initial guess
+00:32:20.590 otherwise
+00:32:25.510 we now have our initial guests and we
+00:32:27.520 have our main loop that's just going to
+00:32:29.020 iterate until every time we calculate
+00:32:32.290 new values of X they're not changing
+00:32:33.820 very much so we simply just iterate
+00:32:37.810 through our three equations for
+00:32:39.400 calculating our new values of X now
+00:32:42.580 there is a trick here the first equation
+00:32:45.550 would work just fine we're calculating a
+00:32:47.590 new value of x one from old values of x2
+00:32:51.550 and x3 so that would work just fine now
+00:32:55.150 if we just type this into MATLAB blindly
+00:32:57.850 we could accidentally be using the new
+00:33:01.320 value of x1 instead of the old value
+00:33:04.720 this should be the old value here not
+00:33:07.450 the new value so in fact when you're
+00:33:10.450 calculating these normally in MATLAB you
+00:33:12.730 would calculate an x1 new an x2 new an
+00:33:15.970 x3 new and that way you can still use
+00:33:18.940 the old values and then just copy it
+00:33:21.370 over when you're done so once you have
+00:33:24.310 the new values of X you move on to step
+00:33:26.380 B here and you calculate how much
+00:33:28.960 they've changed and we look at the
+00:33:31.270 difference between the new and the old
+00:33:32.860 values and maybe we add up all those
+00:33:35.380 differences and we're constantly
+00:33:36.490 monitoring that and we wait until that
+00:33:39.580 difference between the old the new
+00:33:41.230 values is sufficiently small and we'll
+00:33:43.600 probably pick a number like 10 to the
+00:33:45.340 minus 10 and then we're guaranteed to
+00:33:47.890 have four or five digits of accuracy and
+00:33:50.680 our final answer so it really is that
+00:33:53.290 simple now we really would much prefer
+00:33:59.710 to implement this using matrices instead
+00:34:02.680 of algebra because it's more easily
+00:34:04.810 extendable to large matrix sizes so
+00:34:08.320 let's think about this we started off
+00:34:10.540 with our three equations that we use to
+00:34:13.870 iterate what I can do now is just write
+00:34:17.260 these in a slightly different form now
+00:34:21.489 you may have to think about this for a
+00:34:23.110 bit and stare at it for for quite awhile
+00:34:24.940 but it turns out by observation we can
+00:34:27.550 take this and write it directly in
+00:34:29.350 matrix form so what I like to do is
+00:34:31.929 first look at these terms in parentheses
+00:34:35.100 those really are our original equation
+00:34:39.070 just without the diagonal terms this
+00:34:42.760 first equation which used to have an a.1
+00:34:44.860 one times x one over here on the left is
+00:34:47.320 no longer there
+00:34:48.280 X two is no longer in the second
+00:34:51.010 equation X 3 is no longer in the third
+00:34:54.070 equations so it's our original equations
+00:34:57.390 - the diagonal terms so we can write
+00:35:01.450 this in matrix form as our original
+00:35:03.340 matrix a - the diagonals and a so now
+00:35:08.320 we'll have a again with just zeros
+00:35:09.910 running down the diagonal and that
+00:35:12.040 multiplying our X column vector so this
+00:35:15.730 product of terms here will give us these
+00:35:19.270 three equations and - those diagonal
+00:35:22.660 terms then we're subtracting that from
+00:35:27.070 our B values so we need to subtract that
+00:35:31.270 from our B column vector and then notice
+00:35:35.350 on the outside we're dividing by the
+00:35:38.440 elements of a which are along its
+00:35:40.720 diagonal so we've pre divided by the
+00:35:45.490 diagonal of a so this is the matrix
+00:35:51.040 equivalent of these three equations and
+00:35:57.060 here's just to remind us what the
+00:35:59.200 diagonal of a is so it's all zeros
+00:36:01.680 except just the diagonal elements of a
+00:36:04.570 running down its diagonal so for
+00:36:10.870 simplicity let's let D equal the
+00:36:14.080 diagonal of a so D for diagonal that
+00:36:16.620 lets us write our previous equation from
+00:36:19.240 the previous slide this way we had an A
+00:36:22.030 - diag a here and we had a die I gave
+00:36:25.360 her here so now we just write that as a
+00:36:28.150 D and an A - D we then do a bunch of
+00:36:31.960 matrix algebra and we end up in a form
+00:36:34.240 that gives this some pretty good
+00:36:35.800 physical meaning and we have the new
+00:36:38.800 value of x equals the old value of x or
+00:36:42.580 the previous value of x plus some kind
+00:36:45.880 of improvement to X and I like
+00:36:49.600 formulating my equations this way
+00:36:51.820 because it
+00:36:52.839 we calculate the improvement on X which
+00:36:56.019 I can then do two things with the first
+00:36:58.569 thing I'll do is use that to improve our
+00:37:01.180 value of x but the other thing is I can
+00:37:03.969 use that improvement to see how big it
+00:37:05.859 is to see if we're finished so here's
+00:37:12.940 the entire algorithm written out step
+00:37:15.489 one we're going to define our matrices a
+00:37:18.339 and B although maybe you could say
+00:37:19.930 that's not even part of the algorithm
+00:37:21.160 those are inputs to the algorithm and
+00:37:23.109 maybe even step two is outside of the
+00:37:25.989 algorithm somehow we have to make an
+00:37:28.210 intelligent guess and maybe we're just
+00:37:30.789 all random numbers maybe we know
+00:37:33.009 something about the physics of our
+00:37:34.359 problem that makes us or lets us make a
+00:37:36.759 good guess really step three is where we
+00:37:40.779 enter the algorithm proper and the first
+00:37:43.150 thing we'll do is we'll extract the
+00:37:44.469 diagonal of the a matrix and in MATLAB
+00:37:47.200 it's just simply D equals diag of a and
+00:37:49.839 it knows to pull the diagonal out of a
+00:37:53.789 then we enter our main loop and the
+00:37:57.460 first step inside the main loop is to
+00:37:59.619 calculate this adjustment of X this will
+00:38:02.829 tell us how much we need to change our X
+00:38:05.349 column vector to get to our next better
+00:38:07.960 solution and so a MATLAB that's just DX
+00:38:11.549 equals D backward divided B minus a
+00:38:14.410 times X so that's pretty much as typing
+00:38:17.079 in what we see here now remember once we
+00:38:19.869 have that Delta X this is the thing that
+00:38:21.759 will do two things with will use it to
+00:38:23.440 improve X we'll also use it to calculate
+00:38:25.809 our error so that's the next step we
+00:38:28.539 update our values of X based on this
+00:38:30.940 adjustment and then we calculate the
+00:38:34.150 error and we iterate until that error is
+00:38:37.410 sufficiently small and that's it that is
+00:38:40.569 Jacobi iteration I have a block diagram
+00:38:47.499 with this method which may let us
+00:38:49.869 visualize a little bit better so here
+00:38:52.299 I'm showing the input arguments as a B
+00:38:54.369 and X X may not be an input argument it
+00:38:58.059 might be in the algorithm where we just
+00:38:59.349 fill it with random numbers
+00:39:01.570 so step one we extract the diagonal of a
+00:39:05.110 and we call that D and we enter our main
+00:39:08.870 loop and are we done what we just
+00:39:11.780 started so we're not done yet we
+00:39:13.070 calculate the adjustment we adjust and
+00:39:15.950 we use the adjustment to figure out how
+00:39:17.540 much we've adjusted and we keep doing
+00:39:19.550 this until that adjustment is
+00:39:21.350 sufficiently small and then we're done
+00:39:24.140 our algorithm the last topic in this
+00:39:30.920 lecture is calculating matrix inverses
+00:39:33.470 and we only have two things to discuss
+00:39:36.020 here one is using the Gauss Jordan
+00:39:41.900 method as I mentioned before what we
+00:39:45.020 want to do now is construct an Augmented
+00:39:47.570 matrix with a on the left and I the
+00:39:50.660 identity matrix on the right a is the
+00:39:53.210 matrix that we want to invert so our
+00:39:55.940 augmented matrix will have a on the left
+00:39:58.100 and identity matrix on the right now we
+00:40:01.310 do the Gauss Jordan method we do our row
+00:40:03.380 operations subtracting rows from other
+00:40:05.360 rows scaling and we do that in a way
+00:40:08.030 that gives us the identity matrix on the
+00:40:10.670 left and what we're and what we end up
+00:40:13.430 with on the right is the inverse of a so
+00:40:17.900 we implemented exactly like the Gauss
+00:40:19.580 Jordan method for solving ax equals B we
+00:40:22.430 just have a few more columns on the
+00:40:23.780 right and when we're done we extract
+00:40:26.600 that out and that is the inverse of a
+00:40:29.920 this is my favorite method of
+00:40:32.360 calculating matrix inverses by hand of
+00:40:34.700 course I don't like calculating matrix
+00:40:36.320 inverses by hand especially when they're
+00:40:37.910 large
+00:40:38.300 I much prefer doing that on a computer
+00:40:43.390 we can also calculate matrix inverses
+00:40:46.490 with Lu decomposition although what I'm
+00:40:48.860 showing here really can be generalized
+00:40:50.660 to any technique you have for solving ax
+00:40:52.880 equals B we can use that to solve for
+00:40:56.240 matrix inverses so what we'll do is
+00:40:59.750 we'll solve for ax equals and instead of
+00:41:03.200 a arbitrary b vector here we're gonna
+00:41:05.270 put a 1 in the first row and a zeros and
+00:41:08.420 the rest of the positions but a 1 in the
+00:41:10.160 first row zeros in the other when we
+00:41:12.530 solve this what we actually
+00:41:14.900 is the first column in our a inverse
+00:41:18.740 matrix to get the second column in our
+00:41:23.660 inverse matrix we now put a 1 in the
+00:41:26.000 second row and a zeros in the first and
+00:41:29.089 third when we solve this matrix equation
+00:41:31.339 the answer is the second row in our
+00:41:34.789 matrix inverse and you can probably
+00:41:37.400 guess what's going to happen now to get
+00:41:39.410 the last row we put a 1 in the last
+00:41:41.450 position zeros and all the other
+00:41:44.059 positions when we solve this little ax
+00:41:47.119 equals B problem we get the third column
+00:41:49.849 in the matrix inverse so really any
+00:41:53.539 method we come up with for solving ax
+00:41:55.640 equals B we can generalize it using this
+00:41:59.270 method to calculate matrix inverses and
+00:42:02.289 that is it for this lecture thank you
+00:42:05.089 very much

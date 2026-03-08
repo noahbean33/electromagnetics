@@ -1,0 +1,350 @@
+# tactiq.io free youtube transcript
+# Topic 6c -- Numerical Differentiation
+# https://www.youtube.com/watch/RyApYtPBCLo
+
+00:00:00.319 topics exceed numerical differentiation
+00:00:03.980 hopefully you watch the previous lecture
+00:00:06.720 to this on deriving fun at difference
+00:00:09.030 approximations you'll definitely need
+00:00:10.740 that to understand what is in this
+00:00:12.900 lecture first I'll describe numerical
+00:00:18.510 differentiation at a very high level and
+00:00:20.640 then I'll give an example of how you
+00:00:22.949 perform numerical differentiation using
+00:00:25.410 MATLAB with that done I think you'll
+00:00:28.109 have a very good understanding of what's
+00:00:29.460 happening here and then we can have a
+00:00:31.410 short conversation about boundary
+00:00:33.480 conditions numerical differentiation we
+00:00:44.730 talk about numerical differentiation
+00:00:46.410 because very often we store a function
+00:00:48.930 as a series of discrete points and in
+00:00:52.079 which case we don't have a closed form
+00:00:54.149 symbolic equation so I'm showing here
+00:00:57.300 functions stored at seven points we're
+00:00:59.789 not showing the values of the function
+00:01:01.379 because we may not know them so what if
+00:01:05.309 we wanted to calculate the second order
+00:01:07.560 derivative of that function how do we do
+00:01:10.710 that well one thing is we need a way to
+00:01:17.610 approximate that second order derivative
+00:01:20.520 using a finite difference approximation
+00:01:22.740 and what we did last lecture was derive
+00:01:26.220 those so the simplest way to calculate
+00:01:29.430 the second order derivative at some
+00:01:31.110 point is to look at the function value
+00:01:33.060 at that point and the two surrounding
+00:01:35.640 points and then we can approximate the
+00:01:38.220 second order derivative so let's use
+00:01:40.619 this and apply that equation to every
+00:01:43.259 point on the grid to calculate the
+00:01:45.810 second order derivative as a short
+00:01:51.630 example let's look at point x to the
+00:01:54.810 second point we will write our finite
+00:01:57.810 difference approximation at the second
+00:01:59.490 point this way and we'll see that it
+00:02:01.740 involves the function at point one point
+00:02:04.380 two and point three so we're using all
+00:02:07.259 of this all of the function values
+00:02:09.000 surrounding F two but recall from last
+00:02:12.209 lecture we will be
+00:02:13.490 evaluating this finite difference at the
+00:02:16.250 position of x2 then maybe we want to
+00:02:21.290 estimate the second-order derivative at
+00:02:23.060 f5 using the same finite difference
+00:02:26.180 approximation it's just now we're using
+00:02:28.280 different array indices and we and we
+00:02:31.160 access f4 f5 and f6 it's the same finite
+00:02:35.240 difference equation just we've shifted
+00:02:37.160 which function values were using in this
+00:02:40.010 case they surround f5 and so we're
+00:02:43.130 evaluating the second-order derivative
+00:02:44.720 at f5 and we could similarly write this
+00:02:48.770 a similar equation for every point on
+00:02:51.050 this grid but at the very edges of the
+00:02:58.580 grid let's write those finite difference
+00:03:01.100 equations and see if you notice a
+00:03:04.760 problem here is there a problem well if
+00:03:09.680 we are evaluating our second-order
+00:03:11.360 finite differences with terms on either
+00:03:14.180 side our finite differences required
+00:03:17.360 terms from outside of our grid something
+00:03:20.030 we're not even storing and we have to
+00:03:23.000 fix this and the manner in which we fix
+00:03:26.540 it is called a boundary condition not to
+00:03:29.840 be confused with when you were in
+00:03:31.760 physics or maybe you took
+00:03:33.650 electromagnetic theory we talked about
+00:03:35.210 boundary conditions and what happens at
+00:03:36.950 interfaces this is a numerical boundary
+00:03:39.770 condition and it simply addresses this
+00:03:41.720 problem that happens that's the edge of
+00:03:43.880 the grid and we need to handle that so
+00:03:48.140 there's a variety of ways to handle that
+00:03:49.730 we'll be talking about some but let's do
+00:03:52.630 one here instead of using the simple
+00:04:00.020 finite difference approximation that we
+00:04:01.670 did what if we derived completely new
+00:04:04.160 finite difference equations special
+00:04:06.860 equations just for those endpoints so we
+00:04:10.670 want to evaluate the derivative the
+00:04:12.709 second order derivative at the endpoint
+00:04:14.360 we already know we're going to have to
+00:04:16.940 use function values to the right of that
+00:04:18.980 and we would love to have values
+00:04:21.260 scattered on either side for best
+00:04:23.180 accuracy so maybe we decide to add a
+00:04:26.120 point
+00:04:26.740 to our finite difference just to
+00:04:28.330 increase the accuracy a little bit so we
+00:04:30.759 will use a four-point finite difference
+00:04:33.130 where when we derived that finite
+00:04:36.220 difference we set up our offset
+00:04:38.770 coordinates are X tilde chord it's with
+00:04:40.630 a 0 in the first position so that's
+00:04:42.550 where we're evaluating the finite
+00:04:44.259 difference point X 2 will be at H point
+00:04:47.470 X 3 is at 2h and point X 4 will be at 3h
+00:04:50.560 so using this set of offset coordinates
+00:04:53.199 we can derive this find a difference
+00:04:55.870 equation to estimate the second-order
+00:04:57.699 derivative of F at point X 1 so the
+00:05:02.770 point of F 1 gets its own very special
+00:05:04.270 finite difference equation
+00:05:05.680 we could do the same thing for the last
+00:05:08.620 point and the only difference is how we
+00:05:12.130 define the points in this little tiny
+00:05:14.259 offset set of X points here we put a 0
+00:05:18.039 in the last position because we want to
+00:05:20.560 calculate the finite difference the
+00:05:22.210 second or driven at the last point in
+00:05:25.120 this array of points at F 7 and we want
+00:05:28.569 to use information from f6
+00:05:30.130 at 5 and F 4 so F 6 would be located at
+00:05:33.699 minus H F 5 located at minus 2 H and F 4
+00:05:37.840 located at minus 3h so given these
+00:05:41.979 coordinates for X tilde we can derive
+00:05:44.349 this finite difference approximation and
+00:05:47.159 you can look at the coefficients of
+00:05:49.570 these two finite difference equations
+00:05:51.039 and you can see some similarities
+00:05:58.199 ultimately we want to calculate the
+00:06:01.120 second order derivative of every single
+00:06:03.130 point in our grid so four points F 2 2 F
+00:06:07.449 6 we can use our ordinary finite
+00:06:10.090 difference approximation so we can set
+00:06:13.000 up a for loop and we can go over all of
+00:06:15.009 those and calculate the second order
+00:06:16.360 derivative at the boundary points we had
+00:06:19.419 to derive their own unique finite
+00:06:22.360 difference approximations and the
+00:06:23.620 boundary points are always a problem
+00:06:25.599 like this
+00:06:27.440 and so this is what we would do across
+00:06:29.840 the entire grid and in the next section
+00:06:32.270 when we talk about how to do this in
+00:06:33.560 MATLAB we'll proceed with this on to
+00:06:41.120 calculating numerical derivatives using
+00:06:43.340 MATLAB so we have our seven point grid
+00:06:50.060 and at this point we'll know our
+00:06:52.760 function values at points one through
+00:06:54.740 seven but we want to calculate and
+00:06:57.170 probably plot the second order
+00:06:59.120 derivative how do we do that well all
+00:07:01.370 the MATLAB code that you need is shown
+00:07:03.470 in the upper left and what I want to do
+00:07:05.810 now is step through this one line of
+00:07:07.760 code at a time and show you how it
+00:07:09.950 calculates the second order derivative
+00:07:11.900 at each point one through seven so we
+00:07:17.990 execute the first line of code now I'm
+00:07:20.630 showing a few things here one is I
+00:07:22.660 highlighted which line of code is being
+00:07:25.370 executed the second thing this red line
+00:07:28.790 of code I'm showing the line of code
+00:07:30.800 being executed it's obvious for this
+00:07:32.419 case however when we get into the loop
+00:07:34.640 I'm showing that same line of code but
+00:07:37.250 showing the array indices explicitly
+00:07:39.470 whereas in the loop they're just in X
+00:07:41.540 and may be a little bit abstract so I'm
+00:07:43.490 showing what the equivalent explicit
+00:07:45.620 line of code would be here the other
+00:07:49.100 thing I'm showing is the specific finite
+00:07:51.680 difference equation that's being used
+00:07:53.480 for the point being evaluated I'm
+00:07:55.660 pointing to which point is being
+00:07:58.220 evaluated and I'm also highlighting
+00:08:00.919 which range of points are being used to
+00:08:03.919 evaluate the finite difference so all
+00:08:06.740 that just for the first line of code
+00:08:08.300 it's using F 1 2 F 4 and evaluating the
+00:08:11.990 second-order derivative at position F 1
+00:08:15.730 ok let's move to the next
+00:08:20.270 now we've entered the loop and over here
+00:08:23.539 I'm showing the loop counter so we're at
+00:08:25.610 position x2 in our grid I'm highlighting
+00:08:29.000 which line of code is being executed and
+00:08:31.630 since little n X is 2 this is the line
+00:08:35.839 of code that's that that MATLAB is
+00:08:37.370 actually running and I'm showing the
+00:08:38.659 array indices in here explicitly so you
+00:08:40.880 can see it's using F 1 F 2 and F 3 also
+00:08:45.680 showing the finite difference
+00:08:47.630 approximation how it was derived in
+00:08:49.580 terms of the x coordinates which point
+00:08:52.610 is being evaluated and I'm highlighting
+00:08:55.670 the ranges of the function values being
+00:08:58.279 used to evaluate the second-order
+00:09:00.140 derivative so doing this we calculate
+00:09:05.120 the second order derivative at point F 2
+00:09:07.720 at this point it becomes somewhat
+00:09:10.520 repetitive we move over to point F 3 the
+00:09:15.620 same finite difference approximations
+00:09:17.390 used the only thing as different as our
+00:09:19.550 loop counter is now three loop counter
+00:09:25.250 is four we evaluate the finite
+00:09:27.350 difference at position four loop counter
+00:09:31.970 is five and we're evaluating the finite
+00:09:34.730 difference at the fifth position this is
+00:09:41.000 the last iteration of the loop because
+00:09:43.700 big n x equals seven big n X is where
+00:09:47.000 we're going to end or how many points we
+00:09:49.190 have and we're ending our loop at big n
+00:09:51.410 x minus 1 so since little n x equals 6
+00:09:54.740 this is the last iteration we're
+00:09:56.390 evaluating the second-order derivative
+00:09:57.829 at point six then we reach the very last
+00:10:04.790 point which is a battery point and
+00:10:06.829 requires its own special finite
+00:10:08.690 difference approximation and in the
+00:10:10.610 lower-right I'm showing how that was
+00:10:12.050 derived and of course we did that a few
+00:10:14.300 slides ago and that's it at this point
+00:10:18.470 we have evaluated the second-order
+00:10:20.329 derivative at every point across the
+00:10:22.610 grid including the boundary points which
+00:10:26.029 got their own special equations
+00:10:31.960 so we talked at a high level what
+00:10:34.760 numerical differentiation is and we also
+00:10:38.180 discussed a little bit about the problem
+00:10:40.700 at the boundary we need values from
+00:10:42.590 outside of the grid
+00:10:43.850 so we had to read arrive our finite
+00:10:46.010 difference equations to handle that it
+00:10:48.710 turns out there's other boundary
+00:10:50.540 conditions that are sometimes useful so
+00:10:52.790 let's discuss some of those this is the
+00:10:59.090 boundary condition we used up to this
+00:11:00.680 point I would call it a higher order
+00:11:02.390 boundary condition and we recognize that
+00:11:05.240 we're not doing our fun a difference in
+00:11:07.520 the very best way at the edge of the
+00:11:09.320 grid because we're using values to its
+00:11:11.300 side we tend to like to span the values
+00:11:14.300 from which we're evaluating the finite
+00:11:15.890 difference from both sides of a point so
+00:11:18.620 since we're not doing that here I just
+00:11:19.700 decided to use an extra term is that
+00:11:21.740 absolutely necessary it depends on your
+00:11:24.560 application but we did it here as a good
+00:11:26.840 example so all of the points to the grid
+00:11:30.230 points 2 through 6 are evaluate with the
+00:11:32.330 standard finite difference and we derive
+00:11:34.340 special finite difference equations at
+00:11:36.170 the boundary so I call that a higher
+00:11:38.450 order boundary condition on to the next
+00:11:40.970 one the easiest of the boundary
+00:11:46.160 conditions is called dearer slavery
+00:11:48.320 conditions when we use those we assume
+00:11:51.290 values outside of the grid are 0 so
+00:11:54.910 where we would need to access F 0 for
+00:11:58.850 example we'll just put a 0 in its place
+00:12:01.870 where we would need to access F 8 we
+00:12:05.180 just put a 0 in its place again those
+00:12:08.810 finite differences at the edge are their
+00:12:10.610 own special unique finite differences
+00:12:12.710 but it's a bit easier than on the
+00:12:14.600 previous slide than when we did the
+00:12:15.950 higher-order boundary conditions we're
+00:12:18.110 still essentially using the same finite
+00:12:19.640 difference we just set a term to 0 which
+00:12:22.280 changes what it looks like a little bit
+00:12:24.040 now when we do this we really do force
+00:12:27.260 the value of the function to be 0 at the
+00:12:30.170 edges and so if you're doing an
+00:12:32.570 electromagnetic simulation and this is
+00:12:34.580 the electric field if we're forcing the
+00:12:36.980 electric field to 0 it's likely
+00:12:38.870 surrounded it with a mirror conductor
+00:12:41.610 if we have waves on this grid they'll
+00:12:44.260 bounce off those edges so why would we
+00:12:47.140 use this well very often we'll simulate
+00:12:49.750 something where whatever is happening is
+00:12:52.210 just happening in the middle of the grid
+00:12:53.830 and it decays to zero going in from way
+00:12:56.710 going away from whatever is happening in
+00:12:58.600 the middle and so when it decays to zero
+00:13:01.240 then we don't need to do anything more
+00:13:03.160 sophisticated I'm breaking in my new
+00:13:06.670 tone we don't need to do anything more
+00:13:09.130 sophisticated at the boundaries because
+00:13:10.720 the function goes to zero so dearest leh
+00:13:13.420 works beautifully for those
+00:13:14.530 circumstances very often in science and
+00:13:22.240 engineering we want to simulate periodic
+00:13:24.550 structures there's a whole cool neat
+00:13:26.800 story behind periodic structures but
+00:13:28.750 folks use these to make things invisible
+00:13:31.350 do things like negative refraction a lot
+00:13:34.210 of cool stuff happens
+00:13:35.530 so if our simulation is periodic then
+00:13:40.270 that means if we're calculating our
+00:13:42.280 finite difference at point F 1 and we
+00:13:44.140 need to access F 0 if this really is
+00:13:47.320 periodic then f 0 will be the same value
+00:13:50.860 as f7 so all we'll do is we'll use f7
+00:13:54.370 instead of f 0 and likewise at this edge
+00:13:58.120 of the grid if we're calculating our
+00:13:59.500 finite difference here and we need an f8
+00:14:01.270 if this problem really is periodic then
+00:14:04.060 f8 has to be the same thing as f1 and so
+00:14:08.050 we would just use f1 in the place of f8
+00:14:10.660 and we've incorporated periodic boundary
+00:14:13.810 conditions this is used all the time
+00:14:20.430 another boundary condition that's useful
+00:14:22.660 is called the Neumann boundary condition
+00:14:24.580 and the Neumann boundary condition
+00:14:26.140 assumes that whatever the function is
+00:14:28.600 doing at the edge it keeps doing it as
+00:14:31.210 it leaves the grid in a linear manner so
+00:14:34.390 it extrapolates that it follows a
+00:14:36.760 straight line at the edge of the grid so
+00:14:39.670 if it's linear at the edge of the grid
+00:14:42.250 the Neumann boundary conditions requires
+00:14:44.500 our second order derivatives to be zero
+00:14:46.960 right because the second order
+00:14:48.790 derivative a straight line is zero so
+00:14:51.340 the second order derivatives at the
+00:14:53.190 Riis r0 well what about the first order
+00:14:56.550 derivatives well at the intermediate
+00:14:59.910 points if we want to calculate the first
+00:15:02.700 order derivative of F 2 it's simply F 3
+00:15:06.410 minus F 1 divided by the spacing which
+00:15:09.780 is 2h here now at the edge of the grid
+00:15:12.960 we would like to say that the first
+00:15:15.210 order derivative is F 2 minus F 0
+00:15:18.800 divided by the spacing but of course the
+00:15:21.120 F 0 doesn't exist so what we'll do
+00:15:23.760 rather than take or find a difference
+00:15:26.640 over the span of two points we'll just
+00:15:28.920 do it over the span of this one point
+00:15:30.780 and our finite difference is f2 minus f1
+00:15:34.370 divided by the spacing and we can also
+00:15:37.590 recognize this as a forward finite
+00:15:39.930 difference and we could choose to do a
+00:15:44.160 higher order accurate derivative maybe
+00:15:46.950 have three or four terms in there that's
+00:15:48.810 fine too but the point is the Neumann
+00:15:51.390 boundary condition is assuming that the
+00:15:53.970 function leaves this grid linearly

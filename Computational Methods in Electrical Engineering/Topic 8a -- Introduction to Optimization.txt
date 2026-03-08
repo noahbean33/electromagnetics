@@ -1,0 +1,699 @@
+# tactiq.io free youtube transcript
+# Topic 8a -- Introduction to Optimization
+# https://www.youtube.com/watch/gmEamqCRZzU
+
+00:00:00.310 topic 8a introduction to optimization in
+00:00:06.799 this lecture I'm just going to be
+00:00:09.080 introducing the concept of optimization
+00:00:12.050 we won't necessarily be talking too much
+00:00:14.330 about the algorithms themselves that's
+00:00:17.150 four following lectures more here what
+00:00:20.570 I'd like to do is talk about the merit
+00:00:22.579 function because when we're optimizing
+00:00:25.130 something maybe it's a device and we
+00:00:28.400 have multiple considerations we have to
+00:00:31.249 simulate that device or analyze that
+00:00:33.620 device and come up with a single number
+00:00:36.289 that tells us how good that design is
+00:00:39.789 and so that's the merit function and in
+00:00:42.440 my experience you know within a week or
+00:00:45.199 so you can get just about any algorithm
+00:00:47.449 to work but you'll work your entire PhD
+00:00:51.140 doing the merit function so that's
+00:00:53.839 worthy of some discussion and there's
+00:00:56.030 one special thing that we do a lot in
+00:00:58.339 our group that we call the rectangle
+00:00:59.960 algorithm and I'll explain what that is
+00:01:02.510 but that's really intended for
+00:01:04.010 calculating the merit function it's not
+00:01:06.079 part of simulating a device or even the
+00:01:09.259 optimization algorithm itself it's just
+00:01:11.600 how one of the ways we come up with this
+00:01:13.549 single number so let's dive into this so
+00:01:22.880 what is optimization well we'll have a
+00:01:26.299 function and it probably depends on
+00:01:29.600 multiple things here I'm just showing
+00:01:31.549 something that depends on x and y but x
+00:01:34.159 and y can be real things they could be
+00:01:35.869 the dimensions of a device material
+00:01:38.020 properties and somehow we want to tweak
+00:01:41.420 all this in a way that either maximizes
+00:01:44.930 or minimizes that function we can
+00:01:46.969 optimize both ways so even though we
+00:01:50.990 have multiple things we have to somehow
+00:01:52.820 boil this down to a single number
+00:01:55.310 that tells us how good our design is and
+00:01:58.850 so in this lecture we will call that the
+00:02:01.520 merit function but it goes by other
+00:02:03.170 names other places we'll call it a
+00:02:04.880 fitness function a quality function a
+00:02:07.670 cost function and it all means the same
+00:02:10.128 thing
+00:02:14.980 so let's think of an example to
+00:02:17.450 illustrate this a little bit better
+00:02:19.030 let's say we would like to design a
+00:02:21.980 diffraction grading so we'll have a wave
+00:02:24.760 coming into our diffraction grading and
+00:02:27.500 when it hits this periodic structure it
+00:02:30.050 splits in two in this case three
+00:02:32.750 discrete directions and the power from
+00:02:35.660 that applied wave splits into those
+00:02:37.760 three different directions we would like
+00:02:40.640 to design the depth of that tooth and
+00:02:43.160 the width of that tooth such that no
+00:02:46.340 power goes into that center mode we call
+00:02:49.400 that the zero order transmitted mode so
+00:02:53.540 that's our problem find F and D so that
+00:02:56.810 zero power goes into that mode so over
+00:03:00.530 on the right we construct what we call
+00:03:02.720 the solution space and so horizontally
+00:03:06.200 are all possible values of D or the
+00:03:09.050 depth of the grading that we'd like to
+00:03:10.459 consider and along the vertical axis are
+00:03:13.970 all the different possible values of f
+00:03:15.620 or width of the tooth that we'd like to
+00:03:18.230 consider so in this 2d plane every point
+00:03:22.420 represents a specific design so if we
+00:03:26.420 look at this bottom left point that is
+00:03:29.420 both a small value of D and a small
+00:03:32.390 value of F so what we see is a very
+00:03:35.330 shallow skinny tooth well we could
+00:03:38.720 choose this other point which is both a
+00:03:40.820 large value of D and a large value of F
+00:03:43.610 and now we have a very tall and wide
+00:03:46.280 tooth so any point in this plane
+00:03:49.519 represents a different design now we
+00:03:55.820 could do what's called an exhaustive
+00:03:57.860 search this is where we just set up in
+00:04:00.440 this case a big double for loop and we
+00:04:02.480 simulate simulate every possible
+00:04:04.850 combination and we look for the best
+00:04:07.040 solution well that can be very
+00:04:10.579 computationally intensive and many times
+00:04:13.610 if you run an optimization if you look
+00:04:15.590 at the time it would take to do an
+00:04:17.269 exhaustive search it could literally
+00:04:18.858 take hundreds of years which clearly we
+00:04:21.289 don't want to wait that long we won't be
+00:04:22.669 alive in that long so we would like to
+00:04:25.280 some
+00:04:26.410 more intelligently search this 2d space
+00:04:29.590 so that we don't even have to come close
+00:04:32.110 to doing a comprehensive search yet we
+00:04:34.840 have a pretty good idea that we've
+00:04:37.389 converged to the best solution and
+00:04:40.060 that's the point of optimization so
+00:04:42.849 let's talk more about that now in this
+00:04:48.129 case I've done the work for you and I
+00:04:51.190 did actually set up a big double loop
+00:04:53.259 and did a comprehensive simulation of
+00:04:55.270 every single device design and I plotted
+00:04:58.539 the merit function and in this case that
+00:05:00.759 merit function is how much power went
+00:05:03.220 into that zero order mode and look how
+00:05:05.949 crazy that solution space is and this is
+00:05:09.250 not necessarily a crazy device this is
+00:05:11.500 very typical of what a solution space
+00:05:13.810 could look like if you were to plot it
+00:05:15.669 and now we have to look at this and
+00:05:18.550 figure out what where is the best
+00:05:20.229 solution and well since we wanted to
+00:05:23.050 have zero power go into our transmitted
+00:05:26.169 mode we are looking for the smallest
+00:05:28.449 numbers or in this case the darkest
+00:05:30.639 values of blue and we have multiple
+00:05:34.090 solutions here now since we have
+00:05:36.460 multiple solutions we might ask the
+00:05:38.770 question are is one of those solutions
+00:05:40.569 better than another and the answer is
+00:05:42.909 death yes absolutely and so all the
+00:05:45.520 other ones are called a local best and
+00:05:47.740 very easily optimization algorithms can
+00:05:50.800 get stuck into these local best
+00:05:53.080 solutions and really we'd like to search
+00:05:56.259 our solution space a bit more
+00:05:58.120 comprehensively to find which one is the
+00:06:01.419 absolute global best and there's a lot
+00:06:05.560 of claims of different optimization
+00:06:07.389 algorithms being able to guaranteed
+00:06:09.159 finding the global best well if you
+00:06:11.710 don't know anything about your device
+00:06:13.719 and you're using an optimization that
+00:06:16.330 involves randomness in any way the only
+00:06:19.300 way you know that you have the global
+00:06:21.159 best is if you've done a comprehensive
+00:06:23.949 search and we already said we don't want
+00:06:26.020 to do it that way because we don't have
+00:06:27.849 time so if you don't know anything about
+00:06:30.370 your device or the solution space
+00:06:31.960 there's no way you can guarantee that
+00:06:34.240 you converge to the global best without
+00:06:36.940 this comprehensive search now I've done
+00:06:39.070 that here so
+00:06:39.820 could get the the absolute best this
+00:06:42.520 simulation probably took several hours
+00:06:44.410 to do each and fill in each point here
+00:06:47.230 so now imagine we added just one more
+00:06:49.840 variable to that now we're talking about
+00:06:52.060 probably a few weeks to do a
+00:06:54.040 comprehensive search then imagine we had
+00:06:56.590 a dozen things pretty soon that
+00:06:58.690 comprehensive searches is taking
+00:07:00.250 millennia which we don't have time to do
+00:07:02.170 and that's really where the optimization
+00:07:04.690 is needed okay let's move on
+00:07:10.020 so optimization algorithms can be
+00:07:13.770 broadly categorized into two different
+00:07:16.660 flavors if you will there is the direct
+00:07:19.690 methods and the stochastic optimization
+00:07:21.810 the stochastic is involving randomness
+00:07:25.290 we would like to search the solution
+00:07:28.090 space a bit more comprehensively so we
+00:07:30.070 might sprinkle a few different random
+00:07:31.960 solutions around and and maybe introduce
+00:07:35.260 some noise and it kind of buzz around
+00:07:36.760 the solution space seeking a best
+00:07:38.470 solution somehow involving randomness
+00:07:40.600 but clearly an intelligent way to get
+00:07:43.180 something real done then there's the
+00:07:45.670 direct methods that don't involve any
+00:07:47.260 kind of randomness and maybe we try one
+00:07:50.200 solution and we look at the gradient and
+00:07:52.720 we're confident either walking down or
+00:07:54.460 up depending how we're optimizing
+00:07:56.640 something like that's a direct method so
+00:07:59.140 direct methods also include the complete
+00:08:01.600 search or the comprehensive search and
+00:08:03.460 as I mentioned if nothing's known that's
+00:08:05.980 really the only way that we can
+00:08:07.240 guarantee a global best solution and
+00:08:10.120 then of course there is these gradient
+00:08:12.250 methods you've seen some of those in
+00:08:14.710 previous lectures the the Newton's
+00:08:16.720 method for example new traps and method
+00:08:18.670 and in this in a following lecture we'll
+00:08:21.550 talk about the Newton's method which is
+00:08:24.370 really a neat little tweak to the
+00:08:25.960 newton-raphson method to turn it into an
+00:08:27.880 optimization algorithm instead of
+00:08:29.920 route-finding so we have direct and
+00:08:32.500 stochastic optimizations and we'll talk
+00:08:34.419 about all of these some notes on
+00:08:39.940 optimizations and maybe some of this is
+00:08:43.479 more opinion but I really do prefer the
+00:08:46.960 stochastic methods when I know very
+00:08:49.480 little about
+00:08:50.730 my device or the solution space and I
+00:08:52.680 would like to do a rather comprehensive
+00:08:54.480 search of the solution space so for
+00:08:58.410 those I tend to lean towards the
+00:09:00.120 stochastic or randomized methods I hear
+00:09:07.110 a lot of claims about algorithms
+00:09:08.579 guaranteeing the global best solution
+00:09:10.680 and you can't make that claim unless you
+00:09:14.370 know something about your device maybe
+00:09:16.649 you know the theoretical performance
+00:09:18.839 limit and somehow you'll know when your
+00:09:20.820 algorithm has found that but if you
+00:09:23.250 don't know anything about it and you
+00:09:26.279 probably don't if you're doing an
+00:09:27.870 optimization then you really can't make
+00:09:29.970 that claim
+00:09:32.660 so only an exhaustive search
+00:09:36.300 can you really guarantee that you have
+00:09:38.639 found the global best now there may be
+00:09:41.250 is a difference between a scientist and
+00:09:43.170 an engineer here an engineer is gonna go
+00:09:45.600 into this where I need to meet these
+00:09:47.370 certain performance requirements and as
+00:09:49.949 soon as I find a solution that does that
+00:09:51.600 we're done as the engineer we don't
+00:09:54.329 necessarily care if it's the absolute
+00:09:56.399 best now the scientist might get a
+00:09:58.500 little more picky and really want to
+00:10:01.079 find that global best solution because
+00:10:03.600 that scientist might learn something
+00:10:05.430 once they're looking at that global best
+00:10:07.709 solution in my experience the direct
+00:10:13.470 methods are extremely fast but they tend
+00:10:16.889 to be designed so that they're only
+00:10:18.389 finding a local best solution so this is
+00:10:22.620 where you walk down the gradient to the
+00:10:24.870 bottom of a curve or the top of a curve
+00:10:27.000 to find a maxima or minima so I tend to
+00:10:31.920 apply these when I have a pretty good
+00:10:34.139 guess as what the device should look
+00:10:36.149 like and I just want to fine-tune it and
+00:10:38.930 the stochastic when I don't know
+00:10:41.339 anything
+00:10:41.899 sometimes I'll run a stochastic
+00:10:43.740 optimization and as I start to converge
+00:10:46.350 to something I'll switch over to a
+00:10:48.420 direct method and and lock on to it real
+00:10:50.760 fast and in my experience you'll always
+00:10:56.670 hear people contrasting genetic
+00:10:58.709 algorithms versus Newton's method versus
+00:11:01.170 all those other things all of these
+00:11:03.029 algorithms were
+00:11:04.140 and really within a week or so you could
+00:11:06.390 get any of these algorithms to work if
+00:11:08.430 your practice at it probably just an
+00:11:09.899 hour or so but you'll spend your entire
+00:11:12.680 PhD working on that merit function and
+00:11:15.480 the best optimizations I believe that
+00:11:17.640 merit function has to evolve normally
+00:11:20.490 that merit function would start very
+00:11:22.079 loose and accept a lot of different
+00:11:24.269 things and as you start to get some
+00:11:26.579 designs and you can start seeding your
+00:11:28.920 optimizations with designs that are
+00:11:30.779 relatively close you can start
+00:11:32.970 tightening up that merit function make
+00:11:34.709 it more picky and punish and reward your
+00:11:38.040 optimizations in more different ways so
+00:11:40.890 the best optimizations seem to have a
+00:11:42.660 merit function that evolves and in my
+00:11:45.149 opinion that is worthy of much more
+00:11:47.430 conversation than the actual
+00:11:49.980 optimization algorithm itself ok so
+00:11:56.579 let's talk about this merit function
+00:11:58.290 again this is that one single number
+00:12:01.260 that somehow accounts for everything you
+00:12:04.290 want out of a design turns it into a
+00:12:07.019 single number so here we're looking at
+00:12:13.380 that solution space again we talked
+00:12:15.510 about before where we're trying to
+00:12:16.829 minimize the power in this zero order
+00:12:19.740 motor that little Center diffraction
+00:12:22.199 order so in this case my merit function
+00:12:25.680 as a function of F and D the width and
+00:12:28.560 height of that tooth is simply just the
+00:12:31.260 transmittance of that zero order mode
+00:12:33.209 and I plotted it there now we have
+00:12:40.160 several several possible solutions if we
+00:12:43.649 look at this or several errors with dark
+00:12:45.540 blue well we probably would like to make
+00:12:49.769 a device that's a bit more robust to
+00:12:52.170 manufacturing so that we can goof on the
+00:12:54.480 manufacturing a little bit and still
+00:12:56.399 have a device that works well we found
+00:12:58.920 the global best solution to be in this
+00:13:00.870 tiny little notch here but any little
+00:13:03.690 deviation in our F and D values will
+00:13:07.529 throw that off and our device won't work
+00:13:09.750 anymore however if we look at this local
+00:13:14.160 best that has a much wider region
+00:13:17.290 of dark blue so we could have some
+00:13:20.560 errors in our values of F and D that
+00:13:23.290 happened in manufacturing and our device
+00:13:25.750 will still work pretty good so very
+00:13:28.750 often we not only look at the number but
+00:13:32.110 we look at I guess the bandwidth you
+00:13:34.509 call it or the area over which that
+00:13:36.670 numbers been optimized so in this case
+00:13:39.399 we can make the Merit function the
+00:13:41.250 transmittance divided by the width of
+00:13:44.230 that transmittance or the or the band
+00:13:46.120 width and again in this case we're
+00:13:48.490 optimizing by minimizing that merit
+00:13:50.829 function we could just as easily turn
+00:13:52.870 this around to maximizing it by saying
+00:13:54.880 width divided by transmittance so when
+00:13:59.019 you come up with a merit function my
+00:14:00.100 point is keep thinking about it there
+00:14:01.600 might be more to it there might be more
+00:14:03.399 things that you want to optimize for so
+00:14:10.680 let's say we have multiple things that
+00:14:13.990 we want to take into account how do we
+00:14:16.180 tie all this together into a single
+00:14:18.069 merit function well there's an infinite
+00:14:20.680 number of ways to do this but what seems
+00:14:23.350 to work most consistent for me is
+00:14:26.310 essentially a product of all our
+00:14:28.120 different considerations so for example
+00:14:30.970 we might have a bunch of different
+00:14:32.860 considerations on the top that we label
+00:14:35.079 as a these are things let's say that we
+00:14:37.990 want to maximize those numbers so
+00:14:40.300 bandwidth of a device or something like
+00:14:42.430 that and if we have multiple
+00:14:43.630 considerations we will multiply them all
+00:14:46.060 together we might have numbers that
+00:14:49.930 order to improve the device we want to
+00:14:52.180 minimize those so we'll divide by those
+00:14:54.880 numbers so that as they become smaller
+00:14:57.760 the merit function becomes larger and I
+00:15:02.920 use this a lot so I'm multiplying and
+00:15:05.680 dividing things to combine multiple
+00:15:07.480 considerations we can certainly add them
+00:15:10.449 you could add them then take the square
+00:15:12.610 root all kinds of different ways but I
+00:15:15.459 tend to fall on this more often than
+00:15:17.529 other things now we have to think okay
+00:15:24.220 we have all these different
+00:15:25.180 considerations tied into a single number
+00:15:27.370 but it might be that some of those are
+00:15:30.490 more important than others how can we
+00:15:33.339 sort of suppress the importance of one
+00:15:35.770 while still considering it and then
+00:15:38.140 maybe enhance others so one of the most
+00:15:40.690 obvious things we might think about
+00:15:42.100 doing is multiplying each of these
+00:15:44.200 considerations by some constant and
+00:15:46.270 maybe if a1 is the most important we
+00:15:49.390 would make a larger well the problem is
+00:15:52.930 when we multiply all this these
+00:15:55.240 importance factors all come to the
+00:15:57.310 outside and then we could ask well which
+00:15:59.110 one does that belong to and in fact it
+00:16:01.779 could belong to any of them this is not
+00:16:03.760 a good way or not a way at all to convey
+00:16:07.540 the relative importance of these
+00:16:09.220 multiple considerations when we're
+00:16:11.560 multiplying them now if we were adding
+00:16:13.300 them together weighting them with little
+00:16:16.000 a B and C that would be an option but
+00:16:18.459 it's not an option when we multiply them
+00:16:20.620 together so instead I do things like
+00:16:25.209 raising them to exponents taking the log
+00:16:28.050 adding a constant to them or hybrids of
+00:16:31.089 all of these and I have an example
+00:16:33.370 following that will illustrate how I've
+00:16:36.279 used all these things in combination so
+00:16:38.740 these are my tricks for suppressing
+00:16:41.560 importance of something so a natural log
+00:16:43.870 of a number would tend to suppress its
+00:16:46.240 importance if we raise it to an exponent
+00:16:49.180 if that exponent is greater than 1 that
+00:16:51.370 would tend to enhance its importance
+00:16:53.170 something less than 1 it would suppress
+00:16:55.690 the importance and so on so here's an
+00:17:02.800 example that goes way back some work I
+00:17:05.230 did many many many years ago but we were
+00:17:08.050 looking at optimizing and antenna man
+00:17:10.390 this is almost 20 years ago Holy Smoke
+00:17:12.069 time flies so the very typical merit
+00:17:15.550 function of the time they wanted to make
+00:17:17.290 antennas that were broadband and
+00:17:19.300 efficient so they multiplied the
+00:17:21.849 bandwidth and efficiency together and
+00:17:23.859 get a merit function and antennas were
+00:17:26.349 being optimized this way so at the time
+00:17:31.120 I wasn't electromagnetics person yet I
+00:17:34.540 was a signal processing and
+00:17:36.400 communications person and I had been
+00:17:39.340 studying channels and coding and all
+00:17:41.470 these other things and I realized you
+00:17:43.120 know BAM
+00:17:43.809 and efficiency are not always equally
+00:17:46.269 important more fundamentally we want to
+00:17:49.779 maximize let's say the the data rate of
+00:17:52.450 a communication link and in that case
+00:17:54.519 bandwidth and efficiency are not
+00:17:55.899 necessarily equally important and so I
+00:17:58.389 felt we could do better with the merit
+00:18:00.759 function so there is what's called the
+00:18:04.809 Shannon capacity theorem and that's the
+00:18:07.749 equation at the bottom here and the
+00:18:09.669 capacity of the channel so think of that
+00:18:11.740 as bits per second although there's a
+00:18:13.960 bit more of a story behind that is the
+00:18:16.960 bandwidth that's B times a natural log
+00:18:20.799 of 1 plus the signal-to-noise ratio and
+00:18:23.649 that will tell us the theoretical
+00:18:26.350 maximum bits per second that a channel
+00:18:29.230 can support and so right away we see
+00:18:33.100 that bandwidth is outside of the log and
+00:18:36.369 the signal-to-noise ratio which is more
+00:18:39.309 indicative of the efficiency of the
+00:18:41.049 antenna is inside the log and being
+00:18:43.570 suppressed so the e term up here in the
+00:18:47.649 our initial merit function I would say
+00:18:50.200 should be suppressed compared to the B
+00:18:52.659 so I decided to go with a merit function
+00:18:55.659 that was inspired by the Shannon
+00:18:57.700 capacity theorem so this was my merit
+00:19:02.200 function bandwidth times the log of 1
+00:19:04.690 plus the efficiency Whynot signal to
+00:19:08.139 noise ratio what we're just looking at
+00:19:10.029 the antenna we don't really have any way
+00:19:11.379 to know what the noise is yet
+00:19:13.240 but certainly the efficiency of the
+00:19:15.009 antenna would factor into the
+00:19:16.539 signal-to-noise ratio so this is no
+00:19:18.999 longer the Shannon capacity spirit
+00:19:20.830 theorem it is just our merit function
+00:19:23.169 inspired by the Shannon capacity theorem
+00:19:25.899 to better convey the relative importance
+00:19:28.929 of bandwidth and efficiency well we also
+00:19:34.929 wanted a small antenna so I decided to
+00:19:38.409 divide the merit function by L which
+00:19:40.869 might be the largest dimension of the
+00:19:43.179 antenna and since we're dividing by L a
+00:19:46.869 small size will tend to maximize M so
+00:19:51.639 now we had an improved mirror function
+00:19:53.529 inspired by the Shannon capacity theorem
+00:19:56.289 but now also with
+00:19:57.820 sighs in there and we could also ask
+00:20:00.550 again well maybe size and bandwidth
+00:20:02.350 aren't equally important I decided to
+00:20:04.240 ignore that at this point and just
+00:20:06.130 divide by L but there's something else
+00:20:08.920 that can happen and this happens a lot
+00:20:11.050 when you're playing with your merit
+00:20:12.310 function and we could have an antenna of
+00:20:15.700 length you know a point zero zero zero
+00:20:17.950 zero one so we know the bandwidth will
+00:20:21.370 be horrible we know the efficiency will
+00:20:23.110 be horrible it will be a horrible
+00:20:24.700 antenna but because the length is so
+00:20:28.030 small the merit function will be really
+00:20:29.890 high and we're locking in to false
+00:20:32.080 solutions and this is one of the reasons
+00:20:35.020 why we have to monkey with the merit
+00:20:36.760 functions as much as we do so what do we
+00:20:39.460 do well I decided to just add one to L
+00:20:45.580 at the bottom so when L goes to zero
+00:20:47.650 that denominator stays one and in this
+00:20:52.360 way we sort of weakened or suppress that
+00:20:56.110 artifact
+00:20:57.250 when L approaches zero we get this
+00:20:59.860 infinite merit function so we fixed that
+00:21:01.830 so this is another way to enhance and
+00:21:04.630 suppress things adding a constant to
+00:21:06.790 certain variables so that was my final
+00:21:12.390 merit function for this antenna
+00:21:14.380 optimization and it worked well and we
+00:21:16.780 actually got better designs than any of
+00:21:19.660 the other antennas they'd have been
+00:21:20.710 designing to date okay so in my group we
+00:21:31.450 do electromagnetic simulations so we'll
+00:21:34.000 simulate a device and we'll calculate
+00:21:36.070 things like reflection versus frequency
+00:21:39.040 and so maybe we're trying to design
+00:21:41.380 something that's a very broadband
+00:21:43.390 reflector so we have to not only look at
+00:21:45.520 how reflective it is but over what range
+00:21:48.520 of frequencies it is reflective and so
+00:21:52.240 this is a very common thing we ended up
+00:21:54.340 doing and we came up with what we call
+00:21:55.870 this rectangle algorithm that I'll share
+00:21:58.690 with you as an example of one component
+00:22:01.930 of calculating a merit function
+00:22:07.220 so we might simulate a device and see
+00:22:09.590 something like this this is reflection
+00:22:11.630 versus frequency and then we ask a
+00:22:14.210 question well how good is that
+00:22:17.360 over what bandwidth is it reflecting how
+00:22:19.640 good is it reflecting how do we even
+00:22:21.890 determine that and so basically we came
+00:22:24.470 up with an algorithm where we fit a
+00:22:26.090 rectangle under that curve and we look
+00:22:29.870 at the width as the bandwidth and the
+00:22:31.730 height as the overall performance but
+00:22:33.890 how do we do this
+00:22:36.790 so our merit function in this case will
+00:22:39.800 be bandwidth we probably want this to be
+00:22:42.170 broadband if we didn't then we might
+00:22:44.600 divide by bandwidth to punish it for
+00:22:46.760 being more broadband and sometimes we
+00:22:49.400 actually want narrowband things for
+00:22:51.170 example if you're designing a filter to
+00:22:52.700 lock a laser usually lasers want to be
+00:22:55.370 very very narrow line width if we're
+00:22:58.100 making a broadband reflector in this
+00:22:59.690 case we're gonna say we want it to be
+00:23:01.220 very wide performance in this case is
+00:23:04.460 the height of that red curve it's the
+00:23:06.530 amount of reflection we want the
+00:23:08.330 reflection to be very high and over a
+00:23:11.030 wide bandwidth so the merit function
+00:23:13.790 here would be the bandwidth times this
+00:23:16.190 performance metric which would be
+00:23:18.260 reflection in this case so our merit
+00:23:20.270 functions the area of that rectangle but
+00:23:25.070 we have to think about how do we figure
+00:23:26.900 out what is where is the biggest
+00:23:29.990 rectangle under that curve and so that's
+00:23:33.350 what this algorithm does so going back
+00:23:38.540 to the original curve we're looking at
+00:23:40.430 there's two rectangles here and they
+00:23:42.020 look kind of similar an area which one's
+00:23:44.480 going to be better and is there another
+00:23:46.070 rectangle somewhere else how do we
+00:23:48.470 determine this so this is the algorithm
+00:23:54.170 that we came up with so we decide on a
+00:23:56.750 merit function we simulate the device
+00:23:59.330 calculate its spectrum and at that point
+00:24:02.390 we figure out where the biggest
+00:24:04.280 rectangle is how do we do that we set up
+00:24:06.650 a loop over the spectrum and we have
+00:24:09.080 animations of this following it so don't
+00:24:11.300 expect to absorb everything from this
+00:24:12.830 this little step-by-step outline here so
+00:24:16.160 we set up a loop and we go point by
+00:24:17.660 point across our spectrum for
+00:24:20.000 every point what we want to do is look
+00:24:22.490 left until we hit that spectrum line
+00:24:24.980 again and essentially what we're doing
+00:24:26.150 is placing the left side of that that
+00:24:28.280 rectangle then we seek right until we
+00:24:32.570 hit our spectrum again and that place is
+00:24:34.100 the right side of the rectangle now we
+00:24:36.710 have a rectangle that's been fit to that
+00:24:38.330 curve and the top is maxed out against
+00:24:41.300 that spectrum curve from there we
+00:24:43.310 calculate the merit function as the area
+00:24:45.380 or perhaps we wait bandwidth and
+00:24:47.510 performance in some other way and we do
+00:24:50.300 that for all points and the point that
+00:24:52.760 had the biggest rectangle is the winner
+00:24:54.890 and that rectangle is where we have the
+00:24:57.500 best performance of the device so let's
+00:25:00.200 look at some animations to make a little
+00:25:01.910 more sense out of this so here's an
+00:25:06.950 animation where we're going not point by
+00:25:08.840 point just for speed I'm going a little
+00:25:10.520 bit further but for every point where
+00:25:13.130 you see that vertical dashed line the
+00:25:14.630 first thing it does is look left and
+00:25:16.670 then the second thing it does is look
+00:25:19.250 right so the looking left in this case
+00:25:21.860 was instantaneous because it was sitting
+00:25:23.870 right against the curve but it's looking
+00:25:26.030 right and it's going point by point all
+00:25:27.980 the way to the right until it hits the
+00:25:30.110 spectrum again and then that would be
+00:25:33.350 the rectangle it moves to the next point
+00:25:36.170 looks left you didn't see much there
+00:25:38.030 because there is no left and it seeks
+00:25:40.280 right till it hits the spectrum curve
+00:25:43.520 again so for speed we're going in large
+00:25:47.480 increments here but in reality your
+00:25:49.340 algorithm would go point by point now
+00:25:51.290 that we're on the downward slope you see
+00:25:53.090 the seeking left but the seeking right
+00:25:55.490 is almost instantaneous now that we're
+00:25:57.740 sitting at a valley you can see both we
+00:25:59.960 seek left we seek right and we fit the
+00:26:03.680 rectangle if we didn't seek both ways
+00:26:05.660 all the time we would have missed that
+00:26:14.640 here we're at another Valley again and
+00:26:17.260 so you can see both the seeking left and
+00:26:19.420 seeking right if we only ever sought
+00:26:21.790 right for example when we're sitting out
+00:26:24.160 of Valley that rectangle here would be
+00:26:25.810 half what it should have been so we
+00:26:28.060 always have to seek left and seek right
+00:26:30.130 and so while this is running the idea is
+00:26:33.400 that you're you're storing the point
+00:26:35.410 that had the biggest rectangle and
+00:26:37.960 you're remembering where that was now in
+00:26:44.380 the remaining animations what you're
+00:26:46.930 going to see is you're not going to see
+00:26:49.090 the seat left seat riding where you're
+00:26:50.560 just going to see the rectangle
+00:26:51.660 associated with each point you'll see
+00:26:54.610 that when we get to it
+00:26:55.480 so I'll start when this animation
+00:26:57.190 finishes so in this animation I'm just
+00:27:04.570 trying to convey the seek left seek
+00:27:07.090 right almost done and then we can move
+00:27:13.210 on
+00:27:23.810 maybe I should have made this faster
+00:27:43.440 all right so that's it we started over
+00:27:45.629 again but I won't play this if you want
+00:27:47.220 to see it over again go ahead and rewind
+00:27:48.539 the video now we're looking at the same
+00:27:53.009 curve and what you see now we're not
+00:27:55.169 showing you the c-class seek right the
+00:27:56.909 green rectangle is the final rectangle
+00:27:59.129 from that seek left secret algorithm and
+00:28:02.070 the red rectangle is the biggest
+00:28:04.590 rectangle that is found in the sweep so
+00:28:07.080 far and of course if you're not
+00:28:14.850 displaying graphics this runs very very
+00:28:16.710 fast and we go point by point seek left
+00:28:19.889 seek right remember the rectangle and
+00:28:21.870 find the largest rectangle so this is
+00:28:25.440 the algorithm when our merit function is
+00:28:27.419 width times height where we're literally
+00:28:29.899 maximizing the area of that rectangle so
+00:28:33.899 we might ask what does this look like if
+00:28:36.269 we suppress the importance of width or
+00:28:39.179 height so let's go ahead and watch this
+00:28:43.080 max I believe that is the maximum
+00:28:45.120 rectangle for the width times height
+00:28:47.480 merit function let's go to the next one
+00:28:51.980 now we are suppressing the importance of
+00:28:55.200 width and enhancing the importer amp
+00:28:59.009 will find the importance of height so
+00:29:01.409 what you'll see now is the called the
+00:29:03.659 largest rectangle but it's no longer
+00:29:05.250 purely area anymore but the best
+00:29:07.590 rectangle it's found has now preferring
+00:29:10.799 height over width and I believe that
+00:29:12.860 rectangle that just left behind is the
+00:29:15.539 best that this particular merit function
+00:29:17.700 will find in our application maybe it's
+00:29:20.429 more important we have strong reflection
+00:29:22.259 that it is broadband reflection okay
+00:29:26.279 let's look at this the other way around
+00:29:27.659 now let's suppress 8 and enhance the
+00:29:30.149 importance of W
+00:29:39.570 you
+00:29:59.130 so that's what's happening here we've
+00:30:01.180 enhanced the importance of the width of
+00:30:03.040 the rectangle and suppressed the
+00:30:05.020 importance of the height I have a
+00:30:07.390 feeling this rectangle that we're
+00:30:09.010 looking at now is going to be the best
+00:30:12.220 rectangle because we've amplified the
+00:30:15.040 importance of width so here band width
+00:30:18.160 might be more important to us than what
+00:30:20.290 the reflection is as long as we reflect
+00:30:22.030 something over that bandwidth
+00:30:23.770 maybe that's satisfactory to us
+00:30:35.210 okay so hopefully you get the point we
+00:30:37.460 can do any of these things in any
+00:30:39.470 combination that we want but this
+00:30:41.540 rectangle algorithm in our research we
+00:30:43.850 use a lot
+00:30:53.799 you
+00:31:40.510 just to give you an idea of what these
+00:31:42.620 look like this is an output of a or I
+00:31:45.770 should say it's an intermediate result
+00:31:47.150 of a real optimization that we run and
+00:31:49.880 we don't pay too much attention to
+00:31:51.260 dressing up the graphics this is more
+00:31:53.510 just our dashboard as an optimization is
+00:31:55.820 running but we're looking at reflection
+00:31:57.890 for something called a guided mode
+00:31:59.300 resonance filter and you can see where
+00:32:01.850 we're fitting rectangles to this to
+00:32:03.590 figure out over what bandwidth they're
+00:32:06.020 reflecting or transmitting so this is
+00:32:09.050 real data from real devices from a real
+00:32:11.480 optimization and in this case the merit
+00:32:14.510 function was the absolute value of
+00:32:16.430 transmittance times bandwidth

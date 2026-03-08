@@ -1,0 +1,221 @@
+# tactiq.io free youtube transcript
+# MATLAB Session -- Golden Section Search Visualization
+# https://www.youtube.com/watch/VvsDStezquw
+
+00:00:00.770 here we are in a following MATLAB
+00:00:03.600 session and hopefully you watched the
+00:00:05.580 previous one where we implemented the
+00:00:07.950 golden section search in MATLAB and we
+00:00:11.099 did this on the sine function that we
+00:00:12.840 found the answer was PI over two and
+00:00:15.150 it's great to test things like this on
+00:00:17.310 functions we know the answer to before
+00:00:19.560 trying it on other functions
+00:00:21.619 now in this MATLAB session we're going
+00:00:24.300 to add visualization to this to
+00:00:26.070 visualize the method to make it a little
+00:00:28.260 bit more interesting I've hidden a
+00:00:29.699 mistake in our code so if I run this now
+00:00:33.450 I look at our answer it is no longer PI
+00:00:36.840 over two and so this might be very
+00:00:39.059 typical of when you're writing your own
+00:00:40.710 function you or your own program for do
+00:00:42.780 a golden section search you run it and
+00:00:44.940 you're getting the wrong answer and we
+00:00:46.110 need to figure out why and you can stare
+00:00:49.020 at the numbers in the code all day long
+00:00:50.820 and the answer may not be apparent to
+00:00:53.370 you when we visualize many times the
+00:00:57.000 mistake can become much more apparent so
+00:00:59.940 let's go ahead and do this quickly I'll
+00:01:01.770 scroll through the code and it's hard to
+00:01:05.129 stare at this and figure out where it is
+00:01:07.350 I've hidden the error but clearly we're
+00:01:09.540 not getting the correct answer because
+00:01:11.960 1.78 is not PI over two okay so it's
+00:01:20.549 best in a case like this to add the
+00:01:23.060 visualization step to the beginning of
+00:01:25.740 your main loop that way you can see the
+00:01:28.470 initial configuration if I put the
+00:01:31.110 visualization at the end the first time
+00:01:33.720 it would draw something it would be
+00:01:35.729 after everything's been updated one time
+00:01:38.189 so I like to add the visualization in
+00:01:40.530 the beginning so just call it visualize
+00:01:44.540 one thing we would like to do is
+00:01:47.310 visualize a nice high resolution version
+00:01:50.189 of the function that's not very
+00:01:52.259 practical for real problems but it is
+00:01:54.780 great for troubleshooting and to
+00:01:56.280 understand what's happening while you're
+00:01:58.409 testing it on a very fast and known
+00:02:00.990 function so what we need to do is
+00:02:03.659 calculate this high resolution version
+00:02:05.549 of the function and let's do this
+00:02:07.860 outside of the loop because we only need
+00:02:09.959 to do that one
+00:02:18.700 so calculate high-res function we'll say
+00:02:24.469 X X so we don't overwrite any values of
+00:02:26.599 x that we might be using elsewhere so
+00:02:28.519 we'll just call it X x linspace and
+00:02:32.629 let's plot this from X a to X B where X
+00:02:41.450 a will be our lower bound X B will be
+00:02:48.379 our upper bound now the upper and lower
+00:02:50.480 bounds like sell an X they're going to
+00:02:51.889 be modified during the algorithm but I
+00:02:54.469 don't want to keep moving my plot and so
+00:02:57.199 I'll just record those in XA and xB and
+00:03:00.549 we can set our x limits to those and our
+00:03:03.230 plot will stay nice and still so now
+00:03:07.189 let's make it a hundred points and the
+00:03:10.269 capital F for the function func xx so at
+00:03:15.799 this point xx and F will be this nice
+00:03:18.079 high resolution version of the function
+00:03:20.319 so we can go ahead and plot that xx F
+00:03:23.989 now we need to say a drawl now if we
+00:03:27.079 don't do that
+00:03:27.949 MATLAB may never draw anything so that
+00:03:30.560 forces MATLAB to draw to the graphics
+00:03:33.949 window so let's go ahead and run this
+00:03:35.060 and we see our function now we didn't
+00:03:41.389 see anything else what we'd like to do
+00:03:43.159 is draw the upper limit lower limit x1
+00:03:45.739 x2 and keep adding information until
+00:03:49.189 we've learned everything that we need to
+00:03:51.319 know about our algorithm but so far that
+00:03:54.079 looks good what I might want to do is
+00:03:56.299 set my y-axis limits to go from zero to
+00:03:59.090 one point one give us a little bit of
+00:04:01.280 white space up here so let's go ahead
+00:04:04.069 and say X lim will keep that fixed on
+00:04:09.019 x-a to x-b
+00:04:13.830 and for the wide limits zero to one
+00:04:17.970 point one and now if we run it we should
+00:04:21.810 see some comfortable white space above
+00:04:23.550 and below it
+00:04:24.710 now when our lower bound and upper bound
+00:04:28.230 are first drawn they're going to be at
+00:04:29.940 the very edges of this grid and I
+00:04:32.550 probably don't like that let's add a
+00:04:34.020 little bit of white space on the left
+00:04:35.550 and the right so we'll say X a minus 0.1
+00:04:39.480 X B plus 0.1 we just want enough white
+00:04:44.250 space so that when we do draw the upper
+00:04:46.710 bound and lower bound that will see
+00:04:48.840 those okay there's our function now
+00:04:54.150 let's start drawing lines I want to draw
+00:04:57.120 a vertical line to the left for a lower
+00:04:59.040 bound and another vertical line on the
+00:05:01.200 right for our upper bound now I want to
+00:05:04.470 keep what's in the background so we'll
+00:05:06.840 say hold on and then hold off and then
+00:05:09.300 all the lines and things are annotations
+00:05:11.550 we might want to draw will happen inside
+00:05:13.170 those hold statements okay so let's make
+00:05:17.070 a line now it is a vertical line so the
+00:05:21.930 values of X on the top and the bottom
+00:05:23.580 will stay the same
+00:05:24.630 and it'll be X lower for the first one
+00:05:29.000 so I'll just multiply one one and then
+00:05:34.050 our Y values we wanted to go from the
+00:05:36.720 top to the bottom and we know that's
+00:05:38.220 from zero to one point one right now
+00:05:42.110 let's make the line on the Left blue and
+00:05:48.630 run it and see if we get a line on the
+00:05:50.130 left and may not have seen it or maybe
+00:05:54.810 the video didn't capture but that line
+00:05:56.400 jumped around really really quick and we
+00:05:59.820 probably should slow down our graphic so
+00:06:02.580 that we can see things happening so we
+00:06:07.620 can do a one-second pause and that
+00:06:09.540 should help
+00:06:14.509 now we can watch that lower limit bounce
+00:06:17.759 up and down we don't know if anything's
+00:06:19.410 right yet let's draw the other lines and
+00:06:21.840 hopefully that'll give us some
+00:06:22.860 information okay so that's the vertical
+00:06:27.360 line for the lower limit let's do a
+00:06:31.139 vertical line for the upper limit and
+00:06:33.000 color that red and now we can run it
+00:06:41.120 whoa and look what we just saw our lower
+00:06:44.009 limit for a moment actually passed to be
+00:06:47.610 on the other side of the upper limit
+00:06:51.210 that's clearly not correct so I'm
+00:06:53.400 already suspecting something where we're
+00:06:56.310 updating the upper and lower limits is
+00:06:58.740 going wrong but let's proceed with this
+00:07:01.169 let's draw the lines that are in X 1 and
+00:07:03.449 X 2
+00:07:13.860 we're gonna draw a vertical line at x1
+00:07:15.840 and we're running out of colors here so
+00:07:19.289 why don't we change the style of the
+00:07:21.060 line so our dashed lines will be X 1 and
+00:07:30.599 X 2 X 1 which will be blue and X 2 will
+00:07:35.819 be red to make that red now it's going
+00:07:43.470 to run that alright now we see our
+00:07:48.780 bounds but we see craziness happening
+00:07:51.330 our X 1 and X 2 should always be between
+00:07:54.210 the lower and upper bound and that's not
+00:07:56.759 happening so let's make sure that we're
+00:08:00.210 evaluating the function correctly so
+00:08:02.219 let's plot our values of the function at
+00:08:05.460 each of these four points the X 1 the X
+00:08:07.800 2 X low and X high
+00:08:15.529 I'll go ahead and plot for values of X
+00:08:20.309 we have X low 1 X 2 and X upper
+00:08:30.310 then for a value of F F lower F 1 F 2
+00:08:35.020 and F upper and let's just draw black
+00:08:41.169 circles okay let's see if that works all
+00:08:48.760 right I do see circles where those
+00:08:51.820 bounds have crossed our function so I do
+00:08:55.090 believe we're evaluating the function at
+00:08:57.430 those points correctly the problem is
+00:08:59.740 something else the problem is where
+00:09:01.600 we're updating let's go ahead and watch
+00:09:04.600 this once again let's figure out what
+00:09:07.030 moves and what is wrong and what is
+00:09:09.010 right
+00:09:18.940 so that lower bounds appears to be the
+00:09:22.180 one that's not behaving very well so
+00:09:24.880 let's go ahead and look at our update
+00:09:28.290 for where we're moving that lower bound
+00:09:38.230 so in this section we're not even
+00:09:40.240 changing the lower bound so maybe it's
+00:09:43.030 in this section well here we're just
+00:09:46.720 copying information over so perhaps
+00:09:50.710 that's not it let's look again let's run
+00:09:53.530 this again so that blue dashed line x1
+00:10:03.280 seemed like it appeared outside of the
+00:10:06.100 interval and it should never be outside
+00:10:09.190 here let's look at our update for x1 so
+00:10:18.970 this is where we're calculating our new
+00:10:20.380 value of x1 we don't do this down here
+00:10:22.810 we're just copying it over so this is
+00:10:24.880 really the only update for x1 and here
+00:10:28.120 we actually see the mistake x1 should
+00:10:31.030 come down from the upper limit by a
+00:10:33.970 distance D and so we've caught one
+00:10:37.120 mistake let's see what happens now now
+00:10:43.720 the dashed lines are always between the
+00:10:46.330 solid lines so that's good
+00:10:48.160 and we see that it's closing in on the
+00:10:50.890 maximum and we're visualizing the method
+00:10:53.970 now there's a lot of graphics dressing
+00:10:56.980 up here that I didn't do and this is
+00:10:58.900 paying attention more colors line
+00:11:00.880 thicknesses maybe giving the figure a
+00:11:03.520 white background consistent number of
+00:11:05.650 digits labeling axes there's a lot we
+00:11:08.230 can do but when I incorporate graphics
+00:11:11.290 for troubleshooting codes and I
+00:11:12.790 incorporate right into the main loop
+00:11:14.350 it's very rare that I will dress things
+00:11:17.290 up to that extent because it just slows
+00:11:19.090 down the graphics now certainly if I was
+00:11:22.000 trying to visualize iterations to put
+00:11:24.160 into a homework or to a publication I
+00:11:26.470 absolutely would go ahead and dress up
+00:11:28.750 those graphics and think about all those
+00:11:30.490 things that I just listed but this is
+00:11:33.550 the quick way to visualize the golden
+00:11:35.830 section search I hope this was helpful

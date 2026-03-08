@@ -1,0 +1,918 @@
+# tactiq.io free youtube transcript
+# Topic 6b -- Finite-difference approximations
+# https://www.youtube.com/watch/PWXI1tQ8zAo
+
+00:00:00.450 topic 6b finite difference
+00:00:03.010 approximations in this lecture I first
+00:00:08.410 want to introduce what finite difference
+00:00:10.659 approximations are I then want to try to
+00:00:13.709 frame the problem in a way that makes it
+00:00:17.380 intuitive for you to generalize the
+00:00:19.480 concept and understand where it can go
+00:00:22.020 we are not going to take this in every
+00:00:24.550 single direction that it can go but we
+00:00:26.710 will do a lot of things the most
+00:00:29.110 important aspect of this lecture is that
+00:00:30.910 you're able to derive a finite
+00:00:33.100 difference approximation and understand
+00:00:35.079 what's happening understand where that
+00:00:37.269 approximation is evaluating the
+00:00:39.399 derivative what information it's using
+00:00:42.100 to calculate the derivative and some of
+00:00:44.440 the drawbacks well there's lots of
+00:00:47.140 methods for deriving finite difference
+00:00:49.420 approximations I'm only going to cover
+00:00:51.370 the polynomial technique here because
+00:00:53.739 it's very simple it builds on what we've
+00:00:55.870 done in a previous lecture where we
+00:00:57.219 talked about fitting polynomials to to
+00:00:59.679 data and we'll do that and we'll use
+00:01:01.870 that to derive our fun at difference
+00:01:03.219 approximations and so I'll describe the
+00:01:05.170 method give you some examples and then
+00:01:07.330 talk about how we can do this in MATLAB
+00:01:09.100 in order to derive much higher order
+00:01:11.950 accurate finite differences where there
+00:01:13.540 is a lot of terms and maybe we don't
+00:01:15.790 want to derive that by hand that it's
+00:01:17.230 pretty simple and we'll go through some
+00:01:19.360 examples of that first topic what are
+00:01:25.810 finite differences when we're talking
+00:01:32.080 about the finite difference method that
+00:01:34.480 really does imply that we don't have a
+00:01:38.020 function a continuous smooth function
+00:01:41.950 stored in memory we really only know the
+00:01:45.010 function at discrete points and in this
+00:01:46.870 case I'm showing at point one two and
+00:01:49.870 three we don't store the function
+00:01:52.960 between those points and in fact we
+00:01:54.940 don't know what the function is between
+00:01:57.070 those points now we can do some
+00:01:59.409 interpolation to make some good guesses
+00:02:01.260 but the point is we don't know what the
+00:02:03.550 function is at the in-between points
+00:02:09.110 now suppose we have this discrete
+00:02:11.850 function but we want to know the slope
+00:02:14.580 at some point along this function in
+00:02:18.300 this case let's say we want to know the
+00:02:20.370 slope at Point F - how do we do that if
+00:02:24.180 we only know the function at discrete
+00:02:26.160 points well in this case we'll recognize
+00:02:30.959 that the derivative is slope and we can
+00:02:35.160 estimate the slope at position F - by
+00:02:39.030 looking at points one and two and
+00:02:41.070 connecting those points with a line and
+00:02:43.920 we'll say that the slope of this line
+00:02:45.920 will approximate the slope the true
+00:02:49.080 slope at F - and the reason we do that
+00:02:51.780 is because our points one and three are
+00:02:54.200 symmetrically surrounding this point -
+00:02:56.820 so what is the slope connecting points
+00:03:00.000 one and two whoa the slope is rise over
+00:03:02.250 run how much is our rise it's F 3 - f 1
+00:03:07.970 what is our run that's the span between
+00:03:11.790 x1 and x3 so it's just 2 times Delta X
+00:03:15.510 where Delta X is the increment just from
+00:03:18.330 x1 to x2 so already we have a finite
+00:03:22.830 difference approximation which
+00:03:24.720 calculates a first order derivative at
+00:03:27.590 position x2
+00:03:34.110 now what if we wanted to know the
+00:03:36.120 derivative at an intermediate point
+00:03:37.710 maybe we'd like to know the derivative
+00:03:40.050 or the slope at point I'll call it one
+00:03:42.360 point five just to remind us that it's
+00:03:44.370 somewhere in between f1 and f2 now when
+00:03:47.490 I write f1 point five that does not
+00:03:50.370 imply we're actually storing a value of
+00:03:52.890 F at point one point five what that
+00:03:55.650 means is I want to know what the slope
+00:03:57.540 is at that intermediate point just using
+00:04:00.210 information from f1 f2 and f3 well how
+00:04:04.530 do we do that again we'll connect
+00:04:06.870 f1 with f2 with a straight line and say
+00:04:10.650 the slope at f1 point five is really the
+00:04:13.860 slope of the line connecting f1 to f2 so
+00:04:17.880 over here is that our finite difference
+00:04:19.738 approximation from that slope being rise
+00:04:21.839 over run the rise being f2 minus f1 and
+00:04:25.560 the run just being 1 Delta X in this
+00:04:27.630 case so that's our finite difference
+00:04:29.880 approximation for a first order
+00:04:31.440 derivative calculating the slope at
+00:04:33.930 point X sub 1.5 very similar argument
+00:04:38.880 what if we want to know the slope over
+00:04:40.410 here at point two point five well we
+00:04:43.620 have approximate that by the slope of
+00:04:45.600 the line connecting f2 to f3 and we end
+00:04:48.690 up with our finite difference
+00:04:49.830 approximation calculating the first
+00:04:51.960 order derivative at point X sub two
+00:04:54.600 point five now we might want to know the
+00:05:01.860 second order derivative at point x2 well
+00:05:07.290 a simple way to do this is to think of
+00:05:09.300 the second order derivative as the
+00:05:11.940 derivative our first order derivative or
+00:05:13.919 the slope of the slope so our slope of
+00:05:18.780 the slope is still rise over run
+00:05:21.780 but our rise is the slope at X point two
+00:05:25.710 five minus the slope at X 1.25 divided
+00:05:29.669 by the distance between those points or
+00:05:31.350 the run that's Delta X well we just
+00:05:34.470 derived above two different finite
+00:05:36.090 difference approximations for these
+00:05:37.919 first order derivatives we can
+00:05:39.870 substitute those in and turn our algebra
+00:05:42.570 crank and suddenly we've arrived at a
+00:05:45.030 finite difference
+00:05:46.220 summation for a second-order derivative
+00:05:47.930 at point x2 so this is already one
+00:05:53.300 technique for deriving finite difference
+00:05:56.000 approximations so we have two already
+00:06:02.720 now what we've just talked about is not
+00:06:05.330 very generalizable so the polynomial
+00:06:09.050 technique that we'll teach in a little
+00:06:10.610 bit is a lot more powerful
+00:06:16.420 before we get into that I want to try to
+00:06:19.100 generalize the concept of what a finite
+00:06:21.890 difference approximation is and so in my
+00:06:24.980 mind I'm picturing this random
+00:06:26.840 scattering of points and they don't have
+00:06:28.850 to be distributed uniformly or anything
+00:06:30.770 just some random smattering of points so
+00:06:34.610 what information is hiding behind those
+00:06:36.410 points well each point has a position X
+00:06:39.590 and y in two dimensions in three
+00:06:41.750 dimensions it would have a Z and there's
+00:06:43.850 also a function value there an F an F
+00:06:46.250 one two three four etc so we have this
+00:06:49.790 random smattering of points now suppose
+00:06:53.900 I wanted to estimate the function or one
+00:06:58.280 of its derivatives at some point amongst
+00:07:01.669 these blue points so this red point is
+00:07:04.100 where I want to evaluate my derivative
+00:07:06.220 the bhoot the blue points is the
+00:07:09.110 information we have from which to derive
+00:07:11.630 the function or one of its derivatives
+00:07:13.610 at the red point well it turns out
+00:07:18.370 there's a few ways to do this but let's
+00:07:20.540 say we do it our answer always has a
+00:07:23.540 very similar form whether we're
+00:07:25.520 interpolating the function or any of its
+00:07:27.590 derivatives it's always just some
+00:07:29.900 weighted sum of the function values at
+00:07:32.570 each of those blue points so the F
+00:07:35.720 values will be known our job is to
+00:07:39.590 determine what are these weights what is
+00:07:41.270 a1 a2 a3 a4 a5 a6 and a7 or however many
+00:07:46.700 we need those a terms are called our
+00:07:49.340 finite difference coefficients our goal
+00:07:52.010 in this lecture is how do we calculate
+00:07:53.930 those a terms
+00:08:00.750 it will turn out information from the
+00:08:04.240 position of the points is what goes into
+00:08:07.750 those a terms that's where that
+00:08:09.130 information is stored now if we have
+00:08:15.490 some random smattering of points that
+00:08:17.680 we're showing with these blue dots and
+00:08:19.630 we wish to evaluate our function or
+00:08:21.910 derivative at the red dot right in the
+00:08:23.560 middle and let's say we go ahead and
+00:08:25.599 derive our finite difference
+00:08:27.280 coefficients or finite difference
+00:08:28.870 approximation and we get an answer now
+00:08:33.880 let's say we take that same distribution
+00:08:35.860 of points but offset them but notice
+00:08:39.640 it's the same distribution of points
+00:08:41.110 their relative positions blue and the
+00:08:43.059 red dot is all the same it turns out we
+00:08:46.060 will derive the exact same finite
+00:08:48.490 difference coefficients the exact same a
+00:08:51.190 terms so we are allowed to offset or
+00:08:54.970 shift our coordinates and still get the
+00:08:57.760 same coefficients this will be hugely
+00:09:00.190 useful as you'll see what if we have the
+00:09:06.130 same smattering of blue points but we
+00:09:09.279 move the red point so we're evaluating
+00:09:12.220 our function or one of its derivatives
+00:09:14.410 at a different point it turns out we get
+00:09:16.959 completely different finite difference
+00:09:18.490 coefficients so that's a different
+00:09:19.899 problem what if we evaluate our finite
+00:09:25.300 difference at the same point but the
+00:09:28.329 points from which we're evaluating that
+00:09:30.399 change their position well it turns out
+00:09:33.250 we get different coefficients so in the
+00:09:35.529 end we're only allowed to shift our
+00:09:38.709 coordinates and still get the same
+00:09:40.870 finite difference coefficients if we do
+00:09:42.880 anything else we have to read arrive new
+00:09:45.850 finite difference coefficients there are
+00:09:53.410 while there's many types of funded
+00:09:54.970 differences there's three main types
+00:09:56.850 commonly talked about one is a central
+00:10:00.970 finite difference in a central finite
+00:10:03.490 difference we are evaluating the
+00:10:05.379 function or one of its derivatives at
+00:10:07.690 the midpoint between our function values
+00:10:11.310 this is the most accurate way to
+00:10:14.069 calculate a finite difference but it's
+00:10:16.240 not the only way there's also what's
+00:10:20.529 called a forward finite difference
+00:10:22.389 suppose were interested in evaluating
+00:10:24.819 the derivative at point F 1 but for some
+00:10:27.759 reason we don't have information on
+00:10:29.860 either side we only have information on
+00:10:32.079 the forward side of it so if our finite
+00:10:35.139 difference approximation contains
+00:10:36.730 information only forward of where we're
+00:10:38.889 actually evaluating we call that a
+00:10:41.290 forward finite difference obviously this
+00:10:44.889 is not ideal because we're evaluating
+00:10:46.839 our derivative at the edge of where our
+00:10:48.850 data is and maybe not getting as
+00:10:51.459 accurate of an estimate we could look at
+00:10:56.170 this the other way around if for some
+00:10:57.970 reason we're evaluating a finite
+00:10:59.680 difference using information on the
+00:11:01.899 backward side of that point we call that
+00:11:04.509 a backward finite difference and it
+00:11:06.610 really has the same drawbacks as the
+00:11:08.259 forward finite difference
+00:11:09.519 not quite as accurate as the central
+00:11:11.560 finite difference but there are times
+00:11:13.449 where we just don't have a choice and we
+00:11:15.279 have to use the forward or backward
+00:11:17.380 finite differences here's a neat little
+00:11:24.100 animation where we have three points and
+00:11:26.290 we are evaluating the or were deriving
+00:11:30.819 our finite difference approximation to
+00:11:33.370 calculate a first order derivative and
+00:11:35.470 what we're changing here is the point
+00:11:37.630 where we're evaluating that first order
+00:11:40.089 derivative and we can watch those finite
+00:11:42.550 difference coefficients change as a
+00:11:44.470 function of where we are evaluating that
+00:11:47.410 finite difference so I'll let this play
+00:11:50.379 for a few seconds a few moments and feel
+00:11:54.579 free to fast-forward or pause or rewind
+00:11:57.730 or look at this I think this is a really
+00:12:00.339 good animation to stare at for a while
+00:12:07.420 and I guess if I think about it I'll try
+00:12:10.130 to make this animation available on the
+00:12:12.110 website I won't add that to my to-do
+00:12:15.080 list so here are two things that we
+00:12:25.640 really need to keep in mind and keep
+00:12:28.070 control of when we're talking about
+00:12:30.050 finite differences the first is the
+00:12:34.360 positioning of the points from which we
+00:12:36.860 are evaluating or finite difference in
+00:12:39.410 this case we're talking about the blue
+00:12:41.150 points so where are those how densely
+00:12:44.360 are they packed what are their positions
+00:12:46.690 the more densely they're packed usually
+00:12:50.600 the more accurate we can estimate our
+00:12:52.490 function or one of its derivatives but
+00:12:54.710 of course that's more calculation so
+00:12:56.540 there's a typical trade off we can
+00:12:58.340 improve our accuracy but it requires
+00:13:00.590 more calculations which probably
+00:13:02.570 requires more memory more simulation
+00:13:04.820 time etc so the position of points from
+00:13:07.850 which we're evaluating our finite
+00:13:09.590 difference is very important the next
+00:13:11.840 thing that's also extremely important
+00:13:13.550 maybe more important is knowledge of
+00:13:15.980 where we are evaluating our finite
+00:13:18.920 difference and we could choose to
+00:13:21.320 evaluate our front a difference in the
+00:13:23.030 middle of our function values which is
+00:13:25.550 best that's more like a central finite
+00:13:27.260 difference but mathematically it's
+00:13:29.270 possible to be evaluating our function
+00:13:30.800 out here clearly that probably wouldn't
+00:13:33.530 be the most accurate way to do it but it
+00:13:35.780 is a way to do it so when we're talking
+00:13:37.910 about finite differences when we're
+00:13:39.500 using them when we're deriving them we
+00:13:41.360 really need to have a good knowledge of
+00:13:43.340 the distribution of points from which
+00:13:45.680 we're calculating the finite difference
+00:13:47.060 and where that finite difference is
+00:13:50.240 calculating the derivative or
+00:13:52.310 interpolating the function in this
+00:13:58.550 section I'm going to discuss how we can
+00:14:00.410 use curve fitting to polynomials called
+00:14:02.810 the polynomial technique for deriving or
+00:14:05.180 finite difference approximations there
+00:14:07.040 are other techniques but this is very
+00:14:09.350 simple it builds on what we discussed
+00:14:11.210 previously when we fit polynomials and
+00:14:13.340 so that's what we're covering here
+00:14:18.280 so here's the general concept of how we
+00:14:21.590 can do this suppose we have fit a
+00:14:24.320 polynomial to some set of points so to
+00:14:26.630 fit this nth order polynomial we needed
+00:14:29.600 n plus 1 points so we had n plus 1
+00:14:31.970 points and fit it to a polynomial how is
+00:14:34.850 it we can use that to interpolate the
+00:14:36.800 function or one of its derivatives well
+00:14:41.330 assuming we have number values for a
+00:14:44.030 naught a 1 a 2 and so on we can take our
+00:14:47.450 polynomial and if we just use the
+00:14:49.070 polynomial we have a way of
+00:14:51.050 interpolating our function amongst that
+00:14:53.660 distribution of points that we did our
+00:14:55.370 curve fit but we can also differentiate
+00:14:58.430 this polynomial we can take the first
+00:15:00.710 order derivative and now we have a new
+00:15:03.230 polynomial that we can use to
+00:15:05.390 interpolate the first order derivative
+00:15:07.510 we can differentiate again and now we
+00:15:10.760 have a polynomial that we can use to
+00:15:12.620 interpolate our second order derivative
+00:15:14.510 and third and fourth and so on so here
+00:15:24.230 are the polynomials that we will use to
+00:15:26.810 interpolate the function or one of its
+00:15:28.940 derivatives and let's look at this for a
+00:15:31.580 bit what value of x would make
+00:15:35.600 evaluating these polynomials very very
+00:15:38.210 easy well I think it would be at x
+00:15:43.670 equals 0 if we set X equal to 0
+00:15:47.500 suddenly the way we evaluate our
+00:15:50.120 function or any of its derivatives
+00:15:51.530 becomes very very simple so in fact what
+00:15:55.700 we'll do is we will shift our
+00:15:57.140 coordinates so that x equals 0 is the
+00:16:00.410 point where we want to evaluate our
+00:16:02.270 function or find a difference and
+00:16:04.730 suddenly these polynomial is reduced to
+00:16:06.890 this really simple form so we're using
+00:16:09.350 that property where we know we can shift
+00:16:11.870 our points from which we're evaluating
+00:16:13.760 our fun a difference and it does not
+00:16:15.950 change the finite difference
+00:16:17.060 coefficients we can reuse that anywhere
+00:16:19.280 no matter where those points are so it's
+00:16:21.710 a very useful property big question is
+00:16:28.220 how do we make this happen every time
+00:16:30.860 and we already hinted to it by shifting
+00:16:32.810 our coordinates so we shift our
+00:16:40.250 coordinates this way our original
+00:16:43.250 coordinates will just write as X if we
+00:16:46.160 want to evaluate our derivative so
+00:16:49.220 interpolate the function or one of its
+00:16:50.810 derivatives at point x FD so the FD
+00:16:53.810 means a finite difference that's where
+00:16:55.490 we were evaluating or finite difference
+00:16:56.990 if we just subtract that from our true
+00:16:59.450 values of X we'll get our shifted
+00:17:02.270 coordinate system where all we did was
+00:17:04.430 subtract this XF D so we can rewrite our
+00:17:08.680 polynomial in terms of the shifted
+00:17:11.660 coordinates and that's fine to do and so
+00:17:15.109 when it comes time to evaluate or find a
+00:17:17.119 difference since we said we're going to
+00:17:19.010 have that exist at the point where an
+00:17:20.900 hour shift in coordinate system the
+00:17:23.329 tilde x equals zero our problem just
+00:17:26.390 reduces down to what we're showing at
+00:17:27.890 the bottom of the page so our we can
+00:17:30.560 interpolate the function just using a
+00:17:32.840 knot we can interpolate the first order
+00:17:35.510 derivative just using a 1 our second
+00:17:38.720 order derivative using a 2 just scaled
+00:17:41.810 by a factor of 2 and so on
+00:17:44.480 so this really simplifies things and
+00:17:46.820 it's very useful and it's ok if it's not
+00:17:49.100 making a whole bunch sense right now
+00:17:50.690 when we work through examples you'll see
+00:17:52.610 how this is done at a high level there's
+00:17:58.340 this is really a four step procedure for
+00:18:00.770 deriving fun and difference
+00:18:01.850 approximations using the polynomial
+00:18:03.710 technique the first step is just to
+00:18:07.310 define the set of points from which we
+00:18:09.980 want to calculate our finite difference
+00:18:11.870 approximation so if we want to use three
+00:18:14.270 terms in our find a difference
+00:18:16.490 approximation we need to throw pick
+00:18:18.410 three points and we'd like those three
+00:18:20.600 points to be as close to where we're
+00:18:22.640 evaluating our derivative as possible so
+00:18:25.700 that's step one just picking our points
+00:18:30.190 now what we want to do is shift our
+00:18:32.930 coordinate system such that in our ship
+00:18:35.960 tecora net system X tilde so the tilde
+00:18:39.740 reminds us this is our shifted
+00:18:40.970 coordinate system where X tilde equals
+00:18:42.830 zero that's
+00:18:44.690 evaluating our derivatives and that
+00:18:48.409 makes it makes our polynomials much much
+00:18:51.499 simpler because most of the terms drop
+00:18:54.009 so we pick our points and then we shift
+00:18:57.169 them so that in the shifted coordinate
+00:18:59.239 system x equals 0 where we want to
+00:19:02.389 evaluate our finite difference then in
+00:19:07.039 our ship that coordinate system we fit
+00:19:09.710 this smattering of points to a
+00:19:11.599 polynomial once we have our polynomial
+00:19:15.109 fit we'll know values numerical values
+00:19:17.539 for a naught a 1 a 2 and and so on the
+00:19:23.119 last step is then to use those
+00:19:24.649 polynomial coefficients to write the
+00:19:27.349 finite difference approximations that
+00:19:28.909 either approximate or interpolate our
+00:19:31.099 function or one of its derivatives at X
+00:19:34.639 tilde equals 0 so that's the high-level
+00:19:38.419 let's go through each of these steps in
+00:19:40.549 more detail and talk a little bit about
+00:19:42.440 how it may be implemented in MATLAB I
+00:19:44.720 will save the bulk of the MATLAB
+00:19:46.820 discussion for the examples so step 1 we
+00:19:53.749 pick our coordinates from which we want
+00:19:56.419 to approximate our derivative and we
+00:19:59.809 will store those coordinates in a column
+00:20:01.909 vector and just call that column vector
+00:20:04.820 X step 2 we want to shift our
+00:20:12.619 coordinates such that in the shifted
+00:20:15.109 system we're evaluating our function or
+00:20:17.840 one of its derivatives at x equals 0 so
+00:20:23.419 now what we want to do is we want to
+00:20:25.070 correct our column vector X or
+00:20:27.019 essentially construct a column vector of
+00:20:28.940 X tilde x' this is our x values in the
+00:20:31.940 shifted coordinate system so in terms of
+00:20:34.940 the original x values we'd write it this
+00:20:36.769 way the reality is we will just store a
+00:20:39.590 column vector of our shifted coordinates
+00:20:41.779 so for example if we're doing a central
+00:20:44.389 finite difference we would expect that
+00:20:46.249 these first values would be some
+00:20:47.840 negative values of X it would pass
+00:20:49.669 through 0 and go up to some positive
+00:20:52.249 values
+00:20:53.050 if it's not a central find a difference
+00:20:55.690 that zero could be just about anywhere
+00:20:57.580 else so we shifted our coordinates now
+00:21:03.130 our goal is to big this build this big
+00:21:05.110 matrix X and recall our discussion when
+00:21:07.870 we were talking about fitting
+00:21:08.980 polynomials to curves in a previous
+00:21:10.750 lecture we have to build this
+00:21:12.520 vandermonde matrix where the first
+00:21:14.260 column is all ones
+00:21:16.450 the second columns are our values of x
+00:21:19.090 then our values of x squared and all the
+00:21:22.030 way up to some value N and this is a big
+00:21:24.490 square matrix in terms of our original
+00:21:30.820 coordinates we could write this X matrix
+00:21:33.010 this way I tend not to do that since
+00:21:34.990 we've already shifted our coordinates I
+00:21:36.880 would just build this big vandermonde
+00:21:39.040 matrix this way and remember we need all
+00:21:42.520 ones in this first column so even though
+00:21:45.160 I write this as our shifted coordinates
+00:21:46.870 to the zero power we really can't do it
+00:21:49.150 this way because if there's zeros in
+00:21:50.950 this X zero to the zero is still zero
+00:21:52.540 and we want all one's here I simply
+00:21:55.360 write it this way so that we can see
+00:21:56.800 there's a 0 a 1 a 2 a 3 and all the way
+00:22:00.520 up to n so we build our big x matrix
+00:22:07.440 once we have this X matrix we will
+00:22:10.240 invert it to get our Y matrix and with
+00:22:13.720 practice you really can stop here and
+00:22:15.670 you'll recognize that the rows in this Y
+00:22:17.860 matrix are the finite difference
+00:22:19.960 coefficients we need to proceed a few
+00:22:22.660 more steps before that becomes obvious
+00:22:24.790 so we invert X to get our Y matrix
+00:22:32.049 so once we have the Y matrix we have we
+00:22:35.809 now solve our our polynomial equation if
+00:22:38.600 you will for our polynomial coefficients
+00:22:40.059 so we do a matrix division of this
+00:22:42.860 inverted X matrix to get the Y matrix we
+00:22:46.730 multiply our by our column vector of
+00:22:48.649 function values and that gives us our
+00:22:51.730 polynomial coefficients I'll mention one
+00:22:55.159 thing here which is I think quite
+00:22:56.990 different than when we were doing
+00:22:58.429 polynomial fitting when we are doing
+00:23:00.500 polynomial fitting we had numerical
+00:23:02.840 values for F 1 F 2 F 3
+00:23:05.510 we don't have numerical values for them
+00:23:08.149 yet
+00:23:08.510 F might be something we're solving for
+00:23:10.279 so in this framework the F stay symbolic
+00:23:13.970 so those polynomial coefficients there
+00:23:16.909 will be number values for the Y's but
+00:23:19.340 our polynomial coefficients will be
+00:23:21.260 numbers multiplying symbolic F values so
+00:23:25.850 if we do the math we can pull out our
+00:23:27.740 polynomial coefficients a naught a 1 a 2
+00:23:30.500 and we'll have numbers where the Y's are
+00:23:33.350 but the F's stay symbolic then the last
+00:23:42.740 step is we finally write our finite
+00:23:45.200 difference approximations and remember
+00:23:47.539 this set of equations when we
+00:23:48.799 differentiate our polynomial at X tilde
+00:23:51.889 equals 0 this is where we're evaluating
+00:23:53.840 our finite difference the approximations
+00:23:55.940 just reduced to essentially the
+00:23:58.880 polynomial coefficients and here's a
+00:24:01.490 repeat of what those polynomial
+00:24:03.139 coefficients were from the last slide so
+00:24:05.120 let's go ahead and write our finite
+00:24:08.000 difference approximations so if we want
+00:24:12.710 to interpolate our function that's
+00:24:15.409 simply just a naught so this expression
+00:24:18.289 over here is how we would interpolate
+00:24:20.480 our function at the point X tilde equals
+00:24:23.600 0 so that is essentially our fun a
+00:24:26.149 difference equation for interpolating
+00:24:28.909 the function now the first order
+00:24:31.220 derivative is just a 1 well here's our
+00:24:34.970 expression for a 1 and that's exactly
+00:24:37.549 what we write here this is our finite
+00:24:40.129 difference approximation for the first
+00:24:42.500 order derivative
+00:24:43.360 at the point X tilde equals zero now the
+00:24:47.560 last one it's easy to forget this too
+00:24:49.480 it's actually two times a two we have
+00:24:52.690 this expression for a two we just need
+00:24:54.640 to remember to multiply this by two and
+00:24:57.280 then we will have our finite difference
+00:25:00.370 approximation for calculating a
+00:25:02.890 second-order derivative at the point X
+00:25:05.980 tilde equals zero so looking at this now
+00:25:09.970 we can recognize that the rows of that Y
+00:25:12.280 matrix were essentially our finite
+00:25:14.950 difference coefficients one little
+00:25:17.200 difference and something easy to forget
+00:25:18.820 is this factor of two and the higher
+00:25:21.670 order derivatives have a different
+00:25:23.320 factor there it's easy to forget that
+00:25:25.180 especially considering the first order
+00:25:27.130 derivative which will do a lot doesn't
+00:25:28.510 have a factor there or maybe we can
+00:25:31.180 think about as being a factor of 1 so
+00:25:33.460 don't forget that factor now let's work
+00:25:39.400 through a series of examples where we're
+00:25:41.230 driving real finite difference
+00:25:43.390 approximations we're not using MATLAB
+00:25:46.030 yet how we use MATLAB to do this comes
+00:25:48.220 later
+00:25:48.910 so these examples are essentially done
+00:25:51.220 on paper or PowerPoint slides in this
+00:25:54.010 case example 1 suppose we have three
+00:26:00.640 points you distributed uniformly and we
+00:26:05.380 would like to calculate or derive or
+00:26:07.630 find a difference approximation for
+00:26:09.520 first order and second order derivatives
+00:26:11.470 at the midpoint how do we do that well
+00:26:18.310 one we can jump straight to our shifted
+00:26:21.370 coordinates we have a distribution of
+00:26:23.320 three points we want the X tilde equals
+00:26:27.100 zero to be where we're evaluating or
+00:26:29.470 find a difference in this case is the
+00:26:31.120 midpoint so the x value for the midpoint
+00:26:33.850 is zero now in place of Delta X for our
+00:26:37.630 grid spacing we're using H here that's a
+00:26:40.090 pretty common notation in the literature
+00:26:41.740 so we're using H here so this is three
+00:26:44.470 points evenly distributed then the first
+00:26:46.330 point would be at minus H and the third
+00:26:49.120 point at positive H so those are our
+00:26:52.240 coordinates in the shifted coordinate
+00:26:54.670 system
+00:26:56.950 from that we build our big X matrix and
+00:27:00.320 we essentially insert that X tilde into
+00:27:02.630 the columns raising it to different
+00:27:05.150 powers for each column we then invert
+00:27:11.570 the X matrix to get the Y matrix and
+00:27:14.230 reminding ourselves that the rows of
+00:27:16.370 this Y matrix are essentially our finite
+00:27:18.950 difference coefficients so from that y
+00:27:25.040 matrix we multiply the Y matrix times
+00:27:28.460 our F column vector remember these are
+00:27:31.160 symbolic FS but we can multiply this out
+00:27:34.130 to get expressions for our polynomial
+00:27:36.200 coefficients and we end up here so on
+00:27:39.410 the in the center part of these
+00:27:41.990 equations we're doing the row column
+00:27:43.870 multiplications and then we simplify and
+00:27:46.790 we end up with 4 a not just F 2 for a 1
+00:27:51.080 we end up with a minus F 1 plus F 3 over
+00:27:53.600 2 H and for the a 2 F 1 minus 2 F 2 plus
+00:27:58.760 F 3 over 2 H squared then the last step
+00:28:05.960 is we write our finite difference
+00:28:08.030 approximations remembering that we're
+00:28:10.550 evaluating our finite difference at x
+00:28:13.250 tilde equals 0 we just pull off these
+00:28:17.230 polynomial coefficients for evaluating
+00:28:20.540 our finite differences so what was a
+00:28:22.280 naught that's just F 2 does this make
+00:28:25.460 sense we're interpolating the function
+00:28:27.440 at the midpoint well F 2 is the midpoint
+00:28:30.680 so that is interpolating the function
+00:28:33.110 there's no interpolation needed we
+00:28:35.060 actually knew the function value there
+00:28:36.680 it would have been strange if the F 1 or
+00:28:39.800 F 3 popped up into there since we're
+00:28:42.350 interpolating at the position of F 2 all
+00:28:46.310 right our first order derivative was
+00:28:48.170 just the a 1 polynomial coefficient so
+00:28:50.900 we're really just grabbing this
+00:28:52.190 expression and it's F 3 minus F 1 over 2
+00:28:56.300 H H remembers the grid spacing this is
+00:28:59.150 rise over run that is our slope that was
+00:29:02.270 one of the first finite differences we
+00:29:03.800 derived okay what about the second-order
+00:29:07.370 finite difference that's 2 times a2 here
+00:29:12.980 was our expression for a2 and we
+00:29:15.320 multiplied this by 2 the 2 in the
+00:29:17.570 denominator disappears so this is our
+00:29:20.630 finite difference approximation for a
+00:29:22.370 second-order derivative all three of
+00:29:25.340 these are calculating those finite
+00:29:27.620 differences at the midpoint at point x2
+00:29:31.670 or we can think of it as where X tilde
+00:29:34.730 equals 0 and in fact the second to find
+00:29:37.970 differences are things that we derived
+00:29:39.410 earlier let's do another one we have the
+00:29:46.610 same three points we want to evaluate
+00:29:48.800 the same finite differences but let's
+00:29:51.500 evaluate them at the first point instead
+00:29:54.380 of the mid point let's see how things
+00:29:55.970 change well in terms of our shifted
+00:30:00.560 coordinates we have to put a zero at the
+00:30:02.570 first point because that's where we want
+00:30:05.000 to evaluate our finite differences that
+00:30:07.580 place is the second point at H and the
+00:30:09.890 third point at 2h so we jumped
+00:30:12.620 immediately to our shifted x coordinates
+00:30:15.170 given that we build this X matrix by
+00:30:20.630 essentially placing the X tilde column
+00:30:23.300 vector into the different columns of X
+00:30:25.130 and raising it to increasing powers as
+00:30:27.620 we work left to right we then invert the
+00:30:31.940 X matrix to get the Y matrix and the
+00:30:35.210 rows of the Y matrix are essentially our
+00:30:37.730 finite difference coefficients but just
+00:30:42.200 to immediately not jump to that let's
+00:30:43.760 calculate explicitly our our polynomial
+00:30:46.940 coefficients a naught 2 a 1 so we take
+00:30:49.610 our Y matrix multiply that by the column
+00:30:53.030 vector of our F values which are
+00:30:54.470 symbolic and we do the row column
+00:30:57.170 multiplications we end up with these
+00:30:59.540 equations and then we simplify and we
+00:31:02.900 end up with an F 1 in this position we
+00:31:05.810 end up with this expression for a 1 and
+00:31:07.880 this last expression for a 2
+00:31:12.830 now we will write our finite difference
+00:31:15.239 approximations so at X tilde equals 0
+00:31:18.869 our polynomial is reduced to this making
+00:31:21.570 our job very simple
+00:31:22.830 so for interpolating the function at the
+00:31:26.940 first point we just end up with F 1 and
+00:31:29.759 that makes perfect sense because F 1 is
+00:31:32.549 the function value at the first point
+00:31:34.970 okay what about the first order
+00:31:37.230 derivative at the first point well
+00:31:39.989 that's just polynomial coefficient a 1
+00:31:41.999 so we go ahead and we grab this
+00:31:44.129 expression and write it here and this is
+00:31:46.859 a little bit harder to interpret I can
+00:31:48.570 look at these numbers and well that's
+00:31:51.029 kind of strange and I am not smart
+00:31:53.249 enough to look at those numbers and say
+00:31:54.720 AHA this is clearly evaluated to find a
+00:31:57.869 difference at the first point and I'm
+00:31:59.940 not expecting you to recognize that but
+00:32:02.279 certainly if you've derived it we need
+00:32:04.859 to have a very good understanding of the
+00:32:06.840 distribution of the points from which
+00:32:08.909 it's being evaluated and where it's
+00:32:11.639 being evaluated in this case at the
+00:32:13.710 first point then we look at the second
+00:32:17.669 order derivative which is just 2 times a
+00:32:20.519 2 and that ends up being the same
+00:32:23.100 equation we had on the previous slide
+00:32:25.549 now let's think about that does that
+00:32:28.109 bother us that we have the same
+00:32:29.879 expression even though we're evaluating
+00:32:32.399 the second-order derivative at a
+00:32:34.139 different point well in some regard yes
+00:32:37.109 it does bother me but the reason it's
+00:32:39.149 the same equation because we need 3
+00:32:42.029 points in order to calculate the second
+00:32:44.489 order derivative so we have the minimum
+00:32:47.159 amount of information to calculate that
+00:32:48.989 so the equation is the same now let's do
+00:32:56.759 something a little more aggressive a
+00:32:57.989 little more fun let's say we want more
+00:33:00.359 accuracy in our finite differences well
+00:33:03.210 the way we do that is by adding more
+00:33:05.009 points so let's say now we have four
+00:33:08.279 discrete points and we want to evaluate
+00:33:10.919 our derivatives at the midpoint of four
+00:33:14.220 points while our column vector of the
+00:33:19.139 expositions now doesn't have a zero in
+00:33:21.450 it notice are the two points surrounded
+00:33:25.360 x equals zero is minus h over two and
+00:33:27.910 positive H over two so the midpoint
+00:33:30.370 between four points happens at a halfway
+00:33:34.120 spot and that's fine so this ends up
+00:33:37.960 being our distribution of points but we
+00:33:39.670 will be evaluating our derivatives in
+00:33:42.040 between the second and third points
+00:33:44.410 because that's the midpoint between four
+00:33:46.780 points so we have our column vector in
+00:33:49.809 our shifted coordinate system and now
+00:33:52.420 the procedure stays the same we populate
+00:33:54.760 our big X matrix by placing the little X
+00:33:58.000 column vector into the columns of big X
+00:34:00.100 and raising it to increasing powers we
+00:34:04.870 then invert that to get our Y matrix and
+00:34:07.840 the rows of this are essentially our
+00:34:10.600 finite difference coefficients but we'll
+00:34:15.010 continue with the example in case that's
+00:34:16.869 not obvious and we calculate our
+00:34:18.790 polynomial coefficients a naught a 1 a 2
+00:34:21.159 and a 3 and we get these expressions
+00:34:28.679 from those we can evaluate our our
+00:34:33.389 differences and as usual since we're
+00:34:36.280 evaluating our finite difference at the
+00:34:38.230 midpoint where X tilde equals 0 it just
+00:34:41.679 reduces to those simple polynomial
+00:34:43.449 coefficients so we end up with this
+00:34:45.668 expression for evaluating or
+00:34:48.070 interpolating our function at the
+00:34:49.629 midpoint the second expression is
+00:34:52.679 evaluating the first order derivative at
+00:34:55.270 the midpoint and then this last one is
+00:34:59.250 evaluating the second order derivative
+00:35:01.480 at the midpoint and I'll mention again I
+00:35:04.780 can't look at these finite difference
+00:35:06.760 approximations and then tell you where
+00:35:09.580 the finite difference is being evaluated
+00:35:11.200 and I don't expect that you should be
+00:35:13.359 able to do that but if you derive them
+00:35:15.940 you definitely need to have a good
+00:35:17.410 understanding of where those points are
+00:35:19.150 and where it's evaluating the finite
+00:35:21.640 difference that's really important now
+00:35:27.520 let's talk about how we can derive our
+00:35:29.920 finite difference approximations using
+00:35:31.840 MATLAB and the polynomial technique now
+00:35:34.690 for these small little matrices we've
+00:35:36.640 been using we really don't need to use
+00:35:38.380 MATLAB
+00:35:39.040 but the reason MATLAB is good to use is
+00:35:41.860 when our matrix size grows or maybe we
+00:35:45.820 don't have uniform spacing on our grid
+00:35:48.520 and we need to evaluate a completely
+00:35:50.410 different finite difference
+00:35:51.580 approximation for every point so there's
+00:35:53.920 other reasons that we want to use MATLAB
+00:35:56.200 so let's go ahead and talk about that if
+00:36:01.660 you recall when we built our big x
+00:36:05.230 matrices they always had this form where
+00:36:10.150 our first column had all one's the
+00:36:13.000 second column had number values which
+00:36:15.820 I'm representing with lowercase W
+00:36:17.760 multiplying H third column had numeric
+00:36:21.880 values multiplying H squared and so on
+00:36:24.100 they all had this same form well H was a
+00:36:27.670 symbolic variable so if we want to use
+00:36:29.860 MATLAB for deriving our fun of
+00:36:32.170 difference coefficients unless we have
+00:36:34.090 the symbolic tool box we have to figure
+00:36:36.520 out a way to do this and get those
+00:36:38.830 symbolic H's out of our matrix
+00:36:43.410 well we actually can factor that out so
+00:36:46.960 our original big x matrix is now the
+00:36:49.570 product of aw matrix and then a diagonal
+00:36:53.680 matrix containing our H terms
+00:36:56.050 well this W matrix now is fully
+00:36:58.930 numerical and in fact that W matrix is
+00:37:02.980 our X matrix if we just set the grid
+00:37:06.190 spacing to 1 so if we pretended H equal
+00:37:09.640 1 and we build our X matrix we actually
+00:37:12.940 would have built our W matrix so this
+00:37:15.640 gives us a way to move those symbolic
+00:37:18.010 variables out so that MATLAB can just
+00:37:21.010 invert a matrix with all numbers and no
+00:37:23.740 symbolic variables so that's really the
+00:37:26.830 trick factor out the H terms so we
+00:37:32.470 solved the matrix equation on the
+00:37:34.120 previous slide for our polynomial
+00:37:36.190 coefficients a naught a 1 and so on and
+00:37:38.890 we end up here so now we need to invert
+00:37:43.900 our diagonal matrix of H's and we have
+00:37:47.080 to invert our W matrix but we invert
+00:37:49.270 them separately and our W matrix
+00:37:51.820 contains all
+00:37:52.600 numerical values so that's easily
+00:37:55.210 inverted with MATLAB and the diagonal
+00:37:57.790 matrix of H's is easily inverted because
+00:38:00.070 its diagonal matrix we just invert the
+00:38:02.440 individual diagonal elements so MATLAB
+00:38:05.800 doesn't have to manipulate symbolic
+00:38:07.660 variables
+00:38:12.270 now that we've inverted our two
+00:38:14.680 different matrices are symbolic diagonal
+00:38:17.290 matrix containing ages and our V matrix
+00:38:19.350 we can now multiply them back together
+00:38:22.030 so we're reincorporating our symbolic
+00:38:24.670 ages but we're able to do this in MATLAB
+00:38:27.430 without manipulating symbolic variables
+00:38:29.710 so we end up here and this would have
+00:38:32.260 been our Y matrix from previous examples
+00:38:35.050 in previous slides so once we have our Y
+00:38:41.800 matrix we can do the math and we can get
+00:38:44.080 our polynomial coefficients now in terms
+00:38:46.960 of these V terms and some kind of H on
+00:38:50.440 the denominator so in a sense the rows
+00:38:54.130 of that V matrix were our finite
+00:38:56.110 difference coefficients we just have to
+00:38:58.360 remember to divide by H or H squared or
+00:39:01.180 some other power of H so once we have
+00:39:07.630 our polynomial coefficients now we're
+00:39:09.610 really used to what to do here we simply
+00:39:11.710 evaluate our function or any of its
+00:39:13.950 derivatives with our polynomial
+00:39:16.600 coefficients a 1 or a naught a 1 2 times
+00:39:19.750 a 2 so on and these were the expressions
+00:39:22.450 that we calculated on the previous slide
+00:39:24.340 don't forget this - that's something I
+00:39:26.890 always managed to do so the V matrix
+00:39:30.420 kind of takes the place of the Y matrix
+00:39:32.860 in that those are the finite difference
+00:39:35.200 coefficients we just have to remember to
+00:39:37.870 reincorporate that symbolic H and then
+00:39:41.320 we can derive our finite difference
+00:39:42.820 approximations with MATLAB without the
+00:39:45.820 symbolic toolbox
+00:39:50.880 let's work through some examples of how
+00:39:53.229 this works since we're using MATLAB we
+00:39:59.380 can get away with calculating ridiculous
+00:40:01.599 finite difference equations so let's say
+00:40:04.329 we have seven points and so we can
+00:40:06.819 calculate seven different polynomial
+00:40:08.829 coefficients so we immediately jump to
+00:40:11.619 writing our column vector X tilde
+00:40:13.920 centered around the middle point and H
+00:40:16.359 is still the grid spacing so we have a
+00:40:18.219 column vector in our ship that
+00:40:20.229 coordinate system so to build this W
+00:40:26.559 matrix which is the X matrix with the
+00:40:30.640 symbolic aides factored out let's
+00:40:33.249 pretend that H equals one and we can
+00:40:36.190 build this X tilde I put an extra carrot
+00:40:39.130 over here to remind us that this is
+00:40:41.650 where we're pretending that H equals one
+00:40:43.599 or with H factored out and we build our
+00:40:46.959 x axis that way or X tilde axis so it
+00:40:50.079 still zeroed at the center the points
+00:40:53.349 left and right of that or minus one
+00:40:54.759 positive one and so on so from that we
+00:40:58.630 can build the W matrix by inserting that
+00:41:01.630 column vector into the columns of W and
+00:41:05.199 of course increasing the power of that
+00:41:07.630 moving from left to right but we have
+00:41:10.180 all numbers to put in here now because
+00:41:12.609 we factored out that symbolic H and that
+00:41:15.549 is something that MATLAB can work with
+00:41:19.650 so we invert the W matrix to get the V
+00:41:23.410 matrix at this point we can jump
+00:41:29.410 immediately to writing our finite
+00:41:32.259 difference approximations so for
+00:41:34.630 interpolating just the function at that
+00:41:37.119 point X tilde equals zero here's our
+00:41:40.569 expression for doing that because our a
+00:41:42.519 naught coefficient is this row in V
+00:41:45.900 divided by one so I'm just reading off
+00:41:48.910 these terms that becomes our finite
+00:41:51.459 difference of coefficients divided by
+00:41:53.859 one now the first order derivatives a
+00:41:57.219 not so I'm reading these off as my
+00:42:00.249 finite difference coefficients
+00:42:01.990 and they're repeated here I just have to
+00:42:04.660 remember now to divide by H our second
+00:42:09.190 order derivative I'm reading off the
+00:42:11.440 third row here which I've repeated down
+00:42:14.410 here those are the fun of difference
+00:42:16.390 coefficients I just have to multiply by
+00:42:18.670 two and remember to divide by H squared
+00:42:21.790 and so on and you could derive a third
+00:42:24.760 order fourth order find a difference
+00:42:26.860 doing it this way so that's a rather
+00:42:28.630 silly fun a difference I'm not sure
+00:42:30.250 anybody uses a finite difference
+00:42:32.760 approximation that has seven terms in it
+00:42:35.080 but we can do things like that with
+00:42:37.000 MATLAB it makes it very easy so I hope
+00:42:40.630 this lecture was useful

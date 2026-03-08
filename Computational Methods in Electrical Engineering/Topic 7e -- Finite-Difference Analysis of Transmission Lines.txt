@@ -1,0 +1,1803 @@
+# tactiq.io free youtube transcript
+# Topic 7e -- Finite-Difference Analysis of Transmission Lines
+# https://www.youtube.com/watch/UsJOar8oS94
+
+00:00:00.070 topic 7e finite difference analysis of
+00:00:03.100 transmission lines so this lecture will
+00:00:06.160 be heavily electromagnetic but I'm
+00:00:09.040 really trying to minimize the amount of
+00:00:12.120 electromagnetics that this involves
+00:00:14.230 we're analyzing transmission lines and
+00:00:16.900 to make a very long story short a
+00:00:18.940 transmission line is a couple of wires
+00:00:20.620 that propagates an electromagnetic
+00:00:23.140 signal along the line when we analyze
+00:00:26.440 these lines we're interested in several
+00:00:28.780 things usually one is to visualize the
+00:00:30.990 electromagnetic fields around it and we
+00:00:33.670 can look at things at how far outside
+00:00:35.410 the line the fields extend that gives us
+00:00:38.500 an idea of how close we can place other
+00:00:40.420 things without affecting the performance
+00:00:41.860 of the line we're also interested in
+00:00:45.040 something called the characteristic
+00:00:46.270 impedance of the line so if we're
+00:00:49.329 watching a signal propagate down the
+00:00:50.920 transmission line if we look at the
+00:00:52.840 ratio of the voltage to the current on
+00:00:55.329 that line that gives us the
+00:00:57.310 characteristic impedance and it's not so
+00:01:00.280 much that an impedance is that as high
+00:01:02.800 as good or low that is good or anything
+00:01:04.809 like that really what matters is when
+00:01:07.210 the line changes impedance when there's
+00:01:09.970 a discontinuity and we start to get
+00:01:12.280 reflections usually don't want that
+00:01:14.680 sometimes we do if we're making filters
+00:01:16.810 or things like that another property
+00:01:19.390 that we'll analyze is the effective
+00:01:22.600 refractive index refractive index is the
+00:01:27.130 factor by which a wave slows down
+00:01:30.150 relative to a electromagnetic wave in
+00:01:32.680 outer space so the higher this effective
+00:01:35.470 refractive index clear the more
+00:01:37.000 interaction the electromagnetic fields
+00:01:39.010 are having on the line and they're
+00:01:40.150 traveling slower in order to get these
+00:01:43.420 parameters we need two other parameters
+00:01:46.150 that are a little bit more fundamental
+00:01:47.979 that come from the electro magnetics and
+00:01:50.049 that is the distributed inductance and
+00:01:52.630 distributed capacitance if we think of
+00:01:55.570 two wires they do form a capacitor and
+00:01:58.180 they do form an inductor and really our
+00:02:01.509 electromagnetic analysis is evaluating
+00:02:04.000 the distributed inductance and
+00:02:05.580 distributed capacitance and the other
+00:02:08.348 things fall out of that if you followed
+00:02:10.959 everything I said there you really have
+00:02:12.639 all you need
+00:02:13.260 know about the electromagnetics so let's
+00:02:15.569 begin this lecture well divide this into
+00:02:22.019 several sections this is going to be a
+00:02:23.849 long lecture but I think it's important
+00:02:26.040 that it is all together in all one the
+00:02:28.170 first thing I want to do before we even
+00:02:30.930 get into the numerix just describe at a
+00:02:33.750 high level how we're going to solve the
+00:02:36.209 problem
+00:02:37.019 what equations will we use where do they
+00:02:40.079 come from
+00:02:41.450 after that we'll pretty much start all
+00:02:44.280 over again but we will formulate our
+00:02:47.280 problem that is come up with the
+00:02:48.989 equations that we will eventually plug
+00:02:51.150 into MATLAB and the first thing we need
+00:02:53.549 to do to do that is start with the basic
+00:02:56.190 electromagnetic equations and derive
+00:02:59.220 what we call the governing equations
+00:03:01.139 these are the ones that we need to solve
+00:03:03.420 numerically that will use the finite
+00:03:04.980 difference method for which brings us to
+00:03:08.040 the last part of the formulation which
+00:03:10.590 is where we take our governing equations
+00:03:12.530 approximate then would find out
+00:03:14.099 differences write them in matrix form
+00:03:15.900 manipulate them and finally get an ax
+00:03:18.419 equal B type of problem that we solve to
+00:03:21.540 get the answer and then once we have the
+00:03:24.209 answer we need to do some
+00:03:25.379 post-processing to calculate distribute
+00:03:28.109 inductance distributed capacitance
+00:03:30.019 characteristic impedance effective
+00:03:32.160 refractive index visualize the fields
+00:03:34.889 etc given that then we'll discuss
+00:03:39.150 implementation and some subtleties with
+00:03:41.489 that that is really specific to working
+00:03:44.579 in two dimensions and solving the
+00:03:47.459 equations and how to post process them
+00:03:49.560 and at the end I'll give some examples
+00:03:52.349 and these examples are useful because
+00:03:54.060 these are things that you can try to
+00:03:55.680 simulate and duplicate the results in
+00:03:58.349 the lecture here okay now we're ready to
+00:04:01.530 officially begin this first section
+00:04:06.810 we're not talking about numerix or
+00:04:09.060 finite differences or anything else
+00:04:10.709 we're at a very high level really just
+00:04:13.199 describing the equations that we will be
+00:04:15.569 using and how we will use them to solve
+00:04:18.570 the problem it really all be
+00:04:24.650 with Maxwell's equations and there are
+00:04:26.780 four of them and here we're looking at
+00:04:29.120 these four equations in what's called
+00:04:30.979 time domain differential form and these
+00:04:34.790 describe classical electromagnetics what
+00:04:37.910 do I mean by classical we're not worried
+00:04:39.889 about relativity or moving media or any
+00:04:43.370 of these other types of generalizations
+00:04:45.199 that we could make so Maxwell's
+00:04:49.280 equations if we look at those and if we
+00:04:52.100 study the parameters for a while what we
+00:04:53.990 see is that there's not really any
+00:04:55.669 material properties here interestingly
+00:04:58.370 Maxwell's equations do not tell us
+00:05:00.500 directly how the electromagnetic fields
+00:05:03.410 interact with materials Maxwell's
+00:05:05.479 equations is more quantifying what
+00:05:08.419 creates electromagnetic fields how they
+00:05:12.410 interact with the materials come from
+00:05:15.199 what are called the constitutive
+00:05:16.820 relations and there are two of them one
+00:05:19.520 describes the electric response of a
+00:05:21.800 material and the other describes the
+00:05:23.870 magnetic response I'm not going to go
+00:05:26.870 too much into detail here about what
+00:05:29.150 these equations mean you can refer to
+00:05:31.370 some of the electromagnetic lasses that
+00:05:33.620 I teach and we're going to manipulating
+00:05:36.080 these around and substituting in to each
+00:05:37.700 other and really end up with one
+00:05:39.410 equation at the end that hopefully we'll
+00:05:41.120 understand we don't necessarily need to
+00:05:44.450 understand everything about these
+00:05:45.860 equations simply to understand this from
+00:05:48.620 a computational perspective we have
+00:05:56.030 some physical constants that describe
+00:05:57.890 our materials there is the electric
+00:06:00.020 response of a material described by the
+00:06:02.720 permittivity and we really can break
+00:06:05.900 this into two terms these just the
+00:06:07.460 epsilon alone is called permittivity but
+00:06:10.130 we can write this as the free space
+00:06:12.260 permittivity times a constant that tells
+00:06:15.890 us how many times higher the real
+00:06:17.810 permittivity is over free space
+00:06:20.590 sometimes this this epsilon R this
+00:06:24.050 relative permittivity is called the
+00:06:26.150 dielectric constant and it's a unitless
+00:06:28.670 number we also have the magnetic
+00:06:31.730 response of the material that's called
+00:06:33.080 permeability so we'll have mu and that
+00:06:35.390 can also be written as a free space
+00:06:37.280 permeability and a relative permeability
+00:06:40.450 the relative permeability being equal to
+00:06:43.850 a greater than one and also another
+00:06:46.730 unitless number so this is how we will
+00:06:49.250 describe our materials and in our code
+00:06:51.410 we will really exclusively use the
+00:06:53.810 relative permeability and relative
+00:06:55.820 permittivity these are much more
+00:06:57.110 convenient numbers these are numbers
+00:06:59.180 that will be usually between just 1 and
+00:07:01.850 10 they're very easy whereas if we
+00:07:03.860 specified the actual permittivity and
+00:07:06.440 permeability we have crazy numbers that
+00:07:09.620 are ten to the minus six ten to the
+00:07:11.060 minus ten sort of thing and they're just
+00:07:12.890 not as convenient to work with so we
+00:07:15.290 will work with the relative permittivity
+00:07:16.820 and relative permeability interestingly
+00:07:23.030 if we take the free space permeability
+00:07:25.460 and permittivity we can actually
+00:07:27.140 calculate the speed of light from those
+00:07:29.500 Maxwell was the first to do this and
+00:07:31.700 that was a big deal in the late 1800s
+00:07:33.800 when he did that for our analysis we are
+00:07:42.500 going to make an electrostatic
+00:07:44.320 approximation that is analyzed this at
+00:07:47.930 DC now transmission lines can be used at
+00:07:51.140 DC but they're not really so why is it
+00:07:53.750 still sort of accurate to analyze these
+00:07:55.790 with the electrostatic approximation and
+00:07:57.800 that's because the transmission lines
+00:07:59.870 are usually so incredibly small relative
+00:08:03.830 to the wavelength of the signal that the
+00:08:06.260 wave nature just can't manifest itself
+00:08:08.540 on the on
+00:08:09.380 scale of the transmission line and so
+00:08:11.930 the electrostatic approximation makes us
+00:08:13.820 a lot easier for us to analyze and we
+00:08:16.490 actually get very accurate answers from
+00:08:18.710 this so for the electrostatic
+00:08:21.050 approximation we will analyze this at DC
+00:08:23.660 0 frequency and since we have time
+00:08:26.630 domain equations what that means is
+00:08:28.700 anything that we differentiate with
+00:08:30.800 respect to time that derivative has to
+00:08:33.740 be 0 because it's static and not
+00:08:36.320 changing and so we find our derivatives
+00:08:39.110 with respect to time and we just simply
+00:08:40.729 cross them off of Maxwell's equations
+00:08:43.099 and we end up with four equations for
+00:08:46.700 the electrostatic case another thing
+00:08:55.700 that we will be using so that we don't
+00:08:58.880 have to solve an equation with a vector
+00:09:01.250 quantity is something called the
+00:09:02.600 electric potential v this is just a
+00:09:05.330 scalar number in volts and very often
+00:09:09.170 the electric field and the scalar
+00:09:10.910 potential are confused for being two
+00:09:13.520 different things there's there's only
+00:09:15.680 one electric phenomenon happening
+00:09:18.320 there's just two different ways that we
+00:09:20.660 can describe that we can describe that
+00:09:22.640 through the electric field or the
+00:09:25.070 potential and if you want to know that a
+00:09:28.010 little bit of a deeper story I have some
+00:09:29.570 notes here over to the left we have from
+00:09:32.240 Maxwell's equations for our
+00:09:33.710 electrostatics that del cross E equals
+00:09:36.110 zero this del cross E is curl and that
+00:09:39.650 basically says that the electric field
+00:09:41.390 cannot circulate in an electro statics
+00:09:45.050 problem so the curl of the electric
+00:09:48.110 field has to be zero well from vector
+00:09:51.950 calculus we know that the curl of the
+00:09:55.820 gradient is always zero no matter what
+00:09:58.850 that function V is and I'm looking at
+00:10:01.550 this equation so if the curl of the
+00:10:04.070 electric field is zero that means we
+00:10:07.010 could write the electric field as the
+00:10:08.960 gradient of some other function and that
+00:10:12.020 other function since its scalar is a lot
+00:10:15.200 easier to analyze problems so we say the
+00:10:18.740 electric field is the negative gradient
+00:10:20.240 of the potential and we throw the
+00:10:21.980 negative
+00:10:22.550 sign in there just to reinforce our sign
+00:10:24.470 convention with positive and negative
+00:10:26.779 charges and the orientation of the
+00:10:28.490 electric field it's completely a
+00:10:29.839 definition thing so the electric field
+00:10:32.570 is the negative gradient of the scalar
+00:10:34.250 potential and we would like to convert
+00:10:36.680 everything over to the scalar potential
+00:10:38.570 so we just have a single scalar
+00:10:40.399 differential equation to solve we'll
+00:10:48.620 need to solve Laplace's equation
+00:10:51.070 actually twice we'll solve it one we
+00:10:54.110 will call the homogeneous Laplace's
+00:10:56.149 equation and then also the in
+00:10:57.850 homogeneous Laplace's equation so what
+00:11:01.130 is that by that homogeneous means all of
+00:11:03.440 the materials throughout our device are
+00:11:06.440 the same and constant if it's in
+00:11:09.470 homogeneous it could be changing and
+00:11:12.079 potentially crazy patterns so the most
+00:11:15.260 general equation is Laplace's equation
+00:11:17.120 inside of in homogeneous media and we
+00:11:20.240 want to derive that equation so if we
+00:11:23.360 ignore charges we have from Maxwell's
+00:11:25.730 equations del D equals zero this means
+00:11:28.370 the divergence of D has to be zero
+00:11:31.940 that's one of our basic equations well
+00:11:36.800 we know from the constitutive relation
+00:11:39.399 that the D field equals the permittivity
+00:11:42.680 times the electric field D equals
+00:11:45.110 epsilon e so we can substitute this
+00:11:48.020 equation the constitutive relations back
+00:11:50.510 into equation one to eliminate the D
+00:11:53.660 field and now we essentially have the
+00:11:56.390 divergence of the relative permittivity
+00:11:59.810 times the electric field equals zero now
+00:12:03.920 at this point we would love to be able
+00:12:06.290 to take this epsilon outside of the
+00:12:08.360 divergence because then we could divide
+00:12:09.770 both sides of the equation by that
+00:12:11.839 epsilon and we would have just Delta e
+00:12:14.390 equals zero however we said this is in
+00:12:16.880 homogeneous that relative permittivity
+00:12:19.459 may be changing as a function of
+00:12:21.829 position therefore when we take
+00:12:24.019 derivatives of it with respect to XYZ we
+00:12:26.510 would not get zero so unfortunately for
+00:12:29.449 the in homogeneous Laplace's equation
+00:12:31.779 that relative permittivity must stay
+00:12:34.579 there
+00:12:37.510 well we know that the electric field is
+00:12:40.100 related to the scalar potential as e the
+00:12:44.030 vector e equals the negative gradient of
+00:12:46.580 the scalar potential and we can take
+00:12:49.280 this equation now and substitute that
+00:12:51.410 back into equation 2 when we do that we
+00:12:55.280 eliminate the electric field and now we
+00:12:57.620 have a single differential equation just
+00:13:00.320 in terms of the scalar quantity V so by
+00:13:04.220 solving this we somehow describe our
+00:13:07.250 transmission line and build that into
+00:13:09.740 the relative permittivity we can now
+00:13:12.470 solve this equation for the scalar
+00:13:14.270 potential and it gives us a picture of
+00:13:16.340 the scalar potential around the line now
+00:13:23.450 for the homogeneous case where the
+00:13:25.460 materials are constant we can take that
+00:13:28.490 epsilon the relative permittivity
+00:13:30.140 outside of the del operation and then we
+00:13:33.770 can divide both sides by the
+00:13:36.080 permittivity and we're just left with
+00:13:38.930 now the divergence of the gradient and
+00:13:41.810 we can combine those two operations and
+00:13:44.420 we're left with the laplacian operating
+00:13:47.840 on our scalar potential equals zero so
+00:13:50.330 this is again Laplace's equation but for
+00:13:53.390 homogeneous media and it's a lot simpler
+00:13:55.700 than the equation on the previous slide
+00:13:57.820 it's really the same equation it's just
+00:14:00.890 that the equation on the previous slide
+00:14:02.990 was for general in homogeneous media
+00:14:06.200 clearly this is the easier equation to
+00:14:08.480 solve so we've solved it we've
+00:14:15.590 calculated the scalar potential once we
+00:14:19.670 have the scalar potential we can
+00:14:21.530 calculate the negative gradient of that
+00:14:23.600 and get the electric field e we could
+00:14:27.050 then multiply the electric field E by
+00:14:29.540 the permittivity and get the electric
+00:14:31.850 flux density D once we have E and D
+00:14:36.130 we're now ready to figure out what the
+00:14:38.720 distributed capacitance is so first we
+00:14:43.010 want to know the total energy stored
+00:14:44.630 when we're viewing our transmission line
+00:14:46.790 as a capacitor well since we know that
+00:14:49.600 the D field it turns out the dot product
+00:14:52.360 of these two is the energy density so if
+00:14:56.079 we integrate that over the cross section
+00:14:57.940 of our transmission line so it's a two
+00:15:00.339 dimensional integration we can get the
+00:15:02.740 total energy in that transmission line
+00:15:07.319 now from circuit theory we can relate
+00:15:10.600 that total energy to the capacitance
+00:15:13.079 through this equation if we know the
+00:15:15.459 applied voltage and the capacitance we
+00:15:18.250 will know how much energy stored in that
+00:15:20.920 capacitor so essentially we combine
+00:15:23.800 these two equations and we can calculate
+00:15:26.889 the capacitance from the electric fields
+00:15:30.069 now since we are only looking at the
+00:15:32.920 fields in the cross section the
+00:15:35.230 capacitance we get from this is what's
+00:15:37.449 called a distributed capacitance so it's
+00:15:40.329 not a total capacitance with just units
+00:15:42.279 of farads this is a distributed farads
+00:15:45.190 per meter or farads per centimeter or
+00:15:48.550 really whatever units you wanted to use
+00:15:50.170 so there's a difference between the
+00:15:52.029 distributed capacitance and the
+00:15:54.100 capacitance to get total capacitance we
+00:15:56.259 would have to know the total length of
+00:15:57.550 the line not knowing the length we're
+00:16:00.160 just calculating capacitance per unit
+00:16:02.380 length so we have a way of calculating
+00:16:05.670 capacitance given our applied voltage
+00:16:08.410 simply by integrating the D and E fields
+00:16:11.680 in the cross section of the transmission
+00:16:13.779 line so here's where it gets a little
+00:16:19.509 bit weird if we wanted to analyze a
+00:16:24.009 transmission line that had magnetic
+00:16:25.899 properties we would have to go back to
+00:16:27.910 Maxwell's equations and use the magnetic
+00:16:30.009 equations to calculate that almost all
+00:16:33.220 transmission lines do not use any kind
+00:16:35.829 of material that has a magnetic response
+00:16:38.290 so in this case there's a clever trick
+00:16:41.050 that we can do and if we look at the
+00:16:44.470 voltage and current signal on the
+00:16:46.360 transmission line and we also looked at
+00:16:49.449 the materials that the transmission line
+00:16:51.610 is embedded in and pretended that there
+00:16:53.560 is an electromagnetic wave traveling
+00:16:55.389 through that those two signals would
+00:16:57.819 travel at the same speed and so that's
+00:17:00.819 what this first equation is saying
+00:17:02.570 well we know what the equation is for
+00:17:06.319 the velocity in these both cases in the
+00:17:08.450 case of a transmission line the velocity
+00:17:11.569 along the transmission line is 1 over
+00:17:13.250 square root of LC and the velocity in
+00:17:16.609 just a infinite medium is 1 over mu H
+00:17:19.790 times epsilon H or 1 over the square
+00:17:22.520 root of mu H times epsilon H and we can
+00:17:26.359 solve this for LC now from there we'll
+00:17:31.490 solve this equation for L so in other
+00:17:34.850 words if we can calculate the
+00:17:36.620 distributed capacitance we can just
+00:17:39.320 immediately from that get the
+00:17:41.030 distributed inductance but there's a
+00:17:44.630 catch here the the inductance of the
+00:17:48.380 line should not be a function of the
+00:17:51.050 permittivity because the permittivity is
+00:17:53.540 the electric response of the material so
+00:17:56.990 but we have permittivity here and it
+00:17:59.180 seems like if the capacitance is a
+00:18:00.770 function of permittivity so should the
+00:18:02.480 inductance so something weirds happening
+00:18:03.950 here and the answer is it would be but
+00:18:09.190 physically the inductance does not see
+00:18:11.330 permittivity so what we have to do in
+00:18:13.100 our simulation is remove all of the
+00:18:16.160 materials just make it all err in fact
+00:18:19.220 we could make it any permittivity we
+00:18:21.380 want to we just have to make it
+00:18:22.730 homogeneous it's convenient just to put
+00:18:25.670 all air in there now that we've removed
+00:18:28.820 the dielectric the inductance is not
+00:18:31.070 sensitive to that and so we can
+00:18:34.970 calculate the distributed capacitance
+00:18:36.880 for this homogeneous case filled with
+00:18:40.160 air and then from that calculate the
+00:18:43.400 actual distribute inductance of the line
+00:18:45.610 so we're just going through this
+00:18:47.570 intermediate distributed capacitance for
+00:18:50.630 the homogeneous or or air case
+00:18:57.140 once we have the distributed ductus and
+00:18:59.870 distributed capacitance and remember to
+00:19:03.200 get those we actually had to solve
+00:19:05.000 Laplace's equation twice will solve the
+00:19:07.880 in homogeneous case to get the true
+00:19:10.790 distributed capacitance then we'll
+00:19:13.250 remove all the dielectrics replace it
+00:19:15.890 all with just air the homogeneous case
+00:19:18.260 and we we solve that case using
+00:19:21.980 homogeneous Laplace's equation from
+00:19:24.500 which we will get the distributed
+00:19:26.179 capacitance of the homogeneous case and
+00:19:29.080 from that we get the true distributed
+00:19:31.880 inductance of the line but once we have
+00:19:33.620 Ellen C square root of L over C that's
+00:19:35.900 the characteristic impedance of the line
+00:19:40.660 then we can calculate the velocity of a
+00:19:43.970 signal traveling along the line and then
+00:19:48.110 last the effective refractive index of
+00:19:50.059 the signal on that line all from L and C
+00:19:53.150 so our simulation is most fundamentally
+00:19:56.540 calculating L and C once we have those
+00:19:59.600 we can calculate these other properties
+00:20:01.760 and once we know all these properties of
+00:20:03.799 a transmission line a microwave engineer
+00:20:06.260 or circuit designer could go off and
+00:20:07.850 design a whole bunch of stuff it's our
+00:20:10.190 job as the computational people to build
+00:20:12.890 the simulation simply to calculate those
+00:20:15.140 properties we don't necessarily need to
+00:20:17.809 understand the electromagnetics behind
+00:20:20.570 those properties so just to remind us we
+00:20:27.169 have a two-step modeling approach so on
+00:20:29.540 the left I am showing a strange coaxial
+00:20:32.870 transmission line that has a dielectric
+00:20:35.419 fill that split in half there's a green
+00:20:37.669 and a yellow region and I did that just
+00:20:40.460 to make it in homogeneous so the first
+00:20:44.360 thing we would do is remove all of the
+00:20:46.520 dielectrics and we would build this onto
+00:20:49.340 our grid and we're looking at a
+00:20:52.190 cross-section of our transmission line
+00:20:53.809 without any dielectric we solve this
+00:20:57.290 using the homogeneous Laplace's equation
+00:20:59.679 from which we get the homogeneous
+00:21:02.240 distributed capacitance from which we
+00:21:04.340 get the real distributed inductance of
+00:21:06.440 the line second we do it all over again
+00:21:10.890 but we put the dielectrics in there the
+00:21:13.350 permittivity and we solved the
+00:21:15.510 inhomogeneous Laplace's equation from
+00:21:18.300 which we get the actual distributed
+00:21:20.430 capacitance and then of course once we
+00:21:23.190 know L at C we'll know everything else
+00:21:29.450 so this is how we'll analyze our
+00:21:32.160 transmission line step one we will build
+00:21:35.130 a picture of the transmission line on a
+00:21:37.920 2d array and we'll remove all the
+00:21:41.070 dielectrics so really it's just the
+00:21:42.690 metals that were drawing here so that
+00:21:45.480 step one build a cross-section of the
+00:21:47.220 transmission line without the dielectric
+00:21:50.990 we will then solve homogeneous Laplace's
+00:21:54.450 equation and we will do this using the
+00:21:56.640 finite differences and we will get that
+00:21:58.410 scale or potential for the homogeneous
+00:22:01.290 case once we have that we calculate the
+00:22:07.200 electric field e from the negative
+00:22:09.570 gradient we will calculate the electric
+00:22:11.790 flux density D as the permittivity times
+00:22:15.540 the electric field e will then integrate
+00:22:18.390 the dot product of D times e to get the
+00:22:21.140 distributed capacitance for the
+00:22:23.160 homogeneous case and then finally from
+00:22:26.220 that we get the distributed inductance
+00:22:28.560 of the line now we essentially repeat
+00:22:34.530 everything all over again we build our
+00:22:37.260 transmission line on a two-dimensional
+00:22:39.240 array but now we include the dielectrics
+00:22:43.070 now that the dielectric is there and our
+00:22:45.600 permittivity is in homogeneous we solve
+00:22:48.510 the in homogeneous Laplace's equation
+00:22:50.370 and we will do this with the finite
+00:22:52.080 difference method and we'll talk much
+00:22:53.490 more about that when we get to it so now
+00:22:55.650 we have the scalar potential for the in
+00:22:57.750 homogeneous case so this is really the
+00:22:59.820 true scalar potential if we wanted to
+00:23:02.010 plot what the scalar potential actually
+00:23:04.440 looks like it's this answer not the one
+00:23:07.710 from the homogeneous case we just did a
+00:23:09.690 trick there to get the distributed
+00:23:12.090 inductance much more easily than doing a
+00:23:14.550 magnetic analysis so for the
+00:23:16.740 inhomogeneous case this is the true
+00:23:19.380 scalar potential
+00:23:23.410 once we have that we calculate the
+00:23:25.210 electric field e as the negative
+00:23:27.070 gradient of the scalar potential we can
+00:23:29.860 then calculate D as the permittivity
+00:23:32.560 times the electric field e will
+00:23:34.810 integrate that and get the distributed
+00:23:37.150 capacitance once we have the distribute
+00:23:40.660 inductance and distributed capacitance
+00:23:41.830 those are just two scalar numbers we can
+00:23:44.890 get the characteristic impedance and the
+00:23:46.900 effective refractive index velocity on
+00:23:49.000 the line and probably other things that
+00:23:51.490 I'm forgetting about right now okay so
+00:23:58.120 we just covered at a high level how we
+00:24:00.880 are analyzing transmission lines we
+00:24:03.250 started with Maxwell's equations and
+00:24:04.840 derive the scalar equation we're
+00:24:06.850 essentially solving for the scalar
+00:24:08.490 electric potential and using that to
+00:24:11.500 calculate the transmission line
+00:24:13.900 parameters let's start all over and
+00:24:17.550 derive the governing equations that we
+00:24:21.340 will use and then approximate with
+00:24:23.410 finite differences and eventually put
+00:24:25.090 everything in matrix form so this step
+00:24:28.270 is just deriving the equations not yet
+00:24:31.150 finite differences that's the next step
+00:24:36.060 so in the last section we had Maxwell's
+00:24:39.400 equations we then set our time
+00:24:41.770 derivative to zero and Maxwell's
+00:24:44.710 equations simplified and we also
+00:24:46.900 introduced the negative scalar potential
+00:24:49.690 so these three equations is really what
+00:24:53.590 we're going to use to describe
+00:24:54.700 electrostatics that's our starting point
+00:24:56.890 so we have equation one two and three we
+00:25:03.310 can take our first equation and expand
+00:25:06.190 it a little bit our D we can write as a
+00:25:09.640 column vector of the x y&amp;z components
+00:25:11.740 and then the dot product would put our
+00:25:14.470 derivative operators in a row vector so
+00:25:18.070 we've expanded our divergence equation
+00:25:20.730 into a matrix form this is not really
+00:25:23.650 the the matrix form for finite
+00:25:25.600 differences we're still in a analytical
+00:25:27.970 closed form symbolic land we have our D
+00:25:35.140 equals epsilon ER constitute
+00:25:36.980 Relation what I've done now is put
+00:25:39.440 square brackets around the permittivity
+00:25:41.809 that term is actually potentially an
+00:25:45.110 isotropic and it's a tensor a nine by
+00:25:48.200 nine tensor to make things simple for us
+00:25:51.110 we are going to ignore these off
+00:25:53.330 diagonal terms and set them to zero
+00:25:55.390 that's a whole other discussion how to
+00:25:57.740 handle anisotropic materials and I have
+00:26:00.020 information about this on other course
+00:26:03.049 websites if you're interested but it's
+00:26:04.610 not something we're going to handle here
+00:26:06.710 and then the electric field being the
+00:26:12.169 negative gradient of the scalar
+00:26:13.549 potential we can write in a matrix form
+00:26:16.400 this way
+00:26:21.010 so far we've in the last slide
+00:26:24.410 everything was fully three-dimensional
+00:26:26.830 however we're analyzing just the cross
+00:26:29.720 section of the line and the line is
+00:26:32.630 continuous and we'll assume infinitely
+00:26:35.000 long in the Z direction so if we take
+00:26:38.480 the derivative of anything in the Z
+00:26:40.850 direction whether it's a material
+00:26:42.380 property of the electric field nothing
+00:26:44.390 is changing in that Z direction because
+00:26:46.640 it's uniform so any derivative we take
+00:26:50.150 in that direction has to be zero because
+00:26:52.040 nothing is changing so we can go back
+00:26:55.429 into those equations we wrote on the
+00:26:56.960 previous slide and just start crossing
+00:26:58.850 all Z derivatives and see what that
+00:27:01.370 means to us so in our first equation if
+00:27:06.860 we cross off the Z derivative what that
+00:27:10.040 tells us is that DZ equals zero so we
+00:27:14.390 don't even have to include it in that
+00:27:15.919 first equation so we can reduce this
+00:27:18.020 first divergence equation to simply an
+00:27:21.169 equation containing only the x and y
+00:27:23.570 component now we look at the D equals
+00:27:28.400 epsilon E and if DZ is 0 we see that
+00:27:33.830 that also means ez is zero so we only
+00:27:37.309 really need to retain e^x and ey in
+00:27:40.070 addition to the DX and dy but we
+00:27:42.740 simplified this constitutive relation a
+00:27:45.110 bit by doing that
+00:27:49.220 now we can look at the electric field
+00:27:50.900 being the negative gradient of the
+00:27:52.670 scalar potential and if ez is zero we
+00:27:55.760 can drop off the Z derivative and we're
+00:27:58.520 left with a slightly simplified version
+00:28:00.980 of how to calculate the electric field
+00:28:02.710 from the scalar potential so what we've
+00:28:07.760 gotten from this is the Z component of
+00:28:10.130 both D and E is zero and in fact on a
+00:28:13.850 transmission line we usually have what's
+00:28:16.190 called a TEM transverse electromagnetic
+00:28:18.440 wave and there's a there's a larger
+00:28:21.920 story to really justify that so I
+00:28:24.200 haven't done that quite justice here but
+00:28:26.090 there's no need to so here are our final
+00:28:32.210 governing equations here they're on the
+00:28:34.460 left in sort of a symbolic matrix form
+00:28:37.610 and then on the right we've expanded
+00:28:39.890 those matrices and wrote it as just
+00:28:41.960 discrete scalar equations so both the
+00:28:44.810 left and the right set of equations are
+00:28:46.370 equivalent here and so what we'll do is
+00:28:49.400 we'll start with these equations
+00:28:51.040 approximate them with finite differences
+00:28:53.180 convert them to matrix form and then
+00:28:55.070 start combining them to get our single
+00:28:57.080 final matrix equation okay so the last
+00:29:03.320 slide had our starting point for our
+00:29:06.230 finite difference analysis we're going
+00:29:08.390 to start with those equations and put
+00:29:11.450 them in matrix form into a form that
+00:29:13.520 we're going to solve using finite
+00:29:15.320 difference method so right now we're
+00:29:22.610 going to assume that our functions are
+00:29:24.890 discrete and so think of how many things
+00:29:29.000 we have to keep track of we have the X
+00:29:30.860 component of the D field the Y component
+00:29:33.980 the D field and we're not doing the Z
+00:29:36.470 component of the D field because we
+00:29:37.880 learned that that's just 0 so we have DX
+00:29:40.610 and dy likewise we have the X and y
+00:29:43.520 components of e so we have e ex and ey
+00:29:46.360 we have the permittivity
+00:29:48.500 e XX or epsilon xx and epsilon YY so
+00:29:52.520 already we have six things that we need
+00:29:55.250 to make discrete and think of as storing
+00:29:57.800 on an array and we have to figure out
+00:30:00.170 where these go and we under
+00:30:02.110 and from previous lectures when we have
+00:30:03.970 multiple functions happening that we may
+00:30:07.000 have to stagger things but looking at
+00:30:09.970 this first constitutive relation there's
+00:30:11.890 no derivatives there's no need for
+00:30:13.780 staggering so in our grid anyway we can
+00:30:17.500 put the X component of D the X component
+00:30:20.830 of E as well as the XX tensor element of
+00:30:26.110 the permittivity at the same point on
+00:30:28.720 our grid we don't know where they are
+00:30:31.660 relative to the other ones yet but we at
+00:30:34.419 least know that they will reside at the
+00:30:36.010 same point we look at the other equation
+00:30:41.980 that has fallen out of our constitutive
+00:30:43.540 relation dy equals epsilon Y times dy
+00:30:47.549 well there's no derivative here we don't
+00:30:51.669 need to stagger anything and so we
+00:30:53.679 conclude that the Y component of D
+00:30:55.799 exists at the same point as the Y
+00:30:58.179 component of e which will exist at the
+00:31:00.970 same component as the YY tensor element
+00:31:03.970 of the permittivity so so far it doesn't
+00:31:07.120 seem like we need any staggering or at
+00:31:09.040 least nothing has told us that we need
+00:31:11.049 staggering it turns out we will need
+00:31:13.360 staggering it just won't come from these
+00:31:15.760 equations now we look at when we're
+00:31:22.270 calculating e^x from the scalar
+00:31:24.280 potential and it turned out that the
+00:31:26.650 partial derivative of the scalar
+00:31:28.179 potential in the X Direction gives us
+00:31:30.340 the X component of the electric field
+00:31:32.700 now we have a need to stagger things on
+00:31:36.100 the right of this equation this is how
+00:31:39.160 we would like to take our finite
+00:31:41.020 difference of the scalar potential and
+00:31:43.410 so we only want to span one grid cell
+00:31:47.080 just have one Delta X here that would
+00:31:49.660 place our e^x at the midpoint between
+00:31:52.390 where we're having our scalar potential
+00:31:54.660 so right away we can write the V and E X
+00:31:59.230 as alternating in the X direction
+00:32:01.660 somehow similarly we can look in the Y
+00:32:06.850 direction and we also figure out that
+00:32:09.160 the scalar potential and the Y component
+00:32:11.890 of the electric field have to alternate
+00:32:13.540 in the vertical direction
+00:32:15.179 we still don't quite know yet how the
+00:32:17.759 X&amp;Y components of the electric field
+00:32:19.979 will fall with respect to each other but
+00:32:22.619 we at least know that in the X direction
+00:32:24.690 V and E sub X alternate and in the Y
+00:32:27.450 Direction V and E sub y alternate so it
+00:32:34.499 turns out because we have the same V in
+00:32:37.710 the X and y directions they have to be
+00:32:40.669 co-located so we'll set up the grid this
+00:32:44.009 way and there's probably other ways we
+00:32:45.450 can do it but I'm gonna place the scalar
+00:32:47.759 potential at the origin of each cell so
+00:32:49.830 here's the first cell and I'll place the
+00:32:52.679 scalar potential in that cell right at
+00:32:54.389 the origin which would take the X
+00:32:56.639 component of E and place that halfway
+00:32:59.549 down the cell in the X direction and the
+00:33:01.649 y component of e halfway down the cell
+00:33:04.289 in the Y direction so when we start
+00:33:06.779 looking at these other components these
+00:33:08.279 actually belong to the next cell down
+00:33:10.139 and these terms v2 1 and ey 2 1 belong
+00:33:14.820 to this next cell and so on I'd suggest
+00:33:18.599 pausing the video for a moment and
+00:33:20.879 staring at this and see how this
+00:33:23.489 staggering lets us write the finite
+00:33:26.129 differences how we would like to write
+00:33:27.960 them not spanning 3 or 4 cells but just
+00:33:31.200 one cell now drawing the grid this way
+00:33:35.789 is maybe a little bit misleading because
+00:33:38.159 we have some of the components right on
+00:33:40.499 the edge of the cell we will truly place
+00:33:44.039 them here but let me show you an
+00:33:46.259 alternative way to draw this so this new
+00:33:51.089 way to draw it really does not tell us
+00:33:53.729 accurately where those components are
+00:33:56.849 within the cell but it more intuitively
+00:33:59.429 shows where they are within the cell so
+00:34:03.029 for the next few slides we're really
+00:34:04.679 going to proceed with what I'm showing
+00:34:07.200 on the right here because it just more
+00:34:09.389 intuitively shows what cell those
+00:34:11.429 components belong to but the grid on the
+00:34:14.879 left is really what we're going with
+00:34:21.969 we have our our governing equations on
+00:34:25.780 the left and we're not putting these in
+00:34:28.719 those symbolic matrix form yet we expand
+00:34:31.780 them into just the standard ordinary
+00:34:33.668 differential equations and we could
+00:34:36.909 approximate these with finite
+00:34:38.409 differences however we're also armed
+00:34:42.039 with what we've been talking about in
+00:34:43.510 the previous lectures and we could have
+00:34:45.460 just immediately jump from the
+00:34:47.319 analytical equations on the left to
+00:34:50.139 those equations in matrix form on the
+00:34:52.780 right but maybe it's useful to show the
+00:34:55.270 finite differences that we're actually
+00:34:56.500 using we needed to look at those because
+00:34:59.079 that's what dictated the grid that we
+00:35:01.299 needed so my notation here if I'm
+00:35:04.119 showing a lowercase bold letter that's a
+00:35:07.480 column vector and in this case it's our
+00:35:09.789 unknowns the capital letters are square
+00:35:13.630 matrices so this will be our derivative
+00:35:15.270 matrix of an electric field quantity in
+00:35:18.970 the X direction and from the previous
+00:35:21.640 lecture we know what those look like
+00:35:23.940 so all lowercase letters are column
+00:35:26.680 vectors these epsilon Knox's are just a
+00:35:29.859 single scalar constant these X Ilan's
+00:35:33.039 are also square matrices they're doing a
+00:35:36.069 point-by-point multiplication on to the
+00:35:39.130 electric field column vectors and then
+00:35:42.880 finally down here we have our derivative
+00:35:44.339 matrices for the scalar potential and
+00:35:47.440 hopefully from the last lecture we're
+00:35:49.539 comfortable now having different
+00:35:51.609 derivative matrices for our different
+00:35:53.440 functions due to the staggering on the
+00:35:56.140 grid so what we did analytically was
+00:36:04.359 start with our essentially three
+00:36:06.400 governing equations and we started
+00:36:08.920 substituting them into each other until
+00:36:10.720 we finally got this one equation for the
+00:36:13.630 scalar potential so when we're doing
+00:36:16.119 this numerically what I usually like to
+00:36:18.609 do is very early in the process and our
+00:36:20.559 very starting equations jump to matrix
+00:36:23.950 form and then from there start combining
+00:36:27.430 them like we originally did with the
+00:36:29.440 analytical equations to eventually get
+00:36:32.049 one matrix equation just in terms of
+00:36:35.470 potential so one of the left were our
+00:36:37.810 analytical governing equations if you
+00:36:40.150 will and on the right now in block
+00:36:42.520 matrix form are really the numerical
+00:36:45.070 equivalence of that the matrix
+00:36:47.020 equivalence of that and so we'll
+00:36:50.140 substitute these into each other the
+00:36:51.940 same way we did the analytical equations
+00:36:54.460 so let's go ahead and do that so we have
+00:37:00.460 our first equation this is the del dot d
+00:37:03.040 equals 0 but we also have the
+00:37:05.500 constitutive relation D equals epsilon
+00:37:08.109 times e so we have it an expression for
+00:37:11.170 the D fields that we can substitute in
+00:37:13.840 and replace the D fields and we can
+00:37:17.020 simplify a little bit and now we have
+00:37:19.210 one final matrix equation just in terms
+00:37:22.480 of the electric field e we no longer
+00:37:24.910 have the electric field dereference
+00:37:26.950 we've algebraically eliminated it we
+00:37:30.040 didn't set them to 0 we just
+00:37:31.900 algebraically eliminated the D fields
+00:37:36.869 well there's one other thing we can do
+00:37:39.070 we can write our electric fields in
+00:37:41.170 terms of just a single scalar potential
+00:37:44.140 so we can take this expression for our
+00:37:46.510 electric fields replace the electric
+00:37:49.330 fields with the negative gradient the
+00:37:51.400 scalar potential and simplify and we end
+00:37:54.670 up with one final matrix equation with a
+00:37:58.180 single scalar unknown and this is the
+00:38:02.400 inhomogeneous Laplace's equation so we
+00:38:10.270 did this analytically we ended up with
+00:38:12.400 this as our in homogeneous Laplace's
+00:38:14.410 equation this really is the matrix form
+00:38:17.560 of this equation and we could multiply
+00:38:21.820 that out but we don't need to why not
+00:38:24.849 just leave things in there simple block
+00:38:26.530 matrix form we can build them that way
+00:38:28.359 we can use them that way
+00:38:29.800 and it turns out it's more convenient so
+00:38:33.070 that's the inhomogeneous Laplace's
+00:38:34.810 equation now for the homogeneous
+00:38:38.200 Laplace's equation our permittivity is
+00:38:40.750 just 1 everywhere because we set it all
+00:38:42.849 to air so this middle matrix really
+00:38:45.849 reduces to the identity matrix
+00:38:48.339 and our homogeneous Laplace's equation
+00:38:50.259 is written this way so we now have our
+00:38:54.609 two matrix equations that we will
+00:38:57.910 somehow solve in MATLAB we need to back
+00:39:07.029 up now and talk a bit about how we're
+00:39:10.960 actually going to build the device on
+00:39:13.029 the grid now from prior homeworks and
+00:39:16.150 prior discussion in this class we had
+00:39:17.890 our dartboard homework and we did some
+00:39:19.450 other things we learned a lot of
+00:39:20.499 techniques for building geometries on an
+00:39:23.140 array and it's time to build on this a
+00:39:27.190 little bit to make some things easier so
+00:39:31.900 our basic strategy for a transmission
+00:39:34.299 line we are showing a microstrip
+00:39:36.339 transmission line here so a microstrip
+00:39:38.349 transmission line is just a single
+00:39:39.969 circuit trace on a printed circuit board
+00:39:42.069 so we'll typically have a strip of metal
+00:39:45.430 on top of a dielectric like fr4 that's
+00:39:49.089 the green stuff you normally see on a
+00:39:50.829 circuit board and a ground plane
+00:39:53.369 underneath of it now we will also make
+00:39:58.390 it grounded all the way around and this
+00:40:02.200 has to do with the fact that due to our
+00:40:04.569 staggering our boundary conditions are
+00:40:07.089 not symmetric so we have an asymmetric
+00:40:09.219 problem and if we were to calculate the
+00:40:11.589 electric fields they would look slightly
+00:40:14.259 pulled to one direction so what we can
+00:40:17.799 do is just simply surround everything by
+00:40:20.499 metal and that makes our problem look
+00:40:23.200 symmetric it does not make it more
+00:40:24.940 accurate it just makes it more visually
+00:40:27.849 appealing now a circuit trace on a
+00:40:31.660 circuit board is not surrounded by
+00:40:34.239 metals and by putting metals close to
+00:40:36.700 that we're changing the characteristic
+00:40:39.190 impedance of the line so the way we
+00:40:40.779 compensate for that is we have to add
+00:40:43.029 some space on the left on the right and
+00:40:46.359 on the top we have to make sure that
+00:40:48.400 these metals on the left the top and the
+00:40:50.710 right are far enough away that it
+00:40:53.559 doesn't affect our answer this is
+00:40:55.989 another convergence thing how do we know
+00:40:57.910 how far away well a rule of thumb is
+00:41:00.279 however wide your line
+00:41:01.990 is make these spacer regions three times
+00:41:04.540 that but that's just a rule of thumb
+00:41:06.580 that's just a good first guess it really
+00:41:09.910 reduces to a convergence thing we will
+00:41:12.310 we'll make a first guess we'll get our
+00:41:14.650 characteristic impedance distribute
+00:41:16.750 inductance distributing capacitance and
+00:41:18.550 then we'll make the spacer regions
+00:41:20.500 larger and then larger more how does our
+00:41:24.100 answer at what point does our answer
+00:41:25.990 stop changing much and then we know that
+00:41:28.390 we have large enough space or regions so
+00:41:33.100 this is the overall grid strategy that
+00:41:34.930 we'll use in our code we are going to
+00:41:41.380 build four arrays to describe our
+00:41:44.710 transmission line a transmission line
+00:41:47.590 has two or more conductors we're really
+00:41:49.840 only analyzing transmission line here
+00:41:51.790 that have two conductors so we'll call
+00:41:54.250 one the signal and one the ground
+00:41:57.340 so we are building two two-dimensional
+00:42:00.790 arrays we'll put zeros everywhere but
+00:42:03.580 we'll put ones in those array where
+00:42:05.860 we're placing our metals so if we're
+00:42:08.140 describing a microstrip line on the
+00:42:10.660 signal we just have ones over a little
+00:42:12.670 strip here and then the ground we
+00:42:15.490 definitely need the ground on the bottom
+00:42:17.290 but just to make things look pretty as
+00:42:19.330 we mentioned we'll also put the ground
+00:42:21.070 all the way around we just need to make
+00:42:23.590 sure that our grid is wide enough and
+00:42:25.090 tall enough that placing the metals on
+00:42:27.700 the left and the top don't affect our
+00:42:29.530 answer now another thing that will
+00:42:32.350 happen in reality if we look at the
+00:42:34.690 thicknesses of our metals they're very
+00:42:36.970 very thin and if we make our cell
+00:42:40.420 spacing small enough that we're actually
+00:42:42.520 accurately representing the thickness of
+00:42:44.410 the metals we're going to need many many
+00:42:47.260 many many points in our transmission
+00:42:48.820 line so a good trick a good
+00:42:50.980 approximation is just make the metals
+00:42:53.230 one cell thick even though that will
+00:42:56.350 usually be much thicker than they
+00:42:58.240 actually are we still get pretty good
+00:43:00.400 answers out of this okay so we have two
+00:43:03.540 2d arrays each one describes our
+00:43:07.240 different conductor our signal and our
+00:43:09.100 ground well we need two other arrays
+00:43:12.010 that describe our relative permittivity
+00:43:13.869 we had the epsilon
+00:43:15.310 xx in the epsilon YY now why do we have
+00:43:18.820 two of them here well remember just due
+00:43:21.550 to our finite differences they just fell
+00:43:23.560 at different points so even though we
+00:43:27.430 might be describing something within the
+00:43:29.470 same cell in our grid if there's some
+00:43:31.930 kind of curved boundary slicing through
+00:43:34.030 the middle of a cell we could actually
+00:43:36.190 have our X component of the electric
+00:43:38.650 field inside one material and the y
+00:43:42.670 component inside of a second material
+00:43:44.650 and so we need these two different
+00:43:47.560 permittivity arrays to describe that
+00:43:49.810 case now they will look very similar
+00:43:51.840 they may just differ about three is now
+00:43:56.170 this can get very confusing to do for
+00:43:58.570 curve geometries and how you sort all
+00:44:00.670 this out and I have a very neat
+00:44:02.770 technique to show you that we'll make
+00:44:04.210 that very simple but in the end we're
+00:44:07.060 coming away with two more arrays
+00:44:09.120 describing the permittivity at each
+00:44:11.290 point and they should look roughly the
+00:44:13.570 same and in the case of the microchip
+00:44:15.040 they look exactly the same so the lowest
+00:44:18.040 number we can have for a relative
+00:44:19.720 permittivity is one so I usually like to
+00:44:22.000 just initialize these arrays with all
+00:44:23.800 ones and then go ahead and just fill in
+00:44:26.350 wherever there's a dielectric material
+00:44:28.620 where the dielectric constant or the
+00:44:31.240 relative permittivity is greater than
+00:44:33.190 one but doing this goes back to our
+00:44:36.220 techniques of building geometries into
+00:44:38.200 arrays so if you haven't been through
+00:44:40.030 that I definitely recommend go back and
+00:44:42.220 review those skills so that you can
+00:44:44.590 build arbitrary geometries into these
+00:44:47.050 grids okay
+00:44:53.940 so ultimately we are after two matrices
+00:44:59.590 that are diagonal matrices the epsilon
+00:45:01.780 xx and epsilon YY step one which we
+00:45:05.680 talked about on the previous slide is to
+00:45:07.360 build er xx and ER y y and here I'm just
+00:45:10.810 mentioning something called the 2x grid
+00:45:12.730 technique this is something we'll talk
+00:45:14.110 about a little bit later and this is a
+00:45:16.780 technique for handling when you have
+00:45:18.340 these curved geometries that may slice
+00:45:20.950 through the middle of a cell and we got
+00:45:22.270 to figure out where those
+00:45:23.859 his lie but in the end we just come away
+00:45:26.259 with our to 2d arrays so we have our
+00:45:28.329 arrays so then what we want to do is
+00:45:32.710 reshape those 2d arrays and make them
+00:45:35.589 column vectors we will then declare them
+00:45:39.940 as sparse and then we'll take our sparse
+00:45:45.279 1d arrays and make them in a diagonal in
+00:45:48.849 a large square matrix now it turns out I
+00:45:52.690 like to do all of these at the same time
+00:45:54.869 so in just two lines of code I formed my
+00:45:58.420 diagonal matrices er X X and ER why why
+00:46:01.180 they started as 2d arrays but I react to
+00:46:05.019 a column vector declared it a sparse and
+00:46:07.450 place those as a diagonal and a square
+00:46:10.089 matrix I always do that in one line of
+00:46:12.819 code so we've built our two permittivity
+00:46:16.239 arrays and then made them diagonal
+00:46:18.700 matrices now they're ready to go into
+00:46:20.859 our matrix equations so we are going to
+00:46:31.210 have a matrix algebra problem that's
+00:46:34.480 Laplace's equation it'll be a big matrix
+00:46:37.710 operating on our scalar potential and
+00:46:40.450 that will equal zero and that's not
+00:46:42.910 solvable we need to do something about
+00:46:44.499 that and the reason that's not solvable
+00:46:46.960 yet is because we have not yet told the
+00:46:48.849 problem what voltage we're forcing our
+00:46:52.029 metals to and that's what we're starting
+00:46:54.190 to talk about here so we're going to
+00:46:56.289 create yet another 2d array that will
+00:46:59.349 have zeros everywhere except where there
+00:47:02.499 are metals we're going to say what
+00:47:05.140 voltage we're forcing those metals to so
+00:47:08.230 in this case our ground we set to zero
+00:47:10.660 volts and our microstrip line our signal
+00:47:14.650 line will set to one volt we always want
+00:47:17.650 the difference between these to be one
+00:47:20.170 volt if we do more than that
+00:47:23.710 we can still formulate our code
+00:47:25.239 correctly but we just need to account
+00:47:27.430 for that when we calculate our
+00:47:28.869 distributed capacitance what you'll see
+00:47:31.569 is in our equations we'll make the
+00:47:33.430 assumption that there's only one volt
+00:47:35.289 applied between the signal line and the
+00:47:37.999 and that simplifies the equation a
+00:47:39.889 little bit not such a big deal to fix
+00:47:41.539 that but you'll see when we get to that
+00:47:43.429 so right now we have a 2d array zeros
+00:47:46.369 everywhere except where there's metals
+00:47:48.619 the number is saying what the voltage is
+00:47:51.019 that we've applied to that that that
+00:47:53.599 piece of metal so we'll take that 2d
+00:47:58.909 array and reshape it this way to get a
+00:48:02.959 column vector okay now let's talk about
+00:48:11.749 this 2x grid technique and this can be a
+00:48:14.419 little bit confusing however it's more
+00:48:17.629 confusing to try to sort out where the
+00:48:19.639 epsilon xx and epsilon YY go when you
+00:48:22.519 have curved geometries so this
+00:48:24.889 simplifies that process so here we go
+00:48:31.429 so we start off with our ordinary grid
+00:48:34.189 since there's a 2x grid involved we'll
+00:48:36.499 call our ordinary grid are really the
+00:48:38.179 only grid that actually exists our One X
+00:48:40.999 grid and so in this case I did a very
+00:48:43.999 small 1/5 cell wides 6 cells tall and we
+00:48:48.649 made the grid spacing of both the x and
+00:48:50.719 y directions 1 so that's the first part
+00:48:53.239 of our MATLAB code that defines
+00:48:55.069 everything we need to know about our
+00:48:56.929 grid now at this point we just need to
+00:49:02.389 be reminded of where these different
+00:49:05.229 functions go so remember the blue dots
+00:49:08.509 is where we're storing our scalar
+00:49:11.239 potential and the red and the green
+00:49:13.609 arrows are where we're storing the x and
+00:49:16.099 y components of our electric fields and
+00:49:18.649 so I'll keep these here just to remind
+00:49:20.989 us where things are so notice due to the
+00:49:28.969 placement of our fields it's kind of
+00:49:32.539 like we're getting twice the resolution
+00:49:35.269 on our grid and in fact if we describe
+00:49:38.749 the same physical amount of space but
+00:49:40.849 with twice as many points so we bisect
+00:49:43.159 all of our cells and create a grid with
+00:49:45.499 twice as many points we can see that
+00:49:47.929 those field components actually fall
+00:49:49.819 exactly
+00:49:50.840 this grid that has twice as many points
+00:49:53.290 this is our 2x grid so if I'm going to
+00:49:58.220 build geometries that are curved and
+00:50:00.170 crazy I'm actually going to create a
+00:50:02.570 grid that has twice as many points build
+00:50:05.810 my device on it and use that to figure
+00:50:08.540 out where everything lies and you'll see
+00:50:11.000 this with some animations following so
+00:50:14.660 now let's say I want to create a
+00:50:16.730 cylinder that's a nice curved geometry
+00:50:18.620 and I want to describe that ultimately
+00:50:21.500 in my epsilon xx and epsilon YY arrays
+00:50:25.120 but we don't have that right now we just
+00:50:27.440 have one grid that has twice as many
+00:50:30.500 points as our true grid and we want to
+00:50:32.300 build a cylinder on it so for right now
+00:50:37.370 I will ignore everything I know about
+00:50:40.520 the epsilon xx and epsilon YY arrays I'm
+00:50:43.310 just thinking about this one grid that
+00:50:45.710 has twice as many points and I will
+00:50:47.900 build the cylinder on it and I'm calling
+00:50:51.170 that er 2 2 4 relative permittivity when
+00:50:54.380 the 2 there is reminding me that is the
+00:50:56.390 2 X grid that I've just built a cylinder
+00:50:59.750 onto so I'll get rid of the outline and
+00:51:05.240 you can imagine using mesh grid or a
+00:51:08.150 variety of other techniques and now we
+00:51:10.100 have a cylinder built onto that 2x grid
+00:51:13.780 from this we need to extract our epsilon
+00:51:17.690 xx and epsilon YY so looking at our 2x
+00:51:26.330 grid we want to extract our epsilon xx
+00:51:29.210 we know they fall where the X component
+00:51:32.240 of the electric field lies that's on the
+00:51:34.370 red arrows so what we're going to do is
+00:51:37.580 build a 5 by 6 grid and pull off the
+00:51:41.960 material values everywhere we see the X
+00:51:44.660 component of e so we have no material no
+00:51:47.810 material no material no material no
+00:51:49.820 material so in the entire first row of
+00:51:52.250 epsilon xx we have no material no
+00:51:55.580 material we do have a material do have a
+00:51:58.250 material no material no material and
+00:52:01.670 that will form the second row of our
+00:52:04.349 epsilon X X let's go ahead and animate
+00:52:06.599 this so we pull all of those points off
+00:52:12.059 and we now have our ordinary grid for
+00:52:15.450 epsilon xx and while that seems crazy
+00:52:17.369 it's done in just one line of code in
+00:52:20.309 MATLAB we're just pulling off from this
+00:52:24.119 er 2 array everywhere the X component of
+00:52:27.509 the electric fields reside and that is
+00:52:30.089 our epsilon xx array now we want the
+00:52:35.579 epsilon R epsilon YY so we're going to
+00:52:39.390 look everywhere there's a green arrow
+00:52:40.979 and pull off the materials from those
+00:52:43.710 points let's go ahead and animate that
+00:52:48.170 that is our epsilon YY array and we can
+00:52:51.930 do that with just one line of code in
+00:52:53.940 MATLAB so we built the cylinder on our
+00:52:57.299 single 2 X grid we called that er 2 and
+00:53:00.839 then from that we extracted epsilon xx
+00:53:04.619 and epsilon YY we're back to our
+00:53:07.470 ordinary 1x grid now and we can forget
+00:53:11.099 about the 2x grid so here's a good
+00:53:16.380 picture of what we come away with it
+00:53:17.789 we've done it properly here's our two
+00:53:20.309 arrays now they look similar they're
+00:53:21.809 both describing a cylinder but what we
+00:53:24.150 can see is that they do look a little
+00:53:26.009 bit different at the edges because we
+00:53:29.279 only use so few points here they look
+00:53:31.319 strikingly different as our grids become
+00:53:33.359 more realistic maybe a hundred by two
+00:53:34.890 hundred points the differences between
+00:53:37.799 your epsilon xx and epsilon YY are much
+00:53:40.349 more subtle but we can see some
+00:53:43.079 differences at the boundaries so the
+00:53:48.900 code on the right is everything we had
+00:53:51.059 to do to build our epsilon xx and
+00:53:53.309 epsilon YY arrays using the 2x grid
+00:53:56.099 technique now it is a hugely common
+00:53:59.309 mistake for students to apply the 2x
+00:54:02.940 grid to other parts of the code that is
+00:54:05.460 only a trick that we used to build the
+00:54:08.999 er xx and ery Y arrays which are back on
+00:54:11.849 our standard
+00:54:12.859 one X grid so after that it does not
+00:54:15.859 exist if you're using 2x grid for
+00:54:17.960 anything else you're doing it wrong once
+00:54:20.720 we have epsilon xx and epsilon YY
+00:54:23.680 anything 2 X grid doesn't apply it no
+00:54:26.269 longer exists so you can just delete
+00:54:28.999 everything about your 2x grid at that
+00:54:31.220 point so don't make that mistake it's
+00:54:33.170 just a trick to get epsilon xx at
+00:54:36.079 epsilon YY it's not used anywhere else
+00:54:43.089 okay wow we've been through a lot of
+00:54:45.410 stuff we've derived our basic matrix
+00:54:47.720 equations we've discussed how to build
+00:54:50.779 the device onto the grid which becomes
+00:54:53.779 those the sparse diagonal epsilon xx and
+00:54:57.799 epsilon YY matrices now let's talk about
+00:55:00.769 solving it so we have our first in
+00:55:08.739 homogeneous Laplace's equation we
+00:55:10.910 discussed the 2x grid technique and
+00:55:12.920 diagonalizing these epsilon arrays we
+00:55:16.099 know how to make these derivative
+00:55:17.690 matrices for a staggered grid and we
+00:55:20.299 have everything now to build this
+00:55:22.609 equation now if we try to solve this for
+00:55:28.460 V we essentially have an L times of V
+00:55:32.269 equals 0 and so we try to solve that our
+00:55:35.420 scalar potential is just 0 we get a
+00:55:37.670 trivial solution that is because we have
+00:55:40.549 not yet applied those voltages we talked
+00:55:43.519 a little bit about it in terms of that
+00:55:45.349 array of forced potentials but we
+00:55:48.170 haven't talked about how to incorporate
+00:55:49.549 that yet but we have arrived at our our
+00:55:52.849 first matrix equation when we apply the
+00:55:58.970 voltages it turns out the 0 over here
+00:56:01.730 becomes nonzero it becomes a B and this
+00:56:04.369 will describe how we force things and
+00:56:06.499 now we can solve that for the scalar
+00:56:08.779 potential so the question is how do we
+00:56:12.079 construct B and it will turn out that we
+00:56:15.440 also have to modify L so we have to
+00:56:18.049 change L and B to build in our force
+00:56:22.130 potentials and by force potentials I'm
+00:56:25.819 talking about the
+00:56:26.660 that we applied to our metals here's the
+00:56:33.470 basic concept what we want to do is look
+00:56:36.020 at our matrix equation which has a whole
+00:56:37.820 bunch of numbers our column vector of
+00:56:40.370 unknown potentials and it's starting off
+00:56:43.340 as all zeros over here what we want to
+00:56:46.190 do is look through our entire grid and
+00:56:48.700 every point where there is a metal we're
+00:56:52.670 gonna go into l0 out the entire row
+00:56:56.110 place a 1 in the diagonal position and
+00:57:00.040 then over here put the number that were
+00:57:04.190 actually the voltage that we're actually
+00:57:06.650 applying to that point of the metal and
+00:57:08.570 what we've essentially done is thrown
+00:57:10.820 out the finite difference equation that
+00:57:12.920 will be written there and just replace
+00:57:14.900 it with a very simple equation saying
+00:57:16.340 the potential at that point equals 6 or
+00:57:18.950 7 or whatever it happens to be there and
+00:57:21.400 so you can imagine setting up a big loop
+00:57:23.930 going through your grid everywhere
+00:57:25.520 there's a metal zero out the row insert
+00:57:28.400 a 1 in the diagonal or the pivot
+00:57:29.750 position and then over and that B column
+00:57:32.240 vector putting in the number that you're
+00:57:33.920 actually forcing it to now there's a
+00:57:41.270 fancier way of doing this and it turns
+00:57:44.390 out in MATLAB it's much faster and it's
+00:57:47.150 also easier because the arrays that
+00:57:49.280 we've already calculated make
+00:57:51.560 constructing these automatic we only
+00:57:54.350 really need to do anything extra but the
+00:57:56.930 two extra things we need a force matrix
+00:58:00.160 we'll talk more about what that is but
+00:58:02.450 it's essentially a map to tell us where
+00:58:04.670 we're actually forcing potentials so
+00:58:06.260 it's a map of where the metals are and
+00:58:08.120 then the force potentials this is the
+00:58:10.520 function we talked about earlier that's
+00:58:12.200 all zeros except where there's metals we
+00:58:14.870 put a number there of the actual voltage
+00:58:17.030 we're forcing to so the force matrix is
+00:58:20.270 just identifying where the metals are
+00:58:22.610 that force potential function tells us
+00:58:25.430 the voltage that we're applying there so
+00:58:28.070 there's there's a difference so the
+00:58:33.020 first thing we need to do to L is zero
+00:58:37.430 out all of the rows where there's
+00:58:40.069 metals well that force matrix tells us
+00:58:43.130 where there's metals and we want to zero
+00:58:45.859 out those roads we take the identity
+00:58:47.390 matrix subtract the forest matrix and if
+00:58:50.150 we pre-multiply our original L we get
+00:58:53.029 another L where all those rows are
+00:58:55.279 zeroed out where there's metals well we
+00:58:57.859 don't want to completely zero we want to
+00:58:59.569 put a 1 in the diagonal position and we
+00:59:03.049 can do that simply by adding the force
+00:59:05.599 matrix to that we do that we get our
+00:59:09.259 modified version of L so L prime is our
+00:59:11.869 final version of L we still have to do B
+00:59:15.380 and it turns out B is just the force
+00:59:18.979 potential matrix pre multiplying the
+00:59:22.549 force potential function so that's it
+00:59:27.829 that's how we get L and B now we're
+00:59:30.259 ready to solve let's try to visualize
+00:59:36.349 what's in the force matrix remember in
+00:59:38.900 the beginning we built two arrays
+00:59:41.239 describing where the metals are one of
+00:59:43.219 them identified where our signal was the
+00:59:46.099 other identified where the ground was
+00:59:48.279 both of these arrays were all zeros
+00:59:51.190 simply with ones placed in a diagonal
+00:59:54.079 position so our force matrix the first
+00:59:57.529 thing we can do is or those two things
+01:00:00.559 together so now we have a map of just
+01:00:02.599 where there's metals we're not
+01:00:03.920 differentiating between signal or ground
+01:00:05.779 just where there's metals and then we
+01:00:08.690 can make that a diagonal matrix so
+01:00:11.269 that's why I said these are really
+01:00:12.499 automatic since we've created these two
+01:00:14.839 arrays describing our two metals we
+01:00:17.449 simply just or them together and
+01:00:19.219 diagonalize it and we have our force
+01:00:21.049 matrix so it's very rapid to calculate
+01:00:23.390 given those two arrays of where our
+01:00:25.640 metals are okay so we backward divide L
+01:00:31.729 backward divided by V and we have our
+01:00:34.219 scalar potential once we have the scalar
+01:00:39.380 potential we calculate the negative
+01:00:42.319 gradient of that to get the electric
+01:00:44.299 field intensity e so now we need to do a
+01:00:47.900 numerical differentiation to do that
+01:00:51.119 and since we've already constructed
+01:00:53.430 these derivative matrices that would do
+01:00:55.440 that why not just use them we could also
+01:00:58.529 set up a big double for loop to do a
+01:01:00.989 numerical differentiation across our
+01:01:02.910 grid but since we already have those
+01:01:05.849 derivative matrices why not just use
+01:01:08.759 them so that's exactly how I do it so I
+01:01:11.279 just use those calculate a negative
+01:01:13.019 gradient the scalar potential and I have
+01:01:15.839 the electric field E somewhere along the
+01:01:20.039 way we built the tensor for our
+01:01:22.170 permittivity and we can pre multiply
+01:01:24.660 what we just calculated for the electric
+01:01:26.400 field e that tensor pre multiplying the
+01:01:29.400 electric field E and get our electric
+01:01:31.349 flux density D from that now we know at
+01:01:36.059 all of the electromagnetic fields now we
+01:01:38.099 can think about integrating to get total
+01:01:40.469 energy to get distributed capacitance so
+01:01:43.920 on this slide we solve for pretty much
+01:01:46.440 all of our unknowns the scalar potential
+01:01:48.239 from that we got the electric field E
+01:01:50.549 from that we get the electric flux
+01:01:52.529 density D one thing I want to point out
+01:01:59.819 here strictly speaking there should be
+01:02:02.640 an epsilon nought out here because these
+01:02:05.279 terms are the relative permittivity and
+01:02:07.769 from a purely mathematical perspective
+01:02:09.779 the epsilon belongs there but because
+01:02:14.099 that epsilon is a very very small number
+01:02:16.769 it makes D and E very different orders
+01:02:20.190 of magnitude so I like to not put it
+01:02:22.559 there we'll need to put it back in when
+01:02:25.049 we calculate the distributed capacitance
+01:02:26.460 but I don't use that at this point so
+01:02:29.339 we're pulling that out and we'll put it
+01:02:31.680 back in slightly later
+01:02:37.180 the MATLAB code looks something like
+01:02:38.500 this we calculate our scalar potential
+01:02:40.450 as L backward divided B and this is the
+01:02:43.660 L and the B after we've incorporated our
+01:02:47.880 force potentials once we have V then the
+01:02:53.319 negative gradient gives us our e well at
+01:02:57.010 this point we may want to pull out the e
+01:02:59.050 ex and ey separately and so just the e
+01:03:02.230 is a column vector of two column vectors
+01:03:05.050 and so the top half is our X component
+01:03:07.900 of e and the bottom half is the Y
+01:03:09.849 component of e so we pull off the top
+01:03:12.520 and the bottom halves from E and now we
+01:03:15.579 have column vectors describing X and a
+01:03:18.819 column vector describing a Y don't
+01:03:24.339 forget our output now is just column
+01:03:27.369 vectors we can't directly visualize
+01:03:29.380 those we need to reshape those back to
+01:03:32.829 our 2d arrays once we do that then we go
+01:03:36.700 to MATLAB we can call image SC or P
+01:03:38.650 color and see beautiful pictures of our
+01:03:41.050 scalar potential and electric field
+01:03:42.790 around our transmission line but don't
+01:03:44.980 forget to reshape that's an easy mistake
+01:03:46.569 to make okay so we derived our equations
+01:03:53.470 we went to matrix form we solve our
+01:03:56.290 matrix equations and we got the electric
+01:03:58.780 fields electric field E electric field D
+01:04:01.089 and scalar potential from these we want
+01:04:04.900 to calculate the transmission line
+01:04:06.460 parameters we're now post processing the
+01:04:10.030 real simulation is done we're just
+01:04:12.099 analyzing the results to get our
+01:04:13.750 meaningful parameters so distributed
+01:04:19.059 capacitance remember this comes from
+01:04:21.609 when we solve the in homogeneous
+01:04:23.770 Laplace's equation so the D and the e
+01:04:26.680 here are the D and the e that result
+01:04:29.859 from analyzing the in homogeneous
+01:04:31.750 Laplace's equation now when we talked
+01:04:34.780 about this equation at the beginning of
+01:04:36.099 the lecture there was a one sitting here
+01:04:37.960 this is where I'm reincorporating the
+01:04:40.480 epsilon not strictly speaking the
+01:04:42.790 epsilon not does not belong here belongs
+01:04:44.530 in the previous equation but it's it's
+01:04:47.109 good numerical practice to keep your
+01:04:48.819 variables normalized as long as
+01:04:50.680 possible and since this is our very last
+01:04:52.990 calculation that's where I put in that
+01:04:55.210 ugly constant epsilon naught which is
+01:04:57.340 eight point eight five four times ten to
+01:04:59.080 the minus twelve that's an ugly number
+01:05:01.030 so it goes in at the last last point
+01:05:04.260 does V naught squared that's the applied
+01:05:07.030 voltage squared so as long as we're only
+01:05:10.240 applying one volt that V naught squared
+01:05:13.120 is just one and that equation simplifies
+01:05:15.970 considerably so we need to do a
+01:05:18.490 numerical integration a numerical double
+01:05:21.970 integral to calculate our distributed
+01:05:24.280 capacitance but using discrete
+01:05:26.290 integration this is super easy we have
+01:05:30.790 our DX and dy stored as a column vector
+01:05:33.940 our e^x and ey stored as a column vector
+01:05:36.540 so if we take the transpose of d that
+01:05:39.760 makes this a row vector and multiply it
+01:05:42.790 by e we are doing effectively a
+01:05:45.490 point-by-point multiplication of D and E
+01:05:48.310 and it's calculating the dot product for
+01:05:50.530 us and adding them all up and so all we
+01:05:55.540 need to do then is the Delta X and Delta
+01:05:58.480 Y that's our da that's the size of each
+01:06:00.610 cell and of course there's an epsilon
+01:06:02.500 naught that plugs in here I put these in
+01:06:04.630 parentheses just to speed up the
+01:06:08.170 calculations otherwise if I put it up
+01:06:10.120 front
+01:06:10.540 it would probably multiply that for
+01:06:12.310 every element in D and it would just
+01:06:15.070 take a while so I do this dot product to
+01:06:17.770 get a single number and then multiply by
+01:06:19.960 that and it's a slightly faster
+01:06:21.990 calculation now in MATLAB what does that
+01:06:24.190 look like it just looks like this
+01:06:25.830 remember this is the D that's the column
+01:06:28.480 vector of two column vectors this is the
+01:06:31.060 e that's a column vector of two column
+01:06:33.100 vectors both containing the x and y
+01:06:34.840 components so the dot ' that's just the
+01:06:38.170 transpose which makes D a row vector
+01:06:40.530 such that when we have a row vector
+01:06:42.520 times a column vector it does a
+01:06:44.890 point-by-point multiplication and adds
+01:06:46.780 them all up and that's how we get
+01:06:49.180 distributed capacitance from D and E one
+01:06:52.240 line of MATLAB code are distributed
+01:06:58.510 inductance
+01:06:59.350 very similar to last slide we will solve
+01:07:02.650 the homogeneous Laplace's equation from
+01:07:06.670 which we get the electric field e the
+01:07:09.010 electric flux density D for the
+01:07:11.530 homogeneous case and we'll do the same
+01:07:14.470 dot product add them up and multiplied
+01:07:17.590 by epsilon Delta X and Delta Y so we get
+01:07:19.990 another distributed capacitance but just
+01:07:23.380 for the homogeneous case so this is not
+01:07:25.930 the real distributed capacitance this is
+01:07:28.660 just our intermediate term to get the
+01:07:30.460 distributed inductance and that's the
+01:07:33.850 last step so it's there might be a
+01:07:37.210 background permeability but it has to be
+01:07:39.490 homogeneous and we divide that by speed
+01:07:42.010 of light squared and also divide by that
+01:07:44.380 homogeneous distributed capacitance that
+01:07:47.440 gives us our distributed inductance of
+01:07:50.170 the line if we have distributed
+01:07:55.990 inductance and distributed capacitance
+01:07:58.350 the square root of L over C is our
+01:08:00.880 characteristic impedance the speed of
+01:08:08.080 light times the square root of L times C
+01:08:10.470 gives us our effective refractive index
+01:08:13.390 and that tells us how quickly the signal
+01:08:15.850 will be propagating along our
+01:08:17.770 transmission line how quickly would
+01:08:19.810 accumulate phase so that's really it a
+01:08:27.100 lot of stuff to take in and you'll
+01:08:29.890 probably have to watch some sections
+01:08:31.810 over and over to really understand it
+01:08:33.520 and and practice it try to code it ask
+01:08:35.799 questions but what I want to do now is
+01:08:38.260 show you some examples so you can get an
+01:08:40.270 idea of what the input looks like what
+01:08:42.640 the output looks like and start to get a
+01:08:44.500 feel the types of numbers that you
+01:08:46.270 should see what are the orders of
+01:08:48.220 magnitude for distributed inductance
+01:08:49.990 capacitance and things like that so
+01:08:52.720 let's go ahead here's an example for
+01:08:54.370 what I call the weird coax so the weird
+01:08:58.569 coax is one that's a coaxial line but
+01:09:01.270 the dielectric is split into two and
+01:09:03.279 this is simply to exercise having two
+01:09:05.560 different dielectrics now in this
+01:09:07.510 example I've set them to be the same
+01:09:09.819 value so we will still build this as F
+01:09:12.609 as if it's
+01:09:14.029 but since we put in the same number it
+01:09:17.120 really is a constant dielectric fill
+01:09:20.450 inside the transmission line so I gave
+01:09:23.000 all the dimensions for radii for
+01:09:25.310 relative permittivity we are ready to
+01:09:27.950 solve the picture on the left is a
+01:09:30.670 3-dimensional view of our coax but if we
+01:09:33.620 look at it straight on this is what a
+01:09:35.990 cross-section looks like and this is
+01:09:37.970 what we build into our array to analyze
+01:09:41.089 the transmission line so that's step one
+01:09:43.850 we just choose the line and collect all
+01:09:47.060 the numbers so that we know everything
+01:09:48.500 about it and we're ready to analyze okay
+01:09:54.740 now we need to build well for rays but
+01:09:59.630 since now we have this 2x grid technique
+01:10:01.790 we can think of this as three arrays
+01:10:03.590 that we have to build we have two arrays
+01:10:06.440 on our standard grid describing our two
+01:10:08.990 metals so in this case we have our
+01:10:10.670 Center conductor and then we have one
+01:10:12.950 with our outer conductor and before we
+01:10:16.310 talked about the micro strip we talked
+01:10:18.020 about the edges of the grid needing to
+01:10:19.820 being sufficiently far away well for
+01:10:22.040 coax everything's confined within the
+01:10:24.800 outer conductor so we don't really have
+01:10:26.360 to worry about the distance from the
+01:10:28.790 outer conductor to the edge of the grid
+01:10:30.500 so we only have to worry about that if
+01:10:32.690 the fields of the transmission line are
+01:10:34.820 exposed to the outside world so we can
+01:10:38.330 use our mesh grid techniques and we can
+01:10:40.070 filled both of these and then we can
+01:10:42.410 also build the dielectric filled but
+01:10:44.930 that's done on the 2x grid so there's
+01:10:47.630 twice as many points on that grid as on
+01:10:50.510 the ones describing where our conductors
+01:10:52.820 are and then from this 2x grid we get
+01:10:56.630 our 2 1x grids that's epsilon xx and
+01:10:59.960 epsilon YY so we get our epsilon xx and
+01:11:08.690 epsilon YY from the 2x grid we
+01:11:10.850 diagonalize those and then lump those
+01:11:13.430 into a single tensor quantity which also
+01:11:16.970 itself is a large diagonal array
+01:11:24.590 now we need our derivative matrices so
+01:11:27.900 hopefully by this point you will have
+01:11:29.250 written this function T Eldar or
+01:11:31.380 transmission line derivative matrix
+01:11:33.480 builder T Eldar and we give it two
+01:11:36.780 parameters we give it an array of two
+01:11:38.429 numbers saying how large our grid is
+01:11:40.550 then another array of two numbers that's
+01:11:43.050 our resolution of the grid given that it
+01:11:46.410 will build our derivative matrices and
+01:11:48.719 we're using dearest sleighbough nuri
+01:11:50.820 conditions inside of this function so
+01:11:54.860 but since we have two functions now our
+01:11:59.130 V and our e when we put these together
+01:12:02.610 we're actually going to have slightly
+01:12:04.100 asymmetric boundary conditions and this
+01:12:06.719 is another reason why we surrounded we
+01:12:09.239 put our ground for the micro strip all
+01:12:11.040 the way around the outside but just
+01:12:13.560 remember without that your fields could
+01:12:16.170 look slightly asymmetric if you have an
+01:12:18.270 exposed line and don't put a metal all
+01:12:21.780 the way around okay so we call T alder
+01:12:24.330 we get our four derivative matrices
+01:12:27.150 we've already diagonalized our materials
+01:12:30.120 we now have our derivative matrices
+01:12:31.949 we're ready to build and solve our
+01:12:34.500 matrix equations so we'll do the in
+01:12:40.770 homogeneous Laplace's equation first so
+01:12:43.320 one line of MATLAB code to build L and
+01:12:45.600 if we were to visualize it it looks
+01:12:47.219 something like this and that's very
+01:12:49.560 typical of solving a differential
+01:12:51.630 equation it's a banded matrix with some
+01:12:54.420 band width we will also need L for the
+01:13:01.050 homogeneous Laplace's equation and it's
+01:13:03.090 a copy and paste of what we had above we
+01:13:05.730 just don't have that ER tensor or really
+01:13:09.150 that ER tensor is an identity matrix
+01:13:11.960 okay so we've built L now we need to
+01:13:15.600 build in the voltages that we're forcing
+01:13:19.140 on our metals
+01:13:23.949 so given these two arrays containing our
+01:13:26.770 two conductors I'm calling it conductor
+01:13:29.110 inter and conductor outer when we did
+01:13:30.790 the micro strip we had signal and ground
+01:13:32.739 so I just named them something slightly
+01:13:34.480 different but I can still order them
+01:13:36.640 together and get an array and that's
+01:13:38.710 just a map of where the metals are then
+01:13:41.260 make that a diagonal matrix also from
+01:13:44.890 these two arrays I can create my force
+01:13:47.199 potential function remember this one is
+01:13:50.050 zeros everywhere except where there's
+01:13:52.750 metals
+01:13:53.469 it's the voltage that we're forcing the
+01:13:55.719 metal to so the inner conductor I
+01:13:58.719 multiplied by one because I want to
+01:14:00.550 force that to one volt and the outer
+01:14:02.890 conductor I multiply by zero because I
+01:14:05.290 want to multiply it or want to apply
+01:14:07.780 zero volts to it now technically
+01:14:10.390 speaking I don't have to do this because
+01:14:12.489 it's already zeros I just like to write
+01:14:15.550 that so I can visually see ok I'm
+01:14:17.710 applying one volt to the inner conductor
+01:14:19.360 zero volt to the outer conductor and I
+01:14:21.790 can make sure that overall between the
+01:14:24.370 two conductors there's one volt once I
+01:14:28.630 have those now I can modify my matrix
+01:14:31.210 equations that actually forces those
+01:14:33.190 potentials so first I'll need the
+01:14:35.170 identity matrix I modify both of my ELLs
+01:14:39.040 for the in homogeneous case in the
+01:14:40.960 homogeneous case remember what's
+01:14:43.179 happening in those equations were
+01:14:44.679 zeroing out the rows we're throwing out
+01:14:46.900 the finite difference equation that
+01:14:48.219 would be there putting the one in the
+01:14:50.380 pivot or the diagonal position and then
+01:14:53.620 both the homogeneous and inhomogeneous
+01:14:55.090 will use the same B column vector so I
+01:14:58.030 only need one of those and that's simply
+01:15:00.370 my my force matrix times my force
+01:15:03.610 potential function reshaped to a column
+01:15:05.980 vector I'm now ready to solve my matrix
+01:15:10.150 equations so that's what's done in this
+01:15:14.469 step to backward divisions interestingly
+01:15:16.800 everything in this code up to this point
+01:15:19.210 runs very fast so the shortest lines of
+01:15:22.660 code in your program is actually where
+01:15:24.640 you'll spend most of your computation
+01:15:27.040 time and this isn't huge you might spend
+01:15:29.620 five or ten seconds here if it starts to
+01:15:31.810 get longer than that something is
+01:15:34.000 probably wrong I'm not making you do
+01:15:35.949 that
+01:15:36.550 for extremely large problems and if your
+01:15:39.430 computer has enough memory you could
+01:15:41.380 choose that and make it take that long
+01:15:43.180 make it take 20 30 or even a couple
+01:15:45.970 minutes but nothing in this class will
+01:15:48.100 will cost you that much
+01:15:49.630 so we backward divide and now we have
+01:15:52.810 the scalar potential for both the in
+01:15:54.610 homogeneous case and the homogeneous
+01:15:57.520 case given the scalar potential we need
+01:16:04.630 to calculate our electric field e we're
+01:16:07.930 doing this once for the in homogeneous
+01:16:10.210 case so we have the in homogeneous
+01:16:12.040 electric field E and then also for the
+01:16:14.970 homogeneous case so two lines of code
+01:16:18.130 for doing that so we calculate those
+01:16:20.350 from our scalar potential V then last we
+01:16:25.780 need the D fields and we do that simply
+01:16:28.360 by pre multiplying our electric field by
+01:16:31.420 the permittivity now for the homogeneous
+01:16:34.000 case the permittivity is just air as
+01:16:35.890 identity matrix so D just equals e and
+01:16:38.520 so two very simple lines of code to get
+01:16:42.310 our D field from the e field now we're
+01:16:51.910 ready to calculate our distributed
+01:16:53.650 capacitance and here's where we do the
+01:16:56.080 numerical integration for the in
+01:16:58.660 homogeneous case so we take our in
+01:17:00.820 homogeneous D and E and do our dot
+01:17:04.870 product to get the numerical integral
+01:17:06.580 this is a discrete integration and
+01:17:08.380 notice the V not doesn't appear here
+01:17:10.630 we're just assuming V naught is 1 and
+01:17:12.850 this is where if V naught wasn't 1 you
+01:17:15.460 wanted it to be 3 or 6 we would have to
+01:17:18.220 include it here is that a big deal
+01:17:20.230 absolutely not I just chose not to do it
+01:17:25.890 we do the exact same thing using our
+01:17:30.090 homogeneous D and E from which we get
+01:17:33.910 the homogeneous distributed capacitance
+01:17:35.860 and then from that we'll get our
+01:17:39.130 distributed inductance and again in that
+01:17:41.740 equation the V not is not there we would
+01:17:44.530 be having to divide by V naught squared
+01:17:46.570 but since we've forced the 1 volt
+01:17:49.929 applied between our inner and outer
+01:17:51.790 conductor we don't need it there and
+01:17:53.860 it's always good practice to apply one
+01:17:55.690 volt
+01:17:56.080 I rarely I don't see a need to apply any
+01:17:58.989 more voltage than that but if you did
+01:18:01.030 you would just need to include it in
+01:18:02.830 that equation where we calculate the
+01:18:05.679 distributed capacitance well now we have
+01:18:11.409 the distribute inductance distributed
+01:18:13.239 capacitance square root of L over C
+01:18:15.670 gives us our characteristic impedance
+01:18:19.710 speed of light times the square root of
+01:18:22.030 L times C gives us our effective
+01:18:24.670 refractive index and our analysis is not
+01:18:28.120 quite over
+01:18:28.960 remember visualization is the key to
+01:18:31.420 computation and so we want to visualize
+01:18:33.610 all this stuff a big mistake and I make
+01:18:39.730 this all the time to remember all of
+01:18:41.949 these functions come out of our our
+01:18:44.880 matrix problem as column vectors and if
+01:18:48.400 we were to just plot that we see
+01:18:50.710 something like this and we'd go what on
+01:18:52.630 earth is that well we have to reshape it
+01:18:55.510 back to a two-dimensional grid and if we
+01:18:58.540 do that now we see a nice picture of the
+01:19:01.239 scalar potential and this is simply a
+01:19:03.790 function that goes from one to zero and
+01:19:07.330 it goes eventually fades linearly from
+01:19:10.270 the inner conductor to the outer
+01:19:11.830 conductor that's our scalar potential so
+01:19:15.250 easy thing to forget reshaping it back
+01:19:17.650 we have two we have the homogeneous
+01:19:20.469 scalar potential and the in homogeneous
+01:19:22.929 I don't really see a need to visualize
+01:19:25.830 the homogeneous scalar potential other
+01:19:28.840 than maybe just to make sure it's
+01:19:30.610 working but that is not the real scalar
+01:19:33.580 potential of the problem the real scalar
+01:19:35.830 potential is the in homogeneous one or
+01:19:40.480 the one that we calculated from the in
+01:19:42.969 homogeneous Laplace's equation
+01:19:50.120 so visualize the electric field we can
+01:19:52.190 use the quiver function and show the
+01:19:54.500 vector nature of it and for this
+01:19:56.810 particular analysis giving these
+01:19:58.430 dimensions and permittivity x' here's
+01:20:01.010 the LC and and z knots that I get and by
+01:20:04.880 the way these numbers pretty much stay
+01:20:08.360 the same for all transmission lines so
+01:20:10.940 that doesn't mean you're always getting
+01:20:11.990 361 nano Henry's but it's usually on the
+01:20:15.290 order of you know 50 to 500 nano henry
+01:20:20.900 per meter in that ballpark capacitance
+01:20:23.870 is in the tens or hundreds of Pico
+01:20:25.970 farad's and we need to do per meter
+01:20:28.660 because we're only analyzing the
+01:20:31.040 capacitance inductance in the
+01:20:32.510 cross-section well the length also
+01:20:34.940 changes things and so if we had the
+01:20:37.580 length we could calculate total
+01:20:39.200 capacitance and total inductance since
+01:20:41.510 we're only analyzing the cross section
+01:20:43.100 it's a distributed ductus and
+01:20:44.900 distributed capacitance characteristic
+01:20:47.420 impedance in this case ended up being
+01:20:48.800 seventy one point five ohms and
+01:20:50.800 impedance is usually on the order of 20
+01:20:53.780 to let's say 150 ohms 50 ohm and 75 ohm
+01:20:58.220 are very common impedances and the
+01:21:01.460 effective refractive index 1.5 and
+01:21:03.980 that's always your one point five to two
+01:21:06.050 ish kind of range and you could be
+01:21:09.230 simulating something completely crazy
+01:21:10.910 that has much more extreme values but to
+01:21:13.790 within an order of magnitude these are
+01:21:16.490 very typical numbers you'll see for
+01:21:18.200 transmission lines here's another case
+01:21:24.530 where I did actually make the two
+01:21:26.810 permittivity z-- on either side
+01:21:28.340 different and we can see how that
+01:21:30.410 affects things
+01:21:31.550 it changed the distributed capacitance
+01:21:33.380 distribute inductance a little bit but
+01:21:36.020 notice we're still in that ballpark the
+01:21:38.000 hundreds of nano Henry's per meter the
+01:21:40.250 hundreds of Pico farad's per meter our
+01:21:43.820 characteristic impedance went down a
+01:21:46.580 little bit and why did that go down
+01:21:49.130 that's because we increased the
+01:21:52.040 permittivity which gave us a higher
+01:21:55.130 distributed capacitance and since
+01:21:57.980 impedance is the square root of L
+01:21:59.840 divided by C a higher capacity
+01:22:03.300 gave us a lower characteristic impedance
+01:22:06.840 and the effective refractive index went
+01:22:09.179 up simply because we're using higher
+01:22:10.889 permittivity values that is slowing down
+01:22:13.230 the wave so here are the dimensions and
+01:22:18.800 here's what my array looks like you can
+01:22:21.540 see the inner conductor outer conductor
+01:22:23.159 the two permittivity so in a sense I've
+01:22:25.020 superimposed all of the arrays that you
+01:22:27.150 have to generate but it gives you an
+01:22:28.739 idea of the arrays you need to make I
+01:22:30.679 got my potential and here's what the
+01:22:33.420 electric field looks like again using
+01:22:35.070 that cuivre command which I like to show
+01:22:37.139 the vector nature of the electric field

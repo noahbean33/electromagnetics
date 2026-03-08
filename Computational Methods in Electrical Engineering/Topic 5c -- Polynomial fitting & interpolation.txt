@@ -1,0 +1,282 @@
+# tactiq.io free youtube transcript
+# Topic 5c -- Polynomial fitting & interpolation
+# https://www.youtube.com/watch/5PQIhZA_0Lw
+
+00:00:00.569 topic 5 seat curve fitting to
+00:00:03.129 polynomials as well as interpolation and
+00:00:05.950 extrapolation this lecture builds on the
+00:00:11.980 last one and will now describe a curve
+00:00:15.490 fitting method that's an exact fit in
+00:00:17.560 other words the line that we're curve
+00:00:19.720 fitting to will pass exactly through all
+00:00:22.540 of our sample points we will then use
+00:00:25.690 that to do interpolation and
+00:00:27.670 extrapolation so this part of the
+00:00:38.920 lecture we're going to fit a polynomial
+00:00:40.420 to a set of measured data so what we're
+00:00:43.570 showing on this slide is an nth order
+00:00:45.190 polynomial now notice even though we
+00:00:47.920 call this an nth order polynomial
+00:00:49.620 there's actually n plus 1 unknowns that
+00:00:53.350 we have to solve for we have a sub n all
+00:00:56.890 the way to a 1 but then also this extra
+00:00:59.980 a not so even though it's an nth order
+00:01:02.710 polynomial we need n plus 1 points in
+00:01:07.030 order to calculate all of these
+00:01:08.649 coefficients so that's our problem
+00:01:11.439 let's determine a naught a 1 a 2 all the
+00:01:14.170 way up to a 1 given some set of sample
+00:01:17.499 points very similar to before we're
+00:01:24.609 going to write the equation of our
+00:01:26.289 polynomial at each of our measured
+00:01:28.779 points so we'll have our position x1
+00:01:31.560 from which we have calculated an F 1
+00:01:34.450 this is our measurement if you will and
+00:01:36.670 these are our measured x-values so each
+00:01:39.759 of these equations contain the same a
+00:01:41.709 naught a 1 a 2 and a n but they have
+00:01:45.009 different X and F of X's and we write
+00:01:48.069 this once for every one of our measured
+00:01:50.439 points so notice there is n plus 1 of
+00:01:53.829 those equations and this can be a very
+00:01:56.380 large set of equations but in this case
+00:01:59.529 we have exactly the same number
+00:02:01.079 equations as we had unknowns before we
+00:02:04.840 had more equations than we had unknowns
+00:02:06.759 now it's exactly the same
+00:02:14.260 also note there's no residual terms here
+00:02:17.630 that is because we're doing an exact fit
+00:02:20.330 and so there is no error so the really
+00:02:27.710 the first step in this process I should
+00:02:29.570 say the second step since we've first
+00:02:31.160 step being writing our equation for our
+00:02:33.950 polynomial for each one of our measured
+00:02:35.900 points is to then to put this in matrix
+00:02:38.240 form and notice this first column vector
+00:02:41.420 R our measured values of F built into
+00:02:45.140 our big square matrix are essentially
+00:02:47.120 the coordinates of our measured points
+00:02:49.130 so it's all the different values of X in
+00:02:51.080 this case and then the last column
+00:02:53.330 vector are the unknowns that we're
+00:02:55.700 solving for these are the polynomial
+00:02:58.010 coefficients if you will we can write
+00:03:03.230 this a bit more compactly using a matrix
+00:03:05.540 notation and in my notation I use
+00:03:08.450 lowercase letters for column vectors
+00:03:10.550 uppercase letters for big square
+00:03:12.950 matrices or big rectangular matrices and
+00:03:15.290 I rarely deviate from that but sometimes
+00:03:18.470 I do once we've cast these equations in
+00:03:25.100 the matrix form we simply just solve so
+00:03:28.490 the process is quite simple we have our
+00:03:30.800 polynomial we write it for every single
+00:03:33.530 one of our measured points we cast that
+00:03:36.680 into matrix form we do a backward
+00:03:38.990 divided Lu decomposition whatever and we
+00:03:42.050 get our unknown coefficients the A's so
+00:03:45.500 at this point we have fit our polynomial
+00:03:47.780 to our measured points let's bring this
+00:03:54.470 together through an example so we have a
+00:03:57.110 plot here with three points and we want
+00:03:59.630 to generate a polynomial that passes
+00:04:01.610 exactly through all of those three
+00:04:03.290 points so what we see the arguments
+00:04:06.620 inside the F function those are our
+00:04:09.200 measured values of X and these are our
+00:04:12.200 measured values of Y or F if you will
+00:04:15.670 that's the set up of our problem
+00:04:20.269 since we only have three points that
+00:04:23.520 means we can only fit this to a
+00:04:25.259 second-order polynomial so that's what
+00:04:28.349 we'll choose three unknowns we have an a
+00:04:30.629 naught we have an a1 and an a2 so 3
+00:04:34.560 unknowns 3 points we can do an exact fit
+00:04:40.520 so next we'll write this equation 3
+00:04:43.800 times the equation of our polynomial 3
+00:04:46.199 times once for each of our sample points
+00:04:49.080 we can then take this set of three
+00:04:51.539 equations and put it in matrix form well
+00:04:55.439 we actually have numbers to put in for
+00:04:57.509 our values of X and our values of F and
+00:04:59.939 so we have that over here and this is a
+00:05:02.939 very easy equation to solve for our
+00:05:05.729 unknown coefficients to a naught a 1 and
+00:05:08.460 a 2 so we do that a backward divide and
+00:05:12.870 we get our coefficients and so in this
+00:05:15.689 case a naught is 0 a 1 is 1 point 4 5
+00:05:19.499 and a 2 is minus 0.3 that lets us write
+00:05:26.969 our polynomial now this way so a naught
+00:05:29.610 was 0 so it doesn't even appear in the
+00:05:31.379 equation and we have an a 1 times X plus
+00:05:34.949 a 2 times x squared but since a 2 is a
+00:05:37.919 negative number we just write that as a
+00:05:39.449 negative 0.3 if we plot our original 3
+00:05:42.960 points plus the line we just calculated
+00:05:45.750 for the second-order polynomial we can
+00:05:47.729 see that that line passes exactly
+00:05:49.979 through all of those points we've done
+00:05:52.169 an exact fit this is very different to
+00:05:54.960 the previous lecture where our samples
+00:05:57.509 had noise in them and we just did a best
+00:05:59.849 fit and we did the best fit in the sense
+00:06:02.490 of least squares now that we can
+00:06:10.200 a polynomial to a set of data were able
+00:06:13.560 to come up with an analytical expression
+00:06:15.630 that passes through our data points we
+00:06:19.020 can then use this analytical expression
+00:06:21.330 to calculate values outside of where
+00:06:23.940 those points are that's extrapolation or
+00:06:27.050 calculate points in between our measured
+00:06:29.880 points and that's called interpolation
+00:06:35.630 why on earth do we want to do this well
+00:06:38.700 it could be that those measurements are
+00:06:40.290 very expensive or difficult to make
+00:06:42.240 imagine it takes you one week of work in
+00:06:44.460 the lab to measure one point and so you
+00:06:47.760 spend a month
+00:06:48.780 you only have four points and you would
+00:06:51.870 like to know what happens between those
+00:06:54.210 and you could spend many many more weeks
+00:06:56.460 doing experiments or if you notice that
+00:06:59.550 those points are falling along a line or
+00:07:02.400 a curve you could do a curve fit and
+00:07:04.980 adjust minutes be able to estimate
+00:07:07.400 what's happening in between your actual
+00:07:09.930 measured data points so the steps for
+00:07:15.690 interpolation extrapolation are quite
+00:07:17.970 easy this is the first step fit your
+00:07:20.040 data to a curve step two now you have in
+00:07:23.790 a sense a symbolic expression for that
+00:07:27.120 curve just use that to calculate values
+00:07:29.370 inside and outside let's talk about
+00:07:36.090 linear interpolation so look at the blue
+00:07:41.640 curve for right now that's the real
+00:07:44.070 curve that's the actual physical thing
+00:07:47.370 that would happen and we may not be able
+00:07:50.280 to go in and measure that and so we
+00:07:53.010 don't know that however we were able to
+00:07:56.100 obtain two measurements that fall on
+00:07:58.380 that curve so we have one point and two
+00:08:00.930 points so we don't know that the curve
+00:08:04.320 or the function actually does that so if
+00:08:08.910 we fit this let's say to a straight line
+00:08:11.720 then our curve fit is this line and if
+00:08:15.180 we interpolate what is happening at some
+00:08:17.400 intermediate point X I we might say oh
+00:08:20.310 that data point falls here well with
+00:08:23.700 a priori knowledge of the actual
+00:08:25.260 function which we know is up here there
+00:08:27.990 is some error and that's what happens
+00:08:30.990 when we interpolate or extrapolate that
+00:08:33.210 we introduce error so certainly the more
+00:08:36.360 points we can fit to in the higher order
+00:08:38.700 of the polynomial the less error but the
+00:08:41.220 more computationally intensive it would
+00:08:43.020 be so in this case we just fit we have
+00:08:46.110 two points we have the equation for a
+00:08:47.850 line and we can use that to calculate
+00:08:50.430 the value of y anywhere between those
+00:08:53.100 points assuming it's a line so if it's
+00:08:55.680 not a line we have trouble let's talk
+00:09:01.680 about polynomial interpolation so almost
+00:09:05.130 by definition in order to fit something
+00:09:06.960 to a polynomial we need at least three
+00:09:09.150 points if we only had two points we can
+00:09:11.520 only really make a line out of that so
+00:09:14.280 first what we'll do is we will derive
+00:09:15.990 big ugly expressions for calculating
+00:09:18.360 those polynomial coefficients without
+00:09:20.700 using matrices
+00:09:21.540 we'll use matrices to get those
+00:09:23.040 equations but then we'll have these big
+00:09:25.200 equations for calculating the polynomial
+00:09:27.720 coefficients so we start here with three
+00:09:29.940 points and a polynomial and we'd like to
+00:09:32.340 fit that function to three points so
+00:09:39.000 keeping our variables symbolic we will
+00:09:41.430 write our equation for a polynomial for
+00:09:44.760 each of our three points and then put
+00:09:46.980 those in matrix form at this point we
+00:09:51.420 can bring the big matrix containing our
+00:09:53.580 x coordinates over to the other side and
+00:09:55.640 solve for our polynomial coefficients so
+00:09:59.520 when we invert this matrix with the X's
+00:10:01.560 this is what we end up getting and
+00:10:03.630 that's kind of big and ugly so we can
+00:10:10.530 extract our expressions for a naught a 1
+00:10:13.380 and a 2 and we could type these directly
+00:10:16.620 in a MATLAB and use that to calculate a
+00:10:19.260 naught a 1 and a 2 without having to go
+00:10:21.270 through the matrices in practice I think
+00:10:23.880 it's much easier to build your numbers
+00:10:26.220 into the matrix do the matrix division
+00:10:28.680 and then just get a naught a 1 and a 2
+00:10:30.630 but you will see these equations in the
+00:10:32.520 literature or in textbooks and now you
+00:10:34.740 know where they came from but in
+00:10:36.600 practice
+00:10:37.529 I would just put the numbers into
+00:10:38.759 matrices do a backward divide and you
+00:10:40.439 have a naught a 1 and a 2 so here's an
+00:10:46.170 example let's do a quadratic
+00:10:48.540 interpolation so this is a second-order
+00:10:50.279 polynomial and we have three measured
+00:10:52.800 points notice these are our same three
+00:10:54.870 measured points for our first example so
+00:10:57.240 we've actually already done the curve
+00:10:58.709 fit for it
+00:10:59.569 but we don't know the value of f at x
+00:11:03.509 equals three all we know is that
+00:11:05.459 somewhere between these two so we want
+00:11:08.370 to interpolate this so step one is to do
+00:11:13.980 the curve fit now we've already done it
+00:11:15.839 if not we would have written our
+00:11:18.029 polynomial for each of those three
+00:11:19.769 measured points put those in matrix form
+00:11:22.490 backward divided to calculate the
+00:11:24.600 polynomial coefficients and then finally
+00:11:27.120 we're able to write our polynomial and
+00:11:29.459 it's from this that we will do our
+00:11:31.920 interpolation and extrapolation so once
+00:11:37.019 we have that it is trivial to figure out
+00:11:38.850 what's happening at x equals three we
+00:11:40.649 just plug in a value of three for X and
+00:11:43.439 do our math and we get a value of one
+00:11:45.300 point six five and if we were to plot
+00:11:47.970 this we have in red are three measured
+00:11:51.569 points and then at x equals three we
+00:11:54.540 have our interpolated point and what we
+00:11:56.759 can see is that it also falls exactly on
+00:11:59.490 the line
+00:12:00.470 that's an interpolation we can do the
+00:12:07.350 same thing and extrapolate data so we
+00:12:09.750 actually want to guess what the function
+00:12:11.850 value is outside of our given range so
+00:12:15.389 we have measured samples here from x
+00:12:17.339 equals zero all the way up to x equals
+00:12:19.350 four however we would like a value from
+00:12:22.679 x equals minus 0.5 that is outside of
+00:12:26.129 this range but we can still do it and it
+00:12:29.490 follows the exact same procedure as
+00:12:31.199 interpolation so we do the curve fit and
+00:12:35.429 so behind this is we write that we write
+00:12:39.300 our equation for our polynomial at each
+00:12:41.040 of our three points and put that into
+00:12:43.529 matrix form backward divided get our
+00:12:45.689 polynomial coefficients and then write
+00:12:48.179 our polynomial so same thing as in the
+00:12:51.029 previous
+00:12:51.480 example but now we just plug in a value
+00:12:54.750 of x that is outside of our measured
+00:12:58.410 range from zero to four and we get a
+00:13:00.480 negative 0.8 so if we plot that we also
+00:13:04.139 see that this falls on top of our blue
+00:13:06.269 line now in general I will add that
+00:13:10.130 extrapolating is tends to be less
+00:13:12.480 accurate and more guesswork than
+00:13:14.160 interpolation but if you have no other
+00:13:17.220 choice maybe it's impossible to make a
+00:13:19.079 measurement at x equals minus 0.5 and so
+00:13:22.139 the only thing that we have to do is
+00:13:23.639 extrapolate

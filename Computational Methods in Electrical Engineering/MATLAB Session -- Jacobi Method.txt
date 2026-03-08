@@ -1,0 +1,234 @@
+# tactiq.io free youtube transcript
+# MATLAB Session -- Jacobi Method
+# https://www.youtube.com/watch/2mhepmYwYXU
+
+00:00:01.070 in this short video I am going to type
+00:00:04.680 and explain every line of code of the
+00:00:06.990 Jacobi method and the expectation here
+00:00:09.929 is that you've looked at the lecture
+00:00:11.910 videos and understand the method and are
+00:00:14.460 ready to implement this in MATLAB so I
+00:00:17.910 like to start my MATLAB programs with
+00:00:19.920 the name of the M file in this case I'm
+00:00:22.529 just calling it demo Jacobi the next
+00:00:27.180 thing I'd like to do is initialize
+00:00:28.529 MATLAB and so first I will close all the
+00:00:36.690 figure windows I will clear the command
+00:00:39.629 window and then clear all the variables
+00:00:42.690 for memory at this point I might open up
+00:00:45.239 a figure window if I was going to do
+00:00:46.950 graphics or something like that but I'm
+00:00:48.629 not doing any graphics here so I don't
+00:00:50.010 need to worry about that so the first
+00:00:53.010 section of my code is what I call the
+00:00:56.010 dashboard this is where all of the hard
+00:00:58.500 coded numbers go and no work is done
+00:01:01.410 here so for the Jacobi method this is
+00:01:04.650 where I will define my matrix a and the
+00:01:06.960 column vector B find a and B so let's
+00:01:16.830 just do a four by four matrix we can
+00:01:20.549 pick the same one that we've been doing
+00:01:21.900 for a while and solve with other methods
+00:01:45.740 oops don't put square brackets square
+00:01:48.740 brackets around B when I write programs
+00:01:58.670 one thing you'll notice I'll do is I
+00:01:59.900 will run it this button up here saves
+00:02:01.820 and run at the same time I will run it
+00:02:07.729 and then just check to make sure
+00:02:10.068 everything is as I think it is I'll type
+00:02:12.860 a few lines of code run a few lines of
+00:02:15.200 code and keep doing that another thing
+00:02:18.980 I'll need in the dashboard since this is
+00:02:20.690 an iterative algorithm is some kind of
+00:02:22.519 tolerance to control the convergence of
+00:02:25.370 my answer and so for right now I will
+00:02:30.050 set the tolerance or something like ten
+00:02:33.200 to the minus six that will ensure four
+00:02:35.450 or five digits of precision now we're
+00:02:39.650 ready to enter the actual algorithm so
+00:02:43.519 we'll go to the next section of code and
+00:02:46.430 we'll say solve ax equals B using Jacobi
+00:02:53.329 iteration
+00:02:57.760 okay step one what do we need to do well
+00:03:01.430 if you remember the algorithm we sorry I
+00:03:08.810 just I lost for a second one thing we'll
+00:03:12.110 need to do is first check to make sure
+00:03:16.660 that we have a diagonally dominant
+00:03:19.489 matrix it's very good to do a check here
+00:03:22.190 because if we didn't do that check and
+00:03:24.680 we tried solving a matrix that was not
+00:03:27.019 diagonally dominant your code could
+00:03:30.260 crash in a way that would make it very
+00:03:31.700 difficult or not working away it'll make
+00:03:34.519 it very difficult for you to not figure
+00:03:36.950 out what the the problem is so it's very
+00:03:38.480 good to do a check in the beginning for
+00:03:39.890 data element and so maybe first what we
+00:03:42.799 want to do is determine the matrix size
+00:03:49.209 that'll let let us set up a for loop to
+00:03:51.890 go row by row and check for being
+00:03:53.810 diagnosed dominant I would say let MN be
+00:03:59.239 the size of a so n will be the number of
+00:04:02.000 rows and n will be the number of columns
+00:04:04.959 another good thing to check for at this
+00:04:07.070 point is to make sure we have a square
+00:04:08.540 matrix so if M is not equal n we may
+00:04:13.850 want this to error out and the error
+00:04:18.950 message will give ourselves is that a is
+00:04:22.160 not a square matrix it should be how
+00:04:28.400 about that
+00:04:30.550 let's make sure this works we'll run it
+00:04:33.449 okay it doesn't give an error now let's
+00:04:36.220 intentionally make a something that's
+00:04:38.080 not squared and run it okay and we got
+00:04:45.699 our error so we're checking for size the
+00:04:50.259 next thing we need to do is check if
+00:04:52.389 it's diagonally dominant
+00:05:02.740 so each row itself needs to have the
+00:05:06.070 diagonal element bigger than the sum of
+00:05:07.930 all the other elements in the matrix and
+00:05:09.790 we're only interested in the absolute
+00:05:11.080 value of all the numbers so we'll set up
+00:05:14.920 a loop over rows for little m is 1 to
+00:05:18.790 begin so that's our loop that's going
+00:05:21.190 over the road well maybe a simple thing
+00:05:24.910 to do will be to extract the row the N
+00:05:28.300 throw in this case that we want to
+00:05:29.890 analyze and so it's the nth row and then
+00:05:34.030 the colon means we're gonna extract the
+00:05:35.800 entire row now we want to ignore sign
+00:05:38.950 here so we'll just take the absolute
+00:05:44.410 value of that and now row will be the N
+00:05:47.890 throw and make all negatives positive
+00:05:50.350 keep all the positive is positive then
+00:05:55.540 what I want to do is sum all of the
+00:05:58.870 elements in the row but I want to
+00:06:02.260 subtract the diagonal element because I
+00:06:04.870 just want the sum of all the numbers
+00:06:06.280 other than the diagonal element because
+00:06:09.460 that's the check for diagonal dominance
+00:06:11.470 I want to check that the diagonal
+00:06:12.760 element is greater than the sum of all
+00:06:14.710 the other elements so now we can say if
+00:06:18.660 the diagonal element is less than or
+00:06:22.900 equal to that sum this is an error and
+00:06:27.640 we'll give ourselves a meaningful error
+00:06:29.320 message a must be or maybe we'll say is
+00:06:37.510 not diagonally dominant
+00:06:44.390 but it should
+00:06:51.470 and
+00:06:54.289 all right now let's run it and see if
+00:06:56.300 this works hey it told us that a is not
+00:07:01.460 diagonally dominant so we'd like to go
+00:07:03.439 back and make sure manually that it is
+00:07:05.539 not to make sure that our code is
+00:07:08.779 working so in this case the first row
+00:07:12.020 one is the diagonal element so we add up
+00:07:14.990 all of these other ones two plus three
+00:07:16.639 plus one is six six is definitely bigger
+00:07:20.059 than 1 it's not diagonally dominant
+00:07:22.039 so I need to put some big numbers in the
+00:07:24.259 diet or just to make sure that we're
+00:07:25.580 diagonally dominant so let me just go
+00:07:29.180 ahead and do this
+00:07:43.710 I'm typing off of a paper Harris right
+00:07:47.009 everything will work out we do now be
+00:07:56.319 does not control that is diagonally
+00:07:58.120 dominant I just typed in numbers here
+00:07:59.830 that will give me a known pretty answer
+00:08:02.819 so let's go ahead and run it and clearly
+00:08:06.370 that passes our test so this is very
+00:08:09.069 very good practice to do checks like
+00:08:11.830 this at the beginning of your code to
+00:08:13.539 make sure the input arguments are
+00:08:15.310 correct well we need to make an initial
+00:08:19.120 guess and if we know something about the
+00:08:27.520 physics of the problem that went into
+00:08:29.560 building a and B that might help us make
+00:08:31.900 an initial guess but we don't here we
+00:08:34.089 have absolutely no idea we're just
+00:08:35.799 solving an arbitrary problem so for lack
+00:08:38.289 of a better idea here maybe lack of
+00:08:40.149 imagination I'll just do a column vector
+00:08:42.700 of ones 5000 and enum burrs so we'll go
+00:08:47.529 with this for now the next step is to
+00:08:52.930 extract the diagonal from a and then
+00:08:57.310 make that a diagonal matrix
+00:09:07.310 capital D okay so I'm going to say D
+00:09:11.120 equals diag of a now let's run this and
+00:09:15.150 see what we get run it over here there's
+00:09:18.510 our a matrix and let's type in D whoa D
+00:09:22.830 is not a square matrix right now but it
+00:09:25.260 did pull off the diagonal elements it's
+00:09:28.710 just that we have to make that a
+00:09:30.300 diagonal matrix in fact what we can do
+00:09:33.600 is just type in diag outside of diag and
+00:09:38.660 run it and now D is a diagonal matrix
+00:09:43.050 just with the diagonal from a now we're
+00:09:48.930 ready to actually do the Jacobi
+00:09:50.550 iteration so maybe we'll do a main loop
+00:09:57.840 header
+00:10:05.840 and we'll set our error to infinity so
+00:10:11.690 that when we say while error is greater
+00:10:15.560 than our tolerance as long as error was
+00:10:18.560 initialized to infinity it will go into
+00:10:20.660 the loop so this is saying do all the
+00:10:23.390 stuff inside the loop until that error
+00:10:25.910 function is less than our tolerance and
+00:10:30.500 the error function is going to come from
+00:10:32.000 the changes in X one of those changes
+00:10:34.279 that X becomes small enough will say as
+00:10:36.830 the answer is done so let's go ahead and
+00:10:40.130 update X column vector X the first thing
+00:10:44.960 I like to do is calculate what that
+00:10:46.670 change should be and following the
+00:10:49.339 formulation from the notes that's going
+00:10:51.500 to be the backward divide and then a
+00:10:54.800 parenthesis B minus a times our current
+00:10:58.250 guess at X once we know that how much we
+00:11:03.620 need to change X we will go ahead and
+00:11:05.480 change the column vector X that really
+00:11:10.490 should be it the only other thing we
+00:11:12.860 want to do is compute the error which
+00:11:15.470 comes from the DX how much we've changed
+00:11:18.520 so error is our DX we would like to
+00:11:23.900 divide by X to get the relative error
+00:11:26.360 but we're dealing with column vectors so
+00:11:29.210 MATLAB will yell at us if we do this we
+00:11:32.180 need to do a dot / that's a
+00:11:34.250 point-by-point
+00:11:35.300 division also we don't care if our error
+00:11:39.350 is positive or negative
+00:11:41.560 so we'll take the absolute value of that
+00:11:44.270 and we can add up all of those or we can
+00:11:49.250 just take the maximum change in one of
+00:11:51.800 those x-parameters either will work and
+00:11:56.420 let's run it and see if this converges
+00:12:00.790 let's look at X that's the answer it got
+00:12:04.430 one two three four and we can cheat and
+00:12:07.910 actually force MATLAB to tell us the
+00:12:09.890 answer a backward divided B and we get
+00:12:12.440 one two three four so it looks like our
+00:12:14.150 algorithm work
+00:12:20.630 if we want to get fancy we could display
+00:12:24.860 the answer at the end and show X we
+00:12:29.870 could run it and then it displays the
+00:12:31.190 answer another thing we could do is
+00:12:33.620 count the iterations so let's set it er
+00:12:37.430 to zero and then every time we have done
+00:12:40.940 this will increase it er and then we can
+00:12:47.180 do a little bit better display we can
+00:12:49.340 say this and maybe after num2 string
+00:13:00.670 hitter iterations and then we display X
+00:13:07.850 let's go ahead and try that
+00:13:10.570 so it took 69 iterations to get this
+00:13:14.000 answer well we can play with this a
+00:13:17.210 little bit let's initialize with all
+00:13:19.250 zeros see what happens
+00:13:22.840 71 iterations not a big change
+00:13:26.180 let's try random numbers
+00:13:32.920 not a big change it turns out in this
+00:13:34.990 case twins identity one's work best by
+00:13:37.990 one iteration or so but not a huge
+00:13:39.670 difference so that's it
+00:13:43.450 that is Jacobi iteration

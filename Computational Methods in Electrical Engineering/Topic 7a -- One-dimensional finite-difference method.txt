@@ -1,0 +1,1496 @@
+# tactiq.io free youtube transcript
+# Topic 7a -- One-dimensional finite-difference method
+# https://www.youtube.com/watch/8dXSm-Uo7cU
+
+00:00:00.570 topic seven a one dimensional finite
+00:00:03.300 difference method this is going to be a
+00:00:08.520 long lecture I feel a little bit guilty
+00:00:10.350 about that but since you're armed with
+00:00:12.750 the pause button and you can
+00:00:14.309 fast-forward and rewind at will I think
+00:00:17.220 you'll be fine but it breaks my heart to
+00:00:20.340 break up the information that is here I
+00:00:22.680 really feel that it belongs together
+00:00:24.390 because it tells one coherent story and
+00:00:27.060 at one set of slides I can take you from
+00:00:29.730 just knowing a little bit about finite
+00:00:31.020 differences all the way through to how
+00:00:33.510 to solve differential equations using
+00:00:36.239 this special technique that I'm going to
+00:00:37.769 show you how to how to implement the
+00:00:39.539 finite difference method so first I'll
+00:00:42.149 just introduce finite differences kind
+00:00:44.399 of set up some general concepts then
+00:00:47.519 I'll step you through how the finite
+00:00:49.229 difference method is taught everywhere
+00:00:50.670 else in the world and it's not too bad
+00:00:53.190 for the simple differential equation
+00:00:54.809 that I've presented here but the
+00:00:56.190 conventional approach for solving finite
+00:00:58.079 differences becomes very difficult very
+00:01:00.209 tedious when it's a complicated
+00:01:02.929 differential equation or we have a
+00:01:04.980 system of differential equations then
+00:01:08.580 we'll move on and I'll show you a
+00:01:09.720 different way that I think is much
+00:01:11.820 better at least for small to moderate
+00:01:13.680 sized problems for solving differential
+00:01:16.620 equations or systems of differential
+00:01:18.390 equations and it may not seem improved
+00:01:21.600 at first but with some discussion and
+00:01:24.180 then I'll step you through an example
+00:01:25.170 solving a differential equation you'll
+00:01:27.660 see how simple and and clear and short
+00:01:31.620 your MATLAB code will be to solve
+00:01:34.500 differential equations and the tools
+00:01:36.540 that I teach are generic enough that
+00:01:39.150 you'll see immediately given a whole new
+00:01:41.340 differential equation or setup of
+00:01:43.200 equations within minutes you can have
+00:01:45.750 the MATLAB code implemented to solve
+00:01:47.670 that using conventional finite
+00:01:49.920 difference method that definitely would
+00:01:51.210 not be the case and you have a lot more
+00:01:52.560 upfront work before you can even develop
+00:01:55.260 your code so with that said let's get
+00:01:58.800 started the introduction
+00:02:06.780 a difference method is a completely
+00:02:09.119 numerical method for solving a
+00:02:11.130 differential equation there's really no
+00:02:13.020 closed-form equations involved here at
+00:02:16.080 all so it's important to realize that
+00:02:18.360 when you solve a differential equation
+00:02:20.190 using the finite difference method you
+00:02:22.650 do not get a symbolic solution you're
+00:02:26.010 just going to get a function known at
+00:02:27.690 discrete points that you can plot now
+00:02:30.120 sometimes you can plot that and you
+00:02:31.950 might recognize hey that's a sine
+00:02:33.690 function or a tan function or a log
+00:02:36.209 function and then that might give you a
+00:02:38.280 clue of how to go back to the original
+00:02:40.800 differential equation and solve it by
+00:02:42.690 hand but the finite difference method
+00:02:44.790 itself does not do anything symbolically
+00:02:47.100 it's completely numerical we're
+00:02:48.989 completely working with discrete
+00:02:50.610 functions
+00:02:53.360 so to summarize the finite difference
+00:02:55.769 method of one slide we start off with a
+00:02:58.019 governing equation we need a
+00:02:59.310 differential equation we need to know
+00:03:01.200 the interval over which it's defined
+00:03:03.000 boundary values so we have to collect
+00:03:05.519 all the information that we need to
+00:03:07.290 solve the problem at that point using
+00:03:11.579 the finite difference technique will
+00:03:13.019 manipulate that matrix equation it's our
+00:03:15.120 the differential equation and will come
+00:03:17.310 up with a matrix equation an ax equals B
+00:03:20.269 type of problem that we now know how to
+00:03:22.739 solve and once we have that well we
+00:03:26.340 solve it and we can plot our solution
+00:03:28.260 and we're done so it's really connecting
+00:03:31.650 the starting point with our governing
+00:03:33.299 equation to building this matrix really
+00:03:37.680 where the finite difference method lies
+00:03:39.390 after that solving it's pretty
+00:03:41.430 straightforward that's just linear
+00:03:42.600 algebra and then what you do with the
+00:03:44.880 solution that would be called
+00:03:46.109 post-processing learning from it that
+00:03:48.540 doesn't really have anything to do with
+00:03:49.680 finite differences either and a variety
+00:03:52.920 of things could happen there we're
+00:03:54.000 simulating electromagnetic waves
+00:03:55.739 maybe we're calculating on the post
+00:03:57.750 processing step how much gets
+00:03:59.130 transmitted or reflected etc
+00:04:03.840 okay let's go on so it is very important
+00:04:10.230 to realize that in the finite difference
+00:04:12.480 method our functions are discrete on the
+00:04:15.180 Left we're showing the continuous
+00:04:18.358 function and if we think about this that
+00:04:20.700 function actually contains an infinite
+00:04:22.950 amount of information which clearly we
+00:04:24.960 can't store on a computer whereas on the
+00:04:28.050 right this is what functions look like
+00:04:30.630 when we're implementing the finite
+00:04:32.400 difference method we only know the
+00:04:34.169 values at discrete points we do not know
+00:04:37.320 the values in between those points now
+00:04:40.590 we can use interpolation and things like
+00:04:42.270 that and make pretty good guesses but
+00:04:44.460 the reality is we just don't know the
+00:04:46.080 function value between the points we can
+00:04:49.919 also look at this and realize the more
+00:04:51.900 points that we use the more accurately
+00:04:55.020 we can represent our function and the
+00:04:57.150 more accurate our solutions will become
+00:04:59.090 however there's also more points to
+00:05:01.620 calculate and it will take longer to
+00:05:03.570 calculate and so there's always this
+00:05:05.760 trade-off then on one hand for speed and
+00:05:08.220 efficiency we want to use the least
+00:05:10.289 number of points possible but for
+00:05:12.720 accuracy and fidelity of our answers we
+00:05:14.910 want to use as many points as possible
+00:05:16.560 so there's this trade-off and we have to
+00:05:19.140 try to find a sweet spot and we'll talk
+00:05:21.300 more about that later on a really
+00:05:30.479 important concept is how we store the
+00:05:33.300 functions so let's say we start off with
+00:05:35.940 a differential equation and we factor
+00:05:38.850 out the Y term so we can just write this
+00:05:41.100 Y term once and the rest of the
+00:05:43.500 differential equation the operators
+00:05:45.330 operating on Y collect here what we'll
+00:05:51.750 do using the finite differences will
+00:05:53.789 show you a technique of how to go from
+00:05:55.830 your differential equation straight to a
+00:05:57.690 matrix equation and you'll see that the
+00:06:00.690 differential equation itself ends up
+00:06:03.450 building this big square matrix a the Y
+00:06:07.380 function the thing we're trying to find
+00:06:09.210 however ends up in a column vector
+00:06:12.470 likewise the zeros or even the
+00:06:14.700 excitation on the right ends up being a
+00:06:16.530 column vector of
+00:06:17.610 all zeros so our functions are stored as
+00:06:23.099 column vectors they look like this and
+00:06:25.080 if I were to plot the values in our
+00:06:27.330 column vector well then we would see our
+00:06:29.909 function so this is the first concept
+00:06:32.610 we're storing our functions in a column
+00:06:35.639 vector now we're ready to move on and
+00:06:43.590 talk about how the finite difference
+00:06:45.389 method is applied conventionally so if
+00:06:47.430 you read your textbook if you google
+00:06:49.530 finite difference method what we're
+00:06:51.599 about to teach here is what you will see
+00:06:53.520 and this is how most of the rest of the
+00:06:55.289 world implements the finite difference
+00:06:57.150 method and there's nothing wrong with it
+00:07:03.020 so we have a starting point we need a
+00:07:05.939 differential equation or set of
+00:07:08.069 differential equations to solve the
+00:07:10.500 interval over which we're solving it and
+00:07:12.659 an excitation or in this case we have
+00:07:15.270 our boundary value something else that
+00:07:17.069 lets us solve this differential equation
+00:07:19.279 so this is our starting point the next
+00:07:26.789 step is to realize that this function y
+00:07:29.819 will be discrete and that lets us
+00:07:33.389 approximate the derivatives with finite
+00:07:35.940 differences so we look at our original
+00:07:38.580 equation and we we think of it term by
+00:07:40.949 term and so I've color-coded these the
+00:07:42.690 first terms in red the second terms in
+00:07:44.849 green the third terms in blue and we
+00:07:48.120 want to approximate each one with finite
+00:07:51.150 differences so if we look at the first
+00:07:54.449 term that is a second-order derivative
+00:07:56.930 well we've done this before
+00:07:59.039 and this is our approximation for a
+00:08:01.560 second-order derivative then we can go
+00:08:06.449 on to the second term which is a first
+00:08:09.029 order derivative and we can write a
+00:08:12.210 finite difference approximation for a
+00:08:13.919 first order derivative and we'll carry
+00:08:16.589 over the sign we are subtracting this
+00:08:18.449 term and then order the third term and
+00:08:21.539 we can think of this as they find a
+00:08:23.639 difference approximation but it's just
+00:08:25.919 our Y function nothing fancy here and of
+00:08:28.680 course the zero carries over as
+00:08:31.909 so at this point we've made our
+00:08:34.349 differential equation discrete using
+00:08:38.099 finite differences now here's a very
+00:08:43.880 important role and this goes back when
+00:08:47.520 we were talking about deriving finite
+00:08:49.170 difference approximations we have to
+00:08:50.850 understand where that finite difference
+00:08:53.940 is calculating the derivative it exists
+00:08:56.190 at some very specific point amongst all
+00:08:58.710 of the different Y values that it's
+00:09:00.450 calculating the finite difference from
+00:09:02.600 so if we look at our discrete equation
+00:09:05.580 and we look at this first finite
+00:09:07.440 difference we will see that that is the
+00:09:10.190 it exists at the midpoint
+00:09:12.510 it's the finite difference approximation
+00:09:14.280 for a second-order derivative where
+00:09:16.260 we've evaluated at the midpoint amongst
+00:09:18.750 three points if we look at this second
+00:09:22.980 finite difference we're looking at the
+00:09:25.200 difference between y at x and y at X
+00:09:27.930 minus Delta X so interpreting this as a
+00:09:31.080 central finite difference it really
+00:09:32.700 means that it exists at X minus Delta x
+00:09:35.250 over two that's the midpoint between
+00:09:37.470 these two x values if we look at the
+00:09:41.760 third term well that clearly exists at X
+00:09:44.900 and we also have to look at our zero
+00:09:47.190 well that's just a zero we could really
+00:09:48.660 define that to exist anywhere so we'll
+00:09:50.339 say that exists at X now that we've
+00:09:53.490 examined the terms we realize wow we
+00:09:56.070 have a problem not all of these terms
+00:09:59.180 exist at the same point they're finite
+00:10:01.860 differences are not calculating the
+00:10:03.390 value at the same point this can lead to
+00:10:07.170 problems and we have to fix it so in
+00:10:09.390 fact we didn't do our a very good job
+00:10:11.220 with the finite difference for that
+00:10:13.530 first order derivative so let's fix that
+00:10:21.080 so here's a new finite difference
+00:10:24.150 approximation where we've changed our
+00:10:26.220 finite difference equation or
+00:10:28.080 approximation of our first order
+00:10:29.670 derivative looking at the first finite
+00:10:32.130 difference we see that that is the same
+00:10:34.290 one we had on the on the previous slide
+00:10:35.970 so that exists at Y of X the midpoint
+00:10:38.580 amongst all of the Y values if we move
+00:10:41.880 on to the second one we can see now
+00:10:44.890 we've changed it we have y at X plus
+00:10:46.900 Delta X minus y of X minus Delta X if we
+00:10:51.610 interpret that as a central finite
+00:10:53.470 difference we see that that exists at
+00:10:55.360 the midpoint and exists at Y at X and of
+00:10:58.900 course the third term exists at y of X
+00:11:00.730 the zero exists at X and all terms now
+00:11:03.880 exist at X and so we are ready to move
+00:11:06.850 on the next thing we'd like to do rather
+00:11:12.460 than keep writing our finite difference
+00:11:14.170 equation the way we've been doing it
+00:11:16.480 let's write it in terms of array indices
+00:11:19.180 and so we'll look at our first finite
+00:11:22.390 difference approximation which is the
+00:11:24.640 second order derivative and in terms of
+00:11:26.710 array indices I we write it this way and
+00:11:30.040 I think this makes it a little bit
+00:11:32.050 easier to convert to computer code and
+00:11:35.010 we look at the second term and then our
+00:11:39.400 third term and there is no array index
+00:11:41.680 over here because that's just all zeros
+00:11:43.480 so this is the form that we will write
+00:11:46.180 our finite difference equations in
+00:11:48.150 because I think it just makes the
+00:11:50.590 computer code a little bit more obvious
+00:11:52.600 how that's going to happen
+00:11:54.130 this first finite difference equation
+00:11:56.530 that more clearly tells us where those Y
+00:11:59.680 terms exist along the x axis and the
+00:12:02.740 last one in terms of array indices a
+00:12:04.600 little bit more clear now that we have
+00:12:11.140 our finite difference equation in the
+00:12:13.210 form of arrays we have a little bit of
+00:12:14.770 work to do
+00:12:15.670 the very first thing we do is the second
+00:12:17.980 equation on the slides we multiply
+00:12:19.630 everything out then we recognize that
+00:12:22.450 the Y terms appear multiple times and so
+00:12:26.350 we collect the coefficients on the
+00:12:28.150 common Y terms and we end up in the form
+00:12:30.940 of the last equation where a bunch of
+00:12:33.190 coefficients have collected we have this
+00:12:35.230 and we can put numbers to all this Delta
+00:12:37.150 X is the grid spacing and we have three
+00:12:39.760 terms here that are multiplying our Y
+00:12:42.760 terms so a bit of math to do
+00:12:48.800 so that's pretty much as far as we can
+00:12:51.629 take our formulation after this we
+00:12:54.329 actually have to think about
+00:12:55.589 implementing and solving a differential
+00:12:58.410 equation so we have that and so let's
+00:13:00.750 solve this using 21 points so we have
+00:13:03.389 agreed with 21 points uniform spacing
+00:13:05.759 and the spacing is Delta X so since we
+00:13:09.060 have 21 points and our integral is from
+00:13:12.389 0 to 10 our Delta X is simply that span
+00:13:16.350 and X values divided by the number of
+00:13:19.139 divisions notice we're subtracting 1
+00:13:21.629 here and that's because our first point
+00:13:23.879 and last point fall exactly on x equals
+00:13:26.819 0 and x equals 10 that makes our grid
+00:13:29.790 spacing 0.5 that's our value of Delta X
+00:13:35.629 now that we know Delta X is 0.5 we can
+00:13:39.480 go back to our finite difference
+00:13:41.279 equation and that's been rearranged to
+00:13:43.050 collect the common terms on Y we go back
+00:13:45.480 there and put in point 5 for Delta X and
+00:13:48.000 what we see is that our fun a difference
+00:13:49.800 equation now reduces to something very
+00:13:51.600 simple and we're almost ready to solve
+00:13:54.389 our differential equation now so we have
+00:14:01.079 our simple finite difference equation
+00:14:03.000 what we do now is we write that finite
+00:14:05.910 difference equation once for every point
+00:14:08.790 on our grid well we have twenty-one
+00:14:11.699 points and we can see we have this huge
+00:14:13.920 set of equations on the right-hand side
+00:14:15.779 it's our finite difference equation
+00:14:17.879 written for every single point and
+00:14:20.519 notice for each of those the little I
+00:14:22.889 index changes for the first point on our
+00:14:25.860 grid we have it calling it one we write
+00:14:30.329 our finite difference equation as five
+00:14:32.670 times Y at 0 minus 7 times y at 1 plus 3
+00:14:37.740 times y at 2 and those indices increase
+00:14:40.350 for every point on the grid notice we
+00:14:46.829 have a problem in our first equation we
+00:14:50.910 are accessing or would like to access Y
+00:14:53.189 at 0 that is not on our grid our grid
+00:14:56.009 starts at 1 likewise in the last
+00:14:58.860 equation we would like to access Y at
+00:15:02.100 the 22nd point that does not exist
+00:15:04.800 either that's outside of the grid
+00:15:06.480 this happens because our finite
+00:15:08.639 difference equation is trying to reach
+00:15:10.829 out to adjacent points but if we're at
+00:15:13.290 the edge of the grid it wants points
+00:15:15.300 from the outside and we came across this
+00:15:18.389 problem when we were doing numerical
+00:15:20.220 differentiation and the same problem
+00:15:22.019 arises here we have to handle this this
+00:15:25.139 is called a boundary condition I like to
+00:15:27.269 call it a numerical boundary condition
+00:15:29.040 so we don't confuse it with boundary
+00:15:30.870 conditions that come up in engineering
+00:15:32.550 it's science so we have to handle this
+00:15:38.180 well one simple thing we can do rather
+00:15:40.680 than even consider Newman or deer slay
+00:15:42.660 or anything else we have boundary values
+00:15:45.420 so in fact we know the value of y at the
+00:15:49.050 first point and the last point so all we
+00:15:51.810 have to do is replace the first and last
+00:15:54.240 equations with a very simple equation
+00:15:55.949 the first equation we're just saying y
+00:15:58.529 at point 1 equals 1 because that was her
+00:16:00.839 boundary value like Y is the last point
+00:16:03.600 we're saying y of point 21 equals 5
+00:16:06.420 because that was our boundary value so
+00:16:10.079 we have a revised set of equations that
+00:16:13.230 now incorporates our boundary values
+00:16:18.560 well that's our final set of equations
+00:16:21.389 that's what we have to solve clearly we
+00:16:23.310 don't want to solve this algebraically
+00:16:24.959 so we're hopefully very comfortable now
+00:16:27.420 we can write that large set of equations
+00:16:29.670 in matrix form and now we can notice a
+00:16:33.269 few things
+00:16:34.740 borrowing from some of the terminology
+00:16:36.720 we discussed earlier in the semester we
+00:16:38.339 recognize this as a banded matrix
+00:16:40.529 there's numbers along three diagonals
+00:16:43.529 here so we would call this a tri
+00:16:45.209 diagonal matrix we also see that it is
+00:16:48.899 mostly zeros and this is only a 21-point
+00:16:52.079 grid for one dimensional analysis 200
+00:16:55.949 points is probably more typical and so
+00:16:58.079 there's proportionately less numbers in
+00:17:00.779 a matrix that's 200 by 200 so storing
+00:17:05.039 these as sparse matrices becomes very
+00:17:07.049 important and in the finite difference
+00:17:09.089 method these banded matrices is also
+00:17:11.010 very common this comes up all the time
+00:17:13.049 in science and engineering
+00:17:15.630 last thing I'll point out that last
+00:17:16.770 column vector no longer contains all
+00:17:19.650 zeros there's a one in the first
+00:17:21.480 position and a five in the last position
+00:17:23.339 so this is ready to be solved and we can
+00:17:25.980 solve this using any of the algorithms
+00:17:27.750 that we discussed for solving ax equals
+00:17:30.150 B type of linear algebra problems so
+00:17:35.370 we'll call that big ugly square matrix
+00:17:37.590 we'll just call that a our column vector
+00:17:40.110 containing the Y values we just call Y
+00:17:41.970 and then the last column vector our
+00:17:44.340 excitation if you will we'll just call B
+00:17:51.710 so we could use matrix division Lu
+00:17:55.530 decomposition anything else and we can
+00:17:57.330 solve that matrix equation for our Y
+00:17:59.610 values and when we do that we get this
+00:18:02.550 last column vector those are the actual
+00:18:04.350 numbers we get for our values at all 21
+00:18:07.470 different points notice the first value
+00:18:10.290 is 1 and the last value is 5 that was
+00:18:14.820 required by our boundary values and our
+00:18:17.520 solution was consistent with that and so
+00:18:20.100 all the other numbers is filling in the
+00:18:21.810 function in between so if we take those
+00:18:28.170 numbers and plot them we see our
+00:18:30.660 solution and just remind you we don't
+00:18:33.420 know what the value of the function is
+00:18:35.190 between those points we can use
+00:18:37.290 interpolation to make good guesses but
+00:18:39.900 we do not know what's happening between
+00:18:41.370 the points so at this point to find a
+00:18:43.950 difference method that is over and we
+00:18:45.510 might choose to process this in
+00:18:47.340 different ways to learn something from
+00:18:48.840 it plot it visualize it but the finite
+00:18:52.230 difference method is finished here now
+00:18:58.290 we're going to repeat the same finite
+00:19:00.420 difference analysis we're solving the
+00:19:02.220 same differential equation but I want to
+00:19:04.830 show you a different way of implementing
+00:19:06.870 the finite difference method well the
+00:19:09.900 last one seemed rather simple because we
+00:19:11.910 had a simple differential equation it
+00:19:14.550 does get more complicated and tedious
+00:19:16.590 especially when we have multiple coupled
+00:19:19.560 set of differential equations to solve
+00:19:21.750 and once we go through all that work and
+00:19:24.750 we have our code working it really is
+00:19:27.180 rather specific to solving that
+00:19:29.400 single equation this new method I'm
+00:19:32.490 going to show you is much more generic
+00:19:34.590 and you can much more rapidly solve
+00:19:37.080 different differential equations or
+00:19:39.510 different sets of differential equations
+00:19:41.700 so for small to moderate size problems I
+00:19:44.700 really think this is an approved way of
+00:19:46.559 implementing the finite difference
+00:19:47.850 method so let's dive right into it we
+00:19:53.970 have the same starting point we have a
+00:19:55.530 differential equation we have an
+00:19:57.690 interval and we have some boundary
+00:19:59.430 values I'll also mention in the end the
+00:20:03.000 final matrix equation is exactly the
+00:20:05.429 same this I think it's just an improved
+00:20:08.010 method for coming up with that matrix
+00:20:10.860 equation how it's built how it's
+00:20:12.600 assembled and this approach makes it
+00:20:15.120 very simple compared to the last
+00:20:17.429 approach so on paper we will look at our
+00:20:25.620 differential equation and we're going to
+00:20:27.990 look at it term by term and then on
+00:20:32.070 paper write each one of those terms in
+00:20:35.490 the differential equation as a matrix
+00:20:38.250 equivalent if you will now our unknown
+00:20:43.350 function y of X becomes a column vector
+00:20:46.530 like we're used to but everything else
+00:20:49.500 that's operating on Y becomes a square
+00:20:53.370 matrix and so we go term by term this
+00:20:56.820 way and write everything in matrix form
+00:20:59.130 so we're still on paper the computer
+00:21:00.929 programs not doing this and with some
+00:21:03.600 practice this isn't even necessary you
+00:21:06.059 can just look at the original
+00:21:07.170 differential equation and just see that
+00:21:09.540 matrix equation ok
+00:21:16.220 so we've gone term by term we've written
+00:21:19.230 our matrix equation what we'd like to do
+00:21:21.929 now is put this into standard form the
+00:21:24.210 standard form being the ax equals B so
+00:21:28.140 the first thing I do is factor out the
+00:21:29.970 unknown Y so Y is now only in one place
+00:21:33.570 that's our column vector of the things
+00:21:35.460 that we want to solve for everything
+00:21:38.100 else in the differential equation lumps
+00:21:40.110 here so this becomes a single square
+00:21:43.050 that essentially the differential
+00:21:45.180 equation the information from that has
+00:21:47.190 gotten incorporated into so there is our
+00:21:52.410 standard form we have a square matrix a
+00:21:55.080 a column vector Y and then for now a
+00:21:57.990 column vector of zeros on the right hand
+00:22:00.090 side and so this is how we would
+00:22:02.280 calculate the square matrix a it's
+00:22:04.380 really the sum and difference or an
+00:22:07.260 algebraic combination of three smaller
+00:22:11.040 simpler matrices perhaps I shouldn't say
+00:22:13.890 smaller I really meant to say less
+00:22:15.570 complicated they're all the same size
+00:22:17.280 matrix now what's really neat about this
+00:22:21.090 is all of this becomes one line of code
+00:22:24.330 in MATLAB we build a just how it's
+00:22:27.150 written and when I type something like
+00:22:28.860 this I really feel like I'm typing the
+00:22:31.950 differential equation into MATLAB and
+00:22:33.960 this is really why it's so generic we're
+00:22:37.500 we're gonna build a function that builds
+00:22:39.930 these sort of preliminary matrices DX 2
+00:22:43.050 DX and I'd the identity matrix and once
+00:22:46.470 we have that function it becomes very
+00:22:48.450 simple and rapid to build this matrix a
+00:22:51.840 for any differential equation we're
+00:22:53.640 solving we would just change as one line
+00:22:55.680 of code and that's really neat so here
+00:23:04.500 is our matrix equation so far and we
+00:23:08.370 don't have our boundary values in this
+00:23:10.500 so that's the next step so this is just
+00:23:12.900 sort of the raw matrix equation and
+00:23:15.870 standard form so to incorporate the
+00:23:20.220 boundary values the first thing we want
+00:23:21.870 to do is the first and last row these
+00:23:24.690 are the areas that we want to force
+00:23:26.400 values we completely zero them out this
+00:23:29.370 means we're throwing out the finite
+00:23:31.290 difference equation that we had written
+00:23:33.180 for the first and the twenty first point
+00:23:35.640 we just throw them out and make them all
+00:23:37.140 zeros then we go into those same rows
+00:23:42.660 and we put a 1 in the diagonal position
+00:23:49.929 then over in the last column vector
+00:23:53.269 which had all zeros will insert our
+00:23:56.089 boundary values so the first point we're
+00:23:58.219 forcing to a value of 1 and the last
+00:24:00.919 point we're forcing to a value of 5 at
+00:24:04.539 this point we have the exact same matrix
+00:24:08.690 equation that we had implementing the
+00:24:11.089 conventional finite difference method so
+00:24:13.159 it's solved and post-processed and all
+00:24:15.769 that the very same way so we solved the
+00:24:21.769 matrix equation we get the exact same
+00:24:24.169 answer so the methods are really
+00:24:26.209 equivalent and then of course we can
+00:24:30.919 plot it we can post-process it and do
+00:24:33.320 anything else the rest of the method is
+00:24:35.599 the same the real key difference between
+00:24:37.759 the conventional way of implementing
+00:24:40.549 finite difference and the new way is the
+00:24:42.979 manner in which that matrix equation is
+00:24:45.289 built and the philosophy here is that
+00:24:47.899 somehow we'll build these preliminary
+00:24:49.940 matrices that are somehow simpler to
+00:24:52.999 build and less complicated more easily
+00:24:55.219 tested and once we have those it becomes
+00:24:57.769 trivial to build the more complicated
+00:25:00.589 matrix that we're calling a and it makes
+00:25:03.859 the code so that if we want to change
+00:25:06.049 the differential equation that we're
+00:25:07.549 solving we could do it literally in just
+00:25:09.649 seconds very neat way of implementing
+00:25:12.259 finite differences now we need to have
+00:25:17.989 the conversation about these preliminary
+00:25:20.389 matrices that we call matrix operators
+00:25:23.739 the idea is that somehow these are much
+00:25:26.959 simpler to build than the big ugly a
+00:25:30.739 matrix and that will help us build the a
+00:25:33.440 matrix and also make our finite
+00:25:36.619 difference codes more generic so that
+00:25:38.869 when we're building a we can just change
+00:25:40.579 what the derivatives are what the
+00:25:42.049 constants are and solve any other
+00:25:44.089 differential equation so this section is
+00:25:48.229 how to build those matrices and how to
+00:25:50.269 interpret them
+00:25:55.600 first we need to understand the
+00:25:57.669 difference between the terms in our
+00:25:59.440 differential equation there are only two
+00:26:02.919 things that can occur in a differential
+00:26:04.660 equation there are functions and there
+00:26:07.210 are operations the functions are either
+00:26:10.570 the unknown F in this case or the
+00:26:14.799 excitation G those are the only two
+00:26:18.130 places that a function can occur in a
+00:26:20.620 differential equation everything else is
+00:26:23.380 an operation happening to a function so
+00:26:27.520 we might look at this C of X and say hey
+00:26:29.980 isn't that a function well it sort of is
+00:26:33.100 but really what it's doing is there's no
+00:26:35.590 numbers associated with C it's not an
+00:26:37.570 unknown and it's doing a multiplication
+00:26:40.210 on to F its operating on to F and
+00:26:43.840 certainly the derivative operations
+00:26:46.390 those are operations but so is C and B
+00:26:49.000 and a those are operations happening to
+00:26:51.340 our function f so everything else that
+00:26:56.770 our operations becomes square matrices
+00:26:59.530 the functions are column vectors the
+00:27:02.440 operations are always square matrices
+00:27:04.630 and it's interesting to note that in
+00:27:07.960 fact any linear operation whether it's a
+00:27:10.480 Fourier transform a derivative and
+00:27:12.520 integral or anything if it's a linear
+00:27:14.860 operation there's always a way to make a
+00:27:17.650 square matrix such that if we pre
+00:27:20.559 multiply F it would do that operation on
+00:27:23.590 F here we're only talking about doing
+00:27:26.650 these multiplications or derivative
+00:27:29.169 operations and almost all differential
+00:27:31.690 equations only have those two things in
+00:27:34.000 them so as we mentioned on the previous
+00:27:39.909 slides are functions which is only our
+00:27:43.210 unknown and the excitation are column
+00:27:46.809 vectors that will store that way
+00:27:48.360 everything else is an operation that
+00:27:51.270 operates on to a function and they
+00:27:54.340 become square matrices
+00:28:01.340 so the first one and the simplest one
+00:28:04.220 are these square matrices that will
+00:28:06.740 multiply a function on to F and so we're
+00:28:09.860 interpreting this when those functions
+00:28:11.629 are discrete as a point-by-point
+00:28:14.169 multiplication so over in the upper left
+00:28:17.059 we have our function B if you will and
+00:28:19.700 our function f and we want to do a
+00:28:22.309 point-by-point multiplication at each
+00:28:24.620 point even more we would like to come up
+00:28:28.730 with some square matrix B such that if
+00:28:32.120 we pre multiplied our column vector F we
+00:28:35.480 would get a new column vector which is
+00:28:37.820 that point-by-point multiplication so
+00:28:40.999 the question here is what does B look
+00:28:43.009 like to figure that out I like to write
+00:28:45.980 a big blank matrix equation that I'm
+00:28:49.009 showing here and I have the the B matrix
+00:28:53.210 shown as a question mark we need to
+00:28:54.889 figure out what goes in there we know
+00:28:57.019 that is pre multiplying this column
+00:28:59.659 vector F and we know what the answer
+00:29:02.749 should be that final column vector if
+00:29:04.850 it's doing a point-by-point
+00:29:06.309 multiplication is B 1 times F 1 B 2
+00:29:09.649 times F 2 B 3 times
+00:29:11.360 f 3 so the question is what goes in B so
+00:29:16.009 that when we pre multiply F we do get
+00:29:18.559 that answer as the final column vector
+00:29:20.869 and the answer is we have a diagonal
+00:29:26.240 matrix containing the terms of B down
+00:29:30.350 its diagonal everything else is all
+00:29:32.869 zeros so anytime we have a
+00:29:36.470 point-by-point multiplication on F we
+00:29:39.110 simply take all of the values in that
+00:29:41.240 function we want to do the point by
+00:29:43.279 point multiplication with and insert
+00:29:45.950 them along the diagonal of a matrix so
+00:29:48.230 this is one line of code in MATLAB to do
+00:29:50.450 that a little bit more difficult now we
+00:29:58.519 would like to figure out what the square
+00:30:00.590 matrix looks like that when we pre
+00:30:03.409 multiply F we will get another column
+00:30:06.799 vector that if we plotted we would see
+00:30:08.929 the derivative of F and in this case the
+00:30:11.119 first order derivative
+00:30:13.100 so we'll follow the same approach we'll
+00:30:15.840 write a big blank matrix equation where
+00:30:19.020 our derivative matrix is what we're
+00:30:21.600 calling it now what goes in this matrix
+00:30:23.810 such that when we pre-multiply our
+00:30:26.430 column vector of F we get the derivative
+00:30:29.190 and you'll notice the terms on the far
+00:30:31.860 right-hand side this is the answer that
+00:30:33.570 we want to get so the answer for the
+00:30:36.990 first point using a finite difference
+00:30:40.190 equation is simply F at point 2 minus F
+00:30:45.150 at point 1 our sorry point 0 so f at
+00:30:49.110 point 2 minus F at point 0 divided by
+00:30:52.590 the spacing between those points which
+00:30:54.570 in this case is 2 times Delta X then we
+00:30:59.160 move on to the second point what is the
+00:31:01.080 first order derivative at the second
+00:31:02.790 point
+00:31:03.150 well it's F 3 minus F 1 divided by the
+00:31:06.270 spacing between those points which is 2
+00:31:08.850 Delta X and so on and we write all of
+00:31:10.740 our find out difference approximations
+00:31:12.960 that we would like to get this is the
+00:31:15.360 answer that we should get so then we ask
+00:31:18.600 well what goes in the matrix to do this
+00:31:25.010 so here's what that looks like in the
+00:31:29.670 first row we simply just have an F 2
+00:31:32.130 divided by 1 over 2 Delta X now since
+00:31:34.950 every term in that final column vector
+00:31:37.020 is divided by 2 Delta X we bring that to
+00:31:40.650 the outside of our matrix on the left
+00:31:42.630 here so this whole thing will become our
+00:31:44.790 derivative matrix so we just have an F 2
+00:31:48.270 so we simply just see a 1 in the column
+00:31:50.970 corresponding to F 2 then we go to the
+00:31:54.630 second equation we see an F 3 minus F 1
+00:31:57.630 of course divided by 2 Delta X and so
+00:32:01.140 over in our derivative matrix we see a 1
+00:32:03.300 in the column corresponding to F 3 and a
+00:32:05.820 negative 1 in the column corresponding
+00:32:07.500 to F 2 and so we go row by row now we've
+00:32:12.270 built indira sleighbough nuri conditions
+00:32:14.160 into this so when we drop F naught F 7
+00:32:16.440 out those terms don't appear in our
+00:32:18.420 matrix equation so this is a matrix that
+00:32:21.690 we'll take a first order derivative and
+00:32:24.290 use d-rush laid
+00:32:26.250 three conditions to do that I'll also
+00:32:29.310 mention at this point we certainly could
+00:32:31.500 build this matrix and use it to
+00:32:34.200 calculate a numerical derivative of f
+00:32:36.600 however this is kind of a silly way to
+00:32:39.120 do that if your goal was only ever to
+00:32:41.610 calculate a numerical derivative it's
+00:32:43.950 much better to do that how we did in a
+00:32:46.170 previous lecture where we discuss
+00:32:47.760 numerical differentiation instead we're
+00:32:51.090 building this matrix as a preliminary
+00:32:53.130 step of building a larger and more
+00:32:55.410 complicated matrix so this is really
+00:32:57.870 build intended to build matrix equations
+00:33:01.710 to solve differential equations onto a
+00:33:08.160 second order derivative we'll use the
+00:33:10.500 same approach we'll write this big blank
+00:33:12.180 matrix equation and we ask the question
+00:33:14.550 what pre multiplies our column vector of
+00:33:17.220 F's such that we get the second order
+00:33:19.680 derivative at every point so in that
+00:33:22.020 final column vector this should be our
+00:33:24.090 answer we write our finite difference
+00:33:27.060 approximation for each point and again I
+00:33:29.580 highlight the F naught and f7 these
+00:33:31.410 don't exist or outside the grid let's
+00:33:33.990 just go ahead and use d-rush lay binary
+00:33:35.820 conditions and drop those out of the
+00:33:37.920 equations now it should start to become
+00:33:40.440 a little bit more apparent of what goes
+00:33:42.600 into the matrix now to do a second-order
+00:33:45.180 derivative operation so looking at the
+00:33:50.490 first equation we don't have anything
+00:33:52.200 for F naught that doesn't exist but we
+00:33:54.510 need to have a negative two in the
+00:33:57.450 column multiplying F 1 and then a
+00:34:01.050 positive 1 in the column multiplying the
+00:34:03.870 F 2 and we could go down equation by
+00:34:06.750 equation and see why those numbers are
+00:34:08.760 in that matrix so this big matrix on the
+00:34:11.280 left this is the derivative matrix for
+00:34:15.330 calculating a second-order derivative
+00:34:20.889 I apologize for the pauses in this video
+00:34:31.750 I'm having a very difficult time
+00:34:33.159 recording this and my computer keeps
+00:34:34.869 freezing and you can probably hear me
+00:34:36.730 pressing buttons I can't get it to stop
+00:34:38.679 and go on to the next slide so I'm doing
+00:34:40.960 my best but also trying to minimize my
+00:34:43.359 work recording slides five or six
+00:34:45.609 different times so on the last few
+00:34:50.768 slides we saw that we have two different
+00:34:53.279 derivative matrices one for first order
+00:34:55.960 derivatives and one for second order
+00:34:57.640 derivatives and of course if we had a
+00:34:59.410 third or fourth order derivative we
+00:35:01.329 would need matrices for them as well
+00:35:03.690 well from calculus we know that if we
+00:35:07.660 take the first order derivative twice we
+00:35:10.000 get a second order derivative so one
+00:35:13.450 might ask why can't we just multiply the
+00:35:16.900 derivative matrices for the first order
+00:35:18.670 derivative together just multiply that
+00:35:20.140 together would we get a second order
+00:35:22.480 derivative what happens with that why
+00:35:24.250 can we do that or why shouldn't we well
+00:35:28.480 if we go ahead and do that the answer
+00:35:30.730 for that is on the Left we get this
+00:35:32.529 derivative matrix technically this is a
+00:35:35.319 correct matrix however look at the
+00:35:38.019 spacing of the numbers it turns out
+00:35:40.420 we're reaching out way far into our grid
+00:35:43.119 to calculate that derivative work we
+00:35:45.430 want to get those points that were
+00:35:46.900 calculon derivative from as closely
+00:35:48.819 packed to where we're calculating the
+00:35:51.009 derivative as possible rather than reach
+00:35:52.900 way out so we essentially have poorer
+00:35:55.839 resolution when we calculate a second
+00:35:58.720 order derivative with first order
+00:36:00.609 derivative matrices now if we choose a
+00:36:02.710 dense and up grid you can absolutely do
+00:36:04.539 this but it's not the healthiest thing
+00:36:07.119 to do so instead we'll build a special
+00:36:10.779 unique matrix for doing second order
+00:36:13.990 derivatives and we see that on the lower
+00:36:15.549 right here and that's taking full
+00:36:17.650 advantage of the resolution on the grid
+00:36:19.539 so for right now we really should not
+00:36:22.839 multiply our first order derivative
+00:36:25.059 matrices together to get a second order
+00:36:27.329 we want to build a whole second matrix
+00:36:30.220 for doing second order derivative
+00:36:31.599 operations and we can make the same
+00:36:33.700 argument for the third
+00:36:34.660 4/5 order derivatives if we need them
+00:36:36.910 but it's very rare at this point I want
+00:36:44.890 to put out a warning lots of red ink
+00:36:47.710 here the matrices for solving finite
+00:36:51.970 difference methods particularly when we
+00:36:53.500 go to 2d and 3d problems can be very
+00:36:56.560 very large a typical size grid for a
+00:36:59.950 2-dimensional simulation is let's say a
+00:37:01.990 100 by 200 points
+00:37:03.460 we can get a lot done with a grid that
+00:37:05.050 size and that doesn't seem very large if
+00:37:07.420 this were a picture in Photoshop or
+00:37:09.460 something that would be a really small
+00:37:10.840 picture but it turns out that grid it
+00:37:13.540 has 20,000 points which means our
+00:37:17.260 matrices for the derivative operations
+00:37:19.780 will be 20,000 by 20,000 so in a matrix
+00:37:24.640 that size there is 400 million numbers
+00:37:28.240 in that matrix if we store each one of
+00:37:32.410 those numbers as a double floating point
+00:37:34.570 precision number it would take six
+00:37:36.760 gigabytes of memory just to store one
+00:37:39.430 matrix and we have multiple matrices
+00:37:42.340 that we want to store and that doesn't
+00:37:44.830 even tell you how much memory you'll
+00:37:46.090 need to solve it so it's a rather
+00:37:49.120 intractable problem the good news is
+00:37:52.840 those matrices contain 99.9 percent
+00:37:56.860 zeroes and so it makes sense to store
+00:37:59.650 these as sparse matrices and MATLAB is
+00:38:02.320 filled with very optimized algorithms
+00:38:04.780 for manipulating and solving sparse
+00:38:07.000 matrices and the good news for us is we
+00:38:10.660 don't have to know any of that we just
+00:38:12.340 say somewhere in our code hey MATLAB
+00:38:14.620 this matrix is sparse and MATLAB does
+00:38:17.260 everything else for us and if we store
+00:38:20.470 the same matrix as a sparse matrix it
+00:38:23.500 only takes one megabyte of memory to
+00:38:25.480 store the matrix so we can even do that
+00:38:28.180 in modern calculators so the moral is in
+00:38:31.180 this method always always always use
+00:38:33.520 sparse matrices
+00:38:34.570 a common mistake might be to build a
+00:38:37.540 matrix as a full matrix and then declare
+00:38:39.640 it as sparse and that's bad we want
+00:38:41.800 sparse matrices from the very beginning
+00:38:43.690 don't ever at any point build a full
+00:38:47.020 matrix
+00:38:48.310 doing just one dimensional finite
+00:38:50.660 difference method a lot of times you can
+00:38:52.820 get away with full matrices because
+00:38:54.560 they're not too large and you can
+00:38:57.260 develop some bad habits so even in my 1
+00:39:00.020 dimensional finite difference method
+00:39:01.490 stuff I will always declare my matrices
+00:39:03.500 as sparse just from habits of solving
+00:39:06.260 much larger problem so sparse matrix
+00:39:08.780 sparse matrix never ever ever manipulate
+00:39:11.690 full matrices now if we go back and look
+00:39:19.400 at those derivative matrices what we'll
+00:39:21.890 see is they had pretty simple geometries
+00:39:24.740 they had essentially the same number
+00:39:26.810 running down the diagonals of the matrix
+00:39:29.240 so in fact they're very fast to build
+00:39:32.210 and there's nice commands in MATLAB for
+00:39:35.270 inserting diagonals into matrices and so
+00:39:38.420 we'll discuss the ones for inserting
+00:39:40.340 diagonals into sparse matrices so if we
+00:39:43.730 look at this first example the first
+00:39:44.990 thing we do is declare our matrix Z as
+00:39:48.380 sparse and we make it M by M or just 6x6
+00:39:51.740 in this case the next thing we'll do is
+00:39:54.950 create a one dimensional vector if you
+00:39:58.250 will an array of the numbers we want to
+00:40:01.040 put along the diagonal then we call the
+00:40:05.030 function SP dye eggs which places those
+00:40:08.270 numbers along the diagonal of our choice
+00:40:10.400 and we give it three input arguments we
+00:40:13.550 give it the numbers we want to insert in
+00:40:15.320 the diagonal we tell it which diagonal
+00:40:18.080 we want to insert into in this case 0
+00:40:20.210 means the center diagonal and then we
+00:40:22.550 give it the matrix to start with which
+00:40:24.470 right now is just the all zeroes matrix
+00:40:26.510 and so when we do that it places the
+00:40:28.730 ones going down the center diagonal now
+00:40:32.270 in this other example we create the same
+00:40:34.820 1 dimensional array of all ones what you
+00:40:37.940 see now will give two calls to s P die
+00:40:40.730 eggs and one we give it the input
+00:40:43.250 argument of negative D the other
+00:40:44.990 positive D and that way when we build
+00:40:47.840 the matrix were inserting positive ones
+00:40:50.210 along the +1 diagonal and negative ones
+00:40:54.200 along the negative one diagonal and if
+00:40:56.930 you go back to our first order
+00:40:59.090 derivative matrix that is that
+00:41:01.600 matrix the only thing we would need to
+00:41:03.280 do them is just divide everything in
+00:41:06.100 this matrix by 2 times Delta X so it's
+00:41:10.570 very easy to build these so these
+00:41:12.880 preliminary matrices that we would build
+00:41:14.890 as big ugly a matrix are quite simple to
+00:41:17.920 build and really is the reason we're
+00:41:19.900 doing this they're simple to build and
+00:41:21.820 then we can use those little matrices to
+00:41:23.950 build the big matrix that would probably
+00:41:26.470 be very difficult to build otherwise so
+00:41:29.380 every step becomes simple so now let's
+00:41:37.420 talk about incorporating boundary
+00:41:39.130 conditions and if you're not familiar
+00:41:41.080 with these please go back and look into
+00:41:43.540 numerical differentiation lecture and
+00:41:45.810 understand how we incorporate a boundary
+00:41:48.100 conditions there because I'm not really
+00:41:49.660 going to repeat too much of what's there
+00:41:52.120 here we're talking about how to
+00:41:54.070 incorporate those boundary conditions
+00:41:55.180 into the matrices so we had dearer
+00:42:02.170 slavery conditions which is where we
+00:42:04.900 assumed any values from outside the grid
+00:42:07.150 are zero so in this case we'd like to
+00:42:09.550 calculate a second order derivative
+00:42:11.530 across the entire grid so from points
+00:42:14.200 two to six we just use the ordinary
+00:42:15.880 finite difference equation for points
+00:42:18.670 one and seven we have to modify that
+00:42:21.220 find a difference equation and put a
+00:42:22.720 zero in the place of where we're
+00:42:25.120 reaching outside of the grid so this one
+00:42:27.820 picture summarizes all of the finite
+00:42:29.830 difference equations that we would use
+00:42:31.270 across our grid now let's think about
+00:42:34.090 what this looks like when we build the
+00:42:36.130 derivative matrix for doing a second
+00:42:38.380 order derivative so points x 2 2 X 6
+00:42:45.220 have our ordinary finite difference
+00:42:47.200 approximation we've modified the
+00:42:49.240 equations at point one and seven and
+00:42:51.520 then we can populate a matrix from it so
+00:42:55.900 I think this is a great visualization of
+00:42:57.880 really what that derivative matrix is
+00:42:59.800 doing and I think makes this pretty easy
+00:43:03.400 to build we this would be three calls to
+00:43:06.400 the SP diag function wants to insert the
+00:43:09.190 positive ones on the +1 diagonal then
+00:43:11.830 the negative twos down the center
+00:43:13.390 diagonal and then
+00:43:14.470 positive one that's again in the
+00:43:16.030 negative one diagonal and then of course
+00:43:18.550 we have to divide the whole thing by
+00:43:19.660 Delta X square that's an easy one to
+00:43:21.520 forget so that's our derivative matrix
+00:43:24.790 with deras lay down dree conditions
+00:43:26.430 there are other boundary conditions
+00:43:32.130 here's our periodic boundary condition
+00:43:34.930 and this is where when we're writing our
+00:43:37.150 finite difference equation at the first
+00:43:39.010 point and it needed F 0 from outside the
+00:43:42.880 grid if our problem truly is periodic
+00:43:45.490 then F 7 should have the same value
+00:43:48.090 since the values repeat so then in the
+00:43:51.580 place of F 0 we inserted F 7 and we do a
+00:43:55.450 very similar thing at the other side
+00:43:57.070 where we needed access to F 8 well F 8
+00:44:00.820 should be equal to F 1 if this really is
+00:44:03.430 periodic so we stuck F 1 in here so this
+00:44:07.960 summarizes our finite difference
+00:44:09.490 equations for periodic boundary
+00:44:11.260 conditions now let's put this into our
+00:44:17.080 derivative matrix the points 2 through 6
+00:44:20.440 are the same 1 &amp; 7 are different and now
+00:44:25.480 in the first equation we're accessing F
+00:44:28.089 7 which means we need to put a 1 in the
+00:44:31.330 column corresponding to F 7 likewise in
+00:44:35.859 the last equation instead of F 8 we're
+00:44:38.109 accessing F 1 so we put a 1 in the
+00:44:41.530 column corresponding to F 1 so a slight
+00:44:45.730 modification to our derivative matrix
+00:44:47.740 and this now has a periodic boundary
+00:44:50.650 condition built into it we can talk
+00:44:57.160 about neumann boundary conditions here
+00:44:59.920 we might have a first and a second order
+00:45:01.810 derivative that we need well the finite
+00:45:04.030 difference equations are rather standard
+00:45:05.619 points 2 through 6 no problems there
+00:45:08.050 it's 0.1 and 7 where we had to modify
+00:45:11.260 the finite difference equations and for
+00:45:14.380 neumann boundary conditions the
+00:45:15.640 assumption is the function just sort of
+00:45:17.609 leaves your grid either side linearly
+00:45:20.260 and since that's linear the second order
+00:45:23.109 derivative will be 0 and we had to
+00:45:25.480 change the first order derivative opera
+00:45:27.380 just to change which points we
+00:45:29.300 calculated from so that we don't need
+00:45:31.640 point from outside of the grid now let's
+00:45:34.310 look at how this affects the matrices
+00:45:36.410 the derivative matrices so here we're
+00:45:42.200 showing the first order derivative
+00:45:43.580 operation points 2 through 6 should not
+00:45:46.820 be any surprise for a first order
+00:45:48.500 derivative however the first and last
+00:45:52.190 rows are a little bit different since
+00:45:55.210 our original finite difference
+00:45:57.980 approximation here was just F 2 minus F
+00:46:00.020 1 over Delta X naught 2 Delta X however
+00:46:03.500 since we're dividing the entire matrix
+00:46:05.480 by 2 Delta X we need to think about that
+00:46:09.230 when we formulate the equation so it
+00:46:10.910 actually ends up becoming 2 times F 2
+00:46:13.310 minus 2 times F 1 so that we can divide
+00:46:16.700 it by 2 Delta X and get the correct
+00:46:18.290 answer that means we have a two sitting
+00:46:22.460 in the column corresponding to F 2 and a
+00:46:24.650 negative two sitting in the column
+00:46:26.450 corresponding to F 1 and a very similar
+00:46:29.870 story for the last row again since we
+00:46:32.330 want to divide it by two Delta X we need
+00:46:34.820 to multiply the terms in the numerator
+00:46:36.500 by two so that when we divide it by two
+00:46:38.840 Delta X we get the correct fund a
+00:46:40.520 difference equation and so we have a
+00:46:42.650 positive two sitting in the column
+00:46:44.510 corresponding to F 7 and a negative two
+00:46:47.270 sitting in the column corresponding to F
+00:46:49.400 six so this is our first order
+00:46:52.640 derivative matrix with a Neumann
+00:46:55.040 boundary condition next we need to talk
+00:46:58.130 about the derivative matrix for the
+00:46:59.960 second order derivative with neumann
+00:47:01.850 boundary conditions this is a little bit
+00:47:06.320 easier since the second order derivative
+00:47:08.660 is all 0 we simply just zero out the
+00:47:11.810 first and last rows in our matrix
+00:47:14.030 equation that ensures that our
+00:47:15.950 calculation of the second order
+00:47:17.600 derivative is zero points two through
+00:47:20.570 six remain exactly the same that we've
+00:47:22.790 been talking about and those are the
+00:47:24.650 standard finite difference equations for
+00:47:26.300 calculating a second order derivative
+00:47:32.910 also when we did our our numerical
+00:47:36.789 differentiation we talked about this
+00:47:38.470 high order boundary condition where we
+00:47:40.990 really wanted to calculate a derivative
+00:47:42.819 at the edge but we had their access
+00:47:45.400 points on the outside so we came up with
+00:47:46.960 a whole new finite difference equation
+00:47:48.789 involving only points from inside the
+00:47:51.490 grid and the first and the last point
+00:47:53.170 got their own special fund of difference
+00:47:54.730 equations and here's where we ended up
+00:47:56.470 let's think about putting these into our
+00:47:59.440 derivative matrix for a second order
+00:48:01.569 derivative so points two through six
+00:48:08.289 look how they they've always looked for
+00:48:10.869 a second order finite difference
+00:48:12.160 equation it's the first and last that
+00:48:15.099 change a little bit and we're just
+00:48:17.499 reading off the coefficients from our
+00:48:19.089 equation we have a 2 multiplying f1 so
+00:48:22.180 there's a positive 2 in the f1 column
+00:48:25.140 negative 5 multiplying f2 there's a
+00:48:27.910 negative 5 in the f2 column for
+00:48:30.819 multiplying f3 so there's a 4 in the f3
+00:48:33.880 column a negative 1 multiplying f4 a
+00:48:36.999 negative 1 in the f4 column and then of
+00:48:39.880 course zeros and the other columns
+00:48:41.230 because those those F values don't
+00:48:43.269 appear in the find a difference equation
+00:48:44.619 and the exact same argument for the last
+00:48:47.499 equation and so now we have a second
+00:48:50.680 order derivative matrix with high order
+00:48:53.319 boundary conditions built in so we
+00:48:55.210 calculate the same second order
+00:48:57.759 derivative all the way across the grid
+00:49:03.839 here we are ready to solve a
+00:49:06.190 differential equation with our new
+00:49:08.380 finite difference approach so our new
+00:49:11.170 finite difference approach is built on
+00:49:12.700 to the philosophy that we potentially
+00:49:14.319 have a big ugly matrix to build this a
+00:49:16.660 matrix so to do that we will build these
+00:49:20.200 simpler preliminary matrices derivative
+00:49:23.049 matrices diagonal matrices doing
+00:49:25.119 point-by-point multiplications and
+00:49:26.769 potentially other things and it's from
+00:49:29.589 those that we can very easily build this
+00:49:31.809 big ugly matrix a in a way that's very
+00:49:34.269 simple to us and makes it very rapid to
+00:49:37.989 change which differential equation or
+00:49:39.970 system of differential equations we're
+00:49:41.650 solving and it makes our code very
+00:49:44.589 simple as well
+00:49:45.980 let's go ahead and get into that and see
+00:49:47.750 how this works if we've built our
+00:49:52.910 preliminary matrices and then built the
+00:49:55.760 big ugly matrices we're now at a point
+00:49:58.309 where we have to incorporate the
+00:50:00.380 boundary values we talked a bit about
+00:50:02.750 how that can be done but I want to step
+00:50:04.790 you through a fancier and in terms of
+00:50:08.300 the matlab implementation actually a
+00:50:10.040 simpler way to incorporate boundary
+00:50:12.349 values and in fact anywhere we want to
+00:50:14.270 force the value of our function we can
+00:50:17.210 do it real easily it is nice to know and
+00:50:23.780 useful to know why we even need the
+00:50:26.329 boundary values so suppose we're given a
+00:50:29.210 differential equation we convert this to
+00:50:33.800 matrix form one simple step on paper we
+00:50:37.309 then put it in standard form so now we
+00:50:40.490 have an AF equals zero but if we go
+00:50:44.390 ahead and try to solve this we get all
+00:50:46.369 zeros we get a trivial solution that
+00:50:49.369 column vector on the right cannot be all
+00:50:52.040 zeros it has to be something non zero
+00:50:54.589 there we need some sort of source or
+00:50:57.589 excitation that comes in to that last
+00:51:00.290 column vector and order for this to be
+00:51:02.210 solvable so this is really why we need
+00:51:05.059 the boundary values from the perspective
+00:51:07.880 of matrices is so that we don't have
+00:51:09.710 zeros in that last column vector and we
+00:51:12.319 can get a non-trivial solution
+00:51:20.060 okay so how do we incorporate the
+00:51:22.910 boundary values here's what we at a high
+00:51:25.220 level what needs to happen first we
+00:51:28.100 build our direct matrix equation the a F
+00:51:30.350 equals zero then any row in a which
+00:51:34.520 corresponds to a point where we want to
+00:51:36.620 force a value to and in our case is just
+00:51:39.590 the first and last point but there could
+00:51:41.240 be others for other reasons each one of
+00:51:44.180 those rows will wipe out will replace
+00:51:46.310 all with zeros in other words we're
+00:51:48.410 throwing out the finite difference
+00:51:49.580 equation then we put a 1 in the diagonal
+00:51:53.090 position and then over in that column
+00:51:56.690 vector that's right now all zeros we
+00:51:58.520 call it our B column vector in that same
+00:52:01.160 row we put the value that we want to
+00:52:03.380 force it to and essentially what we've
+00:52:05.720 done is thrown out the finite difference
+00:52:07.040 equation and replaced it with a very
+00:52:08.900 simple equation saying the value at this
+00:52:11.330 point equals whatever it was we stuck
+00:52:13.790 over and B so at a high level that's
+00:52:16.910 what needs to happen well what's a
+00:52:18.830 simple way that we can do this let's
+00:52:20.780 think about that to do this we need to
+00:52:27.440 preliminary terms one we call the force
+00:52:31.190 matrix it is a diagonal matrix so it is
+00:52:34.190 all zeros except the numbers going down
+00:52:37.220 the diagonal and what we do is
+00:52:39.800 everywhere that we want to force a value
+00:52:42.830 we place a 1 in that corresponding
+00:52:45.620 position along the diagonal so for us
+00:52:48.320 solving one dimensional problems where
+00:52:50.390 we only want to force the values at the
+00:52:52.070 first and last points this force matrix
+00:52:54.860 F will be zeros everywhere except a one
+00:52:58.040 in the very upper left position and a
+00:52:59.780 one in the very bottom position but
+00:53:02.180 there might be additional ones there if
+00:53:03.860 there's other spots along the way where
+00:53:05.960 we know the value of F and we want to
+00:53:07.790 force it so we have the force matrix
+00:53:12.940 then we'll have a column vector
+00:53:15.160 containing all zeros except in the
+00:53:17.810 positions of where we want to force a
+00:53:19.760 value we put in the number that we want
+00:53:21.860 to force and these two things are not
+00:53:26.030 difficult to build somewhere we have to
+00:53:28.190 define our boundary values or where we
+00:53:30.050 want to force maybe we even create a
+00:53:31.580 little picture or plot
+00:53:33.450 so these things are sort of already in
+00:53:35.609 the code to begin with and we start
+00:53:37.829 working through examples you'll see that
+00:53:39.450 so these are very fast and fast a build
+00:53:42.359 and come just generically out of our
+00:53:44.970 code so now let's see how we can use
+00:53:47.820 these two things to modify our matrix
+00:53:50.849 equation the AF equals 0 so that we can
+00:53:53.970 incorporate our boundary values the
+00:54:00.119 first thing we want to do is look at the
+00:54:02.640 matrix a and in every row corresponding
+00:54:06.180 to a point on the grid that we want to
+00:54:09.109 force a value we need to fill it with
+00:54:11.550 all zeros so the way we do this we take
+00:54:14.099 our force matrix and we subtract it from
+00:54:16.980 the identity matrix in a way this
+00:54:18.900 inverts
+00:54:19.650 our force matrix and gives us another
+00:54:21.960 matrix that has ones in all the spots
+00:54:24.450 that we don't want to force to 0 if we
+00:54:27.000 pre multiply that by our matrix a we get
+00:54:30.839 a new matrix a where all of those rows
+00:54:33.630 where we're forcing values gets
+00:54:35.040 completely zeroed out so that's all this
+00:54:37.619 step done has zeroed out the rows where
+00:54:39.869 we're forcing the equations we're
+00:54:41.670 throwing out the front of difference
+00:54:42.990 equations at those points then we have
+00:54:48.599 to place a 1 in the diagonal positions
+00:54:51.240 of just the rows that we zeroed out well
+00:54:54.089 that's really easy to do we just add the
+00:54:55.980 force matrix to that previous result and
+00:54:58.470 we get our modified matrix a so that's
+00:55:01.710 one line a very simple MATLAB code that
+00:55:04.560 modifies our matrix a we also have the
+00:55:09.900 column vector B and the way we can do
+00:55:12.720 that is simply pre multiply this this
+00:55:16.550 column vector of values that we want to
+00:55:18.900 force pre multiplied by F and the reason
+00:55:21.630 we pre multiply it by F is just to
+00:55:23.339 ensure that that V is zeros in all of
+00:55:26.010 the other rows that we are not forcing
+00:55:28.230 to any particular value in a way the
+00:55:30.450 step may not be needed if you took care
+00:55:32.490 building V that there are already zeros
+00:55:34.980 in those places but if not you can
+00:55:38.010 insure it this way so in summary we can
+00:55:44.160 incorporate our boundary values or
+00:55:47.210 really force the value of the function
+00:55:48.920 at any combination of points with just
+00:55:51.410 two matrix equations one modifies the
+00:55:55.310 matrix a zeroes out the rows and places
+00:55:57.530 one of the diagonal position and the
+00:55:59.450 other places our boundary values or
+00:56:01.940 forced values into that column vector B
+00:56:04.130 and so that's very easy and also very
+00:56:07.010 fast to do in MATLAB and the F and V
+00:56:10.240 matrices usually come out of the code
+00:56:13.220 just automatically it's not even
+00:56:14.839 something we have to build separately
+00:56:20.260 okay now we have a modified matrix
+00:56:23.359 equation we built a using those
+00:56:25.730 preliminary derivative matrices diagonal
+00:56:28.130 matrices and then we just incorporated
+00:56:30.800 our boundary values we now have a
+00:56:32.300 slightly modified version of our a
+00:56:34.220 matrix and a nonzero B matrix that is
+00:56:38.599 ready to solve and so we bring a over to
+00:56:43.070 the side of B and we write it as a pre
+00:56:45.530 divided B or a inverse times B and
+00:56:48.890 that's how we calculate F so in MATLAB
+00:56:53.510 we do this with a backward division it's
+00:56:56.510 very important here even though we're
+00:56:58.670 writing the inverse of a matrix and so
+00:57:01.730 it seems like we would type our MATLAB
+00:57:04.070 code this way where we invert a and then
+00:57:05.869 multiply by B but it turns out just to
+00:57:09.980 do a inverse times B we don't need the
+00:57:12.740 inverse of a and it's very very
+00:57:14.960 inefficient to calculate that inverse
+00:57:17.119 this matrix could easily be millions of
+00:57:20.000 millions of elements by millions of
+00:57:22.040 elements and calculating that inverse
+00:57:23.869 can take forever in fact you can run out
+00:57:26.990 of memory and we don't want to do that
+00:57:28.609 if we're doing matrix division there's
+00:57:31.099 much more efficient algorithms happening
+00:57:33.230 underneath the hood of MATLAB and we
+00:57:35.180 just simply write this as a backward
+00:57:36.619 division and now it's usually a
+00:57:38.839 relatively fast and simple step now of
+00:57:41.960 all the steps happening in your code
+00:57:43.550 this is the shortest it will also be the
+00:57:45.980 slowest but it is very fast compared to
+00:57:48.560 if we actually calculate the inverse of
+00:57:50.300 a and in fact in computation it's very
+00:57:54.470 rare that we ever actually calculate the
+00:57:57.080 inverse of a matrix so anytime you're
+00:57:59.510 doing that it's very
+00:58:00.530 good to ask yourself do I really need
+00:58:02.750 the inverse of this matrix or really is
+00:58:05.030 it a matrix division happening where I
+00:58:06.830 can use more efficient algorithms so
+00:58:09.500 always be cautious when you're using the
+00:58:11.480 inv command in MATLAB or any language
+00:58:14.360 you probably don't need to do that and
+00:58:16.850 probably shouldn't be using it so let's
+00:58:26.540 do an example and it's hard to tell from
+00:58:29.660 what we've done so far really how simple
+00:58:31.190 this makes your MATLAB code so here's
+00:58:34.460 our differential equation we're gonna
+00:58:35.960 solve this from over the interval 0 to 2
+00:58:38.210 and we've entered some boundary values
+00:58:40.550 here so in MATLAB this is 4 lines of
+00:58:43.160 code to define that we have an X a and
+00:58:44.900 an X be defining the start and stop
+00:58:47.390 points that's the the range of values
+00:58:49.610 that we want to solve this differential
+00:58:51.530 equation and we enter our boundary
+00:58:54.080 values FA and FB that's the function
+00:58:56.330 value at our endpoints so really four
+00:58:59.210 lines of code we essentially defined our
+00:59:01.190 problem the only thing that it hasn't
+00:59:03.350 appeared yet is the specifics of a
+00:59:05.540 differential equation and we'll get to
+00:59:07.340 that real soon so on paper we will start
+00:59:14.240 with our differential equation and go
+00:59:15.890 term by term and convert each term to a
+00:59:20.830 matrix for the matrix form from there we
+00:59:24.860 factor out the F and then put it in
+00:59:28.700 standard form in this case a F equals
+00:59:31.280 zero and we can calculate a very simply
+00:59:34.640 and so this last equation this is the
+00:59:37.160 one that gets converted to code in
+00:59:38.780 MATLAB and this is really where MATLAB
+00:59:41.210 gets the information of what the
+00:59:42.620 differential equation is but if your
+00:59:45.350 differential equation changes we just
+00:59:47.750 change this one line in our code so
+00:59:50.630 that's pretty neat it makes it much more
+00:59:52.130 generic and when I type that in I'd
+00:59:54.200 literally feel like I'm typing in the
+00:59:55.730 differential equation so now
+01:00:02.370 we need to know the resolution of our
+01:00:04.680 grid so we choose some number of points
+01:00:06.750 and just to keep this small and
+01:00:08.910 reasonable for putting on a slide will
+01:00:10.740 choose 11 points that means our Delta X
+01:00:13.800 will have a value of 0.2 so in MATLAB
+01:00:17.220 that's just two lines of code where we
+01:00:18.750 choose how many points and then we
+01:00:20.910 calculate the grid resolution or the
+01:00:23.400 grid spacing and we get a value of 0.2
+01:00:30.050 now we need to build our derivative
+01:00:32.640 matrices and in one of the homeworks in
+01:00:36.090 this class you're going to write this
+01:00:37.470 function f DD er 1d and you'll hand it
+01:00:41.310 how big your grid is this grid
+01:00:44.280 resolution DX and it will output the
+01:00:47.040 square matrix for calculating first
+01:00:48.810 order derivatives and for second order
+01:00:51.120 derivatives and it will have bearish lay
+01:00:53.550 bound read conditions built-in and
+01:00:55.640 building those are quite easy we're just
+01:00:57.900 inserting diagonals so in addition to
+01:01:01.320 the derivative matrices we'll also need
+01:01:03.030 the identity matrix so this is just two
+01:01:05.970 lines of MATLAB code once you have
+01:01:07.740 written FD de r1d that function so we
+01:01:16.500 have those preliminary matrices the
+01:01:19.290 derivative matrices the identity matrix
+01:01:21.060 and now we type in and build a this is
+01:01:25.200 where our differential equation comes in
+01:01:26.880 and for now we make B that's that column
+01:01:30.240 vector of all zeros that we then have to
+01:01:32.820 modify to get our boundary values in but
+01:01:34.920 for now we just set it to zero so at
+01:01:37.200 this point we have ax equals B but B is
+01:01:40.110 all 0 so we have ax equals 0 that's not
+01:01:42.870 solvable yet because we haven't
+01:01:44.280 incorporated our boundary values but
+01:01:47.670 this is pretty neat just two lines of
+01:01:48.990 MATLAB code and we've built this
+01:01:50.400 potentially big bad ugly matrix a very
+01:01:53.310 simply now we incorporate our boundary
+01:01:59.880 values and so we could be using that
+01:02:04.230 fancy way I chose to do it this way the
+01:02:06.600 to show a little bit more intuitively
+01:02:08.040 what's going on and so I'm zeroing out
+01:02:10.800 the first and last rows and a then I
+01:02:14.490 place ones in the
+01:02:16.140 agonal position of the first row and in
+01:02:18.180 the diagonal position of the last row
+01:02:19.860 and then inside B I insert the boundary
+01:02:24.540 values at the first and last point so
+01:02:27.540 four lines of MATLAB code we've modified
+01:02:29.820 our matrix equation to now incorporate
+01:02:32.910 the boundary values and up top I'm
+01:02:35.130 showing what those modified matrices
+01:02:36.840 look like and highlighting those changes
+01:02:39.030 in red we've thrown out the finite
+01:02:41.070 difference equation in the first and
+01:02:42.480 last row which is why we're able to use
+01:02:45.360 d-rush lay bound wreak additions
+01:02:46.830 technically that's not correct to use
+01:02:48.510 for this differential equation but we
+01:02:50.670 can use it for building the derivative
+01:02:52.350 matrices since we're throwing out those
+01:02:54.090 finite difference equations anyway so
+01:02:56.730 the finite difference equations that
+01:02:58.500 we're using dearest leg get thrown out
+01:03:00.660 anyway so it lets us use that simple
+01:03:02.940 easy boundary condition all right so
+01:03:05.280 we've modified our matrix equation we're
+01:03:07.350 ready to solve and that's one line of
+01:03:12.330 code in MATLAB it's a backward division
+01:03:14.160 and now we have numbers for F this was
+01:03:16.740 the function that we were trying to find
+01:03:18.510 to begin with and of course once we have
+01:03:21.690 that we can plot it and we can see a
+01:03:24.090 picture of our solution and maybe
+01:03:26.550 post-process this to learn something
+01:03:28.650 else whatever that might be we're not
+01:03:34.590 done yet
+01:03:35.280 this just means we got our code working
+01:03:37.410 without getting errors it does not yet
+01:03:40.230 tell us that we have an accurate answer
+01:03:42.350 so what we'll do is we will pick some
+01:03:45.510 number of points for our grid and along
+01:03:47.850 this axis is the number of points that
+01:03:49.500 we pick and what I've done these
+01:03:52.560 individual blue lines they show the
+01:03:54.900 solution that we will obtain for a
+01:03:58.080 different number of points on our grid
+01:03:59.700 and we would expect as we increase the
+01:04:02.460 number of points that our answer is
+01:04:04.440 becoming more and more accurate and we
+01:04:07.140 can see this this is called a
+01:04:09.300 convergence study this should be
+01:04:11.220 standard practice and in fact in
+01:04:14.550 commercial software that solves
+01:04:16.290 differential equations with finite
+01:04:17.820 element method find a difference method
+01:04:19.440 this always happens that your device is
+01:04:22.080 always simulated multiple times as its
+01:04:25.260 increasing the resolution and sometimes
+01:04:27.270 it's very intelligent about how
+01:04:28.890 that but it keeps doing that until the
+01:04:31.050 answer doesn't change much anymore or it
+01:04:33.120 follows some below some acceptable
+01:04:35.130 threshold and then we would say that the
+01:04:37.200 algorithm is converged so once you get
+01:04:39.960 your code working you'll keep cranking
+01:04:41.940 up the number of points until the answer
+01:04:44.280 doesn't change much anymore we call that
+01:04:46.710 a convergence study and that should be
+01:04:49.020 standard practice for you after you've
+01:04:52.050 done that and it's converged then you
+01:04:54.990 can say you finally have the answer and
+01:04:56.580 then you can post process and do
+01:04:58.500 everything else that you might want to
+01:04:59.640 do and probably the last thing then once
+01:05:07.740 it's converged plots your results in a
+01:05:10.080 very nice looking professional plot so I
+01:05:13.050 plotted mine here and I'm providing the
+01:05:14.970 MATLAB code for doing that and I think
+01:05:17.610 what you'll find in computation is that
+01:05:19.800 the the code it takes to implement the
+01:05:21.810 method is quite simple and then the code
+01:05:24.030 to do the graphics is really where the
+01:05:26.490 majority of the code is happening and
+01:05:28.260 that's really common the majority of
+01:05:30.630 your code will just be setting up the
+01:05:32.130 problem and then showing the results
+01:05:34.590 maybe post-processing if the algorithm
+01:05:36.180 itself is usually quite simple so now we
+01:05:43.770 post-process the data we learn something
+01:05:45.840 and we're done now I like this slide
+01:05:51.630 because it brings everything together
+01:05:53.820 and shows really how simple this code is
+01:05:56.640 the MATLAB code on the right is
+01:05:58.440 everything for solving a differential
+01:06:01.260 equation and I think that's pretty
+01:06:03.030 incredible and every single line of code
+01:06:05.310 is very easy to read is very simple the
+01:06:08.730 other thing that's neat
+01:06:10.050 where do you see finite differences here
+01:06:12.750 we are actually solving a differential
+01:06:15.090 equation using the fun a difference
+01:06:16.830 method but in fact we don't ever really
+01:06:19.710 explicitly have to think about the
+01:06:21.930 finite differences ever again once we
+01:06:24.390 get this EDD er1 D function built those
+01:06:27.630 are just generic derivative matrices
+01:06:29.430 that we can use to solve any
+01:06:30.780 differential equation so we start with
+01:06:33.480 the differential equation we define some
+01:06:36.180 parameters that start at the start of
+01:06:38.430 the program so the bounds from zero to
+01:06:40.500 two the
+01:06:41.540 values we calculated a grid we built
+01:06:45.350 these preliminary matrices then we built
+01:06:48.230 our matrix equation then we incorporated
+01:06:51.140 the boundary values and then we solved
+01:06:53.360 it and that's it that's really all there
+01:06:55.580 is to the finite difference method

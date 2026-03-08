@@ -1,0 +1,339 @@
+# tactiq.io free youtube transcript
+# MATLAB Session -- Golden Section Search
+# https://www.youtube.com/watch/kvaxt3FyDdA
+
+00:00:00.829 in this bat lab session I am going to
+00:00:04.019 code the golden section search I cheated
+00:00:07.200 a little bit and got a head start and
+00:00:08.880 I've named my my file demo golden
+00:00:12.360 section search and I've initialized
+00:00:16.379 MATLAB by closing all the figure windows
+00:00:19.550 clearing the command window and clearing
+00:00:21.930 all the variables from memory that last
+00:00:23.670 one is though the most important so I
+00:00:27.960 would encourage you if you have not gone
+00:00:29.880 back and listen to the lecture video
+00:00:32.729 please do that because I'm not going to
+00:00:35.489 cover the golden section search from the
+00:00:37.440 very beginning and since some of the
+00:00:38.790 things we do may not make much sense
+00:00:40.530 unless you watch that video so from this
+00:00:43.079 point forward I am assuming that you
+00:00:45.120 have seen that lecture and understand
+00:00:47.160 the method and now you're just
+00:00:48.629 interested in learning how to implement
+00:00:50.460 it in MATLAB so consistent with the
+00:00:53.160 lectures we will start with step one
+00:00:56.039 which was to define our interval and
+00:00:58.739 function so we'll use a handle to a
+00:01:07.799 function that we want to find the
+00:01:10.110 extreme of in this case let's find a
+00:01:12.119 maximum we would never what we're first
+00:01:16.320 writing a optimization algorithm run an
+00:01:19.860 optimization of something we do not know
+00:01:21.659 the answer of so let's pick some pick a
+00:01:24.689 function where we know the maxima and
+00:01:26.610 minima so how about the sine function we
+00:01:29.850 know that that will reach a maximum at
+00:01:31.590 90 degrees or at least every 2 pi
+00:01:34.710 multiple of 90 degrees so we can zoom in
+00:01:39.720 on that 90 degree answer make sure we
+00:01:41.909 get the 90 degrees or PI over 2 as long
+00:01:44.759 as we set an interval that spans that
+00:01:47.159 particular maxima which is the other
+00:01:49.229 part of the step one pick an interval
+00:01:51.299 upper and lower bounds that span a
+00:01:54.630 single maximum so let's pick our lower
+00:01:58.170 limit to be let's say zero point one and
+00:02:02.280 our upper limit of pi so somewhere
+00:02:05.640 between a values of 0.1 and 3.14 we will
+00:02:10.860 reach a maximum
+00:02:11.950 and if everything works that's PI over 2
+00:02:15.030 ok on to step 2 at this point we need to
+00:02:23.680 evaluate the function at those endpoints
+00:02:32.819 running off the screen here maybe there
+00:02:38.260 we go now we don't run off the edge so f
+00:02:41.590 at the lower bound is func
+00:02:44.850 of x at the lower bound f at the upper
+00:02:48.130 bound is fum x upper now to put yourself
+00:02:53.200 at a healthy mind state for optimization
+00:02:56.260 pretend each one of these calls takes an
+00:02:59.049 hour and so we want to do everything we
+00:03:01.780 can so as not to keep calling func we
+00:03:05.500 want to reuse old data or something like
+00:03:07.420 that not we want to call that function
+00:03:09.160 as minimum number of times as possible
+00:03:11.850 so right now we have two calls so our
+00:03:14.500 code takes two hours to run it's not
+00:03:17.380 running that slowly now but get yourself
+00:03:20.109 in that mindset so we'll hit run and
+00:03:22.690 make sure we don't get any errors and
+00:03:24.130 everything looks good so far we can take
+00:03:25.810 a look at our numbers and what we're
+00:03:31.450 looking for is to make sure we don't
+00:03:32.890 have any infinities or NA ends or
+00:03:35.829 something that's the sign of a mistake
+00:03:38.049 in our code somewhere but everything
+00:03:40.329 looks good
+00:03:41.280 okay on to step three so in step three
+00:03:47.680 we want to calculate those two
+00:03:49.780 intermediate points X 1 and X 2 and this
+00:03:52.989 is where we use the magic of the golden
+00:03:55.480 ratio to do this in a proportion where
+00:03:58.060 our new points will fall on top of our
+00:04:00.760 old points and minimize how many times
+00:04:03.340 we have to call our function okay so do
+00:04:09.340 it all capital letters calculate
+00:04:12.420 intermediate points so the first thing
+00:04:16.298 we'll have to do is calculate this
+00:04:17.798 magical golden ratio the way that we are
+00:04:21.159 using it
+00:04:24.460 and then if we run it we should get
+00:04:26.750 something like point six eight or six
+00:04:29.930 one eight okay so we have our golden
+00:04:33.260 ratio now we'll calculate this magic
+00:04:36.380 distance this is the distance that will
+00:04:38.210 come up from the lower bound to get x2
+00:04:40.340 and the distance will come down from the
+00:04:42.950 upper bound to get x1 and that's simply
+00:04:46.280 the golden ratio times the span between
+00:04:50.150 our upper and lower bounds so x1 we come
+00:04:56.810 down a distance D from the upper limit
+00:04:59.360 and for x2 we come up a distance D from
+00:05:04.520 the lower limit because I'm strange I'll
+00:05:07.970 align my equal signs let's run this look
+00:05:13.940 at our values of x1 and x2 okay
+00:05:16.430 they don't look like infinities or na
+00:05:18.830 ends or something crazy so we're good to
+00:05:22.100 move on step four we need to evaluate
+00:05:25.520 the function at those two points at
+00:05:28.220 points x1 and x2
+00:05:39.270 okay so then call it f1 it's Punk at X 1
+00:05:43.020 and F 2 is funk at X 2 will run this
+00:05:48.949 look at f1 and f2 and they're not zeros
+00:05:52.740 or na ends or infinities or anything
+00:05:54.660 like that
+00:05:55.349 so that looks pretty good so so far we
+00:06:00.180 have four calls to that function
+00:06:01.979 function each one takes an hour our code
+00:06:04.380 will now take four hours to run so at
+00:06:08.580 this point we've done all the setup work
+00:06:10.199 we're ready to enter our main loop our
+00:06:12.780 iterative loop that will keep moving the
+00:06:14.819 bounds until it converges on to the
+00:06:17.789 extrema step five main loop so we want
+00:06:28.139 to set up a while loop to do this and we
+00:06:31.380 need to think about the condition well
+00:06:33.389 according to the notes we were looking
+00:06:35.819 at some span of our upper and lower
+00:06:38.370 bounds and when that falls below some
+00:06:40.470 threshold we'll be done so we'll call
+00:06:43.380 that our error and while the error is
+00:06:46.020 greater than some tolerance we'll do
+00:06:48.900 whatever is inside of that wild loop
+00:06:51.860 well let's go ahead and pick some
+00:06:53.909 numbers so at first our error function
+00:06:56.400 should be infinite that ensured we enter
+00:06:58.860 our while loop regardless of our choice
+00:07:01.229 of powers and we'll pick a choice of
+00:07:04.349 powers let's say ten to the minus four
+00:07:08.539 so if we were to run our code now it
+00:07:11.520 would freeze it would get stuck in the
+00:07:13.080 while loop because we're not doing
+00:07:14.520 anything to reevaluate the error but we
+00:07:17.940 could put a break statement in here that
+00:07:20.280 would automatically break out of the
+00:07:21.750 while loop why are we doing that just to
+00:07:23.699 run this one more time make sure that
+00:07:25.590 there's no errors now we're ready to
+00:07:29.729 fill in the loop so we're up to step
+00:07:32.430 five a which is update our interval
+00:07:45.520 so let's think about what we have to do
+00:07:47.680 we've just evaluated the function at
+00:07:50.170 those two intermediate points x1 and x2
+00:07:52.450 to eliminate either the left or the
+00:07:55.090 right part of the interval referring
+00:07:56.680 back to the lecture video we look at
+00:07:58.900 whether we look at f1 and f2 and we look
+00:08:01.450 at which one is greater if f1 is the
+00:08:03.970 greater number we know the extrema has
+00:08:05.890 to be on the left or the maximum is on
+00:08:07.780 the left if F 2 is greater than f1 we
+00:08:10.570 know that our Maxima is to the right and
+00:08:12.550 that tells us how to shift our numbers
+00:08:14.920 around to update our interval so let's
+00:08:17.980 start off and say if F 1 is greater than
+00:08:22.090 F 2 so if F 1 is greater than F 2 that
+00:08:26.050 means we have a maxima on the left side
+00:08:29.200 of our interval and so we'll eliminate
+00:08:31.390 what's on the right side so we're
+00:08:35.470 eliminating what's on the right side of
+00:08:37.270 our interval that means we're moving our
+00:08:39.610 upper limit down to where our second
+00:08:43.510 point was in the previous iteration so
+00:08:45.700 we'll just copy say x2 or it's our Xu
+00:08:49.500 equals x2 and then we need F at our new
+00:08:54.460 upper bound and we could type in funk at
+00:08:57.900 Xu but remember what we're trying to do
+00:09:00.340 we're trying not to call this function
+00:09:02.620 because that could take a long time and
+00:09:04.900 we don't need to call it because fu f 2
+00:09:09.400 I'm sorry is the function evaluated at
+00:09:12.400 x2 so we just copy that information over
+00:09:15.370 and we didn't have to call F call this
+00:09:19.210 part move upper bound to x2
+00:09:26.860 all right now that we've copied the
+00:09:28.960 information from x2 over to the new
+00:09:31.360 upper bound now we can calculate our new
+00:09:34.240 x2 points and in this case we're copying
+00:09:42.730 the information over from x1 to x2 so
+00:09:48.580 when we need our new F to we we can
+00:09:51.880 think of our minds that we want to call
+00:09:53.500 the function again but remember we don't
+00:09:55.060 actually want to call that because it
+00:09:56.440 takes a long time the information we
+00:09:58.900 already need is sitting in f1 so all
+00:10:03.250 we're doing is copying information over
+00:10:05.140 we don't need to call that function
+00:10:07.300 again now finally we need a new x1 and
+00:10:15.790 so this is where we'll have to actually
+00:10:17.830 evaluate a new point we will have to
+00:10:19.900 call func and we're using the golden
+00:10:21.790 ratio to do this
+00:10:23.050 now we've already calculated R which is
+00:10:25.180 the golden ratio but we need to
+00:10:27.400 calculate a new distance D because that
+00:10:30.580 depends on the position of the upper
+00:10:32.110 lower bounds and the upper bound has
+00:10:34.360 changed
+00:10:41.000 so we have a new value of d and that
+00:10:43.490 lets us calculate a new value of x1 now
+00:10:48.139 we just come down from the upper bound
+00:10:49.910 by a distance D then the last thing to
+00:10:56.420 do here is evaluate the function at x1 1
+00:11:04.579 is func
+00:11:05.449 x1 we have to do this because x1 is an
+00:11:08.120 entirely new value where we've never
+00:11:10.699 evaluated the function so we've handled
+00:11:14.750 the case then where we've eliminated the
+00:11:16.759 right-hand side of our interval because
+00:11:19.279 we know the Maxima is on the left side
+00:11:21.319 now we have to handle the other case
+00:11:24.879 else if f 1 is less than F 2 so if F 1
+00:11:31.370 is now the smaller value our Maxima has
+00:11:34.550 to be to the right and so the first
+00:11:38.420 thing we'll need to do is move the lower
+00:11:40.370 bound since the Maxima is on the right
+00:11:43.399 we will move the lower bound up to x1
+00:11:54.120 so we'll simply just copy over the
+00:11:56.010 information and we're not evaluating
+00:12:03.570 funk again because we already evaluated
+00:12:05.430 the function of x1 so we just copied the
+00:12:07.620 information over at this point we can
+00:12:14.100 calculate a new x1 and all we'll do is
+00:12:17.190 copy the information over from x2
+00:12:27.830 and then last a new x2 and this is where
+00:12:32.300 we need to calculate an entirely new
+00:12:34.190 value of x2 and we will have to evaluate
+00:12:36.530 the function there so our magic distance
+00:12:41.330 D times x2 we come up a distance D from
+00:12:52.370 the lower bound so we have a new value
+00:12:54.950 of x2 the last thing to do is evaluate
+00:12:57.830 the function at x2 to funk at x2 so
+00:13:14.390 unless we made a mistake that should be
+00:13:17.240 it
+00:13:17.600 now we have another case to handle here
+00:13:20.690 we're handling if F 1 is greater than F
+00:13:23.360 2 we just handled if F 1 is less than F
+00:13:26.420 2 well what if they are equal that could
+00:13:28.850 happen and so they are equal we'll end
+00:13:33.140 up here if they're equal that means that
+00:13:36.590 F 1 and F 2 are the extremist or x1 next
+00:13:40.010 to those are the extremists so maybe
+00:13:42.500 what we can do is just place the upper
+00:13:44.540 and lower bounds make them the same
+00:13:46.310 number so whatever this error function
+00:13:48.620 is we calculate will be 0 and it will
+00:13:50.660 break out of the loop so let's calculate
+00:13:53.390 the lower limit as just the midpoint
+00:13:56.210 between x1 and x2 and then we'll set the
+00:13:59.930 upper bound equal to the lower bound
+00:14:01.970 that will force whatever error function
+00:14:04.760 we calculate to be 0 and it will break
+00:14:07.250 out of our while loop okay so that whole
+00:14:11.300 giant step that updated our interval
+00:14:14.270 evaluated the function the very last
+00:14:16.670 thing we need to do here is calculate
+00:14:19.700 this error this measure of how separated
+00:14:22.970 our upper lower bounds are and let's
+00:14:25.940 just go ahead and do that
+00:14:30.230 be call this determine if converged
+00:14:36.820 there's really a couple things that we
+00:14:39.170 can do here we can calculate the
+00:14:40.910 relative error so this is the relative
+00:14:54.380 error it calculates the span from the
+00:14:57.140 upper lower bound relative to the center
+00:14:59.930 position of the lower bound and so when
+00:15:03.800 we do that we interpret interpret this
+00:15:07.460 tolerance more as a percent error that
+00:15:10.370 we can tolerate there's another way we
+00:15:13.280 could calculate this error function we
+00:15:18.650 could calculate the error function
+00:15:19.910 simply as the span that works too and in
+00:15:24.170 this case we interpret the tolerance as
+00:15:26.800 the number of digits of precision that
+00:15:29.840 we want in this case would be accurate
+00:15:31.670 out to the third or fourth digit of
+00:15:33.470 precision either way works it just
+00:15:35.750 depends how you want to control your
+00:15:37.550 optimization
+00:15:38.600 I'll stick with relative error and not
+00:15:40.580 use that one at this point we can run
+00:15:44.120 this again we had to type a lot of code
+00:15:45.740 because it was in a while loop and we
+00:15:47.960 can see if this works or not and one
+00:15:52.700 thing I didn't like is it's constantly
+00:15:54.080 outputting it x2 we forgot a semicolon
+00:15:56.480 somewhere go up and we search for that
+00:15:59.660 Yeah right here
+00:16:00.530 I don't like the output stuff unless I'm
+00:16:03.650 troubleshooting ok
+00:16:08.240 so we'll come out of the loop and the
+00:16:09.829 very last thing we need to do is come up
+00:16:13.699 with the final answer of what the where
+00:16:16.220 the extreme it is call that step six
+00:16:22.929 final answer and what I'll do is just
+00:16:26.959 average x1 and x2
+00:16:29.980 make it the midpoint and I'll leave the
+00:16:33.559 semicolon off so it reports that answer
+00:16:35.660 and if everything's working that should
+00:16:37.999 be PI over two and we can check to make
+00:16:42.589 sure and we have converged to the
+00:16:45.410 correct answer at this point if we had a
+00:16:48.259 function we didn't know the answer to
+00:16:50.209 now would be a good time to do that now
+00:16:52.910 that we can confirm that this has worked
+00:16:55.009 and I'll finish by saying there's one
+00:16:57.110 other way here that we can finalize this
+00:16:59.629 answer that might be a good thing to do
+00:17:01.220 we actually have four different points
+00:17:03.949 and we can fit that to some kind of
+00:17:06.109 polynomial or some kind of curve that
+00:17:08.329 best interpolates or whatever is we're
+00:17:12.619 trying to optimize and then analytically
+00:17:15.260 find where the maxima is after we've
+00:17:17.720 done a curve fit so an easy thing to do
+00:17:19.730 is fit it to a polynomial and
+00:17:21.159 analytically find the maxima of that if
+00:17:24.709 we say the tight enough tolerance that
+00:17:26.299 that won't help too much and I'm just
+00:17:29.390 averaging x1 and x2 and I think that's
+00:17:31.309 fine to do ok so that's it for this
+00:17:34.940 video and then the next one will add
+00:17:37.010 graphics to this so we can visualize the
+00:17:39.440 algorithm working what we might even do
+00:17:41.659 is I'll hide a mistake in the code so it
+00:17:44.029 doesn't work and we can visualize it and
+00:17:46.640 then figure out why it doesn't work
+00:17:48.230 through the visualization okay I hope
+00:17:51.500 this helped

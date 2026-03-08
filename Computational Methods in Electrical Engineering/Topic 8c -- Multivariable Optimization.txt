@@ -1,0 +1,801 @@
+# tactiq.io free youtube transcript
+# Topic 8c -- Multivariable Optimization
+# https://www.youtube.com/watch/ep4C_R7dUMs
+
+00:00:00.630 topic 8c multivariable optimization so
+00:00:06.310 in this lecture we're going to delve
+00:00:08.589 into some new mathematics that involve
+00:00:10.809 some pretty sophisticated vector
+00:00:12.639 calculus and honestly I think that's
+00:00:15.190 beyond the scope of this class so we
+00:00:18.190 won't go too deep into it but I will
+00:00:20.860 mention some stuff and do my best to
+00:00:23.230 explain it more just to give you a taste
+00:00:25.450 of what it's like the other thing you'll
+00:00:27.940 notice is that you'll see this multi
+00:00:29.650 variable optimization very often is
+00:00:32.589 based on the 1d optimization so let's go
+00:00:36.399 ahead and dive into this we will discuss
+00:00:41.440 the mathematical preliminaries I want to
+00:00:43.749 talk in general about multivariable
+00:00:45.940 functions talk about scalar vector
+00:00:47.890 fields gradients and a new concept
+00:00:50.949 called a Hessian and then I want to
+00:00:53.319 revise the derivative test when we have
+00:00:55.510 multiple variables things change a
+00:00:57.879 little bit
+00:00:58.510 then the methods we'll discuss will talk
+00:01:00.729 about Pals method gradients and Hessian
+00:01:03.309 steepest ascent method and then finally
+00:01:05.860 we'll look at Newton's method for
+00:01:07.570 multiple variables
+00:01:09.450 okay let's dive right into this our
+00:01:14.680 mathematical preliminaries
+00:01:19.649 so multivariable functions this could be
+00:01:23.079 as simple as instead of just having X we
+00:01:25.420 have X and y or x and y and z or x and y
+00:01:29.680 and z and alpha and beta and gamma and
+00:01:32.409 so on so rather than write all these
+00:01:34.990 different variables we'll just write x 1
+00:01:37.299 X 2 X 3 and that will generically
+00:01:41.200 represent multiple variables so we can
+00:01:44.469 write this simply as f with an X bold in
+00:01:47.950 this input argument and that X bold is a
+00:01:51.460 column vector of all the different
+00:01:53.350 variables that f is actually a function
+00:01:56.049 of writing it this way showing all these
+00:01:59.049 different variables well that's nice if
+00:02:00.609 you only have two or three but suppose
+00:02:02.890 you actually have 10 or 20 and that can
+00:02:05.740 happen we don't want to write it that
+00:02:07.390 way so just F with a bold X is the way
+00:02:10.030 we prefer to write that for
+00:02:11.860 multivariable
+00:02:12.800 as our equations are more compact and I
+00:02:15.320 think they become a little bit easier to
+00:02:16.820 understand so just as an example suppose
+00:02:22.400 we have just a two variable function we
+00:02:25.910 could write it as f Bold X and inside
+00:02:28.310 this bold X is just X and Y so this
+00:02:32.090 first equation is how we would normally
+00:02:34.160 write it and then down here is in our
+00:02:36.440 new notation another example let's break
+00:02:41.150 away from the XYZ thing and we have a
+00:02:43.730 Gaussian so it has an amplitude it has a
+00:02:46.340 standard deviation it has a value of x
+00:02:48.800 and we can put all of these again in
+00:02:51.230 this bold X column vector and just write
+00:02:54.170 it as f with the bold X column vector so
+00:02:58.750 let's get comfortable with that notation
+00:03:01.310 because we will be using it we'll also
+00:03:08.510 be talking about vectors because we'll
+00:03:10.820 be calculating gradients and moving in
+00:03:13.550 the directions of gradients so talking
+00:03:15.920 about scalar and vector fields is useful
+00:03:17.840 so a scalar field by field this means
+00:03:21.230 it's a function and so here I'm just
+00:03:23.150 showing something that's a function of x
+00:03:24.770 and y so it's a planar picture and if
+00:03:27.620 it's scalar that really just means we
+00:03:29.510 have a single number associated with
+00:03:32.060 every point in that function just a
+00:03:34.760 single number
+00:03:35.420 think of it as like cloud density and so
+00:03:39.800 there's not a vector phenomenon it's
+00:03:41.090 just the density of the water droplets
+00:03:42.860 as a function of position around a cloud
+00:03:45.370 now that's different than a vector field
+00:03:48.489 field again means it's a function of
+00:03:51.200 multiple variables usually but at each
+00:03:54.739 point there's two pieces of information
+00:03:56.660 now it has what the scalar field had and
+00:04:00.980 that will be the magnitude of a vector
+00:04:02.920 but there's also a direction back to the
+00:04:07.610 cloud example maybe rather than the
+00:04:09.950 density maybe we're looking at the
+00:04:12.140 velocity of the water droplets inside
+00:04:14.480 the cloud so different parts of the
+00:04:16.668 cloud as it's moving and bubbling and
+00:04:18.890 whatever clouds do each of those water
+00:04:22.039 droplets are moving in different
+00:04:23.120 directions and they have a different
+00:04:24.620 speed
+00:04:26.240 so the speed would be the magnitude and
+00:04:28.970 the direction they're moving will be the
+00:04:30.470 direction of the vector and so we
+00:04:33.410 usually draw vector fields as just a
+00:04:35.180 whole bunch of arrows where the length
+00:04:36.949 of the arrow conveys the magnitude and
+00:04:39.080 of course the direction conveys
+00:04:40.910 direction so that's the difference
+00:04:43.069 between scalar and vector fields I so
+00:04:49.729 contour lines so we form iso contour
+00:04:53.569 lines in scalar functions and we draw
+00:04:56.630 those lines along where that scalar
+00:04:59.270 function has the same value so think of
+00:05:03.199 this as a topological map or it's
+00:05:05.900 mapping altitude of the terrain if you
+00:05:08.810 were to walk along one of those iso
+00:05:10.280 contour lines you would not be going up
+00:05:12.710 or down you would stay at the same
+00:05:14.690 elevation then we can think about the
+00:05:22.280 gradient and we take the gradient of a
+00:05:25.550 scalar field so here we start with some
+00:05:28.460 scalar field and we calculate the
+00:05:30.770 gradient of it when we calculate the
+00:05:35.479 gradient of a scalar field we get a
+00:05:38.840 vector field and that vector is always
+00:05:41.930 pointing uphill now it's not a smart map
+00:05:47.150 it's not like it looks macroscopically
+00:05:49.520 over everything figures out where the
+00:05:51.349 maximum value is and point in that
+00:05:53.780 direction boy that would be useful if we
+00:05:55.699 had that but we don't going back to the
+00:05:58.430 elevation analogy if we calculate the
+00:06:00.409 gradient it's like you're staring
+00:06:01.729 straight down at your feet and you're
+00:06:03.770 determining which way is uphill just by
+00:06:06.020 looking at your feet so the gradient is
+00:06:08.479 a very local assessment of which way is
+00:06:12.289 up hill but the arrows point uphill but
+00:06:15.110 very locally and so to point out an
+00:06:17.539 example let's say we're standing right
+00:06:19.639 here where my little laser pointer is
+00:06:21.500 the top of the peak is over here but
+00:06:24.770 notice the arrows are not pointing in
+00:06:27.889 that direction they're just pointing
+00:06:29.719 very locally where my feet are of what's
+00:06:33.020 the steepest way to go uphill now we
+00:06:35.419 always hope that that is in the general
+00:06:38.000 der
+00:06:38.330 action of the top top of the mountain
+00:06:41.300 but not necessarily okay so the gradient
+00:06:45.259 of a scalar field gives you a vector
+00:06:47.750 field that points locally uphill we can
+00:06:55.909 then also draw our ISO contour lines on
+00:06:59.270 this so we're looking at a bunch of
+00:07:00.500 stuff at the same time the red in the
+00:07:02.270 background is the original scalar field
+00:07:03.979 the arrows are the vector field which is
+00:07:07.129 the gradient of that scalar field and
+00:07:09.409 then the ISO contour lines of the scalar
+00:07:11.990 field so one thing we'll notice here is
+00:07:15.110 those arrows the gradient is always
+00:07:18.500 perpendicular to those ISO contour lines
+00:07:21.440 that makes sense in the direction of
+00:07:23.930 those lines the elevation is not
+00:07:25.430 changing at all so it makes a little bit
+00:07:27.500 of sense that the maximum or the
+00:07:29.120 direction of maximum change would be
+00:07:31.430 perpendicular to that so all this stuff
+00:07:34.969 is related and useful when we're
+00:07:36.830 thinking about optimizations because
+00:07:39.139 when we're optimizing we're always going
+00:07:40.550 up and down hills to try to get to the
+00:07:42.500 peaks or the valleys so when we have
+00:07:50.569 multiple variables we have a
+00:07:52.219 multi-dimensional gradient and so for
+00:07:55.159 XYZ this is probably an equation that
+00:07:57.710 you've seen before this comes from
+00:07:59.270 vector calculus and essentially the the
+00:08:02.539 X component of the gradient we take that
+00:08:04.940 function take the partial derivative
+00:08:07.339 with respect to X and we point that far
+00:08:09.770 in the X direction then we take the
+00:08:11.900 partial derivative with respect to Y and
+00:08:14.360 we point that far in the y direction
+00:08:15.940 then take the partial derivative with
+00:08:18.440 respect to Z and we point that far in
+00:08:20.839 the Z direction and all components
+00:08:22.190 together that's pointing in the
+00:08:24.800 direction of maximum change now when we
+00:08:30.259 have many multiple barrels maybe we have
+00:08:32.599 10 becomes very difficult to imagine a
+00:08:35.750 10 dimensional space and so at some
+00:08:37.640 point we really just stop trying to
+00:08:39.349 picture that and we just go with the
+00:08:41.839 math and so we're using this bold X
+00:08:43.698 which contains all of our independent
+00:08:45.949 variables but it's essentially the same
+00:08:48.170 thing we're taking the partial of all
+00:08:49.790 those independent
+00:08:50.730 respect to x1 and then the partial with
+00:08:54.000 respect to X 2 and so on we go through
+00:08:56.339 all of the independent variables so
+00:08:59.699 that's our gradient in n dimensions so
+00:09:07.769 let's just review some of the properties
+00:09:09.449 of the gradient first it only makes
+00:09:12.089 sense to calculate the gradient of a
+00:09:14.760 scalar field now I've put a little
+00:09:16.949 asterisk note here and this is not
+00:09:18.930 something we're going to talk about in
+00:09:20.279 this class but in fact we can calculate
+00:09:23.040 the gradient of a vector field and it
+00:09:25.829 turns out we get a tensor it's called
+00:09:27.600 the Jacobian and this comes up when we
+00:09:29.760 do coordinate transforms and not
+00:09:32.100 something I want to get into but I guess
+00:09:34.230 I just felt weird saying that you can't
+00:09:36.149 take the gradient of a vector field when
+00:09:38.130 I know that we actually can so for this
+00:09:40.500 class let's just go ahead and say that
+00:09:41.970 it only makes sense to calculate the
+00:09:44.160 gradient of a scalar field when we do
+00:09:47.850 that the gradient points in the
+00:09:50.070 direction of the maximum rate of change
+00:09:52.110 in F this means it's pointing uphill but
+00:09:55.800 locally uphill we also notice that the
+00:09:59.519 gradient is always perpendicular to
+00:10:01.889 those ISO contours or the constant F
+00:10:04.529 surfaces and we also notice that the
+00:10:08.550 gradient always points towards the big
+00:10:11.010 positive numbers in the scalar field so
+00:10:15.269 it always wants to go up hill so those
+00:10:18.510 are the properties of the gradient and
+00:10:20.010 we're going to use this to try to seek
+00:10:22.589 out the maxima or minima in multiple
+00:10:25.620 dimensions now a lot of times when we're
+00:10:33.990 doing optimization we don't have access
+00:10:36.569 to closed form equations in fact I would
+00:10:39.149 call that sort of rare we're much more
+00:10:42.000 often processing numerical calculations
+00:10:45.240 that come about due to simulations or
+00:10:46.980 something else like that so if you don't
+00:10:49.230 have closed form equations how do we
+00:10:51.029 calculate these derivatives well we can
+00:10:53.399 use finite differences and we just
+00:10:54.959 finished that so we'll be very good at
+00:10:56.519 that we can evaluate the function of two
+00:10:59.010 adjacent points divided by the spacing
+00:11:01.589 and now we've estimated the durian
+00:11:04.260 in that direction x1 and we can do this
+00:11:07.860 for all of our independent variables now
+00:11:10.830 if it takes a while to evaluate F this
+00:11:13.800 can be a very expensive computation to
+00:11:16.320 calculate the gradient but we don't
+00:11:19.140 really have another choice
+00:11:20.250 so other than when we develop our
+00:11:23.340 optimization algorithm pay a lot of
+00:11:26.460 tension to minimizing the number of
+00:11:28.770 iterations now let's think about our
+00:11:36.000 derivative tests in multiple dimensions
+00:11:38.570 so when we did 1d optimization when the
+00:11:42.390 first derivative was 0 that was an
+00:11:44.370 extrema and then we could look at the
+00:11:46.530 second derivative and figure out whether
+00:11:48.060 we had a minimum or a maximum but let's
+00:11:50.940 say we have two variables now X and y
+00:11:53.340 and let's say both of the second order
+00:11:56.040 derivatives are less than 0 does that
+00:11:57.750 mean we have a minimum and in fact not
+00:12:03.120 necessarily and so the graph that I'm
+00:12:06.870 showing here borrowed from the textbook
+00:12:09.380 think of that as being shaped like the
+00:12:12.000 saddle on a horse and so in fact they
+00:12:16.080 use that analogy so much if we were to
+00:12:18.240 look at the very center of the saddle
+00:12:20.010 right where your your butt would sit
+00:12:21.450 down we call that the saddle point and
+00:12:23.910 if we're sitting at the saddle point if
+00:12:26.310 we took those two partial derivatives
+00:12:29.100 both would be less than 0 however we can
+00:12:31.980 look at that and know that we're not at
+00:12:33.810 an extrema so we could move either of
+00:12:37.620 these directions and get to a lower
+00:12:39.750 point or move in this direction and get
+00:12:42.510 to a higher point so that saddle point
+00:12:45.270 even though both of the partial terms
+00:12:47.040 are less than 0 does not mean we're
+00:12:48.600 adding extrema so we have to throw out
+00:12:51.780 those derivative tests and think of what
+00:12:55.020 to do differently and that's where this
+00:13:00.180 concept of the Hessian comes in so we
+00:13:03.300 can think of the Hessian as our revised
+00:13:05.520 way of exploring curvature in
+00:13:08.420 multivariable functions and we can use
+00:13:11.730 this to actually determine if something
+00:13:13.110 has a maximum or a minimum
+00:13:14.880 so the Hessian has this crazy definition
+00:13:18.180 and we're waiting just ahead of F so it
+00:13:21.630 helped make this a little more sense
+00:13:22.889 here's the Hessian just for a
+00:13:24.480 two-dimensional function and that could
+00:13:27.269 make a little bit more sense so the
+00:13:28.529 determinant of the hessian is simply
+00:13:31.350 these two the product of these two terms
+00:13:33.420 minus the product of those two terms so
+00:13:37.560 that's our determinant and the hessian
+00:13:40.110 is simply our multivariable version of
+00:13:43.259 exploring maximum or minimum it's our
+00:13:46.459 multivariable version of curvature if
+00:13:48.899 you will so here's our revised
+00:13:54.480 derivative tests if the determinant of
+00:13:58.079 our Hessian is greater than zero and
+00:14:00.920 then we also look at one of the partial
+00:14:03.870 derivatives I'm showing the partial with
+00:14:05.310 respect to X here but that could be
+00:14:06.569 partial with respect to Y so if the
+00:14:09.240 determinant the Hessian is greater than
+00:14:11.100 zero and the second order partial is
+00:14:13.500 less than zero
+00:14:14.730 we're talking about having a local
+00:14:16.560 minimum similarly if the determinant is
+00:14:22.680 greater than zero determinant of the
+00:14:24.360 hessian is greater than zero and the
+00:14:27.089 second order partial derivative of
+00:14:28.889 either X or Y is greater than zero we
+00:14:31.709 have a local maximum if the determinant
+00:14:37.529 of the hessian is less than zero then
+00:14:40.230 we're at a saddle point and it's not a
+00:14:42.180 local minimum or maximum
+00:14:43.529 so our extrema occurs where the
+00:14:46.230 determinant of the hessian is greater
+00:14:48.329 than zero
+00:14:49.610 once we know we're at an extreme but
+00:14:51.810 then we can go back to our second
+00:14:53.939 derivative test and determine whether
+00:14:55.319 it's a minimum or maximum so that's how
+00:14:57.959 we use the Hessian to do this and this
+00:15:01.170 will come up again when we talk about
+00:15:02.610 the Newton's method for multiple
+00:15:04.740 variables there's also the concept of a
+00:15:11.660 conjugate direction so let's say we have
+00:15:15.209 a two dimensional function and what I've
+00:15:17.339 done is draw the iso contour so we can
+00:15:19.740 sort of visualize moving uphill to the
+00:15:22.230 maximum but we don't know where that
+00:15:23.519 maximum is and we might take two guesses
+00:15:27.480 maxximum over here so we'll take two
+00:15:31.019 guesses as to where the maximum could be
+00:15:33.029 and we'll pick a direction and the
+00:15:35.310 direction is shown by these red lines so
+00:15:38.730 what we can do is starting with this
+00:15:40.350 guess we can perform a one dimensional
+00:15:42.870 optimization in that direction and when
+00:15:45.810 we get to a local extrema we end up here
+00:15:48.089 at x1 easiest to visualize it as a
+00:15:50.790 Maxima I guess then we go to our second
+00:15:54.630 guess do a 1d optimization in that same
+00:15:57.300 direction and we end up at x2 then if we
+00:16:01.350 draw a line that passes through x1 and
+00:16:03.990 x2 it turns out that will pass through
+00:16:07.110 the extrema and if this is a quadratic
+00:16:09.630 that would be exact now we rarely have a
+00:16:13.440 perfect quadratic so it will rarely go
+00:16:15.600 exactly through that direction but it
+00:16:18.149 gives you a very good estimate of that
+00:16:19.889 and that direction that we construct is
+00:16:22.380 called a conjugate direction there's
+00:16:28.079 another way we could only have one guess
+00:16:30.440 XA and we pick two directions and we
+00:16:34.529 perform a one dimensional optimization
+00:16:36.029 in the first direction a one dimensional
+00:16:38.970 optimization in the second direction and
+00:16:40.800 then if we find those two extrema the
+00:16:43.290 line passing through those two points is
+00:16:45.569 also our conjugate direction so there's
+00:16:48.720 multiple ways we can come up with this
+00:16:50.250 conjugate direction and it's really neat
+00:16:52.319 though that it's a really good way to
+00:16:54.420 point to where the local Maxima could be
+00:16:56.730 and for a quadratic it's exact rare we
+00:17:00.420 have an exact quadratic but normally the
+00:17:02.790 closer we get to an extrema the more
+00:17:05.250 quadratic it looks it's only when we're
+00:17:07.980 far away that that doesn't work so well
+00:17:14.179 okay boy went through a lot of stuff so
+00:17:16.829 onto our first search and this is
+00:17:21.179 probably the simplest and most obvious
+00:17:23.099 but then of course it's the least
+00:17:24.780 efficient so let's talk about the
+00:17:26.880 univariate search
+00:17:32.040 so in the univariate search what we do
+00:17:34.380 is we optimize one variable at a time so
+00:17:38.250 for example we might have a starting
+00:17:39.870 point and we optimize in the direction
+00:17:42.180 of x2 then we move on to x1 optimizing
+00:17:46.800 the direction of x1 that optimizing the
+00:17:49.440 direction of X to the next one and so on
+00:17:51.510 and we march our way there so if we have
+00:17:54.300 multiple variables let's call ABC and D
+00:17:57.000 the first thing we'll do is do a 1d
+00:17:59.700 optimization just adjusting a till we
+00:18:02.730 get an extrema then do a 1d optimization
+00:18:05.970 on B to get to an extrema then C then D
+00:18:09.840 and then back to and we just keep
+00:18:11.220 iterating through this and sort of in
+00:18:13.800 this stair-stepping manner we approach
+00:18:16.800 the extrema
+00:18:18.390 so that's probably the simplest and most
+00:18:20.490 most obvious way it's definitely not the
+00:18:23.400 fastest because we're not using things
+00:18:25.590 like conjugate directions and stuff like
+00:18:27.630 that it's very robust very simple it
+00:18:30.420 does work but not the most efficient
+00:18:38.120 there is something that folks call
+00:18:40.500 sometimes called the pattern direction
+00:18:41.940 so if we're doing this univariate search
+00:18:44.490 we can start to see an overall trend and
+00:18:47.850 in fact if we started up at some point
+00:18:50.970 and we look at the progression of points
+00:18:53.930 they're pointing towards the maximum and
+00:18:56.730 if we look at this second point and the
+00:18:59.130 fourth and the sixth they're pointing
+00:19:01.650 towards that maxima so those are called
+00:19:03.750 pattern directions and very often you
+00:19:05.670 can start and do this or a few
+00:19:07.320 iterations develop the overall direction
+00:19:10.080 and then maybe make a larger step in
+00:19:12.240 that direction and there's other ways we
+00:19:14.040 can use the pattern direction okay onto
+00:19:21.180 Pals method this is a very efficient
+00:19:24.270 method but I think you'll also see it's
+00:19:26.460 a little strange and this involves
+00:19:28.950 concepts of conjugate directions and for
+00:19:32.930 curves that are exactly quadratic this
+00:19:35.970 actually converges in just two
+00:19:37.590 iterations if not it may take a few more
+00:19:43.150 okay so we start off with a guess and
+00:19:49.090 we'll pick two different directions we
+00:19:54.910 will then do a one dimensional
+00:19:57.370 optimization along that first direction
+00:20:00.430 so that takes us from our first guess to
+00:20:03.910 this revised point x1 from there we'll
+00:20:09.640 do a 1d optimization in our second
+00:20:12.220 direction and that brings us to an h2
+00:20:18.780 well the line connecting x0 to x2 is a
+00:20:24.730 conjugate direction and we're not exact
+00:20:27.460 right here so but we can do now another
+00:20:30.760 optimization in that direction h3 so we
+00:20:36.640 do a 1d optimization and we're starting
+00:20:38.440 to get closer at this point we sort of
+00:20:41.290 pretend that x3 is our original x1 and
+00:20:44.290 we do everything all over again
+00:20:47.280 so we'll do a 1d optimization in the
+00:20:50.530 direction of h2 and this gives us our x4
+00:20:56.700 we'll then use that previous conjugate
+00:20:59.620 direction do another one D optimization
+00:21:02.650 along that and we get an x5 and then
+00:21:07.140 between x3 and x5 that line is another
+00:21:10.870 conjugate direction and if this were a
+00:21:13.540 quadratic
+00:21:14.260 we'd be exactly on the maxima if it's
+00:21:16.900 not a quadratic which is something close
+00:21:18.550 we'd be really close and you can imagine
+00:21:20.980 repeating this ok
+00:21:31.650 so here's the summary of the algorithm
+00:21:33.600 and nine steps we pick a starting point
+00:21:36.300 in two different directions then we
+00:21:39.600 start our starting point and we do a one
+00:21:41.610 dimensional optimization in that first
+00:21:43.860 direction and we find extrema x1 then we
+00:21:49.350 do another one D optimization starting
+00:21:51.660 at x1 in our second direction so we find
+00:21:54.840 the extreme at x2 then we define a third
+00:21:58.890 direction which is the line connecting
+00:22:01.680 x0 to x2 you can think of that as our
+00:22:04.920 conjugate direction and that takes us
+00:22:07.200 hopefully to closer towards the maxima
+00:22:09.390 and then we sort of do this all over
+00:22:11.280 again
+00:22:11.790 slight change but starting at x2 we do a
+00:22:14.190 1d optimization in the conjugate
+00:22:16.320 direction then at x2 we do a 1d
+00:22:20.130 optimization in that second direction to
+00:22:23.400 find an X for then from x4 we do a 1d
+00:22:27.630 optimization along the third direction
+00:22:29.510 to find an x5 and then we have our
+00:22:33.390 conjugate direction connecting X 3 to X
+00:22:35.670 5 and then we do a 1d optimization along
+00:22:40.110 that conjugate direction to find the
+00:22:41.820 extrema
+00:22:42.600 that's Powell's method very fast very
+00:22:46.080 efficient a little bit weird though
+00:22:48.390 maybe so because this is exactly for
+00:22:57.179 quadratics we call it quadratically
+00:22:59.100 convergent and it'll converge in a
+00:23:02.520 finite number of iterations to to an
+00:23:04.500 exact value and most functions and most
+00:23:08.250 of times you're running optimizations it
+00:23:09.809 won't be an exact quadratic but normally
+00:23:12.570 the closer you get to one of those
+00:23:14.370 extrema the more quadratic it looks and
+00:23:17.280 in fact the better these algorithms will
+00:23:18.870 work so these algorithms tend to go
+00:23:21.450 unstable when they're started far away
+00:23:24.720 from the extrema so it's really up to
+00:23:27.210 you to try to get a very good guess to
+00:23:29.490 start with because these algorithms will
+00:23:31.350 work better if you have that good guess
+00:23:39.360 okay our next method the steepest ascent
+00:23:41.700 method so let's say we have two
+00:23:47.670 variables x and y and i plotted our
+00:23:50.400 function and also plotted the iso
+00:23:51.960 contour lines how do we find the maximum
+00:23:55.080 well visually we know it's right here
+00:23:57.300 but you know mathematically we don't
+00:24:00.390 know that so we have to start somewhere
+00:24:01.920 close to that and let the algorithm
+00:24:04.140 refine this so we make a first guess and
+00:24:08.640 we'll call that point x1 and so if you
+00:24:11.820 saw it it appeared out here so we have a
+00:24:14.760 starting point then we'll calculate the
+00:24:18.870 gradient so remember what the gradient
+00:24:20.820 does is it points locally uphill so if
+00:24:25.650 I'm sitting at this point locally this
+00:24:28.050 is the direction of uphill that's not
+00:24:29.760 the right direction we really should be
+00:24:31.620 going this way but we don't have
+00:24:33.420 information about where the extrema is
+00:24:35.220 all we can do is move in the direction
+00:24:37.290 of the gradient so let's do that let's
+00:24:40.050 move in the direction of the gradient
+00:24:44.120 question is okay we can move in that
+00:24:46.950 direction how far do we go so we can
+00:24:52.710 write a general expression we can say
+00:24:54.990 our second point is our first point plus
+00:24:58.820 some constant multiplying the gradient
+00:25:01.560 so that means we're going to move in the
+00:25:03.000 direction of the gradient scaled by some
+00:25:06.000 constant alpha and we can use that alpha
+00:25:08.850 to slow down our steps we're making
+00:25:10.800 smaller steps or make those steps bigger
+00:25:13.310 bigger steps you'll see we get there
+00:25:15.870 faster but they can go unstable
+00:25:17.910 smaller steps it's more stable but we
+00:25:21.000 converge slower so where's the magic
+00:25:22.860 number for alpha there's no way we can
+00:25:25.620 answer that what I can say is what I'm
+00:25:27.510 trying to smething on a new function for
+00:25:29.280 the first time I'll pick a value of
+00:25:31.470 something like point 1 but that's no
+00:25:33.810 guarantee that that value is going to
+00:25:35.220 work for you and you'll see that well I
+00:25:37.890 have some animation stuff that will
+00:25:39.570 illustrate the effect of alpha
+00:25:43.659 okay so we've moved some distance we
+00:25:47.599 calculate the gradient again now we have
+00:25:50.359 a new direction to go in and it looks a
+00:25:52.309 little bit better it's pointing a little
+00:25:53.869 bit more towards the Maxima and so we
+00:25:57.950 advance again and this will repeat we'll
+00:26:00.739 calculate the gradient at the new point
+00:26:02.509 move in the direction of the gradient
+00:26:04.809 recalculate the gradient at the new
+00:26:06.559 point move in the direction and just
+00:26:08.299 keep doing this now something weird kind
+00:26:12.559 of happened the gradient if we're at a
+00:26:16.009 very very steep point will be huge and
+00:26:19.460 so even if we picked a smaller value for
+00:26:22.309 a our new point could be way past where
+00:26:25.609 that maximum is and even worse maybe
+00:26:28.429 even put us on a different Maxima that's
+00:26:31.009 not as big as this one and so our
+00:26:33.440 algorithm has jumped extrema and we
+00:26:35.989 could end up finding the wrong one so we
+00:26:39.469 want to make alpha small enough so this
+00:26:41.330 doesn't happen we don't want to go
+00:26:42.919 unstable we don't want to skip over our
+00:26:45.830 our function all together so the choice
+00:26:49.519 of alpha is important so here's the
+00:26:56.419 algorithm and step one we pick a
+00:26:59.509 starting point and hopefully we get a
+00:27:01.820 pretty good guess of the starting point
+00:27:03.379 the better your guess the better this
+00:27:05.570 algorithm will work then we calculate
+00:27:08.869 the gradient at that starting point at
+00:27:11.779 this point we can check if that gradient
+00:27:13.669 is zero within some tolerance that means
+00:27:17.960 we're at an extreme and we're done
+00:27:19.820 if not we want to move in the direction
+00:27:22.279 of that gradient but scaled by this
+00:27:25.070 variable alpha which we'll talk more
+00:27:27.200 about in a little bit another little
+00:27:30.979 tweak to this algorithm rather than move
+00:27:33.739 in these small increments in the
+00:27:35.330 direction of the gradient what if you
+00:27:37.219 did a 1 dimensional optimization in the
+00:27:40.099 direction of that gradient and in fact
+00:27:42.469 we can improve the steep ascent method
+00:27:44.539 that way then we go back so we move our
+00:27:48.169 point recalculate gradient move in that
+00:27:50.960 direction recalculate the gradient and
+00:27:52.729 do this over and over and over
+00:27:54.879 that's the steepest descent meant
+00:28:00.490 so here's an animation of this
+00:28:03.110 optimization choosing alpha equals 1 and
+00:28:06.950 what we can see is that it's going
+00:28:09.650 unstable and in fact this never would
+00:28:13.550 converge it's hopping back and forth
+00:28:15.650 because the steps are just too big and
+00:28:18.250 if you're plotting your results if
+00:28:20.690 you're visualizing results it's pretty
+00:28:22.430 too easy to see that this is happening
+00:28:24.320 because it's jumping all over the place
+00:28:25.820 as instead of just not one nice smooth
+00:28:28.400 path as you'll see later when we have
+00:28:30.440 smaller values of alpha it forms a nice
+00:28:32.750 smooth path immediately to the extrema
+00:28:36.470 okay so one's not working it's too big
+00:28:39.410 our step sizes are too big let's pick a
+00:28:43.970 value of 0.5 now it still looks unstable
+00:28:52.520 doesn't it maybe a little bit better but
+00:28:55.130 for the most part still unstable so that
+00:28:58.100 choice is too big let's go to a smaller
+00:29:02.120 value
+00:29:02.720 let's do point to 5 we can see that the
+00:29:07.430 steps are smaller so maybe it would
+00:29:09.710 converge slower but the others didn't
+00:29:13.190 converge at all so I guess that doesn't
+00:29:14.660 make much sense now this time it looks
+00:29:16.520 like it's converging on that answer and
+00:29:18.880 it converged pretty quick so we're
+00:29:21.410 taking pretty large steps and but you
+00:29:25.160 know maybe we're on the verge of being
+00:29:26.840 stable or not here let's pick a smaller
+00:29:30.710 value let's pick a value of 0.1 and
+00:29:35.920 usually when I implement this method
+00:29:38.330 before I really know anything or try
+00:29:40.370 anything
+00:29:41.030 my first guess will be a value of 0.1
+00:29:43.790 and what we see is a nice smooth path to
+00:29:49.430 that extrema and that's really what we
+00:29:51.440 should see and that's the sign of a
+00:29:54.260 healthy optimization so a value of 0.1
+00:29:58.490 here worked pretty well what if it were
+00:30:02.060 smaller let's do a value of point zero
+00:30:05.960 one well holy smokes look at how small
+00:30:09.710 those steps are
+00:30:10.730 we're pretty sure this is going to be a
+00:30:13.490 very reliable way to get to that Maxima
+00:30:16.580 but man this is gonna take a while
+00:30:19.870 so we'll go ahead and let this run as we
+00:30:23.510 approach the steeper part where the iso
+00:30:26.120 contour lines are tighter it will speed
+00:30:28.670 up a little bit but this is the drawback
+00:30:30.920 that you give up for stability of the
+00:30:33.590 time this definitely takes a lot longer
+00:30:37.340 to converge so I would conclude from
+00:30:43.610 this that a value of point zero one is
+00:30:46.070 too small now if your function behaves
+00:30:50.210 rather crazy you might just have to use
+00:30:53.660 small values like this it's just
+00:30:56.690 something you have to get a feel for
+00:30:58.160 when you run it that I know of there's
+00:31:00.980 no way ahead of time to know what value
+00:31:03.530 of alpha will guarantee that you find
+00:31:06.620 the extrema
+00:31:07.430 it's just something you'll have to try
+00:31:11.080 so this is taking a really long time I'm
+00:31:13.790 trying to say stuff to fill the time and
+00:31:15.770 now I'm running out of stuff to say so
+00:31:18.590 we'll just go ahead and let this run
+00:31:27.299 notice the increments are a little bit
+00:31:29.380 larger here simply because we're working
+00:31:32.080 through a steep part of the function so
+00:31:35.110 the gradients larger but it'll get
+00:31:40.179 smaller again as we approach the top and
+00:31:42.669 the gradient becomes smaller but notice
+00:31:51.250 how direct of a path this took it may
+00:31:55.150 take a while but it's a beautiful curve
+00:31:57.460 to take you to the extrema now we can
+00:32:04.390 see the gradients getting smaller those
+00:32:06.250 little red or pink arrows are becoming
+00:32:08.080 smaller and smaller telling us that the
+00:32:09.789 gradient is smaller but we will
+00:32:14.860 eventually fall on that extrema very
+00:32:16.899 reliably now maybe this is a good thing
+00:32:19.510 to do if your function evaluation is
+00:32:21.760 very fast maybe it's just a closed form
+00:32:23.799 equation but if it's a simulation or
+00:32:26.140 something more expensive I think it's
+00:32:28.630 worth investing the time to come up with
+00:32:31.270 a more optimal value of alpha and to
+00:32:39.399 stop the algorithm we're always looking
+00:32:40.960 at the gradient and when the gradient is
+00:32:43.659 zero meaning we're at a flat spot that's
+00:32:46.480 the top of this function we know that
+00:32:49.029 we're done okay so we went through that
+00:32:50.940 we invested the time and we saw it let's
+00:32:58.960 do an example of this let's say we have
+00:33:01.809 this function here it's a function of x
+00:33:03.940 and y and we have it within this 2d
+00:33:07.000 space here so we've limited values of x
+00:33:09.279 and y where is the Maxima of that
+00:33:12.970 function we can do a crude plot and
+00:33:17.669 estimate where it is and this will let
+00:33:21.279 us make an initial guess so let's just
+00:33:24.520 pick a value of 2 for X and a value of 0
+00:33:27.309 for Y that'll be our first guess and
+00:33:30.610 maybe you saw this little dot up here
+00:33:32.799 here so that's our first guess and we
+00:33:36.549 want to proceed with this
+00:33:39.450 so we need to calculate the gradient and
+00:33:42.100 in this case we have a closed form
+00:33:44.500 equation so we can actually come up with
+00:33:46.299 a closed form equation for the gradient
+00:33:48.429 which is what I've done here and so the
+00:33:50.530 final answer is here and we can use this
+00:33:52.929 expression to calculate the gradient at
+00:33:56.110 any point well we have a point we have
+00:33:58.960 our first point so we throw the numbers
+00:34:03.130 for our first point into that expression
+00:34:05.049 for the gradient and we've calculated a
+00:34:07.330 gradient so and that has a direction and
+00:34:10.600 I've plotted that over here here's our
+00:34:12.399 first guess and here's the direction we
+00:34:14.830 want to move but we can see it's not
+00:34:16.239 pointing exactly at the peak but in that
+00:34:19.239 general direction so we want to move in
+00:34:21.639 the direction of that gradient and we
+00:34:28.418 also check the the magnitude of the
+00:34:30.070 gradient it's not zero so we're not done
+00:34:32.560 if it was zero that means we're sitting
+00:34:34.780 at the top and we're done so we have our
+00:34:40.300 values of X in a vector and we have our
+00:34:43.179 gradient and let's choose a value of 0.1
+00:34:45.850 because that's usually my favorite value
+00:34:47.710 and so we calculate an x2 as our first
+00:34:51.639 guess plus alpha times the gradient and
+00:34:54.129 that gives us an evaluation of where our
+00:34:56.440 next point is going to be and that's
+00:34:58.840 right here so we've done what we talked
+00:35:02.290 about before we make a guess to
+00:35:04.180 calculate the gradient and we move along
+00:35:06.609 that gradient okay now we evaluate the
+00:35:13.150 gradient at the second point and then
+00:35:16.390 guess what we'll do it will move in the
+00:35:17.950 direction of that gradient and we keep
+00:35:21.670 doing this
+00:35:25.950 and in this case after 77 iterations I
+00:35:31.000 finally converge to where the Maxima was
+00:35:33.700 so a value of 2 for X and a value of 1
+00:35:37.000 for y and that sits us right at the top
+00:35:42.810 so alright that's it that's the that's
+00:35:46.240 all it is for this example Newton's
+00:35:52.180 method for multiple variables this is
+00:35:55.000 where we'll use the Hessian remember
+00:36:01.270 what the Newton's method was for 1d
+00:36:03.700 optimization it was essentially the
+00:36:05.590 newton raphson method where we did route
+00:36:08.410 finding but we're route finding on the
+00:36:10.900 first derivative so in the for multiple
+00:36:16.930 variables we changes a little bit and
+00:36:18.700 we'll make use of the Hessian so for
+00:36:21.190 multiple dimensions we can write a
+00:36:23.590 second-order Taylor series for that
+00:36:25.660 function evaluated X remember this bold
+00:36:28.270 X contains all of our independent
+00:36:31.750 variables for any number of dimensions
+00:36:33.250 so our second order Taylor series now
+00:36:35.410 looks like this and this is where the
+00:36:38.380 Hessian appears so let's remember how to
+00:36:43.330 interpret that
+00:36:44.170 we are estimating our function value at
+00:36:47.650 X based on known numbers at some other
+00:36:51.460 position X so we're just calling
+00:36:52.810 position X I and so we could essentially
+00:36:56.470 do all this math at our position X and
+00:36:58.960 get an idea of what the function is a
+00:37:01.990 valued at X based on what happens at X I
+00:37:04.690 so that's the Taylor series now add an
+00:37:11.080 extrema
+00:37:11.950 the gradient goes to zero so we can take
+00:37:16.660 this equation for F which is the second
+00:37:18.850 order Taylor series and calculate the
+00:37:20.980 gradient of it and it simplifies down to
+00:37:23.950 this so guess what we'll do we'll set
+00:37:29.170 that equal to zero
+00:37:32.609 so that's what happens we set this
+00:37:35.079 gradient equal to zero and then we solve
+00:37:39.190 for X in terms of X I and this gives us
+00:37:43.000 this small little update equation so
+00:37:45.490 given a previous guess X I we can
+00:37:48.849 calculate a new guess as to where the
+00:37:51.640 extrema would be we're moving in the
+00:37:53.410 direction of the gradient since we're in
+00:37:55.660 multiple directions in multiple
+00:37:57.400 dimensions now we're using the Hessian
+00:38:00.040 the inverse of the Hessian actually so
+00:38:06.160 there's our final update equation for
+00:38:08.500 Newton's method for multiple variables

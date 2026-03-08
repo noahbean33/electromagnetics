@@ -1,0 +1,1041 @@
+# tactiq.io free youtube transcript
+# Topic 7b -- Slab waveguide analysis
+# https://www.youtube.com/watch/Sh0XjszSjVw
+
+00:00:00.190 topic 7b numerical analysis of slab
+00:00:03.699 waveguides as far as the computation
+00:00:07.150 goes there really won't be anything new
+00:00:08.740 in this lecture this is an exercise to
+00:00:11.769 show how our one dimensional finite
+00:00:14.200 difference analysis can be used to solve
+00:00:16.449 a real-world problem and in this case
+00:00:19.239 we'll be calculating the electromagnetic
+00:00:20.980 modes that exist in a slab waveguide I
+00:00:27.929 have no expectation that anybody
+00:00:30.640 listening to this lecture has an
+00:00:32.229 in-depth knowledge of electro magnetics
+00:00:34.450 this is a computational course however
+00:00:37.120 if you're solving a problem in physics
+00:00:39.370 or science it's inherently tied to the
+00:00:42.340 theory of whatever it is you're solving
+00:00:44.250 so I will step you through the electro
+00:00:47.080 magnetics and I'll show you how to go
+00:00:48.670 from the equations describing electro
+00:00:50.980 magnetics to that final equation that we
+00:00:54.160 will solve using our finite difference
+00:00:56.110 approach so we'll talk about slab
+00:00:58.150 waveguides after that we will enter the
+00:01:04.269 finite difference method proper and for
+00:01:06.999 computational algorithms like this I
+00:01:08.950 like it I like to break it down into
+00:01:10.780 three steps formulation implementation
+00:01:14.799 and then practicing it so in the slab
+00:01:18.159 waveguide section of this we will be
+00:01:19.689 deriving the fundamental equation that
+00:01:21.729 we have to solve when we get the
+00:01:24.069 formulation we will then put that into
+00:01:26.350 matrix form to solve we will discuss the
+00:01:29.829 implementation and then we'll give you
+00:01:33.819 an example to benchmark your code off of
+00:01:36.039 and at that point you'll be ready to
+00:01:38.109 analyze any slab waveguide
+00:01:47.420 we begin our discussion with a material
+00:01:51.509 parameter called refractive index and it
+00:01:55.200 turns out when a wave goes from one
+00:01:57.810 material to another it either speeds up
+00:02:00.149 or slows down and we can characterize
+00:02:03.090 the speed of a wave inside of a medium
+00:02:06.000 through this parameter called refractive
+00:02:08.160 index the refractive index is the factor
+00:02:10.949 by which a wave slows down relative to a
+00:02:14.519 wave in outer space or sometimes we just
+00:02:17.160 call it free space so if refractive
+00:02:21.180 index is 2 the wave is traveling at half
+00:02:24.209 the speed that a wave would in outer
+00:02:26.910 space so we're going to understand our
+00:02:29.730 wave guides through this parameter
+00:02:32.010 refractive index
+00:02:34.099 it's interesting to note and useful that
+00:02:37.500 the frequency of a wave is the constant
+00:02:40.260 concept that's the most fundamental
+00:02:42.090 thing that does not change from one
+00:02:44.489 medium to another assuming we have
+00:02:46.230 linear materials there are cases where
+00:02:48.030 that can change but the wavelength does
+00:02:51.090 change as the wave speeds up or slows
+00:02:53.280 down that could be confusing so the
+00:02:55.739 wavelength changes depending what
+00:02:57.209 material you're in the frequency is the
+00:02:59.220 constant thing and that's just a
+00:03:01.530 consequence of the speed of the wave
+00:03:03.569 slowing down or speeding up
+00:03:09.900 it turns out the refractive index or the
+00:03:13.299 change in the speed of a wave is what's
+00:03:15.519 responsible for a wave bending at an
+00:03:18.430 interface if you've ever stuck a stick
+00:03:21.069 in water or put your spoon and a glass
+00:03:23.620 of water or looked at it from the side
+00:03:25.150 it appears to bend and that's a
+00:03:27.519 phenomenon called refraction and it's
+00:03:29.680 it's quantified by an equation called
+00:03:32.200 Snell's law which we're showing here and
+00:03:34.379 the angle of a wave coming in and
+00:03:37.090 hitting it interface is a different
+00:03:39.190 angle than on the other side and of
+00:03:41.290 course related through this equation
+00:03:42.750 Snell's law so if we look at this
+00:03:47.560 configuration we see that on the low
+00:03:51.129 refractive index side so in this case
+00:03:53.799 that would be the side of n1 the angle
+00:03:57.010 theta-1 is larger than it is on the
+00:03:59.739 other side that's very indicative of the
+00:04:02.530 case where the refractive index is lower
+00:04:04.930 on the side with a larger angle now
+00:04:09.250 let's think about a special case maybe
+00:04:14.709 this is a little bit impossible but
+00:04:17.108 imagine your angle of incidence was 90
+00:04:19.180 degrees and if if that number bothers
+00:04:21.339 you imagine it being eighty nine point
+00:04:23.440 nine nine degrees the angle on the other
+00:04:27.610 side of the interface is a very special
+00:04:30.370 angle called the critical angle and if
+00:04:33.820 we think of this configuration there's
+00:04:35.919 really no way that we can get an angle
+00:04:38.710 any larger than the critical angle on
+00:04:41.440 the other side as theta one becomes
+00:04:44.110 smaller theta two will also become
+00:04:46.360 smaller so there's that cone of angles
+00:04:49.000 that's actually impossible to achieve on
+00:04:51.370 the transmitted side now even more
+00:04:55.000 interesting if we think about this
+00:04:56.620 configuration however let's have the
+00:04:59.410 wave incident from the bottom instead of
+00:05:02.410 from the top and let's think about what
+00:05:05.199 happens if the wave is incident from the
+00:05:11.830 bottom but at an angle larger than that
+00:05:16.090 critical angle remember that's in this
+00:05:18.039 cone of angles that there was no
+00:05:20.500 possible
+00:05:21.130 in the first region to create in the
+00:05:23.710 second region so when that is the case
+00:05:26.530 we get something called total internal
+00:05:28.630 reflection and that incoming wave will
+00:05:31.840 totally reflect from an interface and so
+00:05:35.680 we conclude that for total internal
+00:05:38.800 reflection to occur the wave has to be
+00:05:41.440 in the high refractive index material
+00:05:43.750 and it has to have an angle of incidence
+00:05:46.630 greater than the critical angle and what
+00:05:49.660 that happens none of the wave will
+00:05:52.420 transmit through the interface it will
+00:05:54.010 only reflect so now rather than have one
+00:06:00.990 interface let's have a slab of material
+00:06:03.970 we will call this our slab waveguide and
+00:06:06.400 it will have refractive index n 2 and
+00:06:09.660 let's surround that by two different
+00:06:12.280 media that have a lower refractive index
+00:06:16.030 than that middle layer that means we
+00:06:19.240 could get total internal reflection on
+00:06:21.400 either side of that slab and this really
+00:06:25.030 is what causes wave guiding the wave is
+00:06:28.540 that a shallow enough angle or large
+00:06:31.120 enough angle such that we get total
+00:06:33.850 internal reflection from either side
+00:06:36.270 well wave guiding is a little bit more
+00:06:39.430 complicated and let's talk about that if
+00:06:45.520 we trace the path of a wave that's the
+00:06:48.040 red line here we're going to trace the
+00:06:49.570 path of a wave and if we look at two
+00:06:51.220 common points and it's essentially the
+00:06:54.490 same point because this repeats we have
+00:06:57.700 to look at the phase of the wave at
+00:06:59.440 those two points and if that is not an
+00:07:02.530 integer multiple of 2 pi it turns out
+00:07:06.400 that wave inside the slab waveguide will
+00:07:08.350 interfere with itself and leak out of
+00:07:09.790 the waveguide so it's only under that
+00:07:13.090 special circumstance where the phase
+00:07:15.670 from that common point to common points
+00:07:17.590 to integer multiple of 2 pi that we get
+00:07:19.990 a guided mode and this is really the
+00:07:22.510 origin of having only a small set of
+00:07:25.960 modes that could be supported by the
+00:07:28.060 waveguide given a fixed frequency so we
+00:07:31.330 have discrete modes and this is the hand
+00:07:33.910 waving sort of quality
+00:07:35.319 argument of why we have discrete modes
+00:07:38.379 in a waveguide
+00:07:43.409 now the ray-tracing picture it is great
+00:07:47.589 for explaining things in a simple manner
+00:07:48.999 but really these slab wave guides have
+00:07:51.279 to be simulated and analyzed rigorously
+00:07:54.059 from Maxwell's equations Maxwell's
+00:07:56.439 equations are of course the equations
+00:07:57.939 that describe classical electromagnetics
+00:08:00.219 and when we do that outcomes pictures of
+00:08:03.610 these discrete modes and going from
+00:08:06.490 right to left we see the first-order
+00:08:09.279 mode the second-order mode third-order
+00:08:11.080 mode and and so on and at some point
+00:08:13.240 there won't be any higher-order modes
+00:08:14.649 for a certain frequency and those modes
+00:08:17.589 are what's called cutoff and they decay
+00:08:21.759 as they propagate or leak out of the
+00:08:23.709 waveguide they're not guided modes and
+00:08:25.930 so for this particular case I don't know
+00:08:28.240 how many guided modes there are I know
+00:08:29.709 that I'm only showing five so maybe that
+00:08:32.169 they're only five or I just chose to
+00:08:34.240 only show five so this is an example of
+00:08:39.760 what we would get from our finite
+00:08:42.669 difference analysis and so this would be
+00:08:45.699 and will be a rigorous solution to
+00:08:48.430 Maxwell's equations just to generalize
+00:08:56.290 the concept of a waveguide a real quick
+00:08:58.600 right now we are analyzing slab wave
+00:09:01.149 guides and that's where we have this
+00:09:03.339 infinite slab that's sandwiched between
+00:09:05.290 two other type of materials and the wave
+00:09:07.990 guiding or the confinement is only in
+00:09:10.240 the vertical direction not in the
+00:09:12.069 horizontal direction the wave is free to
+00:09:13.839 spread out in that direction and the
+00:09:16.690 reason we're analyzing a slab waveguide
+00:09:18.189 is this is a very good thing that can be
+00:09:19.689 analyzed in just one dimension probably
+00:09:24.610 more useful are what are called channel
+00:09:26.470 waveguides and these act much more like
+00:09:28.810 pipes where they have confinement along
+00:09:30.880 two different directions and in both
+00:09:33.220 these cases the actual mode that's
+00:09:35.050 propagating is in and out of the screen
+00:09:37.410 so channel waveguides are really
+00:09:40.329 inherently a two dimensional analysis
+00:09:42.790 and that would have to wait until we get
+00:09:44.800 to two dimensional analysis so we've
+00:09:47.230 only at this point learned
+00:09:48.769 one dimensional finite difference method
+00:09:50.779 so that's why we're analyzing slab
+00:09:52.790 waveguides and slab wave words are
+00:09:54.290 hugely useful in research in my e/m lab
+00:09:58.579 we've simulated slab waveguides on at
+00:10:00.829 least four different projects so the one
+00:10:04.009 dimensional simulations are actually
+00:10:05.540 very useful we need to understand the
+00:10:13.489 mathematical form of the solution and
+00:10:16.279 maybe what it looks like physically so
+00:10:18.649 on the left here I am showing a slab
+00:10:20.899 waveguide and we will let our wave the
+00:10:24.889 guided mode propagate in the Z direction
+00:10:27.619 so that's what I'm showing by the red
+00:10:29.299 wave you think that's our picture of a
+00:10:31.220 wave so in the Z direction the wave
+00:10:35.449 accumulates phase and we will describe
+00:10:37.519 that oscillation and accumulation of
+00:10:40.189 phase with a complex exponential e to
+00:10:42.019 the minus J beta Z now in the X
+00:10:46.279 direction the mode has a certain
+00:10:49.910 intensity profile or amplitude profile
+00:10:52.519 in that cross-section and that's what
+00:10:54.079 we're drawing when we draw this and so
+00:10:56.809 we'll call that a X it's only a function
+00:10:58.790 of X and in fact if we look at the Y
+00:11:02.059 Direction nothing is changing our slab
+00:11:04.459 is uniform in that direction or
+00:11:06.679 electromagnetic mode is uniform in that
+00:11:09.079 direction and it will turn out later on
+00:11:11.179 this helps us simplify the mathematics
+00:11:13.459 considerably but the overall electric
+00:11:16.189 field has that amplitude profile which
+00:11:18.829 is only a function of X multiplying this
+00:11:21.860 exponential which describes the
+00:11:24.259 oscillations or the accumulation of
+00:11:25.910 phase in the Z direction that is only a
+00:11:27.829 function of Z nothing here is a function
+00:11:30.829 of Y okay so we're armed with some basic
+00:11:40.339 electromagnetic concepts that will
+00:11:41.959 hopefully let us understand the
+00:11:43.790 mathematics that we're about to dive
+00:11:45.410 into so in the next section here the
+00:11:48.889 formulation we will start with Maxwell's
+00:11:50.899 equations and we will work with them and
+00:11:53.600 Whittle them down till we get a single
+00:11:55.309 final equation that we want to solve
+00:11:58.040 with the finite difference method so
+00:11:59.869 let's dive right into it
+00:12:03.769 here we go so formulation we will start
+00:12:06.809 with Maxwell's equations that were
+00:12:08.549 showing on the left and there's actually
+00:12:10.980 four of Maxwell's equations and two
+00:12:13.949 others called the constitutive relations
+00:12:15.989 and so we've combined these and we have
+00:12:18.720 two equations left that we will use for
+00:12:22.470 this analysis and these are commonly
+00:12:24.509 called Maxwell's curl equations so these
+00:12:28.049 are vector differential equations and
+00:12:30.660 there's two of them and they're coupled
+00:12:31.829 and somehow we will manipulate this we
+00:12:36.239 will then use the finite difference
+00:12:37.829 method to cast that system of equations
+00:12:40.679 into an eigenvalue problem remember when
+00:12:45.059 we talked about this earlier in the
+00:12:46.470 semester we tend to get two things in
+00:12:50.149 numerical analysis we either get the ax
+00:12:52.679 equals B and those problems arise when
+00:12:55.529 there's a source and only one answer I
+00:12:58.309 think in values arise when there's no
+00:13:01.109 source and we're really just asking a
+00:13:03.029 question of what could happen and in
+00:13:05.519 this case our question is what do these
+00:13:08.429 guided modes look like so we handed a
+00:13:11.249 picture of our slab and we say what kind
+00:13:13.470 of wave goes in this direction and out
+00:13:15.959 comes the answer it has pictures of the
+00:13:17.610 modes and their propagation constants
+00:13:19.889 and that's what we're after so we start
+00:13:24.269 with these governing equations and we
+00:13:26.220 end up with a matrix equation so when we
+00:13:28.649 do this formulation there's going to be
+00:13:30.660 equations all over the place don't get
+00:13:33.600 yourself into a mentality where oh my
+00:13:36.360 gosh how is my code going to do all this
+00:13:38.309 well your code doesn't that's why we're
+00:13:40.529 doing this on paper the implementation
+00:13:43.139 will be very simple so don't mistake
+00:13:45.839 formula formulation for implementation
+00:13:48.649 formulation where after that one makes
+00:13:50.789 it matrix equation and how we build it
+00:13:54.439 okay here we go so we start with
+00:14:00.449 Maxwell's curl equations and for those
+00:14:03.600 of you that are not real familiar with
+00:14:05.129 vector calculus there's little upside
+00:14:08.069 down triangle is called the del operator
+00:14:09.839 and the X is a cross product so when we
+00:14:14.039 do an operation del cross
+00:14:15.720 a vector we're calculating what's called
+00:14:18.569 the curl and in this first equation that
+00:14:21.750 I highlighted were asking the question
+00:14:23.939 or trying to quantify the tendency of
+00:14:26.759 the electric field E to circulate about
+00:14:30.060 some point and curl gives us another
+00:14:33.149 vector and the vector is pointing down
+00:14:35.459 the center or the axis of rotation of
+00:14:38.399 that circulation so these the first
+00:14:41.100 equation says the curl of the electric
+00:14:43.110 field or if the electric field is
+00:14:45.810 circulating we're going to have a
+00:14:47.790 magnetic field H at the center of that
+00:14:50.040 circulation and this term mu is the
+00:14:53.250 permeability its material property
+00:14:55.079 that's really the proportionality
+00:14:57.420 constant and the other equation is
+00:14:59.939 almost the exact same thing if we have a
+00:15:01.980 circulating H field there will be an
+00:15:04.379 electric field at the center of that
+00:15:05.879 circulation and the permittivity the
+00:15:08.399 epsilon variable here is the
+00:15:10.560 proportionality constant so in Cartesian
+00:15:14.040 coordinates I wrote on the bottom the
+00:15:15.870 vector curl operation I don't want to
+00:15:18.750 spend a lot of time talking about that
+00:15:20.519 here I do think it's important for
+00:15:21.990 understanding the electro magnetics and
+00:15:23.910 I'd recommend pausing the video here
+00:15:26.009 maybe going to wiki or the internet and
+00:15:28.319 searching about vector curl to learn a
+00:15:30.389 little bit more about that but we're
+00:15:33.120 going to move on so we look at our first
+00:15:39.600 equation del cross e equals minus J
+00:15:42.660 Omega mu H that is a vector equation so
+00:15:46.620 the electric field E and the magnetic
+00:15:48.930 field H are both vectors so we can
+00:15:52.199 expand this into cartesian coordinates
+00:15:55.139 and on the Left we've not only expanded
+00:15:57.899 e we've expanded that curl operation
+00:16:00.899 according to the expansion we showed on
+00:16:02.939 the previous slide so this is the same
+00:16:05.639 equation just expand it into the vector
+00:16:08.339 coordinates at this point we will look
+00:16:13.769 at the X component on the left and we
+00:16:16.949 will set that equal to the X component
+00:16:18.809 on the right and arrive at this equation
+00:16:23.209 the other two equations on this slider
+00:16:25.889 arrived by setting the y component on
+00:16:27.990 the left
+00:16:28.460 equal to the y-component on the right
+00:16:29.870 the z-component on the left equal to the
+00:16:31.910 z component on the right so our single
+00:16:34.160 vector differential equation has now
+00:16:37.460 become a set of three scalar
+00:16:40.160 differential equations that are all
+00:16:42.290 coupled they're not independent
+00:16:43.880 equations so we start off with two very
+00:16:50.600 simple curl equations and we expanded
+00:16:53.690 one of them into a set of three turns
+00:16:59.780 out we can expand the other one into a
+00:17:02.240 very similar set of three equations so
+00:17:05.060 this is very common in electromagnetic
+00:17:06.650 analysis start off with the curl
+00:17:08.420 equations expand both and we end up with
+00:17:11.450 a set of six coupled partial
+00:17:13.280 differential equations so far we're
+00:17:22.069 still in three dimensions we have XY and
+00:17:24.170 Z and I suggested before we will use the
+00:17:27.619 geometry of the slab waveguide to help
+00:17:30.410 us simplify the math so looking at our
+00:17:33.650 slab waveguide let's think about XY and
+00:17:36.380 Z well in the X direction the material
+00:17:40.940 properties are changing the mode itself
+00:17:43.550 the profile the modes are varying in the
+00:17:45.950 X direction so things are changing along
+00:17:47.990 X and there's nothing we can do it that
+00:17:50.600 we have to retain X we have to retain
+00:17:52.730 the derivatives and X so we don't touch
+00:17:55.580 X Y in the Y Direction the slab
+00:18:02.960 waveguide itself is perfectly uniform
+00:18:05.030 nothing changes in the Y direction as
+00:18:07.400 long as we let the mode propagate only
+00:18:10.100 in the Z direction there's nothing about
+00:18:12.260 the modes that changes in the Y
+00:18:14.180 direction so if nothing is changing in
+00:18:16.970 the Y direction then any derivative in
+00:18:19.880 the Y Direction just has to be 0 and so
+00:18:22.940 this simplifies the math we look for Y
+00:18:25.010 derivatives in that set of 6 equations
+00:18:27.260 that we had and we just cross them off
+00:18:29.660 and we'll get to that now in the Z
+00:18:34.550 direction the slab waveguide is uniform
+00:18:37.640 so maybe we're tempted disabled if we
+00:18:39.920 take any derivatives in the Z
+00:18:41.480 direction that should be zero and that's
+00:18:43.280 not quite true because the wave
+00:18:45.790 accumulates phase in the Z direction so
+00:18:48.679 the derivative in the Z direction of the
+00:18:50.510 wave is not zero
+00:18:52.070 now it'll turn out it's just a little
+00:18:54.559 constant minus J beta and we'll get into
+00:18:57.260 why that is in a few slides but the
+00:19:00.830 point is we can simplify our system of
+00:19:03.740 six equations down using what we
+00:19:06.380 discussed on this slide okay so here's
+00:19:13.610 our set of six differential equations
+00:19:15.530 and now we want to apply the fact that
+00:19:17.929 any derivative in the Y direction has to
+00:19:20.450 be 0 so we will find all of the Y
+00:19:24.590 derivatives in our set of six equations
+00:19:26.240 and cross them out and we end up with a
+00:19:29.600 new set of equations that do not contain
+00:19:32.150 any y derivatives so we're already a
+00:19:36.230 little bit simpler this is the same set
+00:19:42.650 of six equations on the previous slide
+00:19:44.960 but I've color-coded them in a special
+00:19:47.600 way and if we were to stare at this long
+00:19:49.910 enough what we would realize is that all
+00:19:51.620 the equations in blue do not contain any
+00:19:55.340 of the terms that appear in the red
+00:19:57.200 equations and the red equations do not
+00:19:59.960 contain any terms from the blue
+00:20:01.669 equations so by setting that Y
+00:20:04.340 derivative to zero our set of six
+00:20:07.130 coupled partial differential equations
+00:20:09.620 have in fact split into two independent
+00:20:12.830 sets of three equations and so and the
+00:20:16.309 electromagnetic jargon we would say we
+00:20:18.020 actually have two modes two types of
+00:20:20.750 modes that are supported by a slab
+00:20:22.340 waveguide if we group all the blue
+00:20:26.870 equations together we'll call that the
+00:20:28.880 first type of mode or we'll call it the
+00:20:31.040 ey mode and the reason we call it that
+00:20:34.299 will come up later but the short answer
+00:20:37.640 is it'll turn out we can combine all
+00:20:39.230 these equations into just a single
+00:20:41.960 differential can take equation
+00:20:43.280 containing only ey so we call that the
+00:20:45.559 ey mode but that hasn't happened yet
+00:20:49.780 then if we group all the red equations
+00:20:52.790 together we'll call that the
+00:20:54.980 hy mode and really to know everything
+00:20:57.980 about the slab waveguide we have to
+00:21:00.230 simulate both of these and they lead to
+00:21:02.660 slightly different codes but because of
+00:21:06.080 how we've learned the finite difference
+00:21:07.790 method implementing one and then
+00:21:09.980 modifying your code to implement the
+00:21:11.600 other is essentially trivial so in this
+00:21:16.850 lecture we will proceed only with the ey
+00:21:19.070 mode because the hy mode is essentially
+00:21:21.890 exactly the same and once you see how we
+00:21:24.260 do the e mode how we do the H mode is
+00:21:27.320 trivial now let's think about this Z
+00:21:34.760 derivative because the device was
+00:21:37.250 uniform in the Z direction but the wave
+00:21:38.960 was accumulating phase so what we do
+00:21:40.700 with the Z derivative wasn't exactly
+00:21:42.140 clear so let's go back to the equation
+00:21:44.870 for our guided mode the overall electric
+00:21:46.940 field we will write as an amplitude term
+00:21:49.400 which is only a function of X and then
+00:21:52.280 this phase accumulating term that is
+00:21:55.490 only a function of Z because we're
+00:21:57.620 letting our mode propagate in only the Z
+00:21:59.510 direction so let's ask the question what
+00:22:05.179 happens if we take a derivative of the
+00:22:06.860 electric field so we replace the
+00:22:09.350 electric field with our expression a
+00:22:10.940 times e to the minus J beta Z when we
+00:22:14.540 calculate the derivative we use the
+00:22:16.130 product rule and then over on the right
+00:22:18.740 here we need a derivative of a well a is
+00:22:20.990 not a function of Z so this whole term
+00:22:22.910 just drops off and we end up here then
+00:22:27.110 we recognize that we have an a times e
+00:22:29.330 to the minus J beta Z that was just the
+00:22:31.100 originally electric field so we can
+00:22:33.740 write it with the original electric
+00:22:35.150 field and now we look the derivative of
+00:22:38.630 the e field is minus J beta times the e
+00:22:41.780 field so we can come to a rather
+00:22:44.780 profound conclusion we can just replace
+00:22:47.750 our partial derivative with respect to Z
+00:22:49.840 with minus J beta remember beta was the
+00:22:53.419 propagation constant that's the number
+00:22:55.280 that tells us how quickly the mode
+00:22:57.140 accumulates phase as it propagates so we
+00:23:00.500 will go into Maxwell's equations we will
+00:23:02.299 pull out all the Z derivatives and put
+00:23:04.640 in minus J beta
+00:23:10.280 so here we are and I've highlighted the
+00:23:13.230 Z derivatives here in blue and we want
+00:23:15.960 to replace those with minus J beta so
+00:23:21.000 now we're here notice something else in
+00:23:24.150 this equation that has changed the what
+00:23:28.320 was the partial derivative in the first
+00:23:30.360 equation with respect to X has become an
+00:23:33.060 ordinary derivative and mathematically
+00:23:35.970 that's that's very important the reason
+00:23:38.160 that has happened is because there's no
+00:23:39.720 longer Y or Z X is the only independent
+00:23:43.440 variable left and so that let us write
+00:23:45.240 our partial derivatives as ordinary
+00:23:47.970 derivatives now in computation we always
+00:23:57.360 want to normalize everything and that
+00:23:59.340 goes back to when we talked about errors
+00:24:01.080 if you have two numbers and one is on
+00:24:03.990 the order of 1 and the other is on the
+00:24:05.820 order of 10 to the minus 3 and we're
+00:24:08.310 adding and subtracting those we're
+00:24:10.410 losing digits of precision every time we
+00:24:13.530 really would like every number in our in
+00:24:17.490 our method to be as close to 1 as
+00:24:19.970 possible now in electromagnetics our
+00:24:23.280 dimensions could be micrometers or
+00:24:25.620 meters or even kilometers and so we
+00:24:29.250 don't want this kind of range of numbers
+00:24:31.230 in our model so what is normally done is
+00:24:34.170 we take our dimension X and divide by
+00:24:38.010 the wavelength so now everything is in
+00:24:41.370 terms of wavelengths and our slab
+00:24:43.290 waveguides the dimensions of that are
+00:24:45.720 almost always on the same order as the
+00:24:48.090 wavelength so this X tilde now will be a
+00:24:50.910 number like 0.5 instead of being 10 to
+00:24:53.970 the minus 6 if the physical devices and
+00:24:56.880 microns so we want to use these
+00:24:59.640 normalized coordinates in our model that
+00:25:03.030 we're developing now in Maxwell's
+00:25:07.380 equations we have this parameter K
+00:25:09.930 naught it's called the free space wave
+00:25:11.550 number it's 2 pi divided by the free
+00:25:13.710 space wavelength and it will turn out to
+00:25:16.230 be very convenient rather than just
+00:25:18.660 divided by wavelength of a
+00:25:20.610 do that to multiply our coordinate by K
+00:25:23.610 not we're still dividing by wavelength
+00:25:26.700 but we also have this 2pi in here the
+00:25:29.220 2pi doesn't do anything for us it's just
+00:25:32.100 the fact that the 2 PI over lambda is a
+00:25:34.020 K not and it'll turn out we're gonna
+00:25:36.390 have this K not just appear on its own
+00:25:38.460 and Maxwell's equations and if we
+00:25:40.290 normalize it this way then the K not
+00:25:42.690 kind of isolates to one place and it'll
+00:25:46.860 simplify the math ok so let's look at
+00:25:54.510 one of the equations that we had in our
+00:25:56.910 set of three for this --mode and let's
+00:26:00.179 normalize the x coordinate so notice the
+00:26:06.210 derivative here we had an ordinary X now
+00:26:08.730 we have an X tilde but we need to divide
+00:26:11.580 this X tilde by K naught now since this
+00:26:14.070 X tilde is in the denominator we're
+00:26:16.110 multiplying by K naught now what we want
+00:26:24.240 to do is divide both sides of this
+00:26:26.040 equation by K naught so that means we
+00:26:28.679 have our derivative back again we have a
+00:26:31.919 beta over K naught and then we also have
+00:26:34.860 our epsilon over K naught
+00:26:36.900 looks like we've complicated things but
+00:26:38.940 let's keep going because it will
+00:26:40.110 simplify down as I promised remember
+00:26:45.450 when we were first talking about slab
+00:26:47.190 waveguides we had the free space wave
+00:26:49.290 number multiplying the effective
+00:26:51.120 refractive index and that equals our
+00:26:53.580 propagation constant so we divide beta
+00:26:55.860 by K not we just get our effective
+00:26:58.890 refractive index and that will tell us
+00:27:01.230 essentially how quickly that mode
+00:27:03.240 propagates remember refractive index is
+00:27:06.240 the factor by which a wave slows down
+00:27:08.520 inside of a medium so K naught is
+00:27:13.080 disappearing on us that's very useful
+00:27:18.290 now I can play some games with the
+00:27:20.700 parameters here and I don't expect you
+00:27:23.040 to follow the electromagnetic theory
+00:27:24.720 here but we expand our epsilon as a free
+00:27:28.140 space Epsilon and a relative Epsilon
+00:27:30.419 sometimes called the dielectric constant
+00:27:31.970 we expand our K not as a
+00:27:34.580 times the square-root of the free space
+00:27:37.340 permeability of free space permittivity
+00:27:39.050 and we cancel a bunch of terms and we
+00:27:42.230 end up over here okay so if we apply the
+00:27:52.280 same normalization we just did to all
+00:27:54.380 three of equations for this --mode we
+00:27:57.680 end up here now at optical frequencies
+00:28:07.130 and we're doing we want to do an optical
+00:28:09.920 analysis here and in fact most materials
+00:28:12.410 do not have a permeability and so we
+00:28:15.740 would say that the relative permeability
+00:28:17.360 is just one and that helps us simplify
+00:28:20.480 so everywhere we see mu R mu R we'll
+00:28:22.790 just replace that with one and we'll end
+00:28:24.890 up here
+00:28:25.460 so we're ignoring permeability and for
+00:28:28.250 an optical analysis that is perfectly
+00:28:30.200 valid even at microwave frequencies
+00:28:32.200 there's essentially very negligible
+00:28:34.970 permeability it's really only at lower
+00:28:36.950 frequencies that that becomes
+00:28:38.870 significant and it's not too big of a
+00:28:41.330 deal to leave permeability in here I'm
+00:28:43.730 just eliminating it now to make this as
+00:28:46.370 simple as possible to illustrate the
+00:28:48.140 finite difference method okay so on the
+00:28:55.130 left here we have our three equations
+00:28:56.930 that have now been normalized so we have
+00:28:59.210 the X tilde and we manipulated some of
+00:29:01.820 the parameters to simplify our constants
+00:29:03.880 these second two equations are solved
+00:29:07.700 for H X and H Z so that we now have the
+00:29:10.400 two magnetic field components written in
+00:29:13.370 terms of the electric field components
+00:29:15.260 and then we will take these expressions
+00:29:17.570 and substitute them into the first
+00:29:19.670 equation so when we do that here's our
+00:29:27.380 equation with the magnetic fields we do
+00:29:28.970 our substitution and we simplify down to
+00:29:31.070 this Wow look how simple that is and
+00:29:33.440 this was really the reason that we did
+00:29:35.810 the normalizations and that we did our
+00:29:37.970 normalization in terms of the K not
+00:29:39.410 because it turns out that would drop out
+00:29:41.660 of the equation and of course there's a
+00:29:44.090 lot of other electromagnetic theory that
+00:29:46.820 would have given us
+00:29:47.510 clues to this but that's not really so
+00:29:49.340 important for this computational class
+00:29:51.320 if I was teaching an electron we did his
+00:29:53.690 class we would go a bit more into that
+00:29:55.750 but we did all this so that we'd Whittle
+00:29:58.460 us down to a single differential
+00:30:00.200 equation that's very very simple and we
+00:30:02.330 are there now so we'll rearrange the
+00:30:14.660 order of the terms and we'll write our
+00:30:16.520 differential equation this way notice
+00:30:19.520 this is an eigenvalue problem and we're
+00:30:23.090 asking a question what on earth could
+00:30:25.400 happen in the slab waveguide and the
+00:30:27.770 solutions to this give us the modes so
+00:30:34.610 on the left hand side I'm going to
+00:30:36.710 factor out e Y and on the right not
+00:30:40.160 really do anything but what I will also
+00:30:42.380 do if anything is a function of X I will
+00:30:45.740 explicitly write it as a function of X
+00:30:48.050 just to remind us that that is a
+00:30:50.330 function of X when I'm working by myself
+00:30:53.060 on paper
+00:30:53.930 I usually don't write that but if you're
+00:30:56.810 new to this I think it's easy to lose
+00:30:58.370 track of exactly what is a function of X
+00:31:00.770 and what is not so I've written that
+00:31:02.570 explicitly here so from a formulation
+00:31:05.870 perspective I would say we've arrived at
+00:31:08.270 our final governing equation and you
+00:31:11.690 want a really left to do now is to take
+00:31:13.850 this into matrix form and form the
+00:31:16.460 matrix eigenvalue problem so armed with
+00:31:23.840 how we do our finite differences where
+00:31:26.300 we write our differential equation and
+00:31:27.890 we go term by term and convert
+00:31:30.470 everything either to a scalar constant a
+00:31:32.660 square matrix or a column vector now in
+00:31:35.630 this case we only have one but we only
+00:31:38.210 have our unknown there's no source or
+00:31:39.890 excitation so there's a y is the only
+00:31:41.900 thing that is stored in a column vector
+00:31:44.300 so when these column vectors will be the
+00:31:47.240 electric field at each point and if we
+00:31:49.070 were to plot it we would see pictures of
+00:31:51.440 our modes well the second order
+00:31:55.040 derivative becomes a square matrix
+00:31:56.800 calculating a second order derivative
+00:31:58.940 across the grid and this refers
+00:32:01.400 activate next is doing a point-by-point
+00:32:03.040 multiplication so that becomes a
+00:32:05.420 diagonal square matrix where the
+00:32:07.880 refractive indices in the cross section
+00:32:10.160 of our slab waveguide are stored along
+00:32:12.260 the diagonal of a matrix and of course
+00:32:14.780 our eigenvalue is stored just as a
+00:32:16.640 constant but we now have a matrix
+00:32:20.350 eigenvalue problem sometimes I like to
+00:32:26.960 write this in terms of the permittivity
+00:32:28.370 instead of refractive index solving
+00:32:30.500 optical problems people like to talk
+00:32:32.300 about refractive index numerically when
+00:32:35.030 we're solving Maxwell's equations the
+00:32:37.010 permittivity is a little bit more
+00:32:39.050 fundamental so we have two matrix
+00:32:41.810 equations both will give us the same
+00:32:43.700 anthers answers both are equally valid
+00:32:46.430 to use so I'm just showing them both
+00:32:49.790 here so we now have our final matrix
+00:32:52.760 equation that is the formulation at this
+00:32:56.780 point we need to discuss how to solve it
+00:32:59.210 and how to interpret the solution oh
+00:33:04.750 I'll mention one more thing sorry on the
+00:33:08.270 Left we will calculate this as one
+00:33:10.760 square matrix and that is our eigen
+00:33:13.550 matrix and of course this term over here
+00:33:16.610 is our eigen value and I'll remind one
+00:33:20.360 thing another way to think of an
+00:33:21.770 eigenvalue problem pretend we have a
+00:33:24.830 guess for our electric field and the
+00:33:28.340 cross section of the waveguide if we can
+00:33:30.770 pre multiply these square matrices so
+00:33:32.870 we're doing a bunch of math on that and
+00:33:34.850 if we get the same exact answer back
+00:33:36.980 after doing all that math just scaled by
+00:33:38.840 a constant then that was a valid
+00:33:40.970 solution to the eigenvalue problem okay
+00:33:44.900 let's go on and talk about the solution
+00:33:46.760 how to solve this and how to interpret
+00:33:48.290 the solution now that we have the
+00:33:52.070 equation we want to solve let's talk
+00:33:54.650 about what that solution looks like
+00:33:56.350 after that we'll talk about how to
+00:33:58.820 actually do this analysis in MATLAB
+00:34:04.059 so we have this matrix equation in the
+00:34:06.789 form of an eigenvalue problem that we
+00:34:08.918 need to solve when we solve this we
+00:34:13.409 calculate a big square matrix V and the
+00:34:18.069 columns of that matrix are the
+00:34:20.260 eigenvectors we get another square
+00:34:23.649 matrix we're calling lambda and this is
+00:34:26.770 a diagonal matrix so it's all zeros
+00:34:28.270 except numbers going down the diagonal
+00:34:30.609 and the eigenvalue matrix are containing
+00:34:33.429 the eigenvalues the effective refractive
+00:34:35.739 indices squared now i ghen vectors and
+00:34:39.699 eigen values come in pairs as you'll see
+00:34:44.668 so looking at V and we look at the
+00:34:48.099 columns we see different modes and if we
+00:34:51.579 have n X number of points on our grid
+00:34:54.639 our matrices will be NX by and X and
+00:34:58.180 we'll be calculating NX modes so these
+00:35:01.779 are the columns are the modes we'd look
+00:35:03.490 at this first one
+00:35:04.270 if we were to grab this array of numbers
+00:35:06.369 and plot it we would see a picture of
+00:35:09.309 one of the modes in our slab waveguide
+00:35:13.619 this D matrix is also a square matrix
+00:35:16.569 but it's a diagonal matrix all zeros
+00:35:19.240 except the effective refractive indices
+00:35:21.760 I should say effective refractive
+00:35:24.010 indices squared running down the
+00:35:26.140 diagonal now why are the effective
+00:35:27.970 refractive indices squared inside of D
+00:35:29.890 because that's how we formulated our
+00:35:32.079 eigenvalue problem that was the
+00:35:34.569 effective refractive index squared now I
+00:35:37.869 mentioned that the eigenvectors and
+00:35:39.309 eigenvalues come in pairs
+00:35:41.020 this first eigenvector is paired with
+00:35:43.299 the first eigenvalue the second
+00:35:45.700 eigenvector is paired with the second
+00:35:47.500 eigenvalue and so on we never want to
+00:35:50.349 mix these up each of these modes has its
+00:35:53.289 own effective refractive index and so if
+00:35:55.660 we mixed it up we would be getting
+00:35:56.980 something wrong I guess in my
+00:36:03.089 I mind I am picturing the eigenvector
+00:36:05.400 matrix a little bit more like this and
+00:36:07.469 so I think this more clearly conveys
+00:36:09.690 that the columns really are showing
+00:36:12.420 pictures of the modes and so if we were
+00:36:15.839 to overlay that on top of our original
+00:36:17.849 slab waveguide it's even more obvious
+00:36:20.729 that we're looking at the modes of the
+00:36:22.200 waveguide so that's really it for
+00:36:26.460 interpreting the solution the next thing
+00:36:29.039 for us to talk about is implementing
+00:36:31.140 this analysis from beginning to end
+00:36:33.119 in MATLAB so in this section we will be
+00:36:40.229 implementing a MATLAB and you will see
+00:36:42.210 every single line of MATLAB code we may
+00:36:44.759 not discuss all of them but we will
+00:36:46.380 discuss the key ones so the finite
+00:36:53.609 difference analysis of a slab waveguide
+00:36:55.349 we are going to perform in six steps
+00:36:58.190 like most of the codes we write the
+00:37:00.390 first thing we'll do is we'll initialize
+00:37:01.529 MATLAB clear the command window close
+00:37:04.289 all the figure windows clear memory that
+00:37:06.029 sort of thing then we have our dashboard
+00:37:09.479 this is where all the hard coded numbers
+00:37:11.880 go we don't do any work inside of the
+00:37:13.680 dashboard this is just our controls for
+00:37:16.619 controlling the rest of the program and
+00:37:18.690 the rest of the program will not have
+00:37:20.789 any hard-coded numbers it's all
+00:37:22.469 controlled through this dashboard the
+00:37:25.259 first real task after defining
+00:37:27.150 everything about our problem the
+00:37:28.619 materials dimensions number of points on
+00:37:31.349 the grid and all that sort of stuff the
+00:37:33.479 first thing to do is actually calculate
+00:37:35.190 the grid so this is the size of the grid
+00:37:38.969 number of points on the grid the spacing
+00:37:41.400 on the grid that sort of thing once we
+00:37:44.339 have that we're now ready to build our
+00:37:47.069 device on the grid in this case our
+00:37:48.719 device is the slab waveguide and our
+00:37:51.089 goal here is to assign values of
+00:37:53.099 permittivity or refractive index to
+00:37:55.200 every point on the grid so that if we
+00:37:57.749 plotted that we would see a picture of
+00:37:59.579 our slab waveguide once we have that
+00:38:03.329 we're now ready to perform the finite
+00:38:05.670 difference analysis and what you'll see
+00:38:08.069 is this is actually a pretty short
+00:38:09.390 section of code when that's done our
+00:38:12.119 finite difference analysis is done and
+00:38:14.190 we're ready to visualize the results
+00:38:16.450 so let's dive in and look at the code so
+00:38:22.810 what we can see is up front we have our
+00:38:24.130 initialization where we're closing all
+00:38:26.200 the figure windows clearing the command
+00:38:27.940 window clearing memory and we enter our
+00:38:30.070 dashboard the first thing we'll give it
+00:38:32.830 is our free space wavelength I'm just
+00:38:35.200 calling this one and there's no units
+00:38:37.840 here that could be one meter one
+00:38:39.550 nanometer one anything and the reason
+00:38:43.000 we're allowed to do that is we will put
+00:38:44.860 all of the dimensions of our waveguide
+00:38:47.640 relative to a wavelength so we'll be
+00:38:50.020 expressing a and B in terms of
+00:38:53.170 wavelengths and an electromagnetic
+00:38:55.660 things are scalable so this works the
+00:39:00.040 next thing we'll define is our slab
+00:39:01.540 parameters we need the refractive index
+00:39:04.120 of the core which we're setting to 2.0
+00:39:06.430 and then the refractive index in the
+00:39:08.800 surrounding regions the cladding which
+00:39:10.720 we set to 1.0 or air and a is the core
+00:39:15.190 and we're setting this to three
+00:39:16.930 wavelengths wide not expecting you to
+00:39:19.900 have deep knowledge of waveguide theory
+00:39:21.730 but that's a pretty wide waveguide and
+00:39:23.860 this will be multimode it and support
+00:39:26.380 multiple modes so that's it for the slab
+00:39:30.100 B is not really needed for the slab
+00:39:32.470 because those regions with refractive
+00:39:35.560 index and two really are intended to
+00:39:37.210 extend out to infinity now clearly we
+00:39:39.610 can't do that in our model and so we
+00:39:41.830 have to choose some distance B that's
+00:39:44.380 large enough to make this work
+00:39:46.390 and here we're tribe in trying five
+00:39:48.700 different five wavelengths about five
+00:39:51.880 different wavelengths I misspoke they're
+00:39:53.440 five wavelengths and what we're looking
+00:39:55.900 for is for to see the mode in the
+00:39:58.240 vicinity of the core and then it drops
+00:40:00.430 in decays to zero and stay zero out to
+00:40:04.210 when it hits the edges and that's the
+00:40:05.920 sign of it being a guided mode the
+00:40:09.790 resolution were setting to a twentieth
+00:40:11.890 of a wavelength so that number twenty
+00:40:14.650 there is something that we can play with
+00:40:16.300 and what we'll want to do is make that
+00:40:17.950 twenty larger and larger so we'll be
+00:40:20.470 getting finer and finer resolution the
+00:40:22.840 simulations will take longer but what
+00:40:25.180 we'll see as we crank that number up
+00:40:26.950 that our answers at some point stop
+00:40:29.110 changing very
+00:40:30.000 much and we call the algorithm converge
+00:40:32.610 at that point and so that's a number
+00:40:36.360 we'll play with and the very last thing
+00:40:37.950 in our dashboard is the number of modes
+00:40:39.630 to calculate so we're only calculating
+00:40:41.370 the first five here but we can change
+00:40:43.530 that just by setting that to a different
+00:40:45.030 number okay on to the next step
+00:40:51.320 this is the stage where we want to build
+00:40:53.640 the device on our grid and the first
+00:40:55.440 thing is to set up the grid and the
+00:40:58.200 first number I like to calculate is SX
+00:41:00.210 this will be the physical size of the
+00:41:02.670 grid so it contains the core which is of
+00:41:06.360 size n a and two different cladding
+00:41:09.480 reads as if you will the top and the
+00:41:10.860 bottom
+00:41:11.460 both of size B so SX is just a plus two
+00:41:15.630 different B's then the number of points
+00:41:18.810 on our grid is the physical size of the
+00:41:21.150 grid divided by the grid resolution but
+00:41:24.030 an issue that can come up as that number
+00:41:25.620 can be a fraction it won't necessarily
+00:41:28.020 come out to be an integer so I am
+00:41:29.700 rounding up with the ceiling command in
+00:41:32.190 MATLAB however once I've rounded the
+00:41:36.150 physical size of the grid is now
+00:41:37.590 slightly different and I don't ever use
+00:41:39.750 SX again in this code but I just
+00:41:42.210 recalculated it just to make sure that
+00:41:44.580 everything's consistent after that I
+00:41:47.310 calculate a vector that tells me the
+00:41:48.900 position of each point on the grid and
+00:41:51.360 I'm centering it so position 0 is that
+00:41:54.300 in the middle of the core at this point
+00:41:57.930 I want to start building values into
+00:42:00.000 this array n which will contain the
+00:42:02.220 refractive index at each point so to
+00:42:06.030 Center the core the first thing I'll do
+00:42:07.830 is calculate how many cells wide the
+00:42:10.440 core is that's this little NX so it's a
+00:42:13.640 divided by DX and I round that just so I
+00:42:16.650 don't get any fractional numbers and
+00:42:18.440 then I calculate an NX 1 and NX 2 and
+00:42:22.380 these will be the start and stop indices
+00:42:25.380 of where to place the core and I'm
+00:42:27.510 calculating these in a way that would
+00:42:29.160 Center them in the grid once I have
+00:42:32.400 those were ready to start so I'll
+00:42:35.430 initialize this array n to all ones so
+00:42:39.060 that means I'm setting it to err and
+00:42:40.710 then I go ahead and I fill in the
+00:42:43.710 the top part of the waveguide the core
+00:42:46.170 and in the bottom part of the waveguide
+00:42:48.000 and you can see how I'm using those
+00:42:49.950 array indices n X 1 and X 2 to do that
+00:42:52.829 you Lassa see we're filling in the
+00:42:54.930 middle from n X 1 to X 2 with values of
+00:42:57.420 N 1 and the rest with values of n 2 so
+00:43:02.640 at this point we've calculated our grid
+00:43:05.550 and we've built the waveguide so we're
+00:43:11.400 ready to perform the finite difference
+00:43:12.660 analysis and this code you see that's it
+00:43:15.569 that's all there is to our finite
+00:43:17.010 difference analysis the first thing I do
+00:43:19.559 is calculate the the free space wave
+00:43:21.839 number 2pi over land and the reason we
+00:43:25.349 need that is because we have a
+00:43:26.609 normalized grid you remember doing that
+00:43:28.859 in our formulation now what we're after
+00:43:32.369 first is to build this matrix a which is
+00:43:35.460 our second order derivative matrix plus
+00:43:38.190 a diagonal matrix with refractive index
+00:43:40.410 squared so under this heading build dx2
+00:43:46.260 I'm building this big square matrix that
+00:43:48.900 would calculate a second order
+00:43:50.369 derivative now of course we're not using
+00:43:53.790 it to actually calculate the second
+00:43:56.010 order derivative we're using it to big
+00:43:58.140 to build the bigger matrix a so the
+00:44:01.650 first thing I do is I set it off to
+00:44:02.970 zeros and call it a sparse matrix then I
+00:44:05.940 go ahead and I insert the three main
+00:44:07.410 diagonals that you see you see ones and
+00:44:10.170 negative two s and another diagonal of
+00:44:11.819 ones and so these three lines of code is
+00:44:13.859 what's doing that and then the very last
+00:44:15.750 thing is I divide by the grid resolution
+00:44:20.160 but the normalized grid resolution so
+00:44:22.200 it's K times DX that quantity squared so
+00:44:26.190 at that point we have our derivative
+00:44:28.619 matrix for second order derivatives well
+00:44:32.220 we already have a 1 dimensional array in
+00:44:34.200 containing the refractive index at each
+00:44:36.089 point so I declare I've reshaped that
+00:44:38.700 first way column vector declare it to be
+00:44:40.680 sparse then make it a diagonal in a
+00:44:42.900 matrix at that point we have this
+00:44:45.210 diagonal matrix n now we're ready to
+00:44:48.359 build the matrix a our eicken matrix if
+00:44:51.329 you will so it's the DX squared plus N
+00:44:54.240 squared
+00:44:55.360 we've built our matrix a now we're ready
+00:44:58.240 to solve the problem so I'm calling AG
+00:45:01.980 this is not the sparse egg and I'm
+00:45:05.290 calling that because that's a little bit
+00:45:06.670 faster than the sparse version of AI
+00:45:08.920 which is called eggs ends with an S for
+00:45:11.500 sparse and it doesn't like to see sparse
+00:45:14.170 matrices so I declare a to be full and
+00:45:16.690 I'm asking it for the eigenvector matrix
+00:45:19.480 and the eigenvalue matrix now remember
+00:45:23.800 the eigen values here are refractive
+00:45:26.140 index square the effective refractive
+00:45:28.300 index squared so the first thing I like
+00:45:30.010 to do is extract the diagonal and then
+00:45:32.500 take the square root of that so now I
+00:45:34.480 have a 1 dimensional array of the
+00:45:37.060 effective refractive indices sometimes I
+00:45:40.270 also might put a real operation outside
+00:45:42.190 of the square root cuz every once in a
+00:45:44.230 while some very small imaginary numbers
+00:45:46.210 can pop up like 10 to the minus 16 order
+00:45:48.820 of magnitude and that would clean them
+00:45:50.770 up I didn't have that problem here so
+00:45:53.260 it's not there so that's it that is the
+00:45:55.990 entire finite difference part of this
+00:45:59.170 code there was some work setting up to
+00:46:01.660 do the finite difference and then the
+00:46:03.430 next we want to display our results so
+00:46:09.430 this is the very last part we're
+00:46:10.720 displaying the results a few of the
+00:46:12.940 graphic techniques that I've done here
+00:46:14.500 notice the blue lines have a slight
+00:46:16.900 white glow to them and that makes it
+00:46:20.020 stand out on a contrasting background
+00:46:21.640 and I'd do that simply by plotting the
+00:46:24.280 line twice once with a thick white line
+00:46:26.080 and next with a thinner blue line so in
+00:46:29.320 this graphic I am showing the dimensions
+00:46:31.480 for the x axis on the Left I'm labeling
+00:46:34.150 which mode number we're displaying of
+00:46:36.460 course we're displaying the mode and
+00:46:37.900 then also giving the effective
+00:46:39.760 refractive index for each mode and of
+00:46:42.580 course we could play with this and large
+00:46:44.110 font sizes and do other things but I
+00:46:46.840 think that's a pretty good output and
+00:46:49.350 we've done graphics calls and things in
+00:46:51.760 the past so I'm really not going to go
+00:46:54.730 through this here so that's it that is
+00:46:57.820 slab analysis you can find a difference
+00:47:00.700 method

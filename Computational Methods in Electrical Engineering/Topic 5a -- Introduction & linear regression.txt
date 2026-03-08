@@ -1,0 +1,678 @@
+# tactiq.io free youtube transcript
+# Topic 5a -- Introduction & linear regression
+# https://www.youtube.com/watch/k5YIUkOQNyE
+
+00:00:01.070 introduction to curve fitting and linear
+00:00:03.870 regression this lecture will serve as a
+00:00:10.080 basic introduction to curve fitting we
+00:00:12.540 will certainly not cover all methods for
+00:00:14.759 curve fitting but definitely give you a
+00:00:16.500 good taste of methods in this category
+00:00:18.960 I think curve fitting is classic
+00:00:21.960 computational methods and it's really
+00:00:24.480 neat and fun it creates really neat
+00:00:26.550 graphics and is very useful in
+00:00:28.939 scientific and engineering analysis
+00:00:31.250 before we get into the methods we have
+00:00:34.110 to discuss statistics of data sets this
+00:00:36.510 is things like means averages variances
+00:00:39.629 to understand that once we have that
+00:00:42.570 background then we can jump into our
+00:00:44.610 best fit methods and in this lecture
+00:00:47.039 we'll study linear regression which has
+00:00:49.050 very ugly math well then we'll also
+00:00:51.480 study linear least-squares which is
+00:00:53.699 essentially implementing the same thing
+00:00:55.590 but in terms of matrices and has much
+00:00:58.379 cleaner math and so when we actually
+00:01:00.030 implement this we'll be implementing
+00:01:02.430 linear least-squares
+00:01:09.680 first what is curve fitting what does
+00:01:13.530 that mean well we start off with some
+00:01:16.500 kind of sample of data and these red
+00:01:18.720 points here are showing measured values
+00:01:21.299 and for some reason we know that the
+00:01:24.210 physics of what we're measuring those
+00:01:25.979 should fit a Gaussian but there's noise
+00:01:28.470 or error may be due to our measurements
+00:01:30.720 may be due to something else and we want
+00:01:33.450 to fit this as close as possible or
+00:01:35.490 figure out what type of Gaussian
+00:01:37.560 function fits that the best so the first
+00:01:41.040 thing we'll have to do is come up with
+00:01:42.420 an equation for our Gaussian and so this
+00:01:45.270 f of X function is the most generic
+00:01:47.100 equation for a Gaussian that I can come
+00:01:49.140 up with and it has an offset and
+00:01:51.509 amplitude variance or standard deviation
+00:01:55.049 has everything in there and we have
+00:01:57.869 these four variables a b c and d a b c
+00:02:02.250 and d and curve fitting is essentially
+00:02:06.299 asking the question what values to a b c
+00:02:09.330 and d what
+00:02:11.460 they need to be so that our function
+00:02:13.680 fits those data samples as closely as
+00:02:15.930 possible with the minimum amount of
+00:02:18.120 error so in this silly little animation
+00:02:20.730 here we're just trying bunch of
+00:02:22.860 different values of a B C and D and what
+00:02:24.930 you can see is some of them are clearly
+00:02:26.490 a better fit some are worse fit one of
+00:02:30.060 the things we'll have to do is figure
+00:02:31.170 out how do we even quantify how good of
+00:02:33.090 a fit something is and once we have that
+00:02:36.060 metric we can use that metric to then
+00:02:38.580 fit our curve so that's curve fitting
+00:02:44.030 why do we want to do this one we can use
+00:02:48.270 it to interpolate we have a function at
+00:02:51.210 discrete points maybe we want to know
+00:02:53.670 the value between those points and if we
+00:02:56.730 fit to a curve and then use that
+00:02:58.680 function to interpolate that point we
+00:03:00.930 can get very accurate values very fast
+00:03:03.860 maybe we want to find the minimum or
+00:03:06.480 maximum of a discrete function we'll
+00:03:08.460 talk more about this when we talk about
+00:03:09.900 optimization another thing we'll talk
+00:03:13.470 about later in the semester is deriving
+00:03:15.090 finite difference approximations if you
+00:03:17.550 have a discrete function how then do you
+00:03:20.130 calculate a derivative or second-order
+00:03:22.470 derivative
+00:03:24.200 maybe we know the physics of our problem
+00:03:27.390 we know what equation our data should be
+00:03:30.030 following and we will fit our data to
+00:03:32.760 that equation and then from that
+00:03:34.350 equation once we've done the fit the
+00:03:36.480 parameters that come out like in one of
+00:03:38.640 the previous slides with ABC and D we
+00:03:41.460 could perhaps describe physical meaning
+00:03:44.430 to each of those also if we know what
+00:03:47.790 the function should be we can do this
+00:03:49.440 just simply to remove noise from the
+00:03:51.180 function maybe we fit it to a line this
+00:03:54.030 is probably the most common just to
+00:03:55.440 observe trends you'll see this in stock
+00:03:57.600 market analysis prices are going up and
+00:03:59.460 down there's lots of noise but we can
+00:04:01.650 fit it to a line or maybe even a
+00:04:03.270 parabola and observe general trends so
+00:04:06.030 I'm sure there's even lots of reasons to
+00:04:07.830 fit data to curve that I'm not even
+00:04:09.450 covering here
+00:04:13.670 there are two basic categories of curve
+00:04:17.430 fitting methods one is the best fit and
+00:04:19.769 this is where you have a bunch of
+00:04:21.899 samples and you want to fit your
+00:04:24.090 function just as best as possible
+00:04:26.720 understanding that you're going to miss
+00:04:28.620 will notice here that these data samples
+00:04:31.770 they don't lie exactly on the line but
+00:04:34.260 we have constructed a line that passes
+00:04:36.000 as much through the center of those to
+00:04:39.150 represent those as possible then there's
+00:04:42.270 also exact fits this is this comes up
+00:04:45.180 and we get two polynomials where we want
+00:04:46.890 those lines to pass through those points
+00:04:49.830 exactly now let's talk about the
+00:04:55.650 statistics of data sets the first and
+00:05:01.560 probably the most common statistic of
+00:05:04.470 data sets is the arithmetic mean and if
+00:05:07.290 I was do put this to a geometry
+00:05:09.360 perspective this is as close to the
+00:05:11.250 center of all your points as possible a
+00:05:17.000 different type of mean that maybe you
+00:05:19.620 have or have not heard of is something
+00:05:20.940 called the geometric mean so rather than
+00:05:22.950 adding up all your values divided by the
+00:05:24.660 number of samples we will multiply all
+00:05:27.419 our values and then take the nth root
+00:05:30.300 where m is the number of samples that we
+00:05:33.030 have and this gives you a number that's
+00:05:36.090 different than the arithmetic mean and
+00:05:38.220 it's in some ways it's much more useful
+00:05:40.190 for example let's say you want to buy a
+00:05:43.230 car and there are certain things you
+00:05:45.480 want to know about that car does the
+00:05:47.190 engine run does the do the brakes work
+00:05:50.880 and so on and if you were to score all
+00:05:54.390 those things a value of 1 to 10 and
+00:05:56.850 let's say the brakes don't work at all
+00:05:58.400 but the engine works wonderfully that if
+00:06:01.560 you did an arithmetic mean of a 10 and a
+00:06:03.750 zero you'd have a 5 you'd grade your
+00:06:06.030 scores of your car as a 5 and you might
+00:06:08.880 buy it whereas if the brakes don't work
+00:06:10.980 or the engine doesn't run either one of
+00:06:12.960 those if they're zero
+00:06:14.370 you want the whole metric to be zero
+00:06:16.080 because the car is junk and the
+00:06:18.240 geometric mean takes things like this
+00:06:19.860 into account much better and I tend to
+00:06:21.960 use this when it comes to merit phone
+00:06:24.020 and optimization so interesting
+00:06:27.229 difference in this in the arithmetic
+00:06:28.250 mean very often when we have error or
+00:06:36.680 noise in our measurements that noise
+00:06:38.710 follows the statistics of a normal
+00:06:42.050 distribution or a Gaussian distribution
+00:06:44.479 and we can characterize the width of
+00:06:47.060 that one of two ways it really it's the
+00:06:49.520 same way just one's the square of the
+00:06:52.729 other so first we have the standard
+00:06:54.199 deviation and this is a parameter that
+00:06:57.319 appears in the equation for a Gaussian
+00:06:59.030 and it characterizes the width of the
+00:07:01.729 Gaussian as you can see down here I'm
+00:07:03.710 going back and forth now over the span
+00:07:05.930 of plus or minus one standard deviation
+00:07:08.539 and what we can see is about 68% of the
+00:07:12.259 time your sample will fall within one
+00:07:15.229 standard deviation and then of course if
+00:07:17.569 we go out the two standard deviations
+00:07:20.440 more and more times it falls within that
+00:07:23.270 interval so that's the standard
+00:07:25.580 deviation a very similar parameter and
+00:07:29.180 in my mind is the same thing as standard
+00:07:30.979 deviation in fact if we just square the
+00:07:33.560 standard deviation we get a parameter
+00:07:35.900 called variance but it is quantifying
+00:07:38.719 the same thing as the standard deviation
+00:07:45.039 there's also a parameter used a lot
+00:07:47.330 called the coefficient of variation we
+00:07:49.490 won't use that a whole lot in this
+00:07:50.960 course but it is out there and we can
+00:07:53.419 think of this as more of a relative
+00:07:55.430 standard deviation so it's standard
+00:07:57.469 deviation but we're dividing by the mean
+00:08:00.620 so it's it's normalized in that sense so
+00:08:09.860 we're done with the background the
+00:08:10.969 statistics of data sets that gives us
+00:08:13.430 everything we need to know to then move
+00:08:15.529 into curve fitting and the first one
+00:08:18.199 we're going to go through we won't
+00:08:19.310 actually implement you certainly can
+00:08:21.289 implement it but we won't do that here
+00:08:22.759 and you'll notice that it's pretty ugly
+00:08:25.490 math but I think it's more intuitive
+00:08:27.620 math and it will prepare you for the
+00:08:31.490 next curve fitting method
+00:08:37.539 so the goal of regression is when we
+00:08:40.219 have a bunch of points with noise to fit
+00:08:43.099 it to a curve or a line or some kind of
+00:08:45.980 function in a way that minimizes the
+00:08:49.730 error that or the distance between those
+00:08:51.799 samples and the line or any kind of
+00:08:54.559 curve so in this case we want to fit to
+00:08:57.470 a line and so we have a bunch of
+00:08:59.779 measurements here coordinates x and y
+00:09:01.970 and from these we want to calculate the
+00:09:05.119 equation for a line and really our goal
+00:09:07.850 is to determine this a naught and a 1 so
+00:09:11.989 how do we do that
+00:09:15.639 the first thing we'll do is write that
+00:09:18.949 equation of the line for each of our
+00:09:21.889 samples so for example we have sample
+00:09:24.410 one point one and so we have the
+00:09:26.029 subscript one here so we have our one
+00:09:29.779 value of y and our one value of x and
+00:09:33.470 then of course we have the a naught and
+00:09:35.179 a 1 which are the parameters over line a
+00:09:37.309 naught and a 1 don't change for all of
+00:09:39.769 these but then we go to our second point
+00:09:42.019 and we have a two subscript on Y 2
+00:09:44.449 subscript on X but that ain't not that a
+00:09:47.119 1 they stay the same so it's the same
+00:09:48.949 equation for the line we're just putting
+00:09:51.529 in the X&amp;Y coordinates for each of our
+00:09:53.929 measured samples separately and we get a
+00:09:56.540 huge list of equations we have 20 points
+00:10:00.399 we'll get 20 equations of a line to
+00:10:07.749 write these equations exactly
+00:10:10.449 recognizing that those points have noise
+00:10:12.739 in them we have to add some kind of
+00:10:15.619 error term and that's these terms over
+00:10:18.589 here we'll call these the residuals so
+00:10:21.709 we know that x1 and y1 is not an exact
+00:10:24.649 fit to the line or at least not
+00:10:26.209 necessarily falling right on the line so
+00:10:28.789 by adding some constant here it lets us
+00:10:31.100 write an equals and really that the
+00:10:34.189 distance between that point and the line
+00:10:35.869 is characterized by that e term so each
+00:10:38.779 equation gets its own e term if the
+00:10:41.449 point just happens to fall on that line
+00:10:43.609 the e term would be 0 for that equation
+00:10:46.039 so those are called our residuals
+00:10:52.800 well clearly we want to minimize those
+00:10:55.750 residuals so we have a problem we need
+00:10:58.839 some kind of quantity that tells us how
+00:11:01.660 good our line fits our measured values
+00:11:06.130 so let's think about what a good
+00:11:07.899 criteria could be what have we just
+00:11:11.620 added all of the residuals would this be
+00:11:15.459 good it turns out that's not good
+00:11:21.579 because you will have positive and
+00:11:23.529 negative residuals and they could be
+00:11:25.390 relatively large but if you add them
+00:11:27.640 together we could end up with overall
+00:11:30.070 the sum that's near zero even though we
+00:11:32.290 have very large residuals and it's not a
+00:11:34.750 good curve fit so sum of residuals is
+00:11:37.690 not very good recognizing that positive
+00:11:42.970 and negatives cancel each other what if
+00:11:44.920 we just took the absolute value of all
+00:11:47.170 the residuals and added them up is this
+00:11:50.079 a good criteria for best fit it turns
+00:11:58.240 out the answer here is also no and
+00:12:00.160 that's because this does not lead to a
+00:12:01.930 unique best fit we will have multiple
+00:12:04.360 solutions of how our line or function
+00:12:07.180 can fit those points not that this can't
+00:12:11.020 be used it's just that there's something
+00:12:13.390 better so it turns out if we actually
+00:12:18.100 sum the squares of the residuals this
+00:12:20.770 leads to a unique fit of our line or
+00:12:23.680 function to our measured samples so we
+00:12:26.589 will proceed with this and we'll use
+00:12:28.480 that as our criteria for best fit and
+00:12:32.040 after doing this calculation the capital
+00:12:35.230 e is just a single number even though we
+00:12:37.540 might have hundreds or thousands of
+00:12:39.130 individual residuals we add them all up
+00:12:41.800 to get one number telling us how good
+00:12:45.070 the curve fit is so let's look
+00:12:53.420 the equation of the empal so y equals a
+00:12:56.570 naught plus X 1 times our MX sample plus
+00:13:00.680 the m3 jewelle we will solve this
+00:13:05.930 equation for the residual so now we have
+00:13:09.290 Y minus essentially the equation for the
+00:13:11.870 line notice a few things what is inside
+00:13:19.820 the parentheses is actually the value of
+00:13:23.210 y according to our curve fit the y value
+00:13:28.400 over here is our measured value and
+00:13:31.100 that's really why the difference between
+00:13:33.380 these two is this residual term or the
+00:13:35.930 error so it's consistent so now that we
+00:13:41.960 have an expression for the empty of
+00:13:44.690 little e we can substitute this function
+00:13:47.900 into our expression for our criteria for
+00:13:50.780 best fit so we replace e/m squared with
+00:13:54.200 this expression which essentially
+00:13:56.420 remember is the measured value of Y
+00:13:58.760 minus our fit value of Y and then
+00:14:02.150 plugging in the function above we get
+00:14:03.800 this not making much sense yet now that
+00:14:12.290 we have an equation for calculating EE
+00:14:14.600 that single number that tells us how
+00:14:16.640 good our fit is we want to figure out in
+00:14:19.940 this case what a naught and a 1 are that
+00:14:22.340 minimizes that so to minimize something
+00:14:28.550 we'll use the first derivative test or
+00:14:30.590 the first derivative rule and if a
+00:14:33.110 function has a minimum or maximum that
+00:14:35.060 means the slope has to be zero on that
+00:14:37.400 minimum or maximum so we set the first
+00:14:40.070 derivative equal to zero and figure out
+00:14:42.830 what value of a naught and a 1 makes
+00:14:45.710 that happen
+00:14:49.830 [Music]
+00:14:53.420 okay so we have our expression for e
+00:14:58.980 that appears here and here what we want
+00:15:03.390 to do now is differentiate it twice
+00:15:05.210 because we have two parameters that
+00:15:07.530 we're fitting to if we had three or four
+00:15:08.970 we'd be taking three or four derivatives
+00:15:11.580 but we take a partial derivative of our
+00:15:14.340 criteria in our error function with
+00:15:16.110 respect to each parameter that we're
+00:15:18.360 trying to solve for so for a naught
+00:15:20.400 we'll take the derivative with respect
+00:15:22.110 to a naught and we bring the derivative
+00:15:24.270 to the inside we calculate the
+00:15:26.100 derivative bring the two to the outside
+00:15:28.320 and we end up with an expression and we
+00:15:31.350 do the same thing for a 1 we will bring
+00:15:33.780 the derivative inside the summation
+00:15:35.580 calculate the derivative bring a
+00:15:37.770 constant to the outside so we now have
+00:15:40.740 these two partial derivatives they look
+00:15:42.690 similar but they're a little bit
+00:15:44.010 different because we differentiate it
+00:15:45.570 with respect to a different variable
+00:15:50.600 well the next step in this first
+00:15:52.710 derivative test we set those derivatives
+00:15:54.810 to zero so we take the expressions that
+00:15:57.300 we previously had set them equal to zero
+00:15:59.730 and do a little bit more algebra in them
+00:16:02.430 and we broke them up so rather than
+00:16:05.130 writing one summation on the for the the
+00:16:08.610 a not partial derivative we now have two
+00:16:11.580 summations and for the a one partial
+00:16:14.490 derivative we now have three some Asians
+00:16:21.860 so we now have two equations and two
+00:16:26.010 unknowns this is solvable these two
+00:16:29.130 equations before we solve them are
+00:16:30.900 called the normal equations when we
+00:16:33.630 solve them we will then be able to
+00:16:35.850 calculate a naught and a 1 that
+00:16:38.400 minimizes that error term e when we do
+00:16:47.400 this I'm skipping over some algebra here
+00:16:50.010 but here is our answer we will calculate
+00:16:53.310 our a1 based on this big ugly equation
+00:16:57.480 that has all those different summations
+00:16:59.130 in it once we know a1 then it's very
+00:17:02.670 easy to calculate a not just
+00:17:04.980 the average value of the samples in Y
+00:17:07.619 and our samples and X and here's how we
+00:17:10.890 calculate our averages that's pretty
+00:17:12.419 easy and once we have a naught and a 1
+00:17:15.089 we've solved our problem we've done our
+00:17:18.569 curve fit the problem is yikes that's a
+00:17:22.980 really ugly equation to solve and it's
+00:17:24.959 possible we can program it into the
+00:17:27.000 computer and we can make the computer do
+00:17:28.890 all the work but it turns out there's a
+00:17:31.080 much cleaner way to do this using
+00:17:33.090 matrices and that will take us into our
+00:17:35.700 next method our next method is linear
+00:17:41.669 least squares and it's implementing
+00:17:43.980 really what we talked about in the last
+00:17:45.600 method but with cleaner math using
+00:17:48.450 matrices let's set up our problem and
+00:17:55.049 make it a little bit more generic in
+00:17:57.360 that we have an arbitrary number of
+00:17:59.429 unknowns so in this equation the Z's we
+00:18:05.429 think of as our coordinates so Z naught
+00:18:07.500 could be X Z 1 could be Y and Z 2 could
+00:18:10.410 be could be Z but we've generalized this
+00:18:13.110 to have any number of terms but we can
+00:18:15.299 think of those as our coordinates the a
+00:18:18.630 naught a 1 a 2 parameters those are the
+00:18:22.830 unknowns that's what will fit the curve
+00:18:24.809 and F are our measured values so that's
+00:18:28.919 our problem we want to calculate the A's
+00:18:31.370 given a bunch of measurements
+00:18:45.250 so just like before we will take this
+00:18:48.500 set of equations and we'll add these
+00:18:50.990 residual terms that's what lets us write
+00:18:53.960 an equal sign that's what makes these
+00:18:55.490 equations exactly because we know that
+00:18:57.020 our measurements won't fall exactly on
+00:18:59.210 the curb F but once we have this large
+00:19:03.530 set of equations one equation for every
+00:19:06.080 single one of our measurements we can
+00:19:07.730 cast them into matrix form we now have a
+00:19:11.000 column vector containing all of our
+00:19:13.280 values of F those are our measurements
+00:19:15.640 we have another column vector containing
+00:19:18.620 all our values of A's those are our
+00:19:20.660 unknowns that's what will fit our curve
+00:19:23.000 to our measurements we have another
+00:19:25.850 column vector containing all of our
+00:19:27.590 residual terms and then we have our
+00:19:30.560 matrix essentially containing our
+00:19:32.480 coordinates so rather than keep writing
+00:19:35.030 everything like that we'll write this
+00:19:37.730 matrix equation in a more compact form
+00:19:40.070 and proceed doing math with those so now
+00:19:48.350 we're in the formulation stage we need
+00:19:50.240 an equation to calculate a like before
+00:19:54.400 we took all of our equations and solve
+00:19:57.200 for e we can do this all at once now in
+00:20:00.320 matrix form so we're solving our matrix
+00:20:02.540 equation for the e term our residuals
+00:20:09.100 step 2 we need our error criterion an e
+00:20:13.580 we saw that the sum of the squares of
+00:20:16.070 the individual residuals was a good
+00:20:18.520 criterion well how do we do this when e
+00:20:21.770 is a column vector that's actually
+00:20:24.920 pretty easy we use e as a row vector
+00:20:29.440 multiplying a is a column vector and if
+00:20:33.020 we do the row column thing we get a
+00:20:34.670 single number which is the sum of the
+00:20:37.010 squares and we can write this a little
+00:20:39.140 bit more compactly as e transpose times
+00:20:42.110 e sometimes that's also called the inner
+00:20:44.600 product or the dot product but it gives
+00:20:46.970 us our sum of squares
+00:20:52.500 we have an expression from step one for
+00:20:55.049 e its F minus Z times a we then
+00:20:59.070 calculated our error criterion as e
+00:21:02.340 transpose times e so what we can do is
+00:21:04.590 we can take this expression for E and
+00:21:06.980 plug it in here to get a new expression
+00:21:09.480 for our error criterion in terms of F
+00:21:12.390 and Z and a so remember this error
+00:21:21.570 criterion it's a single number because
+00:21:24.030 it was a row vector times a column
+00:21:25.169 vector and before in our previous method
+00:21:30.780 the way we minimize that was with the
+00:21:32.850 first derivative test and we looked at
+00:21:34.590 each of our unknowns one at a time and
+00:21:37.409 did partial derivatives we're going to
+00:21:39.570 do the same thing here but we're going
+00:21:41.549 to take derivatives of a matrix equation
+00:21:43.679 kind of interesting so here we are with
+00:21:46.320 our first original equation our starting
+00:21:49.110 point for the error criterion we'll take
+00:21:54.539 the transpose operation and bring it
+00:21:57.419 inside the parentheses so we just have F
+00:21:59.159 transpose but then the transpose of Z
+00:22:02.370 times a remember we have to swap the
+00:22:04.200 order of Zn a and we get a transpose
+00:22:06.510 times Z transpose and then we still have
+00:22:09.390 F minus C times a on the right hand side
+00:22:12.179 so we distributed the transpose into the
+00:22:15.030 first parentheses then we multiply that
+00:22:19.950 out so we just have essentially the sum
+00:22:22.950 and difference of a bunch of terms now
+00:22:25.890 we're going to observe something look at
+00:22:28.710 these two terms since E is a single
+00:22:33.330 number every single term in this
+00:22:36.210 equation has to be just a single number
+00:22:39.740 that means since these just involve F
+00:22:43.169 and Z and a and both of them are just
+00:22:45.780 transposes of each other they have to be
+00:22:47.970 the same because they'll reduce to a
+00:22:49.650 single number and they're transposes of
+00:22:51.720 each other that means we can combine
+00:22:54.390 them and that's really the last step so
+00:22:57.990 we combine the terms and have a slightly
+00:22:59.490 simpler equation onto the next step
+00:23:06.169 now we're at the point that we have to
+00:23:08.580 minimize that error term II and if
+00:23:11.850 you're calling the last method the way
+00:23:13.320 we did that we took the partial
+00:23:14.610 derivative of e with respect to each of
+00:23:17.220 our unknown parameters we are
+00:23:19.530 essentially going to do that the same
+00:23:21.030 thing here except we're going to take
+00:23:23.010 the partial derivative with respect to
+00:23:24.809 the column vector a so we're doing it
+00:23:27.030 all at once in a single matrix equation
+00:23:31.380 so we start with our original equation
+00:23:34.110 for e and we'd write our partial
+00:23:38.100 derivative but with respect to the
+00:23:39.960 column vector a so what we'll do now is
+00:23:42.600 apply this partial derivative to each
+00:23:45.179 term on the right hand side so we
+00:23:47.760 multiply that out and we end up here the
+00:23:52.320 first term only has F in it F is not a
+00:23:55.260 function of a so if we take the
+00:23:57.419 derivative with respect to a that goes
+00:23:59.250 to zero our second term the two comes to
+00:24:05.909 the outside of the derivative operation
+00:24:07.679 and when we take the derivative of our
+00:24:09.750 third term nothing happens right now now
+00:24:13.590 we do the derivatives and in this first
+00:24:16.980 term there's only one a Z and F are not
+00:24:20.309 functions of a we can think of that as
+00:24:22.169 coming to the outside of the partial
+00:24:23.610 derivative and then da da is just one so
+00:24:26.789 really we're just left with two times Z
+00:24:29.220 transform F and we end up here over here
+00:24:33.090 we have a twice in this equation so we
+00:24:36.510 can think of that as an a squared and
+00:24:38.580 when we take the derivative of a squared
+00:24:40.409 that 2 comes out and we only have one
+00:24:43.440 occurrence of a now and of course we
+00:24:45.720 still have the Z transpose Z that we
+00:24:48.600 down here may seem a little bit weird
+00:24:51.120 with some practice manipulating matrix
+00:24:54.390 equations in this way becomes a little
+00:24:56.100 bit more intuitive so our first
+00:25:03.600 derivative test we have to set that
+00:25:05.850 first derivative equal to zero and then
+00:25:08.580 see what our choice was of a that caused
+00:25:11.190 that to happen so notice on the right
+00:25:14.039 hand side we don't have a bold zero
+00:25:15.840 that's not a column vector
+00:25:17.350 zero that's just a single number zero
+00:25:19.950 because this e was just a single number
+00:25:23.309 so we set our matrix first derivative if
+00:25:26.740 you will to zero will not write the
+00:25:31.510 derivative operation we just have our
+00:25:32.950 expression equal to zero now we need to
+00:25:35.620 figure out what a is to satisfy this so
+00:25:40.630 we'll bring this term with the negative
+00:25:45.160 two over to the right hand side that way
+00:25:47.020 we have no negatives and we can cancel
+00:25:49.299 the two from both sides and in some
+00:25:52.780 sense that's our final equation I'll
+00:25:54.490 come back to this in a minute but let's
+00:25:56.740 solve that for a and we end up here and
+00:26:00.460 in fact that is our answer to a and we
+00:26:04.960 would call this solving for a in the
+00:26:07.090 sense of least squares now let's look at
+00:26:13.000 this equation the second last equation a
+00:26:15.070 little bit more detail right now just
+00:26:17.260 mentally ignore the Z transposes on each
+00:26:20.230 side we have Z a equals F that really is
+00:26:24.850 our original matrix equation but one
+00:26:28.150 that had more equations than had
+00:26:30.100 unknowns so in fact what we did was just
+00:26:33.429 pre multiply both sides of that original
+00:26:35.770 equation by Z transpose and then we got
+00:26:39.610 our answer a this is a warning slide if
+00:26:48.309 we look at our solution in the sense of
+00:26:51.159 least squares and let's simplify this so
+00:26:53.740 the first thing we'll do is we'll bring
+00:26:55.090 our inverse operation in here so we swap
+00:26:58.179 the order so we just have Z inverse and
+00:27:00.220 then the Z inverse of the transpose and
+00:27:03.010 then we just have Z transpose F down
+00:27:05.500 here now we have the inverse of Z
+00:27:08.140 transpose multiplying Z transpose that
+00:27:11.049 gives us the identity matrix which
+00:27:13.720 reduces this whole equation just to Z
+00:27:15.730 inverse F this is the solution to our
+00:27:19.360 original equation but that would have
+00:27:21.909 been just the straightforward solution
+00:27:23.470 that did not incorporate any sort of
+00:27:25.480 least squares so the moral to the story
+00:27:27.909 is we cannot we are not
+00:27:30.790 free to simplify this because that
+00:27:32.620 eliminates our least squares we actually
+00:27:35.350 have to calculate this matrix in here
+00:27:37.690 will calculate this column vector and
+00:27:40.150 then do the pre division can solve that
+00:27:42.960 by any number of means that we studied
+00:27:45.550 earlier in the semester so don't
+00:27:47.380 simplify the least squares equation
+00:27:49.450 because it eliminates these squares a
+00:27:56.220 way that I really like to think about
+00:27:58.990 this I'm just picturing the matrices as
+00:28:01.390 pictures now just to kind of get an idea
+00:28:03.610 of the size so if we really have a
+00:28:06.070 situation where we have more equations
+00:28:07.720 than unknowns we're going to have
+00:28:10.870 rectangular matrix on the left hand side
+00:28:13.300 and there's many many many more
+00:28:15.790 equations than there are unknowns then
+00:28:19.720 we want to multiply this by the
+00:28:21.850 transpose of this rectangular matrix on
+00:28:26.050 the left so what happens when we do that
+00:28:30.690 we end up here the horizontal
+00:28:34.320 rectangular matrix is simply the
+00:28:36.880 transpose of this vertical rectangular
+00:28:39.490 matrix and we're pre multiplying both
+00:28:42.400 sides of the equation by that transpose
+00:28:45.810 so our next step then is to multiply
+00:28:48.610 these two rectangular matrices together
+00:28:51.460 and then also multiply on the right hand
+00:28:54.430 side our horizontal rectangular matrix
+00:28:56.950 and our column vector when we do that we
+00:29:02.020 end up here with a standard ax equals B
+00:29:05.260 problem and our matrix on the left now
+00:29:08.020 is square and also a lot smaller and
+00:29:11.050 this is solvable by any number of
+00:29:13.210 algorithms including the ones that we
+00:29:15.070 discussed earlier in the course so a
+00:29:21.670 matrix form here is the least squares
+00:29:23.470 algorithm the first thing we'll do is
+00:29:25.900 construct the F and the Z matrix
+00:29:27.790 remember that Z matrix essentially
+00:29:30.130 contains all of the coordinates and the
+00:29:33.160 F the measured values
+00:29:37.270 once we're there we just solved for that
+00:29:40.159 column vector F that's the unknowns
+00:29:41.960 following the least squares algorithm so
+00:29:45.049 we will multiply Z transpose times Z we
+00:29:49.610 will then multiply Z transpose times F
+00:29:51.950 and then we will backward divide the two
+00:29:55.039 and end up with our a once we have a now
+00:30:01.580 we can extract all of the coefficients
+00:30:03.200 that we're doing our curve fit and we're
+00:30:06.169 done the problem so really anytime we're
+00:30:14.990 given a linear algebra equation ax
+00:30:17.419 equals B and we have more equations than
+00:30:20.659 we have unknowns we can solve this in
+00:30:23.870 the sense of least squares when we do
+00:30:28.340 that it's a best fit and it's not
+00:30:31.640 necessarily exact
+00:30:34.840 so given ax equals B we will simply
+00:30:39.590 calculate a new a and a new B by pre
+00:30:43.340 multiplying by the transpose of a and
+00:30:45.590 now we have a new ax equals B which has
+00:30:48.289 exactly the same number of equations as
+00:30:50.899 unknowns and that's easily solvable
+00:30:56.950 let's do an example here are four points
+00:31:00.800 and we would like to fit those to a line
+00:31:03.770 and so the equation of a line that we'll
+00:31:06.080 use in this case is y equals MX plus B
+00:31:13.150 step one we write the equation of a line
+00:31:16.940 for each one of our points we have four
+00:31:19.520 points and we put those four in matrix
+00:31:22.370 form we end up here and with practice
+00:31:25.430 you can just do this directly though the
+00:31:27.650 step will be obvious and so from this we
+00:31:31.790 have our measured samples f that really
+00:31:34.880 was this Y column and then our Z matrix
+00:31:38.360 is here and that's essentially our
+00:31:41.450 coordinates so with practice we can go
+00:31:44.300 straight from our data samples to the F
+00:31:46.850 and the Z F containing our measurements
+00:31:49.310 Z containing the coordinates to solve
+00:31:55.250 this by least squares we take our
+00:31:58.000 vertical Z matrix if you will and we pre
+00:32:01.430 multiply both sides of our equation by
+00:32:03.320 the transpose when we multiply these two
+00:32:07.340 rectangular matrices together we get a
+00:32:09.230 small square matrix and on the right
+00:32:12.320 hand side we multiply our rectangular
+00:32:14.270 matrix by our column vector of
+00:32:16.070 measurements and we end up with a small
+00:32:18.140 column vector this is easily solved for
+00:32:21.110 the unknown coefficients M and B the
+00:32:27.290 last step in the algorithm I should say
+00:32:29.300 the second to last step is to extract M
+00:32:31.550 and B the last step is always to
+00:32:33.500 visualize so that's what we do we'll
+00:32:39.380 plot the original lines we then
+00:32:42.020 calculate our fit curve and plot it
+00:32:44.390 through the lines and we see how good we
+00:32:46.850 did and visually this looks really good
+00:32:48.980 the line looks like it's essentially
+00:32:50.870 passing through the center of our
+00:32:52.970 measured data points

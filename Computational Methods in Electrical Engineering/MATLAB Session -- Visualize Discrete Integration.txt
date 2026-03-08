@@ -1,0 +1,351 @@
+# tactiq.io free youtube transcript
+# MATLAB Session -- Visualize Discrete Integration
+# https://www.youtube.com/watch/QxYjwmlukSk
+
+00:00:00.680 in this MATLAB session we're going to
+00:00:03.540 pick up on the previous code that we
+00:00:06.029 wrote that demonstrated numerical
+00:00:07.680 integration and for discrete integration
+00:00:11.130 I want to add a graphical visualization
+00:00:13.200 of that so we have the same code and so
+00:00:17.730 the first thing I'll do is go down to
+00:00:19.730 trapezoidal integration and everything
+00:00:22.260 below that and I'm just going to delete
+00:00:24.600 it we won't need that anymore because we
+00:00:27.840 just want to visualize the discrete
+00:00:29.820 integration I'm also going to delete the
+00:00:33.210 convergence study that we did because we
+00:00:35.160 don't need that and we'll delete where
+00:00:40.739 we calculated in for Simpsons rule and
+00:00:43.399 just go back to n equals 10 and maybe
+00:00:46.260 for now we'll just say N equals 4 so if
+00:00:50.100 we run it make sure everything still
+00:00:52.350 runs after we've deleted all this stuff
+00:00:53.960 ok we get something close to 2 so it's
+00:00:57.030 still somewhat working I'll put a
+00:01:00.750 semicolon there and now in the next
+00:01:03.780 section of code we're going to visualize
+00:01:05.909 the discrete integration
+00:01:15.310 now observe how I'll do this I won't
+00:01:17.770 write all of the code all at once we're
+00:01:20.200 just going to build on this one layer at
+00:01:22.750 a time so we want to see a few things
+00:01:27.460 one we would like to see our current
+00:01:30.460 function and let's go ahead and look at
+00:01:32.470 that but X Y let's run this and see what
+00:01:37.479 we get
+00:01:39.420 now we're displaying a function with
+00:01:43.000 very sparse points and I really don't
+00:01:46.720 like connecting the dots when we have
+00:01:48.910 sparse points at the very least we need
+00:01:52.300 to put little dots or circles or
+00:01:54.130 something at those discrete points to be
+00:01:56.470 a little bit honest that we only know
+00:01:59.140 the function value at very few discrete
+00:02:02.259 points so let's use blue circles also
+00:02:08.889 connected with a solid line now okay
+00:02:11.319 we're a little bit more honest but to
+00:02:14.890 visualize discrete integration we
+00:02:17.019 probably don't even want these lines at
+00:02:19.239 all
+00:02:19.780 and we can get rid of them this way
+00:02:23.290 now we're only displaying those points
+00:02:26.680 these discrete points for visualization
+00:02:30.190 purposes I probably also want to see my
+00:02:33.100 function but a nice smooth sort of
+00:02:35.620 analytical version of that so what we'll
+00:02:38.920 need to do is go ahead and calculate a
+00:02:40.690 high-resolution version of the function
+00:02:50.040 bell hi incorrectly so we will need a
+00:02:53.489 high-resolution version of X so this
+00:02:57.840 will be the linspace oh we're not we're
+00:03:00.540 doing discrete integration so we don't
+00:03:01.920 want to use linspace
+00:03:03.379 let's copy and paste that section of
+00:03:08.340 code and we'll need an N 2 or an NH
+00:03:11.790 let's come up with an NH number of
+00:03:14.040 points for our high-resolution version
+00:03:15.840 of the function and maybe we'll make
+00:03:17.970 this 1000 points so say a B minus a over
+00:03:25.859 N H we will call that DX H then we need
+00:03:33.090 to build an xh 0.5 to NH minus 0.5 times
+00:03:39.090 DX H and now we can calculate a why H
+00:03:43.790 which is func of XH now we'll be able to
+00:03:50.519 plot X H comma Y H and see a high
+00:03:54.090 resolution version of our sine function
+00:03:57.199 so let's go ahead and do that
+00:04:01.489 XH YH
+00:04:04.739 we'll do a solid blue line and we'll
+00:04:07.919 need to do the hold on and hold off so
+00:04:11.459 that we can also display those circles
+00:04:13.829 to show us where we actually know the
+00:04:17.159 function value when we're looking at the
+00:04:18.810 discrete function let's go ahead and run
+00:04:21.959 that and now we see this nice smooth
+00:04:26.419 analytical function and where we know it
+00:04:29.099 at the street points
+00:04:30.270 now let's high resolution version
+00:04:31.710 function if you're actually performing
+00:04:33.630 numerical integration you won't know
+00:04:35.760 that you won't have that we're simply
+00:04:37.590 doing it here to illustrate the concept
+00:04:41.330 let's go ahead and label this as draw
+00:04:45.750 data and then maybe the last step will
+00:04:50.520 set the view this is where we'll do
+00:04:52.770 access equal tight
+00:04:56.319 and eventually do our access labels and
+00:04:58.749 all that oh we made a mistake I spelled
+00:05:01.180 we spelled tight brght
+00:05:05.969 okay so now we see our sign and we see
+00:05:09.580 our discrete points next thing we
+00:05:14.529 probably want to do is draw our
+00:05:16.629 rectangles under each one of those
+00:05:18.639 points now since we're drawing rectangle
+00:05:21.550 that needs to happen inside of the hold
+00:05:23.589 on and hold off and our code here might
+00:05:26.319 start looking a little bit sloppy so up
+00:05:29.649 front let's say repair graphic window
+00:05:37.709 clear it and here is where we'll say
+00:05:40.990 hold on and we'll move the hold off down
+00:05:46.479 to here now we can label these two clots
+00:05:50.559 separately and we can do more steps and
+00:05:52.779 it's a little bit more clear so this one
+00:05:55.869 will say clot high-resolution function
+00:06:02.249 and then the next one
+00:06:07.880 lock screen points
+00:06:13.780 let's run it just to make sure we're
+00:06:15.670 seeing the same thing but now we're able
+00:06:19.060 to write our graphics code and subdivide
+00:06:21.760 things and everything happening from
+00:06:24.190 here to here is happening inside of the
+00:06:26.620 whole statement so let's go ahead and
+00:06:31.210 draw our rectangles and I'm making a
+00:06:33.370 mistake here but I want to I want you to
+00:06:36.040 see what this mistake does and so that
+00:06:38.530 way it'll make more sense when we
+00:06:39.910 correct it so let's draw rectangles and
+00:06:46.810 we will use the fill command to do this
+00:06:49.600 but first we have to set up a loop for
+00:06:53.380 each of our rectangles the first thing
+00:06:57.340 I'd like to do is calculate the left and
+00:06:59.530 right positions of the rectangles so
+00:07:02.110 I'll call the left position X 1 that is
+00:07:04.810 simply the nth value of X minus DX over
+00:07:09.610 to the right-hand side of our rectangle
+00:07:13.710 will be X and plus DX over 2 then we
+00:07:20.020 need to know the top and the bottom will
+00:07:22.690 let the bottom always be at 0 the top
+00:07:27.450 will be our function value at the center
+00:07:29.890 of the rectangle we will call this
+00:07:35.040 computer
+00:07:38.490 rectangle pigeons now we actually draw
+00:07:44.500 the rectangle and so we need to create
+00:07:49.960 an array that will work let's go
+00:07:52.960 counterclockwise around this rectangle
+00:07:56.970 so if we start at the lower left point
+00:08:00.010 the x position will be x1 and the lower
+00:08:03.760 right point the x position will be x2
+00:08:06.660 the upper right we're still at x1 upper
+00:08:11.200 left we're back to x1 and then finally
+00:08:14.980 we come down to x1 we're going to do the
+00:08:18.640 same thing for the Y position at the
+00:08:21.730 lower left we're at y1 height and lower
+00:08:25.690 right we're still at y1 then we move up
+00:08:28.090 to y2 at the upper right upper left
+00:08:31.180 we're also to y2 and then come back down
+00:08:33.820 to the first point we're at y1
+00:08:36.690 now we can create this rectangle we'll
+00:08:39.370 fill it in with a gray color let's go
+00:08:41.559 with 0.8 times 1 1 1 let's go ahead and
+00:08:47.980 run this and see what it looks like
+00:08:52.710 ok we made a mistake okay the mistake
+00:08:57.010 was we were accessing F to get the
+00:09:00.730 height of the rectangle and we actually
+00:09:02.380 calculated that as Y and not F that was
+00:09:05.650 my mistake
+00:09:07.380 let's go ahead and run it again
+00:09:13.290 so what happened here we only see one
+00:09:18.690 rectangle and it's also in front of our
+00:09:22.500 function we probably want to see this
+00:09:25.320 behind the function so we can make it
+00:09:32.910 behind the function by deleting that
+00:09:36.780 code and pasting it before we plot the
+00:09:39.900 function that will place this behind
+00:09:43.400 let's go ahead and run it and see what
+00:09:45.660 happens
+00:09:54.910 all right it's still not working we have
+00:09:57.430 it behind the function but notice man as
+00:10:00.490 some of our circles have moved down
+00:10:01.720 we'll only see one rectangle what on
+00:10:04.420 earth is happening here and this happens
+00:10:06.370 to me all the time
+00:10:07.630 stare at that and see if you can figure
+00:10:09.790 out what's happening go ahead and pause
+00:10:11.500 the video and I'll give you a hint
+00:10:13.570 though the problem is somewhere in here
+00:10:15.460 we should see four rectangles okay
+00:10:20.650 here's the problem up here we've defined
+00:10:23.620 the position of our points in this array
+00:10:25.960 X well down here we've overwritten that
+00:10:30.340 with the positions around our first
+00:10:32.650 rectangle and so from that point forward
+00:10:34.960 we no longer have the positions of all
+00:10:36.730 our points for the integration they're
+00:10:38.680 mixed up with the points around the edge
+00:10:40.870 of the rectangle so that messes things
+00:10:42.430 up and I do this all the time I
+00:10:44.320 accidentally use the same variable to
+00:10:46.330 different things and so I will name this
+00:10:48.820 X X and this y Y simply because I never
+00:10:52.420 use xx and YY and I know I won't be
+00:10:55.780 overwriting anything now I should see
+00:10:59.680 four rectangles and they're behind the
+00:11:02.590 function
+00:11:07.930 so we're doing pretty good I may want to
+00:11:12.850 label the x-axis so that'll be under set
+00:11:18.910 view we'll come down here say X label
+00:11:22.240 and let me just put an X in there and
+00:11:28.300 run it we'll see what that looks like so
+00:11:30.630 it has an X here but in fact that's not
+00:11:34.030 really a correct math symbol that really
+00:11:36.850 should be an italicized Roman type font
+00:11:40.060 so let's go ahead and use the latex
+00:11:42.700 interpreter
+00:11:50.750 now we run it we get a nice-looking
+00:11:53.990 italicized X and I want to do the same
+00:11:57.259 thing for the y-axis so I'll copy and
+00:12:00.170 paste this do a wide label and just
+00:12:03.949 change this to Y and now we run it we'll
+00:12:06.860 get a Y for our y-axis now if I just
+00:12:12.079 have a single variable here I don't like
+00:12:14.810 it rotated like this
+00:12:16.699 now if I had a longer label that would
+00:12:19.160 work out pretty good so let's fix its
+00:12:23.540 rotation and make it zero on it and see
+00:12:29.360 what happens
+00:12:30.819 notice now how scrunched it is up
+00:12:33.649 against these numbers that's too tight
+00:12:35.509 that does not look very good and the
+00:12:37.639 reason being is because by default it is
+00:12:39.439 Center justifying it so it's too tight
+00:12:41.810 up against the numbers what we need to
+00:12:43.970 do is write justify this we're running
+00:12:49.100 out of space we'll come to the next line
+00:12:50.689 and we'll we'll set the horizontal
+00:12:53.569 alignment property to right
+00:13:02.590 we have it spelled anything incorrectly
+00:13:05.130 now that should look pretty good so we
+00:13:11.440 see our discrete points at the center of
+00:13:13.210 our rectangles we see our rectangles
+00:13:15.250 they're also behind the function it
+00:13:18.130 looks like we're doing pretty good well
+00:13:20.980 maybe we want to highlight these error
+00:13:23.800 regions how would we do that
+00:13:27.180 we're going to use the fill command
+00:13:29.500 again with a very large polygon if you
+00:13:33.010 will and what we'll do is we will
+00:13:35.100 extract the points along this curve and
+00:13:38.970 we'll add to it this point this point
+00:13:42.970 and then back to the beginning again
+00:13:44.650 we'll draw that as one polygon and we
+00:13:47.650 will do that for each rectangle and that
+00:13:49.839 will be our error region so this would
+00:13:54.610 be draw the rectangle and now draw error
+00:14:00.360 region well the first thing we need
+00:14:04.960 let's move this graphic window over here
+00:14:07.200 we'll need this array of X points and Y
+00:14:12.460 points for this high resolution function
+00:14:15.339 and since this is a very fast simple
+00:14:18.250 code I'll just go ahead and calculate a
+00:14:20.200 whole new interval X X for doing that XX
+00:14:28.110 linspace I'm going to go from the left
+00:14:30.520 edge of the rectangle to the right edge
+00:14:33.130 and I'll use 100 points my Y values I
+00:14:40.050 will just call func for X X now xx and
+00:14:44.110 YY are both arrays that if I plotted
+00:14:46.690 them I would see this little section of
+00:14:48.910 line now all I have to do is add one two
+00:14:53.140 three more vertices to that x-axis is
+00:14:59.020 the original X X the next X position is
+00:15:02.920 x2
+00:15:06.660 then we'll jump to the left side for an
+00:15:09.339 x1 and then finally another X 1 1 X 1
+00:15:16.380 then we're gonna think about why why so
+00:15:19.570 we'll include the first hundred points
+00:15:22.000 that'll take us up here now we need to
+00:15:25.060 come down to whatever the Y value here
+00:15:27.399 is and in fact that's why - so we need
+00:15:31.180 to add a y2 a y2 and then whatever the Y
+00:15:36.370 was at the beginning here so y2 y2 and
+00:15:41.970 so what we can do is evaluate the
+00:15:44.950 function at x1 now we can do the fill
+00:15:50.560 command again xx YY let's fill it with
+00:15:54.970 red because that's an error now let's
+00:16:00.370 see what happens
+00:16:06.860 we have our air regions we got a little
+00:16:09.020 lucky we didn't get any airs we type a
+00:16:10.850 lot of code but one thing has happened
+00:16:13.730 that I don't like the air region outside
+00:16:16.610 of the rectangle and the inside of the
+00:16:18.860 rectangle looked the same and it's
+00:16:21.110 really obscuring the fact that there's a
+00:16:22.940 rectangle here so we can do this one of
+00:16:26.570 two ways we can color them differently
+00:16:28.580 actually generate called fill command
+00:16:30.410 twice to generate to or an easier way is
+00:16:34.160 to make these red air regions a little
+00:16:36.260 bit transparent so that we can see the
+00:16:38.750 rectangle through hit so we'll give it
+00:16:43.910 the property face alpha and I'll just
+00:16:46.550 pick a number of 0.25 zero will make it
+00:16:49.880 completely transparent one will make it
+00:16:52.550 completely opaque so at this point it
+00:16:55.160 should be mostly transparent but enough
+00:16:57.680 that we'll still see a good red and I
+00:17:03.710 think this looks pretty good we can
+00:17:05.540 differentiate between the red region
+00:17:07.400 that's outside of our rectangles so this
+00:17:09.740 is part that we have not included in our
+00:17:11.810 numerical integration but should have
+00:17:13.660 this dark where it's overlapping the
+00:17:16.220 rectangle is something that we included
+00:17:19.339 in our integration that we should not
+00:17:21.230 have so we included it and shouldn't
+00:17:23.630 have and up here we did not include it
+00:17:26.599 but should happen and we can see that
+00:17:29.480 for each of our rectangles now we've
+00:17:33.530 written this in a way that makes it very
+00:17:35.000 generic all we have to do is increase
+00:17:37.070 the number of points and we can
+00:17:39.890 visualize it so let's go up to 10 points
+00:17:46.600 and now we see our integration over ten
+00:17:49.160 points and we can visually see that
+00:17:51.140 there's total less red area crank it up
+00:17:57.680 to 20 points
+00:18:01.340 still looks pretty good we're starting
+00:18:04.200 to get a little bit crowded with these
+00:18:05.520 blue circles here showing our discrete
+00:18:07.170 points so we can tell at some point this
+00:18:09.420 may start to look pretty ridiculous
+00:18:11.430 let's try it with 100 points because I
+00:18:13.530 think that will look somewhat ridiculous
+00:18:17.540 yeah very very crowded we barely see the
+00:18:20.520 red regions we maybe get those look a
+00:18:23.220 little bit better if we stretched it out
+00:18:26.120 but this visualization does not work so
+00:18:29.430 well when we have many many points we'll
+00:18:33.570 come back down to 20 run
+00:18:43.170 and 20 points is looking pretty good we
+00:18:45.540 can visually see that there's much less
+00:18:47.850 red area then when n was smaller and
+00:18:51.690 just for fun let's plug in one point so
+00:18:58.020 that's just one big rectangle to two
+00:19:02.850 points
+00:19:07.040 so you can imagine animating this there
+00:19:10.220 actually is an animation of this in the
+00:19:11.810 lecture videos where I increase the
+00:19:14.030 number of rectangles so I think this is
+00:19:17.660 a pretty good way to visualize discrete
+00:19:19.880 integration and I hope you learn
+00:19:21.440 something about discrete integration and
+00:19:23.510 also visualization

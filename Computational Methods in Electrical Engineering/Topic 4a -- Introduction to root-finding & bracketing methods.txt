@@ -1,0 +1,719 @@
+# tactiq.io free youtube transcript
+# Topic 4a -- Introduction to root-finding & bracketing methods
+# https://www.youtube.com/watch/8or_ED50eCs
+
+00:00:00.500 topic for a this lecture will introduce
+00:00:04.110 route finding methods talk about some
+00:00:06.600 generic things and then also cover the
+00:00:08.820 bracketing methods in the next lecture
+00:00:11.460 we'll talk about something called the
+00:00:12.809 open methods so as I mentioned this
+00:00:19.859 lecture will introduce route finding
+00:00:21.900 methods in general we will cover two
+00:00:24.750 different forms of bracketing methods
+00:00:26.640 although what you'll see these are
+00:00:27.869 extremely similar and then we'll talk
+00:00:30.689 about how to generalize these to handle
+00:00:33.420 multiple routes and that's when we have
+00:00:35.910 two routes at the same time or three
+00:00:39.870 routes or four routes and we can look at
+00:00:42.239 the behavior of the function around that
+00:00:43.829 route to figure out whether that single
+00:00:45.719 double triple quadruple or whatever
+00:00:54.170 first what is route finding in this case
+00:00:58.109 we have some function f of X we want to
+00:01:00.690 know what values of X force that
+00:01:03.930 function to be 0 this can happen
+00:01:06.210 multiple times in which case we have
+00:01:08.549 multiple routes for example maybe we
+00:01:11.580 have this quadratic polynomial where
+00:01:13.920 does that equal 0 in this case that's
+00:01:17.430 pretty easy to find we have the
+00:01:19.549 quadratic formula to do that for us and
+00:01:22.110 we also know that there will be two
+00:01:23.549 roots in this case but what if we do not
+00:01:28.799 have or we can't obtain an analytical
+00:01:32.040 solution this example exponent of X or
+00:01:36.049 exp of X minus X that does not have an
+00:01:39.780 analytical solution we can't solve that
+00:01:41.850 for X equal to 0 it could also be that
+00:01:45.000 the function f of X is a simulation and
+00:01:48.090 there is no equation behind it it's a
+00:01:49.890 whole bunch of procedures and algorithms
+00:01:52.170 that eventually spit out an answer what
+00:01:54.540 do we do then and that's really the
+00:01:56.579 purpose of the route finding algorithms
+00:01:58.350 to find those routes in the absence of
+00:02:00.780 having some kind of analytical solution
+00:02:07.080 there are roughly three categories of
+00:02:09.630 route finding methods in this lecture
+00:02:11.970 we'll discuss the bracketing methods and
+00:02:13.950 in that case we have to have we have to
+00:02:17.760 be able to somehow roughly identify
+00:02:20.010 where the route is and then identify
+00:02:22.830 some value of x above and below where
+00:02:26.580 that route could be we maybe know
+00:02:28.980 roughly that our route is at a value of
+00:02:31.020 two for example so we might choose upper
+00:02:33.480 and lower limits of one and three and we
+00:02:36.870 want to ensure that those limits
+00:02:38.310 surround a route and then the bracketing
+00:02:42.510 method essentially works by slowly
+00:02:44.130 adjusting those bounds inward until it
+00:02:46.440 closes it on to where the route is open
+00:02:51.570 methods work differently they don't have
+00:02:53.400 the upper and lower bounds they have
+00:02:54.930 just a initial guess and it's an
+00:02:57.630 iterative algorithm that successively
+00:02:59.250 improves on that until that guess closes
+00:03:03.180 in on exactly where the route is a third
+00:03:08.370 method and one that we won't talk about
+00:03:09.930 now simply because this also involves
+00:03:12.420 curve fitting which is a topic for later
+00:03:14.160 on but we could take two or three points
+00:03:17.280 in the vicinity of our route fit that to
+00:03:19.950 a polynomial or some sort of function
+00:03:22.140 and then analytically find the zero
+00:03:25.320 crossing from that function this also
+00:03:33.060 comes up instead of finding roots what
+00:03:35.489 if we want to find values of X where the
+00:03:38.340 function doesn't equal zero but where
+00:03:40.230 the function equals some value of a and
+00:03:42.840 it turns out this is a real simple hack
+00:03:45.480 that we can do to our root finding
+00:03:47.610 algorithms to generalize it in this way
+00:03:51.800 so we want to find where the function f
+00:03:54.600 of X equals a let's take a and move it
+00:03:57.360 over to the left-hand side of the
+00:03:58.709 equation we now have f of X minus a
+00:04:01.950 equals zero let's define an auxilary
+00:04:05.430 function G of X that equals f of X minus
+00:04:08.880 a really what we need to do is perform
+00:04:11.670 route finding our standard route finding
+00:04:14.160 on G of X so where G of X goes to 0 is
+00:04:17.850 where f of X equals a very simple
+00:04:21.418 and then we can use our route-finding
+00:04:23.340 algorithms to find where some function
+00:04:25.770 equals any value even if it's not zero
+00:04:33.139 this is where it gets a little bit weird
+00:04:36.000 and unfortunately less sophisticated
+00:04:37.620 than we might like very often we're
+00:04:40.199 giving a function we know nothing about
+00:04:42.060 and how do we at least roughly find
+00:04:45.629 these roots so that we can define bounds
+00:04:47.909 or make good guesses and there really is
+00:04:51.150 not a clean sophisticated method it's
+00:04:54.029 experimenting with the function plotting
+00:04:56.490 it trying different trying different
+00:04:59.430 ranges of X or fixing the values of Y
+00:05:03.090 and playing with it until you get a
+00:05:05.129 rough idea of where those roots are now
+00:05:07.830 sometimes you might know something about
+00:05:09.569 the problem something about the physics
+00:05:11.460 that helps you locate where those roots
+00:05:14.460 may be otherwise it's just poking around
+00:05:17.310 at the command prompt in MATLAB until
+00:05:19.379 you can find roughly where those
+00:05:21.120 crossings are and from those you can
+00:05:23.550 identify your upper lower bounds or
+00:05:25.770 initial guesses to then feed into your
+00:05:28.139 root finding algorithm another thing
+00:05:37.699 that can change how you think about
+00:05:40.409 route finding suppose evaluating f of X
+00:05:44.039 for just a single value of x would take
+00:05:46.440 hours days or weeks let's just say it
+00:05:48.779 takes an hour how would this change your
+00:05:51.930 mentality about how you approach a
+00:05:53.699 problem and this very well could happen
+00:05:56.400 that happens in my research all the time
+00:05:58.229 where we're running a simulation to
+00:06:00.569 evaluate some f of X maybe we're trying
+00:06:02.550 to calculate reflection from some device
+00:06:04.680 based on the dimension of something that
+00:06:07.110 simulation could take hours and in which
+00:06:10.199 case we're approaching these algorithms
+00:06:12.210 very differently
+00:06:14.240 so I love this cartoon there's two
+00:06:16.770 cavemen pulling a bunch of rocks and
+00:06:19.379 they're using square wheels so obviously
+00:06:21.089 they're doing a lot of work and they're
+00:06:22.259 they're very busy because of that and so
+00:06:24.449 they don't want to take time out to
+00:06:25.560 actually consider round wheels and if
+00:06:29.189 you're only ever implementing these
+00:06:31.020 algorithms with functions that are very
+00:06:33.000 very fast to calculate because that's
+00:06:34.919 what
+00:06:35.190 and computational methods we give you
+00:06:36.870 simple easy things to solve it doesn't
+00:06:39.480 put you in the right mentality and
+00:06:42.350 what's the difference between an
+00:06:44.100 algorithm that converges in 10
+00:06:45.570 iterations versus 20 iterations that's
+00:06:47.790 huge if every time you evaluate f of X
+00:06:50.790 it takes an hour so think about this and
+00:06:54.090 consider that when you're really trying
+00:06:56.250 to minimize the number of iterations
+00:06:58.730 investigating some of these other types
+00:07:00.690 of route finding algorithms that can be
+00:07:02.550 a lot faster is definitely worth it
+00:07:09.920 so our first method for route finding is
+00:07:12.510 called the bisection method let's jump
+00:07:14.820 right into that so this is a bracketing
+00:07:21.570 method and so we have some function and
+00:07:24.090 we will define some lower bound and some
+00:07:27.930 upper bound that has to surround a zero
+00:07:31.140 crossing if there is no zero crossing
+00:07:34.680 this method could obviously fail as
+00:07:36.750 you'll see also if there's multiple
+00:07:38.760 crossings this method will fail so the
+00:07:42.419 assumption of the method is that we have
+00:07:44.220 nice bounds and that there is only one
+00:07:46.620 crossing between those bounds now we're
+00:07:50.220 plotting our function here we may not
+00:07:51.900 always know this we're plotting that
+00:07:53.669 function just for illustration purposes
+00:07:55.890 so we know where the route crosses but
+00:07:58.530 let's pretend we don't know that and
+00:07:59.940 we'll implement this method to figure
+00:08:01.890 out where that route actually is so
+00:08:07.770 after identifying where our bounds are
+00:08:09.960 and feeding that into the algorithm the
+00:08:12.180 next thing we're going to do is make a
+00:08:13.560 guess as to where the route might be
+00:08:15.510 between those bounds so being the
+00:08:17.880 bisection method we choose the midpoint
+00:08:20.340 so we calculate where the next route
+00:08:22.890 might be simply has the average of the
+00:08:25.200 position of the upper and lower bounds
+00:08:40.589 now that we've calculated where we think
+00:08:43.208 the next route might be the next thing
+00:08:45.790 we do is is evaluate the function at
+00:08:47.890 that new estimated position so we
+00:08:51.250 evaluate the function at our new root
+00:08:53.560 position at this point we need to think
+00:08:57.700 about adjusting the bounds and the way
+00:09:01.180 we'll do that is we'll look at the sign
+00:09:03.430 change from the bounds to where we've
+00:09:06.010 just evaluated our new root so for
+00:09:09.190 example in this slide if we look at the
+00:09:11.589 function value at the lower bound and
+00:09:15.029 the upper bound we see that there is a
+00:09:19.089 sign change the fact that there's a sign
+00:09:22.209 change there means the root must fall
+00:09:24.670 somewhere between the lower bound and
+00:09:27.610 where we've just evaluated our function
+00:09:29.620 now since we're drawing this big red
+00:09:31.360 line through here and we could see our
+00:09:32.620 function that's obvious but we won't
+00:09:34.660 always have that but from the
+00:09:36.700 information I'm just that there's a sign
+00:09:38.470 change between the lower and upper bound
+00:09:40.120 tells us that the root falls between the
+00:09:41.890 lower and upper bound so what we'll want
+00:09:44.410 to do is take the upper bound and move
+00:09:48.370 that to where our root is so our root
+00:09:52.000 becomes our new upper bound
+00:10:02.660 so that's exactly what we do we move the
+00:10:05.610 upper bound to the midpoint at this
+00:10:14.519 point we sort of start over we now have
+00:10:16.649 a new upper bound the same lower bound
+00:10:19.260 but essentially a new interval and like
+00:10:21.690 before we will calculate the midpoint
+00:10:23.339 because this is the bisection method we
+00:10:25.740 calculate the new midpoint by averaging
+00:10:28.440 the positions of the upper and lower
+00:10:29.910 bounds since we have a new upper bound
+00:10:32.760 our new guess as to where the route
+00:10:35.310 might be is now at this midpoint like
+00:10:43.079 before now that we have our new guess as
+00:10:45.510 to the position of the root we evaluate
+00:10:47.579 the function at that new position once
+00:10:51.690 we know this now we try to consider the
+00:10:54.899 signs for the upper and lower bound to
+00:10:57.209 figure out on which side the root is so
+00:11:01.589 we look at the sign of a lower bound we
+00:11:03.300 see that it's negative and we look at
+00:11:05.279 the sign of the function we just
+00:11:06.810 evaluated at our current guess that is
+00:11:08.730 also negative that means these have the
+00:11:12.000 same sign and since they have the same
+00:11:14.190 sign there can't be a zero crossing this
+00:11:17.670 must mean that the root is between where
+00:11:21.120 our current guess is and the upper bound
+00:11:24.079 somewhere in this interval so that means
+00:11:28.139 we now need to move the lower bound up
+00:11:31.100 to the midpoint and that's exactly what
+00:11:38.339 we do and this process keeps repeating
+00:11:42.410 you'll calculate a new midpoint we will
+00:11:48.510 evaluate the function at the midpoint
+00:11:50.899 check our signs realize that the lower
+00:11:55.019 bound and where we just evaluated the
+00:11:57.630 root have the same sign this must mean
+00:11:59.850 that the root crossing is between our
+00:12:02.430 current guests at the root and the upper
+00:12:04.680 bound that means we have to move the
+00:12:07.110 leopard upper Masari
+00:12:08.910 we have to move the lower bound up to
+00:12:10.949 where our guess is at the root
+00:12:13.930 and this process keeps repeating
+00:12:17.700 calculate the midpoint evaluate the
+00:12:21.370 function move the bounds and this goes
+00:12:24.970 on and on and on until eventually we
+00:12:27.490 converge to where our root is something
+00:12:34.570 we have to think about is how we adjust
+00:12:36.430 our bounds because the slope of the line
+00:12:39.160 can either be upward or downward and if
+00:12:42.670 we are checking for example if both are
+00:12:45.490 negative that's really not going to work
+00:12:47.980 or if both are positive we need to just
+00:12:51.520 check that the lower bound and our
+00:12:54.940 current guess at the root have the same
+00:12:56.830 or different signs whether that line is
+00:12:59.680 going upward or downward so this changes
+00:13:02.589 a bit how we check for where the root is
+00:13:07.180 and how we adjust it let's talk more
+00:13:09.130 about that so what we'll do is we will
+00:13:14.950 multiply the function evaluated at the
+00:13:17.170 lower limit with the function evaluated
+00:13:19.900 our current guess at the root if that
+00:13:23.740 product is negative that means there's a
+00:13:26.740 sign change and what's neat about doing
+00:13:29.470 it this way that means there'll be a
+00:13:30.880 sign change whether or not that line is
+00:13:33.520 going upward or downward and if there is
+00:13:36.700 a sign change that has to mean that the
+00:13:39.250 root lies somewhere between the lower
+00:13:41.260 limit and our current guess therefore
+00:13:44.770 the next step we should do is move the
+00:13:47.320 upper limit down to where the root is
+00:13:49.959 and in the lower right of the screen you
+00:13:52.480 can see the MATLAB code that does that
+00:13:54.250 we're calculating this product checking
+00:13:57.730 if it's less than zero if it is then
+00:14:00.070 that means there's a sign change and we
+00:14:01.630 have to move the upper limit and we move
+00:14:04.029 the upper limit simply by copying XR
+00:14:07.180 over to Xu and FR over to fu another
+00:14:11.890 thing that we need to realize about
+00:14:13.029 doing this is that does not require
+00:14:14.980 another evaluation of the function we're
+00:14:18.100 simply copying information over now if
+00:14:21.160 that function is very fast to calculate
+00:14:22.810 this doesn't seem like such a big deal
+00:14:24.339 but pretend for a second every time we
+00:14:26.770 call
+00:14:27.150 our function it takes an hour to
+00:14:29.160 calculate so just copying this
+00:14:31.260 information over eliminates the need for
+00:14:33.840 calling that function more times than
+00:14:35.760 necessary okay so if the product is
+00:14:38.730 negative we move the upper bound then we
+00:14:42.690 check that same product if it is
+00:14:44.280 positive that means that the function at
+00:14:47.610 the lower bound and the function at our
+00:14:49.410 guess at where the root is has the same
+00:14:51.330 sign there is no zero crossing between
+00:14:53.970 them
+00:14:54.690 that means the zero Crossing must be
+00:14:57.090 between our current guests and the upper
+00:15:00.090 bound so the operation that is to move
+00:15:03.840 the lower bound up to where we guess the
+00:15:06.810 root is and in MATLAB we see we do this
+00:15:09.690 with an else if statement we're checking
+00:15:11.310 if it's positive and we just copy the
+00:15:13.410 information over from our current guess
+00:15:15.510 at the root over to the lower limit now
+00:15:20.490 a third thing could happen that product
+00:15:23.700 could equal zero this means we just got
+00:15:26.700 very lucky and we fell right on the root
+00:15:30.510 in which case we're done we don't have
+00:15:32.610 to iterate anymore we found our route
+00:15:34.470 exactly and this can happen sometimes so
+00:15:41.490 how do we know if we're finished one
+00:15:43.650 thing we should not do is to check the
+00:15:46.020 span between the upper and lower bounds
+00:15:49.290 and it seems intuitive that maybe we
+00:15:50.940 should do this and when those bounds
+00:15:52.620 close in we know that we're finished and
+00:15:55.620 that can work a lot of times the problem
+00:15:58.620 is sometimes depending on the shape of
+00:16:00.840 the function it's always one bound that
+00:16:04.140 is moving and if we're looking at the
+00:16:06.420 span between those bounds the the actual
+00:16:09.510 route might be pretty far away from the
+00:16:11.640 one bound that is not moving
+00:16:13.650 and if we're checking the span we'll
+00:16:15.420 never converge so the proper way to do
+00:16:17.940 this is to check the difference between
+00:16:20.040 our new guests at the root and the old
+00:16:22.590 guests at the root and when those
+00:16:24.570 changes become sufficiently small we
+00:16:27.480 will end our algorithm
+00:16:35.570 so here's a block diagram of the
+00:16:37.700 bisection method so we will start and we
+00:16:42.380 have knowledge of our function
+00:16:44.120 hopefully we'll also feed into it our
+00:16:46.160 upper and lower bound that spans one
+00:16:48.560 root so really the first thing we do
+00:16:51.860 then is evaluate the function at the
+00:16:54.200 upper lower bounds once we know that
+00:16:57.110 we'll make our first guess as to where
+00:17:00.050 the root is and that'll be the midpoint
+00:17:01.490 simply by averaging the position of the
+00:17:03.590 upper and lower bounds at this point we
+00:17:06.980 enter into the main loop of the
+00:17:08.720 bisection method and the first thing
+00:17:10.670 that happens inside that loop is
+00:17:12.430 evaluating the function at our new guess
+00:17:14.900 at the root once we do that we then
+00:17:18.709 multiply the function value at the lower
+00:17:20.930 bound with the function value at our
+00:17:23.180 root and we're checking the sign of that
+00:17:25.520 product if it's less than zero we know
+00:17:29.180 to move our upper bound and we move that
+00:17:31.160 simply by copying information over if
+00:17:34.210 that were positive this product we're
+00:17:37.460 positive we move the lower bound either
+00:17:41.090 way we've adjusted the bounds and of
+00:17:43.160 course what that product is zero we're
+00:17:44.360 done
+00:17:44.750 but either way we've adjusted our bounds
+00:17:46.940 and now we calculate a new midpoint now
+00:17:51.740 that we have a new midpoint we can check
+00:17:53.990 the difference between the old midpoint
+00:17:55.910 and the new midpoint and calculate this
+00:17:58.400 Delta when this Delta falls below some
+00:18:01.670 tolerance we could say that we're done
+00:18:04.100 if it hasn't fallen below that tolerance
+00:18:05.960 then we keep recalculating moving bounds
+00:18:09.140 recalculating moving bounds until the
+00:18:11.270 change in our guess at where the root is
+00:18:13.610 has fallen below some tolerance and then
+00:18:16.460 we're done
+00:18:21.820 this is simply a typed out version of
+00:18:24.890 the block diagram maybe a little bit
+00:18:26.630 closer to computer code but there's no
+00:18:28.580 information here that is not also in the
+00:18:30.950 block diagram some party notes on the
+00:18:38.150 bisection method this is by far the most
+00:18:40.130 robust route finder as long as we have
+00:18:42.950 two bounds that span a single crossing
+00:18:45.740 this will find it it will not fail and
+00:18:48.530 that really can't be said about the
+00:18:50.420 other methods the problem with it is is
+00:18:53.120 that it's the least efficient route
+00:18:54.559 finder it can take a while and for fast
+00:18:57.860 functions functions that are fast to
+00:18:59.780 evaluate f of X this isn't so much of an
+00:19:01.820 issue but when the amount of time it
+00:19:04.340 takes to calculate f of X is minutes
+00:19:07.010 hours or even days we want to try to
+00:19:10.250 minimize a number of iterations and we
+00:19:12.170 have to use some more advanced
+00:19:13.580 algorithms and usually what we give up
+00:19:16.130 in the more advanced algorithms we have
+00:19:17.780 faster speed but there's times where
+00:19:20.210 they can fail bisection method does not
+00:19:22.580 fail but it is tends to be the slowest
+00:19:26.500 one thing that is pretty good to do is
+00:19:29.809 the last bullet in this list is maybe at
+00:19:32.450 the start of your code rather than just
+00:19:34.550 jump into the bisection method check the
+00:19:37.190 function value at the bounds at the
+00:19:39.800 upper lower limits if they are the same
+00:19:42.200 sign that means one of two things that
+00:19:45.230 means there is no zero crossing that's
+00:19:47.690 bad the method will obviously fail the
+00:19:50.570 other thing that it can mean is that
+00:19:51.980 there's an even number of zero crossings
+00:19:54.950 so there's multiple routes within your
+00:19:57.950 bounds and if you remember the beginning
+00:19:59.900 the assumption was that there really is
+00:20:01.640 only one crossing between the bounds and
+00:20:03.830 we've chosen our bounds poorly so think
+00:20:08.990 about doing that at the start of your
+00:20:10.190 codes and if you do find that the sign
+00:20:12.350 is the same air out of your algorithm if
+00:20:15.410 you don't do that you'll definitely come
+00:20:17.480 across some sort of error it doesn't
+00:20:19.070 find a solution or something else crazy
+00:20:21.350 happens that it's harder to figure out
+00:20:22.760 what's happening whereas if you put this
+00:20:24.620 check in you'll have a real simple error
+00:20:26.600 message telling you exactly what
+00:20:28.160 happened
+00:20:32.480 our next method is the false position
+00:20:34.950 method and we can learn this very
+00:20:36.630 quickly because it is almost exactly
+00:20:38.790 like the bisection method the only
+00:20:41.160 difference is in how we calculate the
+00:20:43.080 next guess at where the route will be so
+00:20:49.440 we have the same starting point we have
+00:20:51.360 a a function and we evaluate the
+00:20:54.720 function at the upper and lower bounds
+00:20:56.280 if we were implementing the bisection
+00:21:00.270 method we would calculate the position
+00:21:02.280 of the new root at the midpoint
+00:21:04.370 however the false position method fits
+00:21:07.890 this to a line and it does a much more
+00:21:11.160 intelligent guess of where that route
+00:21:14.220 will be otherwise the methods the same
+00:21:17.460 it's just the equation we use to make
+00:21:20.670 our next guess as to the position of the
+00:21:23.040 root so let's start over we have an
+00:21:29.700 upper bound and lower bound the same
+00:21:31.200 function we were talking about the
+00:21:32.430 bisection method and we have the route
+00:21:34.590 that we want to find
+00:21:39.150 now we want to estimate a new position
+00:21:42.240 for our route so what the method does is
+00:21:44.940 it essentially connects the point on our
+00:21:47.550 lower bound with the point of the upper
+00:21:50.370 bound with a straight line and it
+00:21:52.710 figures out where that line crosses the
+00:21:56.570 the zero and that will be our new guess
+00:22:00.059 and we can see that that actually is a
+00:22:01.620 better guess than choosing the midpoint
+00:22:04.470 assuming that function is close to
+00:22:06.900 linear for functions that are very
+00:22:08.760 nonlinear that do a lot of curving that
+00:22:11.250 may not be a better guess just like the
+00:22:17.160 bisection method once we have our new
+00:22:18.840 guess we evaluate the function at that
+00:22:21.840 new guess and just like before we adjust
+00:22:24.510 our bounds in the same way we'll look at
+00:22:26.220 the sign change between the lower bound
+00:22:28.200 and our new guess if there is no sign
+00:22:30.420 change and there is not here then that
+00:22:32.790 means we'll move our upper bound down
+00:22:34.380 otherwise we move our lower bound up so
+00:22:39.840 we move our lower bound up and so on and
+00:22:43.770 this this works just like the bisection
+00:22:46.470 method except we're always fitting to a
+00:22:48.660 line so let's derive that new expression
+00:22:54.840 we have for estimating where the root is
+00:22:57.480 and we start with the general expression
+00:23:00.630 of a line so in this case M is slope and
+00:23:04.679 we also give it a point some point X not
+00:23:07.500 Y not otherwise that's the equation for
+00:23:10.740 a line given the function value at the
+00:23:16.650 limits at the lower and upper bounds we
+00:23:19.470 can estimate the slope of that line
+00:23:21.679 slope is just rise over run and rise is
+00:23:25.110 the function value at the upper limit
+00:23:27.240 minus the function value at the lower
+00:23:28.860 limit and the run or the span and X is
+00:23:31.650 just the difference between the upper
+00:23:32.820 and lower limits so we know the slope of
+00:23:35.910 that line our equation for the line at a
+00:23:42.150 slope and one point we can choose as
+00:23:45.510 that point the point on the lower bound
+00:23:48.770 so if we plug in this value of x naught
+00:23:51.840 and y naught
+00:23:52.590 in our equation for the line we end up
+00:23:55.200 here and just remind ourselves this ugly
+00:23:58.260 expression here that's the slope so
+00:24:02.340 that's the equation for our line now to
+00:24:05.010 find out where that crosses 0 we set y
+00:24:08.549 equal to 0 so we set y equal to 0 and we
+00:24:14.250 solve this expression for X and we
+00:24:16.620 interpret this as our new value for X
+00:24:19.110 when we do that we end up here and we
+00:24:22.409 can use this equation to calculate where
+00:24:24.809 our new root position will be it turns
+00:24:28.500 out we could have also used instead of
+00:24:31.529 the lower limit for our point we could
+00:24:33.690 have used the upper limit and derive a
+00:24:35.340 very similar equation that's on the next
+00:24:37.470 slide same equation we have the same
+00:24:45.149 slope it's just that we put in a
+00:24:47.130 different point in this case we put in
+00:24:48.929 the point for our upper limit it's the
+00:24:52.049 same line as on the previous slide we've
+00:24:54.779 just used a different point along that
+00:24:56.610 same line that'll find out where this
+00:25:00.360 line crosses 0 we set y equal to 0 and
+00:25:03.659 solve for X that we interpret as our new
+00:25:06.419 value of x and we get a very similar
+00:25:08.490 looking equation and it calculates the
+00:25:11.279 same exact point as on the previous
+00:25:13.350 slide it's just using information from
+00:25:15.480 the upper limit instead of the lower
+00:25:17.190 limit so we have these two equations
+00:25:23.480 that we just arrived let's average them
+00:25:27.860 so we average them by adding them
+00:25:30.630 together and dividing by two and we end
+00:25:33.570 up with this equation now this is an
+00:25:36.240 equation we want to look at in a little
+00:25:37.919 bit more detail and try to get some
+00:25:40.380 physical meaning of what's actually
+00:25:41.760 happening here the first part of that
+00:25:46.649 equation is exactly what we did for the
+00:25:48.960 bisection method but we had another term
+00:25:52.110 here and we can interpret this as the
+00:25:54.870 correction term this is what gives us a
+00:25:56.760 better estimate and this full equation
+00:25:59.610 is the false position method so the only
+00:26:02.340 difference between those two methods is
+00:26:04.440 this equation
+00:26:06.279 and it's more specifically is that extra
+00:26:08.559 term so we have a block diagram of this
+00:26:16.960 method I won't step through it because
+00:26:18.969 it is exactly the same as with the
+00:26:20.919 bisection method the only difference is
+00:26:23.619 when we calculate the position of our
+00:26:26.049 new route we have this extra term here
+00:26:29.109 and that is the only difference between
+00:26:30.639 false position method method and
+00:26:32.619 bisection method so what we can do is
+00:26:35.769 write one code we can type in that big
+00:26:38.649 expression for calculating our new route
+00:26:40.479 and then simply by commenting this off
+00:26:42.879 we can convert our false position method
+00:26:45.159 to bisection method we don't actually
+00:26:47.349 have to write two separate codes we can
+00:26:49.779 just take that term in and out otherwise
+00:26:52.089 it is the exact same method we move our
+00:26:53.950 bounds the same way we check for the
+00:26:57.339 magnitude of our change to see if we're
+00:26:59.200 done the same way everything's the same
+00:27:01.809 way and for functions that are pretty
+00:27:05.440 linear between the upper and lower
+00:27:07.389 bounds and that happens most of the time
+00:27:09.249 this is an incredibly fast method but it
+00:27:12.309 can fail or work really slowly when that
+00:27:15.999 function is not linear here's a picture
+00:27:22.149 taken out of our textbook and in this
+00:27:24.159 case the black line is the function
+00:27:25.960 we're trying to find the root of and if
+00:27:29.109 we use the false position method we are
+00:27:31.029 connecting the upper lower bounds with a
+00:27:32.859 straight line so our guess as to where
+00:27:36.099 the route would be would fall here and
+00:27:37.839 not even close to where the route
+00:27:39.580 actually is because the function is so
+00:27:41.889 nonlinear so as we use an iterative
+00:27:44.049 algorithm improve on that it's only
+00:27:45.820 taking small steps to get to the final
+00:27:49.210 route in this case the bisection method
+00:27:51.729 would be much faster simply because this
+00:27:55.059 function is so nonlinear final notes
+00:28:02.050 very similar to bisection method in my
+00:28:04.210 mind it is the same method just a
+00:28:06.400 slightly different equation for
+00:28:07.690 calculating where the midpoint is and
+00:28:09.670 most of the time when functions are
+00:28:11.830 linear it converges much much faster but
+00:28:14.770 there's times where this can be slower
+00:28:16.330 where it's very nonlinear so if you
+00:28:18.670 somehow have knowledge that that
+00:28:20.380 function is very nonlinear between your
+00:28:22.600 bounds you might want to use the
+00:28:24.790 bisection method instead of the false
+00:28:26.920 position method our last topic is
+00:28:34.420 multiple routes up to this point we
+00:28:36.850 looked at our algorithms and assume that
+00:28:38.920 there's only one route between the upper
+00:28:41.110 and lower bounds let's talk about when
+00:28:43.960 there's multiple routes first of all by
+00:28:49.990 looking at the function and its
+00:28:51.460 derivatives we can make a pretty good
+00:28:53.830 guess as to whether a zero crossing
+00:28:55.570 represents a single root or double root
+00:28:58.450 or something else so for example if we
+00:29:01.210 have a single root and we're showing
+00:29:03.220 this here we just see a nice
+00:29:04.990 well-behaved line crossing the x-axis
+00:29:07.330 and if we look at the function value on
+00:29:10.150 either side of that point we'll see a
+00:29:12.610 sign change
+00:29:13.720 so we conclude if there's a sign change
+00:29:15.970 on either side of that point and the
+00:29:18.460 slope is not zero we definitely have a
+00:29:20.950 non zero slope here we have a line
+00:29:22.810 that's heading upward we can conclude
+00:29:24.910 that that is probably a single root now
+00:29:31.330 in the case of a double root this point
+00:29:34.300 that I'm circling here that is a double
+00:29:36.280 root notice there is no sign change the
+00:29:39.970 function goes up to that zero crossing
+00:29:42.340 and it's not even really crossing it
+00:29:43.900 just touches the x-axis and then comes
+00:29:46.750 back down again so there is no sign
+00:29:49.000 change so if there's no sign change we
+00:29:51.730 can conclude it's a double root or more
+00:29:54.430 generally an even number of roots at
+00:29:56.800 that point the slope is zero if it's a
+00:30:02.560 double root in fact the slope is zero if
+00:30:04.120 has any multiple roots and the curvature
+00:30:06.820 is the same on either side the curvature
+00:30:09.280 we look at the second derivative so all
+00:30:11.710 of these are signs that we're actually
+00:30:13.210 looking at a double root but it requires
+00:30:15.940 knowledge of the function and its
+00:30:17.230 derivatives a triple root we again see
+00:30:24.159 that we have a sign change on either
+00:30:26.169 side of the root so a sign change really
+00:30:28.600 indicates that we have an odd number of
+00:30:30.669 roots the slope is zero at the point
+00:30:34.600 that's very different than when we had a
+00:30:36.159 single root the slope was not zero so if
+00:30:39.100 we see a sign change and the slope is
+00:30:41.710 zero we have a triple root and the
+00:30:45.639 curvature changes sign on either side
+00:30:47.710 that's also an indication we have a
+00:30:49.389 triple root quadruple root
+00:30:55.120 this essentially follows all of the same
+00:30:57.309 rules as the double root so it can be
+00:30:59.289 hard to tell the difference between a
+00:31:00.730 double and a quadruple root but one
+00:31:03.070 thing if we look at a quadruple root is
+00:31:04.840 that the the function stays flat over a
+00:31:07.899 longer span it looks like it has very
+00:31:11.830 low curvature stays flat this was sort
+00:31:14.350 of a more sharper point if you will and
+00:31:16.990 so visually we can kind of tell the
+00:31:19.750 difference in a double and quadruple
+00:31:20.860 root but it does become difficult and by
+00:31:23.379 the time we talk about five six seven
+00:31:25.240 roots it becomes even more difficult but
+00:31:27.909 most often it's just single double and
+00:31:30.129 sometimes triple roots that we have to
+00:31:32.529 to worry about well we do have a problem
+00:31:42.340 when it comes to multiple roots and
+00:31:44.230 bracketing methods our bracketing
+00:31:46.450 methods required a sign change on either
+00:31:49.210 side of the root that means if we have
+00:31:51.909 two roots four roots six roots are
+00:31:54.190 really any even number of roots we can't
+00:31:57.159 use our bracketing methods at least not
+00:31:59.259 without modification so we need a single
+00:32:02.440 or really odd multiple roots in order to
+00:32:05.559 use a bracketing method but it turns out
+00:32:07.990 there's a very clever fix to this we can
+00:32:13.840 define an auxiliary function U of X and
+00:32:17.399 we can define this so it has all the
+00:32:20.259 same roots as f but it's guaranteed to
+00:32:22.720 always change sign on either side of the
+00:32:24.700 root and that's really cool so how we do
+00:32:27.279 this we have our auxiliary function U of
+00:32:28.990 X
+00:32:29.400 we define it as our original function f
+00:32:31.950 of X and we divide F by its derivative
+00:32:36.620 this auxilary function has the same
+00:32:39.390 roots how do we know it has the same
+00:32:41.160 roots because it has F in the numerator
+00:32:43.770 but the interesting thing if we look at
+00:32:46.320 the original f for example we have let's
+00:32:49.560 go to this double root there's no sign
+00:32:51.780 change here in f we couldn't apply a
+00:32:53.400 bracketing method but the red line is
+00:32:55.950 this auxilary function same root but it
+00:32:58.740 changes sign and hey look it's even
+00:33:01.530 pretty linear around that root so
+00:33:04.350 instead of root finding on f of X we
+00:33:06.750 simply root find on U of X and we can
+00:33:10.050 use our bracketing methods so this is
+00:33:17.250 just in words the summary we root find U
+00:33:20.100 of X instead of f of X

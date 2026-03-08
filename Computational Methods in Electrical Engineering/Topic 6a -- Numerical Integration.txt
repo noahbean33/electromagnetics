@@ -1,0 +1,631 @@
+# tactiq.io free youtube transcript
+# Topic 6a -- Numerical Integration
+# https://www.youtube.com/watch/WxGIgWOiVx8
+
+00:00:00.670 topic 6a numerical integration
+00:00:05.650 I'll introduce what numerical
+00:00:08.420 integration is I'll step you through
+00:00:10.610 several algorithms for performing
+00:00:13.340 numerical integrations then we're going
+00:00:15.889 to generalize the concept talk about
+00:00:17.900 multiple integrals and then convergence
+00:00:20.869 of numerical integration let's talk
+00:00:25.820 about numerical integration at a higher
+00:00:27.800 level before we dive into the algorithms
+00:00:33.190 first why use numerical integration well
+00:00:37.579 two reasons one suppose we were
+00:00:40.280 evaluating the integral on this slide
+00:00:42.460 there is no known closed form solution
+00:00:45.949 to this therefore if we want to know the
+00:00:48.409 answer we have to do it numerically the
+00:00:51.920 other reason is suppose the argument in
+00:00:54.019 this integral isn't even an equation but
+00:00:56.209 the result of a simulation or of some
+00:00:59.089 more kind of complex calculation that
+00:01:01.369 has no closed form equation again the
+00:01:05.180 only thing we can do is integrate
+00:01:07.210 numerically the first method we'll study
+00:01:13.130 it's the simplest it's called discrete
+00:01:15.079 integration let's set up the problem for
+00:01:21.829 our discrete integration and in fact
+00:01:23.780 this setup is the same for all numerical
+00:01:26.179 integrations here we want to integrate
+00:01:28.399 the function f of X from A to B and in
+00:01:34.070 fact we don't even need F outside of the
+00:01:36.710 integral from A to B but the blue line
+00:01:40.399 shows the function that we want to
+00:01:42.409 integrate and we probably don't know the
+00:01:45.469 function with this level of smoothness
+00:01:48.140 it's probably discretized in some way
+00:01:50.689 but before we even talk about making it
+00:01:53.210 discrete this is the function that we
+00:01:55.609 want to integrate now we talked about
+00:02:02.210 making it discrete we only know this
+00:02:04.700 function at discrete points we really
+00:02:06.859 don't know what the function is between
+00:02:09.049 these points we're drawing it here just
+00:02:11.480 for educational purposes we know
+00:02:13.560 there is a function but when we're
+00:02:15.569 performing this we don't know we would
+00:02:17.370 have to interpolate what the function
+00:02:19.260 value is between these points to know
+00:02:21.360 what it is so without having that
+00:02:24.930 information how do we determine the
+00:02:27.780 integral remember the integral is the
+00:02:30.180 area underneath of the curve so one
+00:02:35.550 thing we could do under each one of
+00:02:37.620 those points is to fit a rectangle and
+00:02:40.739 we can see that the rectangle Parcher
+00:02:43.709 for the most part approximates the area
+00:02:46.530 underneath of that curve so what does
+00:02:50.340 this look like numerically in this case
+00:02:52.319 we're using even spacing or uniform
+00:02:54.540 spacing that way this is always Delta X
+00:02:57.569 from rectangle to rectangle notice our
+00:03:01.170 discrete point is at the center of the
+00:03:03.750 rectangle so this lets us write an
+00:03:06.870 integral from A to B as the sum of all
+00:03:11.459 of the function values at the points
+00:03:12.959 that are known times Delta X and if we
+00:03:15.930 look at the argument inside our
+00:03:17.489 summation term this F is the height of
+00:03:20.280 the rectangle and Delta X is the width
+00:03:22.859 so we are essentially summing all of the
+00:03:25.620 different rectangles what is Delta X
+00:03:29.340 Delta X is our interval B minus a
+00:03:32.579 divided by the number of rectangles that
+00:03:35.010 were using so we can bring for uniform
+00:03:38.370 space and we can bring Delta X to the
+00:03:39.810 outside of the summation just write B
+00:03:41.700 minus a over big n and being the number
+00:03:44.489 of rectangles a number of points and
+00:03:46.139 then just sum the function values that's
+00:03:48.720 what's left so this last equation if you
+00:03:51.420 do a Google search for discrete
+00:03:53.310 integration this is the equation that
+00:03:55.049 you'll likely see and the visualization
+00:03:58.380 of it above
+00:04:04.500 now if we look at the space between the
+00:04:08.500 actual function and our rectangles were
+00:04:11.380 highlighting those in red here this is
+00:04:13.960 area IVA that we've included in our
+00:04:16.000 integration and shouldn't have or we
+00:04:19.120 should have included it but didn't
+00:04:21.130 either way that leads to error so the
+00:04:23.800 red highlighted regions here are the
+00:04:25.720 reason that our numerical integration
+00:04:28.510 will yield a slightly different value
+00:04:31.150 than the actual symbolic integration if
+00:04:34.960 we could do that so we have to ask
+00:04:37.570 ourselves then what can we do to improve
+00:04:40.390 the accuracy of this method really the
+00:04:48.700 only degree of freedom we have for
+00:04:50.710 discreet integration is just using more
+00:04:53.200 or thinner rectangles we can say that
+00:04:56.470 either way up there thinner we need more
+00:04:57.940 in order to fit more they have to be
+00:04:59.650 thinner but what we can see is that
+00:05:03.340 there is less red highlighted region so
+00:05:05.710 there is less error here on to our next
+00:05:14.590 type of integration called trapezoidal
+00:05:16.450 integration in my opinion this is an
+00:05:20.380 oversold method and it's sold is being
+00:05:22.600 significantly more accurate than
+00:05:24.370 discrete integration and I'll show you
+00:05:26.500 why that argument is made and then I'll
+00:05:28.750 show you why I think it's wrong
+00:05:33.069 we had the exact same problem set up we
+00:05:35.840 have this continuous function f of s X
+00:05:39.020 that we want to numerically integrate in
+00:05:41.900 other words find the area under the
+00:05:43.490 curve we're going to do something
+00:05:48.380 slightly different now when we calculate
+00:05:51.080 our discrete points notice we placed
+00:05:54.560 these discrete points right on the
+00:05:56.479 endpoints we didn't do that before for
+00:05:59.300 discrete integration and so you may want
+00:06:01.910 to pause here rewind and look at that
+00:06:05.840 we did not place him at the endpoints
+00:06:07.460 just a subtle difference not that big of
+00:06:09.349 a deal but they're distributed
+00:06:11.570 differently at this point rather than
+00:06:16.520 fit rectangles both fit trapezoids and
+00:06:20.360 what we can see is those trapezoids can
+00:06:23.000 form to the curve much more closely
+00:06:25.389 leading to less error region and so this
+00:06:29.060 is why it's argued that trapezoidal
+00:06:30.770 integration leads to significantly less
+00:06:33.620 error than discrete integration here's a
+00:06:40.220 visualization of that so even though
+00:06:42.409 we're using approximately the same
+00:06:44.150 number of segments I believe this one
+00:06:45.860 more one more point then we differ
+00:06:48.169 discrete integration we can see that
+00:06:49.729 those error regions are significantly
+00:06:51.650 smaller so how on earth is that I argue
+00:06:54.770 that these methods lead to really the
+00:06:56.810 same error before we get into that let's
+00:07:03.320 think or let's derive the equation we
+00:07:05.810 use for the trapezoid and slowly our
+00:07:09.860 formulation will start looking more like
+00:07:12.020 discrete integration and that lets us
+00:07:13.729 make the comparison but for now we have
+00:07:16.159 the function value at two adjacent
+00:07:18.199 points we have F at X 1 F at X 2 and we
+00:07:23.810 want to calculate this total area well
+00:07:27.110 first we'll look at the area of just
+00:07:29.719 that upper triangular region so the air
+00:07:31.699 of a triangle one half base time height
+00:07:33.500 and we end up with this expression one
+00:07:36.949 half X 2 minus X 1 times F 2 minus F 1
+00:07:41.860 then below that the area of that right
+00:07:45.380 tangle just width times height is x2
+00:07:48.620 minus x1 times just F at x1 because
+00:07:52.970 that's the height really that the area
+00:07:55.910 of the trapezoid is the sum of those two
+00:07:57.890 and so if we do a little algebra we end
+00:08:01.460 up here and if we look at this X 2 minus
+00:08:04.760 X 1 that's really the spacing and F 1
+00:08:08.570 plus F 2 is really the average F value
+00:08:11.840 in that interval so it's a bit like we
+00:08:14.390 did discrete integration just somehow
+00:08:17.120 using the value of F at the midpoint so
+00:08:19.820 that's a hint of how these really are
+00:08:22.070 have the same accuracy but there's more
+00:08:24.230 to say there the last step in our
+00:08:29.240 formulation is just to generalize a
+00:08:31.250 little bit for non-uniform spacing that
+00:08:33.830 is the distance from X point to X point
+00:08:36.799 is different at which case we have to
+00:08:39.530 write our summation this way where we
+00:08:42.169 explicitly say the difference between
+00:08:44.360 the adjacent X's because that distance
+00:08:46.250 can change when this distance is the
+00:08:48.500 same and we have uniform sampling we can
+00:08:51.110 bring that to the outside we write that
+00:08:52.700 as a Delta x over to the 2 comes out
+00:08:55.730 that's why there's a divide by 2 here
+00:08:57.170 and we're just left with the sum of the
+00:08:59.120 two function values at either side of
+00:09:00.920 our trapezoid and if we Google trapezoid
+00:09:03.740 integration that second one is probably
+00:09:05.510 the one that you'll see so for uniform
+00:09:12.500 spacing we have written our trapezoidal
+00:09:15.380 integration this way so let's expand
+00:09:21.200 this over for trapezoids and you'll see
+00:09:24.710 that we've expanded here here's
+00:09:25.760 trapezoid 1 trapezoid 2 trapezoid 3
+00:09:28.970 trapezoid 3
+00:09:29.930 you'll also notice what we're ignoring
+00:09:31.820 is the Delta x over 2 out here that's
+00:09:33.890 just a constant if that bothers you you
+00:09:36.380 can imagine that outside I'm just
+00:09:38.480 writing the summation here I just want
+00:09:39.950 to compare the summation of trapezoidal
+00:09:42.320 to discrete integration so we have a
+00:09:50.060 single F 1 there's no other occurrence
+00:09:52.310 of F 1 here but we have two f 2s we have
+00:09:56.810 two F threes
+00:09:58.860 we have to f-4s but only a single f5 and
+00:10:02.400 so it turns out f1 2 times f2 plus 2
+00:10:06.990 times F 3 plus 2 times F 4 plus f5 and
+00:10:10.080 if we had a thousand points here we
+00:10:12.150 would have 998 of them with 2
+00:10:15.030 multiplying and then the endpoints do
+00:10:17.790 not have that 2 outside now let's
+00:10:26.400 compare the two so the arguments are
+00:10:28.500 that trapezoidal integration is
+00:10:31.260 significantly more accurate than
+00:10:33.930 discrete integration there's a few
+00:10:36.450 differences that are actually minor that
+00:10:38.250 aren't really contributing to the
+00:10:39.690 accuracy difference but with discrete
+00:10:41.790 integration we place the points at the
+00:10:44.130 middle of the rectangle so notice this
+00:10:45.990 point does not fall directly on the a
+00:10:48.600 boundary and likewise this point of the
+00:10:51.510 screed integration does not fall
+00:10:52.860 directly on the B boundary whereas a
+00:10:55.110 trapezoidal we put our points right on
+00:10:58.350 the endpoints discrete integration when
+00:11:03.060 we get to the matlab implementation
+00:11:04.230 you'll find out is a lot easier to
+00:11:06.480 implement than trapezoidal although this
+00:11:08.760 really is not a big deal to implement
+00:11:10.350 either 2 but discreet is definitely
+00:11:12.600 easier because we can just use the sum
+00:11:14.040 statement in MATLAB and we're done I
+00:11:16.760 also think the trapezoidal integration
+00:11:19.220 handles a non-uniform grid a bit more
+00:11:22.080 elegantly than discrete integration
+00:11:23.970 although we're talking about very simple
+00:11:25.950 code for either one now we want to
+00:11:33.240 compare the equations for trapezoidal
+00:11:35.820 and discrete integration and this is
+00:11:38.340 where really where we'll see that these
+00:11:40.020 really are the same method so let's
+00:11:43.940 rearrange the trapezoidal integration
+00:11:46.290 this way we're going to bring the 1/2
+00:11:48.390 into the summation so now we're not
+00:11:50.220 seeing twos on these terms because we
+00:11:52.320 brought the 1/2 inside but we do see a
+00:11:55.230 1/2 multiplying the f1 and the f5 let's
+00:12:01.560 write the equivalent for discrete
+00:12:03.930 integration here we just add Delta X
+00:12:06.320 multiplying the sum of all the function
+00:12:09.360 values
+00:12:12.029 now let's compare what we had for
+00:12:15.249 trapezoidal to discrete integration and
+00:12:19.119 what we really see is that these two
+00:12:21.610 expressions are the same just with one
+00:12:25.089 additional point up in trapezoidal
+00:12:27.129 integration so if we're using a hundred
+00:12:29.889 segments in our numerical integration
+00:12:32.639 trapezoidal is the same as discrete
+00:12:35.589 integration with one extra rectangle
+00:12:37.899 does that really contribute
+00:12:39.730 significantly to an improvement in error
+00:12:41.499 well it does but I think very small and
+00:12:45.220 so this is where I argue that discrete
+00:12:47.800 and trapezoidal are very very similar
+00:12:50.670 now let's think back we showed
+00:12:54.209 trapezoidal integration visually with
+00:12:56.889 trapezoids and discrete integration with
+00:12:58.480 rectangles and we visually saw that
+00:13:01.179 there was a whole lot more error with
+00:13:03.309 discrete integration so how on earth how
+00:13:07.089 on earth can we say that it has roughly
+00:13:08.589 the equivalent error well here we're
+00:13:09.970 showing it mathematically that
+00:13:11.490 mathematically the equations turn out
+00:13:13.540 the same but this still may not make
+00:13:16.059 some sense to you let's take one more
+00:13:20.799 look at how trapezoidal integration and
+00:13:24.839 discrete integration are essentially the
+00:13:27.579 same thing Here I am visualizing a
+00:13:30.809 discrete integration however I have a
+00:13:35.319 point five multiplying f1 and a point
+00:13:37.720 five multiplying f5 so we can recognize
+00:13:39.730 this as the equation for trapezoidal
+00:13:42.369 integration but if we were thinking for
+00:13:45.100 a minute that this really is discrete
+00:13:47.110 integration how would we draw that we
+00:13:49.389 would draw it the same way except we
+00:13:51.129 would black out half of the first
+00:13:53.980 rectangle and half of the second-ranked
+00:13:56.619 rectangle and just interpret the first
+00:13:59.559 and last points as the extreme end
+00:14:01.689 points in our interval so another way of
+00:14:06.069 trying to visualize why trapezoidal
+00:14:08.379 integration is essentially discrete
+00:14:10.360 integration but with one more rectangle
+00:14:12.879 added
+00:14:18.569 this is where we answer the problem why
+00:14:21.160 is it we saw visually a whole lot more
+00:14:23.769 error with discrete integration and not
+00:14:26.079 so much for trapezoidal integration and
+00:14:28.540 if we look closely at the error let's
+00:14:30.910 look at this rectangle and we see error
+00:14:33.639 on both sides of the point however
+00:14:36.370 because the line is passing through that
+00:14:38.769 point the air on the left and the right
+00:14:41.500 are very similar but of opposite sign
+00:14:44.680 and so when we add them together they
+00:14:48.040 tend to cancel and lead to a much
+00:14:50.259 smaller error than we see visually here
+00:14:53.259 and in fact that error reduces to
+00:14:55.360 something very close to what trapezoidal
+00:14:57.399 integration what we saw with trapezoidal
+00:15:00.310 integration so another visual way of
+00:15:03.610 arguing how discrete integration and
+00:15:06.160 trapezoidal integration in my opinion
+00:15:08.259 have essentially the same accuracy the
+00:15:10.990 the trapezoidal being just slight
+00:15:12.910 slightly incrementally better only
+00:15:15.279 because it contains one more rectangle
+00:15:22.649 onto another technique called Simpsons
+00:15:25.360 integration maybe a little bit more
+00:15:27.730 difficult to implement but can improve
+00:15:29.560 your accuracy quite a bit so we have a
+00:15:36.069 series of discrete points what we're
+00:15:38.259 going to do now is just look at a window
+00:15:40.660 of three of them three adjacent points
+00:15:43.750 along our function
+00:15:47.519 what Simpsons rule does is it just
+00:15:50.350 integrates along these three points does
+00:15:53.560 some math that will go through and
+00:15:55.089 derive this equation for how we can
+00:15:57.939 perform a numerical integration in that
+00:16:00.130 window of three points so that is what
+00:16:03.100 is that's called Simpsons one-third rule
+00:16:05.050 now how we use that to perform numerical
+00:16:08.439 integration is that we break our points
+00:16:11.019 up into groups of three and we perform
+00:16:13.870 that numerical integration in each group
+00:16:15.910 of three and then add them up
+00:16:17.740 so let's look more at this
+00:16:22.790 first we'd like to derive this equation
+00:16:25.620 so we take our group of three points and
+00:16:28.470 we'll define their positions in X as
+00:16:30.540 zero so we're centering it the last
+00:16:33.390 point will be at Delta X and the first
+00:16:35.550 point will be at minus Delta X so we
+00:16:37.740 centered our x-axis on the middle point
+00:16:40.529 and we're free to do that the
+00:16:42.720 coefficients we derive here are exactly
+00:16:44.760 the same no matter what our values of X
+00:16:46.920 it's just that the math is easier here
+00:16:48.959 so we have three points we would like to
+00:16:52.110 fit this to a second-order polynomial
+00:16:54.600 well we know how to do that and when we
+00:16:57.209 do do that we'll get our polynomial
+00:17:00.360 coefficients in terms of F and Delta X
+00:17:04.459 so that was step one we foot fit those
+00:17:07.349 three points to a polynomial and when
+00:17:09.869 you're doing this numerically you'll
+00:17:11.010 have numbers to put here the second step
+00:17:15.240 now that we have our polynomial
+00:17:17.400 coefficients a naught a 1 and a 2 let's
+00:17:20.160 integrate that and now instead of from
+00:17:22.770 x1 to x3 we can say from minus Delta X
+00:17:25.650 the positive Delta X so the integration
+00:17:28.770 is pretty simple and we'll plug in Delta
+00:17:31.350 X then plug in negative Delta X subtract
+00:17:33.360 the 2 and we end up here that's not too
+00:17:37.290 bad our next step then we will replace a
+00:17:41.280 naught with f2 and we'll replace a 2
+00:17:45.620 with this expression up here when we do
+00:17:50.970 that and we simplify we end up with the
+00:17:53.790 famous equation for the Simpsons 1/3
+00:17:56.400 rule and this is how we handle the
+00:17:58.890 numerical integration over the span of
+00:18:01.500 three adjacent points now on the next
+00:18:06.179 slide we're going to animate this and
+00:18:09.840 the blue line is showing us our
+00:18:12.090 analytical function that we don't know
+00:18:14.070 we only know the function at the
+00:18:15.390 discrete points that we're also showing
+00:18:17.450 but what you'll see is we take a group
+00:18:20.040 of three points and use the Simpsons
+00:18:22.710 one-third rule to calculate this I which
+00:18:25.260 will be our integration and then from
+00:18:28.290 there we keep calculating that but
+00:18:30.030 adding it to our previous tally so by
+00:18:33.270 the time we've worked through the
+00:18:34.800 we've integrated the functions the
+00:18:37.890 function and also you can see the error
+00:18:39.480 regions here in red that's either area
+00:18:42.420 that we are accidentally including in
+00:18:44.820 our integration but shouldn't be or area
+00:18:47.100 that we should include in our
+00:18:48.240 integration but are not just due to the
+00:18:50.309 approximation and because on paper you
+00:18:53.250 can't see an animation I'm showing the
+00:18:56.450 series of frames here going down
+00:18:59.130 vertically on the right-hand side of the
+00:19:00.660 slide there is a very similar Simpsons
+00:19:11.460 rule for integration this is called the
+00:19:12.780 three-eighths rule and it really is the
+00:19:15.000 same as the one-third rule of one
+00:19:16.500 difference it's now a window of four
+00:19:18.540 points instead of three points and it's
+00:19:21.690 derived the same way just with a little
+00:19:23.340 bit more tedious algebra and so now to
+00:19:25.860 do our discrete integration we will take
+00:19:28.320 groups of four points and apply that
+00:19:30.900 equation to approximate the integral in
+00:19:33.420 the intervals the four point intervals
+00:19:40.970 so those are the only methods we are
+00:19:43.950 going to discuss for numerical
+00:19:45.600 integration suffice to say there's a lot
+00:19:47.670 more methods and a lot more to say about
+00:19:50.640 it but that gives you a pretty good
+00:19:52.590 taste of what's happening now what I
+00:19:54.990 want to do is generalize the concepts so
+00:19:57.000 that we can perform multiple
+00:19:58.110 integrations or do multiple integrals so
+00:20:04.500 here's a double integral given what we
+00:20:07.800 know how do we do that and really what
+00:20:12.210 we're going to discuss here is a bit
+00:20:14.160 independent of the actual numerical
+00:20:17.040 method we use for performing the
+00:20:18.920 one-dimensional integrals so we can
+00:20:25.530 think of a double integration or really
+00:20:28.230 any number of integrations as an
+00:20:29.730 integral of integrals so this double
+00:20:32.010 integration inside of it we have an
+00:20:34.410 argument where we perform some
+00:20:36.380 one-dimensional integration and we come
+00:20:38.970 away with a number from that and then we
+00:20:41.760 plug that into our outside integral and
+00:20:43.860 integrate again
+00:20:45.500 so it's an integral of integrals if you
+00:20:47.510 will and I have a visualization of this
+00:20:49.280 on the next slide so let's stay we say
+00:20:54.830 we start with a two dimensional array
+00:20:56.179 and we want to perform a double integral
+00:20:58.370 over this two-dimensional function that
+00:21:01.100 we only know at discrete points well
+00:21:04.010 what we would do is we'd set up a loop
+00:21:05.510 to go from left to right and we would
+00:21:08.450 integrate the columns so each column we
+00:21:11.690 do a numerical integration until we get
+00:21:14.179 a single number for each column so the
+00:21:16.970 single array of single numbers from each
+00:21:19.159 column gives us a one-dimensional array
+00:21:23.530 we then do a second integration working
+00:21:27.110 horizontally through those values and
+00:21:29.210 get a final single number and in fact
+00:21:33.470 that final single number is the answer
+00:21:36.260 to our double integral so we're doing a
+00:21:38.900 double integral as combinations of one
+00:21:41.929 dimensional integrals and you'll see how
+00:21:45.020 easy this is in MATLAB if we use
+00:21:47.000 discrete integration so this is the
+00:21:53.600 mathematical form when we make a double
+00:21:56.750 integral discreet we're now writing it
+00:21:59.210 as a double summation and maybe that
+00:22:01.850 looks kind of intimidating we now have a
+00:22:03.980 Delta X and a Delta Y but look at how
+00:22:06.860 easy this is in MATLAB we'll calculate
+00:22:11.750 our DX and dy using these two equations
+00:22:15.020 above and then our integral is simply
+00:22:17.570 the sum of our two dimensional function
+00:22:21.610 reshape to a one dimensional array and
+00:22:24.710 then summed that summation gives us just
+00:22:28.309 a single number which then we multiply
+00:22:30.230 by DX times dy and that's our integral
+00:22:33.470 that's it so that one line of code
+00:22:36.130 performed a double integral and in fact
+00:22:39.110 if we wanted to do a triple integral we
+00:22:41.780 would say I equals some F with the
+00:22:44.630 parenthesis Collin but then multiplying
+00:22:47.240 all that DX times dy times DZ and that
+00:22:50.059 will be it
+00:22:50.690 now we're doing a triple integral so if
+00:22:53.000 you're using the discrete integration
+00:22:54.710 double triple or any number of multiple
+00:22:57.740 integrals is actually very easy
+00:23:03.140 our last topic of this lecture and this
+00:23:06.690 will become an increasingly important
+00:23:08.850 topic and this is called convergence one
+00:23:12.330 thing we didn't talk about is how many
+00:23:14.940 rectangles are how many trapezoids do we
+00:23:17.160 need so that we get an accurate
+00:23:19.130 integration and there really is not a
+00:23:23.040 good answer to this there's not an
+00:23:24.570 equation or or anything like that so
+00:23:27.990 that we know how many we need what we
+00:23:29.700 need to do is keep increasing the number
+00:23:32.790 of rectangles until our answer doesn't
+00:23:34.980 change much anymore
+00:23:36.510 that's called convergence so let's look
+00:23:39.360 more at this okay I think I just said
+00:23:45.570 everything that's on this slide so on
+00:23:47.400 will go but the one point on this slide
+00:23:50.010 I haven't made yet is as we're
+00:23:52.230 increasing the number of rectangles I
+00:23:54.600 keep using the phrasing more accurate
+00:23:58.140 but in fact it's not accurate for me to
+00:24:00.630 say that it's not correct for me to say
+00:24:02.580 that as we increase the number of
+00:24:04.950 rectangles our answer does not
+00:24:06.660 necessarily become more accurate for
+00:24:09.240 example there could be something wrong
+00:24:10.560 with our code or maybe our code is
+00:24:12.720 working but we gave it a slightly
+00:24:14.310 incorrect function all this means is
+00:24:17.220 whatever answer the computer would give
+00:24:19.830 you in an ideal setting you're getting
+00:24:22.440 closer and closer to that it's just the
+00:24:24.390 best answer that the computer can give
+00:24:26.040 you it's not going to get any better by
+00:24:27.810 adding more rectangles and we call that
+00:24:29.850 converged so increasing number of
+00:24:32.250 rectangles just improves convergence not
+00:24:34.950 necessarily accuracy because something
+00:24:37.110 could still be wrong this is best
+00:24:43.650 illustrated through an example I think
+00:24:45.390 so let's integrate sine x from zero to
+00:24:48.840 pi and we have to answer the question
+00:24:51.180 how many segments do we need to do this
+00:24:53.460 and in fact there is no closed form
+00:24:56.070 equation to to tell us what to do here
+00:24:58.380 there's maybe some rules of thumb based
+00:25:00.630 on the physics for example if you're
+00:25:03.060 simulating wave phenomenon we typically
+00:25:06.090 want at least ten segments per wave
+00:25:09.030 cycle if you're simulating something
+00:25:11.430 else there may be other rules
+00:25:15.770 just to make sure we get the right
+00:25:17.640 answer a numerically let's do this
+00:25:20.640 analytically so we integrate sine X from
+00:25:23.370 0 to PI our answers to so let's make
+00:25:27.600 sure that our numerical code returns an
+00:25:31.080 answer of 2 we're finally ready to
+00:25:35.940 perform the convergence study so what
+00:25:38.460 you're seeing this slide we're doing
+00:25:41.429 numerical integration for an increasing
+00:25:43.980 number of segments and what we can see
+00:25:46.530 is as we increase the number of segments
+00:25:48.390 the answer we get is converging on 2.0
+00:25:53.929 now we can look at this and try to
+00:25:56.850 conclude a few things where exactly does
+00:25:59.760 this converge and it's not really a
+00:26:03.210 straightforward answer in fact we would
+00:26:05.280 probably need to know a little bit more
+00:26:06.900 about the problem if you're designing
+00:26:08.970 somebody's pacemaker you'll need a whole
+00:26:11.700 lot more segments if you're just looking
+00:26:14.280 for a quick approximate answer you may
+00:26:16.740 be able to get away with fewer segments
+00:26:22.340 so I might point out two places where
+00:26:25.049 you could potentially identify where
+00:26:27.419 convergence occurs so first I might look
+00:26:30.210 at this elbow and see right around
+00:26:32.520 somewhere around 6 segments from there
+00:26:36.090 and higher number of segments the answer
+00:26:39.030 doesn't change much so if I'm looking
+00:26:41.429 for a quick rough estimate I might
+00:26:44.040 choose 6 segments however as I mentioned
+00:26:47.100 before if you're designing somebody's
+00:26:48.179 pacemaker or something very very
+00:26:50.400 critical you might need more accuracy
+00:26:52.799 and you might increase the number of
+00:26:54.660 segments and you might even call
+00:26:56.419 convergence at 20 segments here the last
+00:27:04.049 thing and it's just the words that we
+00:27:08.070 use as we increase the number of
+00:27:10.320 segments it's very easy to say that our
+00:27:12.860 numerical integration is becoming more
+00:27:15.480 accurate or more correct and it's not
+00:27:19.350 really correct to say that
+00:27:22.010 our algorithm is only becoming more
+00:27:25.279 converged with an increasing number of
+00:27:27.929 segments for example we may have entered
+00:27:30.779 the wrong equation into our computer
+00:27:32.940 code or there might be some other error
+00:27:35.220 or mistake and so in which case we're
+00:27:38.220 converging but to an incorrect answer
+00:27:40.980 we're just getting the the best
+00:27:43.710 incorrect answer that the computer can
+00:27:45.870 give so I use these words all the time
+00:27:48.179 and I don't mean to they just naturally
+00:27:49.710 come out as we increase number of
+00:27:51.360 segments answer gets more accurate I
+00:27:53.190 guess that just makes it more intuitive
+00:27:55.500 but it is definitely incorrect to say
+00:27:57.360 that as we increase segments the only
+00:27:59.370 thing that we can say is that our answer
+00:28:01.649 becomes more converged so be careful of
+00:28:04.770 that wording usually we have rules of
+00:28:13.169 thumb to make a first good guess at how
+00:28:16.470 many segments we'll need however there's
+00:28:19.289 never an exact equation that we can do
+00:28:21.690 up front pick that number of segments
+00:28:23.700 and get the correct answer what the
+00:28:26.370 correct answer is or the best answer is
+00:28:28.080 always answered through convergence as
+00:28:31.010 an example for rules of thumb I do a lot
+00:28:34.830 of electromagnetic analysis so we're
+00:28:36.990 simulating waves and the rule of thumb
+00:28:39.480 is when you have about ten segments per
+00:28:42.120 wavelength this is about where answers
+00:28:44.970 start to resemble reality very often we
+00:28:47.580 need more than this maybe 20 segments
+00:28:50.010 per wavelength but at at a lambda over
+00:28:53.250 10 or 1/10 of a wavelength that's about
+00:28:56.190 where things start to resemble reality
+00:28:57.840 so depending on the physics of what
+00:29:00.330 you're simulating they'll have different
+00:29:02.309 rules of thumb for how many segments
+00:29:05.370 you'll need and this is a great place to
+00:29:06.990 start but make no mistake one tenth of a
+00:29:10.350 wavelength here does not guarantee
+00:29:11.549 convergence you always have to do a
+00:29:13.950 convergence study where you do your
+00:29:16.140 calculation you run your simulation you
+00:29:18.240 do whatever you're doing with an
+00:29:20.010 increasing number of segments and when
+00:29:22.470 the answer doesn't change much anymore
+00:29:25.289 you say that you are converged

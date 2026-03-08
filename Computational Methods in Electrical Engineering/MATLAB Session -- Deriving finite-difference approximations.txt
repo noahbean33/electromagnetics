@@ -1,0 +1,241 @@
+# tactiq.io free youtube transcript
+# MATLAB Session -- Deriving finite-difference approximations
+# https://www.youtube.com/watch/1yxd8BM8H8w
+
+00:00:00.650 in this very short MATLAB video I'm
+00:00:03.780 going to show you how to derive symbolic
+00:00:07.290 finite difference approximations using
+00:00:09.630 the symbolic toolbox in MATLAB the
+00:00:12.300 expectation here is that you watch the
+00:00:14.219 lecture so you understand the
+00:00:15.780 methodology the approach we're going to
+00:00:17.520 use if not some of what we're going to
+00:00:20.010 do will not make much sense so for this
+00:00:23.250 simple example let's calculate our
+00:00:25.019 finite difference approximations for the
+00:00:27.180 first and second order derivatives and
+00:00:29.310 also interpolating the function across
+00:00:31.920 three points and we'll evaluate it at
+00:00:33.930 the second point so the first thing we
+00:00:37.230 really need to do is declare our
+00:00:38.910 symbolic variables so we use the
+00:00:47.760 function Sim s we'll need H for our grid
+00:00:50.280 spacing and we need three function
+00:00:52.739 values F 1 F 2 F 3 all right we will run
+00:00:59.550 this just to make sure we don't have any
+00:01:01.020 errors so far ok and we could type H at
+00:01:08.100 the command prompt that it tells us you
+00:01:09.450 have 2 H equals H now the next thing we
+00:01:13.530 need to do in our process is build that
+00:01:15.509 column vector little X which is the
+00:01:18.270 coordinates in our offset system
+00:01:20.460 remember we're offsetting our
+00:01:22.259 coordinates to place locations 0 where
+00:01:25.740 we want to evaluate our finite
+00:01:27.360 difference so we'll define our offset
+00:01:34.020 points little X we have three points so
+00:01:37.470 we need to put three numbers in here
+00:01:39.920 separated by semicolons so that we get a
+00:01:42.299 column vector if we want to evaluate our
+00:01:45.360 finite difference at the center point
+00:01:47.130 that's 0 in our offset coordinates if
+00:01:51.149 our grid spacing is H that makes the
+00:01:54.570 first point at minus H and the second
+00:01:58.049 point at plus h now we don't need to
+00:02:00.000 write the plus in MATLAB but I like
+00:02:02.280 doing that because it just visually goes
+00:02:04.890 with the minus H over here then we need
+00:02:08.429 our column vector F
+00:02:10.699 which will have the function value at
+00:02:13.190 each of these points so we have F 1 F 2
+00:02:16.520 and F 3 and we can just hit space and
+00:02:21.770 that we can see a a one-to-one matching
+00:02:23.870 between the X of the F let's leave a
+00:02:27.350 semicolons off and we'll run it and we
+00:02:32.510 should see a column vector X and a
+00:02:34.400 column vector F and so we can see our
+00:02:37.459 offset coordinates and our function
+00:02:39.290 values the next thing we need to do is
+00:02:43.310 build this matrix X but I want to do
+00:02:46.910 this in a way so that if I want to add
+00:02:48.709 or subtract more points I can control
+00:02:51.350 that solely through these two lines of
+00:02:53.239 codes and everything else will handle
+00:02:55.400 any matrix size any number of points so
+00:02:58.370 we won't have to change the rest of the
+00:02:59.720 code so no hard coded numbers build
+00:03:05.690 matrix X well the first thing we would
+00:03:09.110 like to do since we don't want to
+00:03:10.250 hard-code any numbers this figure out
+00:03:11.840 how many points we have so we'll look at
+00:03:15.560 the length of X and with the semicolon
+00:03:18.470 off we'll run it we should get 3 for L
+00:03:23.260 hey we have 3 now we can start to build
+00:03:27.500 X what we want to do is initialize it
+00:03:30.950 with all one's going down that first
+00:03:33.140 column we can send me going off we'll
+00:03:37.609 run it ok so we see all ones now there's
+00:03:46.250 still a problem with X X right now is
+00:03:49.549 just a one-dimensional array of double
+00:03:51.859 floating-point numbers if we go ahead
+00:03:54.079 and try to add symbolic variables to
+00:03:57.079 that MATLAB will yell at us
+00:03:59.720 so what we need to do is declare that
+00:04:02.329 array of ones as symbolic and so if we
+00:04:05.720 run it again you really want to see much
+00:04:07.130 difference we still see the ones there
+00:04:11.090 but now they're symbolic ones ok now
+00:04:15.530 we're ready to insert the rest of the
+00:04:17.000 columns in X so we'll use our column
+00:04:20.390 number n we've already filled in the
+00:04:22.849 first column with ones
+00:04:24.180 we'll start at the second column and
+00:04:25.949 we'll go all the way to L which will be
+00:04:28.410 the number of columns in this matrix so
+00:04:33.630 then in X we want to insert into the nth
+00:04:36.210 column we want to insert our coordinates
+00:04:39.509 however they're raised to the N minus 1
+00:04:43.110 power
+00:04:52.250 okay so let's display X sure everything
+00:05:01.229 is correct and there is our X matrix we
+00:05:04.080 have ones in that first column the
+00:05:06.840 second column are our offset coordinates
+00:05:09.150 and the third column is the offset
+00:05:11.370 coordinates squared and we did this in a
+00:05:14.190 way that if we added more points to X
+00:05:16.139 and F X would still be built correctly
+00:05:21.199 next step in this is to calculate our
+00:05:24.150 polynomial coefficients so we'll put
+00:05:30.270 them in a column vector a and that's X
+00:05:33.570 backward divided if again we'll leave
+00:05:37.110 the semicolon off to make sure that we
+00:05:38.760 get a column vector that will have
+00:05:40.919 symbolic expressions in it those
+00:05:44.400 symbolic expressions are almost are
+00:05:46.860 finite differences but not quite
+00:05:50.090 especially for this last row remember we
+00:05:52.650 have to multiply that by 2 okay so now
+00:05:57.750 let's let's look at the first element in
+00:06:01.050 a this is the the finite difference
+00:06:03.060 approximation if you will or this leads
+00:06:05.039 to define a difference approximation for
+00:06:07.199 interpolating the function at that zero
+00:06:09.599 point in this case it's the second of
+00:06:11.550 our three points so report equation for
+00:06:18.229 interpolating so we'll call it f 0 and
+00:06:23.849 we will extract the first element from a
+00:06:28.430 not such a big deal here because it's
+00:06:31.110 just a symbolic F 2 but we see that we
+00:06:34.020 have expressions later and so what we
+00:06:36.990 can do
+00:06:37.689 and say have not equal simplify F not
+00:06:44.580 let's go ahead and display or tell the
+00:06:48.309 person at the command prompt what we're
+00:06:49.779 about to show so this is the equation to
+00:06:58.389 interpolate F and we could just do an F
+00:07:02.979 naught and it would report our equations
+00:07:05.499 in terms of texts looking stuff like
+00:07:07.119 this but instead let's use the pretty
+00:07:12.039 command and what that will do is it will
+00:07:15.039 give us an ASCII art version of a more
+00:07:18.749 appropriately formatted equation now
+00:07:21.550 MATLAB does give you a way to convert
+00:07:24.029 symbolic equations to latex that then
+00:07:26.800 you can draw to a graphics window I'm
+00:07:29.050 not going to cover that here but that's
+00:07:30.759 a great way to display your equations as
+00:07:32.709 well let's go ahead and run this
+00:07:38.219 alright the equation to interpolate F at
+00:07:41.409 the second point is just F 2 and that
+00:07:43.539 makes sense we already know the function
+00:07:45.369 value there so it makes sense it would
+00:07:47.319 tell us just that value to do the
+00:07:49.360 interpolation all right I'm going to
+00:07:51.879 copy and paste this code because it's
+00:07:55.539 almost exactly the same and now we're
+00:07:57.369 gonna report the how the finite
+00:08:01.269 difference equation for first order
+00:08:07.689 derivative I will bother typing
+00:08:12.669 derivative cuz that'll go off the screen
+00:08:14.399 that comes from the second element in a
+00:08:18.360 we'll call this F 1 instead of F not if
+00:08:22.989 that's the first order derivative we can
+00:08:24.669 think of this zeroth order derivative or
+00:08:27.159 just percolate in the function and we'll
+00:08:30.189 replace this with finite difference
+00:08:37.229 approximation of first order we're
+00:08:40.990 starting to go off the screen here feel
+00:08:44.949 free to make this shorter somehow
+00:08:48.050 it will call finite difference
+00:08:52.700 approximation of first-order okay that
+00:09:00.300 fits and we'll do a pretty version of f1
+00:09:05.090 run this and we haven't made any
+00:09:07.020 mistakes we should see our finite
+00:09:08.700 difference approximation and we do now
+00:09:12.900 the only sort of quirky thing is that
+00:09:15.060 and maybe there's a way to fix this and
+00:09:16.800 I don't know it but notice in the
+00:09:18.480 numerator it's F 1 minus F 3 but then
+00:09:21.480 there's a negative sign to the outside I
+00:09:23.490 really wish this would just say F 3
+00:09:25.230 minus F 1 but it doesn't so as long as
+00:09:28.020 you're willing to put up with a little
+00:09:29.160 bit of core penis-like that this works
+00:09:31.200 really well so f 3 minus F 1/2 H and we
+00:09:35.730 know that is the finite difference
+00:09:37.020 approximation for the first order
+00:09:38.610 derivative so we've confirmed that that
+00:09:41.370 works we're moving to the second order
+00:09:47.480 and we'll call this F to pull off the
+00:09:52.560 third element in a sure to replace all
+00:09:56.220 the F ones of that to just playing the
+00:10:01.380 second order that really should be all
+00:10:02.970 we need to do oh we forgot one thing
+00:10:05.460 remember I do this all the time
+00:10:07.740 we have to multiply by 2 for the second
+00:10:10.650 order derivative we originally had an x
+00:10:12.780 squared in the polynomial and when we
+00:10:14.700 differentiate it twice that two came to
+00:10:16.830 the outside so don't forget that
+00:10:25.420 and there is our finite difference
+00:10:27.910 approximation for the second order
+00:10:29.830 derivative so very quickly I will do one
+00:10:34.150 other finite difference just to show you
+00:10:35.650 how easily modified this is let's say we
+00:10:38.470 had four points and we want to evaluate
+00:10:43.000 our approximations I don't know maybe at
+00:10:45.970 the midpoint between the first and
+00:10:47.530 second point so right away in this F
+00:10:51.010 column vector we know we'll need to give
+00:10:52.690 it an F 4 and we'll declare an F 4 and
+00:10:58.990 now we need four numbers for X okay we
+00:11:06.250 want our zero to be at the midpoint
+00:11:08.590 between these two points that would make
+00:11:11.620 our first point at minus H over 2 and
+00:11:15.090 our second point a positive H over 2
+00:11:19.110 then of course our third point will be
+00:11:21.280 positive 3 times H over 2 and the last
+00:11:24.640 point positive 5 times H over 2 that
+00:11:28.840 places the zero between these two points
+00:11:30.670 and everything else would just work out
+00:11:33.250 let's go ahead and run it and see what
+00:11:34.750 we get
+00:11:41.610 see how easy that is and another little
+00:11:44.610 quirky thing with the MATLAB symbolic
+00:11:46.650 tool box it did not put those under one
+00:11:49.530 denominator but not such a big deal for
+00:11:51.270 us it did do it for our first order
+00:11:54.840 derivative the finite difference
+00:11:56.190 approximation for the first order
+00:11:57.600 derivative although it did the quirky
+00:11:59.340 thing and bring a negative sign to the
+00:12:00.750 outside that we have to remember to
+00:12:02.610 distribute in all the different terms
+00:12:04.350 and then our final difference
+00:12:06.900 approximation for the second order
+00:12:08.460 derivative and it's important to
+00:12:10.350 remember not only the finite difference
+00:12:11.700 approximation but where the points were
+00:12:14.370 located and where it's evaluating the
+00:12:17.130 function or one of its derivatives so I
+00:12:20.670 hope this was helpful

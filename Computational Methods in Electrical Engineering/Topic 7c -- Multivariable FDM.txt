@@ -1,0 +1,625 @@
+# tactiq.io free youtube transcript
+# Topic 7c -- Multivariable FDM
+# https://www.youtube.com/watch/tG2BeW7hLJI
+
+00:00:00.260 topic 7c multivariable finite difference
+00:00:04.340 method in this lecture hopefully we are
+00:00:10.070 masters at the ordinary 1 dimensional
+00:00:13.190 finite difference method and what we
+00:00:15.199 want to do now is talk about how to
+00:00:16.880 solve problems that have two unknown
+00:00:19.609 functions or three or four really any
+00:00:22.130 number will work on to here but the
+00:00:24.830 extension to three for any number is
+00:00:27.099 straightforward so pretty much anytime
+00:00:32.299 we have multiple variables we're going
+00:00:34.879 to adopt what we call a staggered grid
+00:00:37.480 that isn't always the case but almost
+00:00:40.430 always so we'll talk about multiple
+00:00:42.890 variables and how that leads to a
+00:00:44.600 staggered grid and why we do that after
+00:00:48.440 that since we have a staggered grid that
+00:00:51.140 implies that something different is
+00:00:53.210 going to happen with our derivative
+00:00:54.800 matrices so we need to talk about that
+00:00:57.199 as well and then we'll tie all this
+00:00:59.390 together with an example this should be
+00:01:01.280 a relatively short video forget for a
+00:01:11.030 moment that we are working towards a
+00:01:13.400 staggered grid and suppose were
+00:01:15.650 presented two coupled partial
+00:01:17.300 differential equations that have two
+00:01:19.820 unknown functions F and G since we have
+00:01:23.990 two unknown functions we need two
+00:01:25.400 equations and so we have this coupled
+00:01:27.770 set of partial differential equations
+00:01:29.480 how would we solve this well following
+00:01:33.800 what we've done before we would
+00:01:35.210 approximate these with finite
+00:01:36.830 differences so we do that
+00:01:41.330 now my question is looking at these
+00:01:43.880 finite difference approximations does
+00:01:45.680 this work is this the best thing that we
+00:01:48.470 can do it turns out this will work
+00:01:53.080 however we can do better what's wrong
+00:01:58.760 here if we notice our finite difference
+00:02:01.160 approximations we are actually spanning
+00:02:04.130 our grid by a distance of two times
+00:02:06.320 Delta X we would like to only span one
+00:02:10.489 Delta X that will make our finite
+00:02:13.370 difference in
+00:02:14.069 more accurate so while this works we can
+00:02:18.389 do better
+00:02:22.129 so now let's rewrite our finite
+00:02:24.659 differences this way we're writing these
+00:02:27.150 finite differences so now we only span
+00:02:29.340 one Delta X that forces us to say F at X
+00:02:34.079 plus Delta X minus F at X minus Delta x
+00:02:37.650 over 2 we're dividing that Delta X over
+00:02:40.260 2
+00:02:40.650 but then that we span only one Delta X
+00:02:43.489 since our since we're spanning less
+00:02:46.500 distance across our grid that makes our
+00:02:49.079 finite differences more accurate so the
+00:02:52.139 question is is this a good formulation
+00:02:57.199 it turns out no because this forces us
+00:03:00.959 to have to know the value F and the
+00:03:03.750 value G at the midpoints we're only
+00:03:07.169 storing F and G at integer multiples of
+00:03:10.199 Delta X not at those midpoints so this
+00:03:14.939 isn't going to work for us what should
+00:03:17.790 we do next let's express our finite
+00:03:23.099 differences only at X and X plus Delta X
+00:03:26.790 into Delta X and 3 on so we write our
+00:03:29.489 finite differences this way now the
+00:03:32.280 question again does this work is this
+00:03:34.290 better
+00:03:34.680 we're only spanning 1 Delta X we're only
+00:03:37.650 using F and G where we're storing values
+00:03:40.319 does this work the answer to this is a
+00:03:45.449 little bit more tricky it turns out this
+00:03:47.699 is still not good if we go back and
+00:03:50.699 remember what we're talking about in
+00:03:52.169 finite differences and we look at this
+00:03:53.909 where would this finite difference exist
+00:03:56.669 where would it be calculating the
+00:03:58.709 derivative and it turns out at the
+00:04:00.569 midpoint between X and X plus Delta X so
+00:04:05.340 while we only need the function f at the
+00:04:07.979 integer multiples that finite difference
+00:04:11.250 term exists at the midpoint
+00:04:13.199 however G doesn't exist at the midpoint
+00:04:15.870 so we were incompatible here our terms
+00:04:18.839 are not being defined they're not
+00:04:21.000 existing at the same points in space and
+00:04:24.000 so this is not a healthy way to
+00:04:26.099 formulate
+00:04:27.170 to find a difference method so we're
+00:04:29.750 still not there let's think about how we
+00:04:32.330 can yet rewrite our finite differences
+00:04:34.100 again to try to fix everything so now
+00:04:41.870 look at what is happening all of our
+00:04:44.870 finite differences are only spanning
+00:04:46.760 Delta X that's fine F we only need at
+00:04:51.650 the integer multiples of Delta X but in
+00:04:55.670 order to make the left and right hand
+00:04:58.670 side of this equation equivalent and
+00:05:01.520 work if the left-hand side the left-hand
+00:05:04.640 side exists at Delta X over 2
+00:05:07.010 we need the right-hand side to exist at
+00:05:09.500 that same midpoint so we need G at X
+00:05:12.650 plus Delta x over 2 and it appears that
+00:05:15.320 this maybe wouldn't work however what if
+00:05:18.980 we just defined F to exist at the
+00:05:21.950 integer multiples of Delta X and then G
+00:05:25.310 at the midpoint between those points so
+00:05:28.490 we are staggering where F and G exist so
+00:05:32.480 that we can write our finite differences
+00:05:34.310 in a way that only spans 1 Delta X let's
+00:05:38.570 see what this looks like so on the
+00:05:43.280 bottom I'm drawing our grid and if we
+00:05:46.430 look from blue point to blue point that
+00:05:48.890 is spanning 1 Delta X we would call this
+00:05:51.170 one unit cell on our grid so we will
+00:05:54.530 place F at the integer multiples of
+00:05:57.770 Delta X and we place G at the mid point
+00:06:01.190 if we do that the finite difference
+00:06:04.310 equations that we wrote up top work just
+00:06:07.040 fine and our finite differences only
+00:06:09.770 span 1 Delta X but we need to keep in
+00:06:12.740 mind that the values we obtain for F and
+00:06:15.860 G exist at physically different points
+00:06:19.160 we don't want to confuse that if we're
+00:06:21.650 simulating waves the wave for F and G
+00:06:25.070 even though they're in the same unit
+00:06:26.720 cell might have the same array index
+00:06:28.700 they exist at physically different
+00:06:30.620 places and will be out of phase could
+00:06:33.110 have a slightly different amplitude so
+00:06:35.450 we need to keep that in mind
+00:06:41.379 now just for your interest when we solve
+00:06:44.060 three-dimensional problems we still
+00:06:45.949 stagger things what we're looking at
+00:06:48.319 here is not something we will need in
+00:06:50.389 this course but it's called the ESL and
+00:06:52.460 it's something that is used all the time
+00:06:55.039 and finite-difference time-domain and
+00:06:57.050 find that difference frequency domain
+00:06:58.460 and here we're solving an
+00:07:00.050 electromagnetic problem where we have
+00:07:02.360 two quantities an electric field e a
+00:07:05.560 magnetic field H and each of those are
+00:07:08.060 also vectors so they have XY and Z
+00:07:11.120 components so even though XY and z are
+00:07:14.300 part of the same vector when we look at
+00:07:16.729 how the finite differences are written
+00:07:18.289 we end up staggering these and that
+00:07:21.949 makes the finite differences work but
+00:07:23.479 it's a little bit strange and how we
+00:07:25.240 reconcile because our different
+00:07:27.830 components of our same vector are in
+00:07:29.990 physically different spots could be
+00:07:31.669 inside different materials the wave at
+00:07:34.189 those points could have slightly
+00:07:35.300 different amplitude it will be out of
+00:07:36.949 phase and we need to keep this in mind
+00:07:39.469 but this is a good example of what
+00:07:41.719 staggering looks like in three
+00:07:43.129 dimensions now we've been writing our
+00:07:50.930 finite differences in terms of X and
+00:07:53.180 Delta X what is more useful for solving
+00:07:56.539 a finite difference problem is writing
+00:07:58.339 it in terms of the array indices and in
+00:08:00.770 this case the array index will be I so
+00:08:03.620 I've rewritten our finite difference
+00:08:06.020 equations but rather than using X and
+00:08:07.699 Delta X using the array index I now one
+00:08:11.360 thing sort of tricky that we need to
+00:08:12.740 keep in mind for example we have an F
+00:08:15.050 sub I and a G sub I even though they
+00:08:18.500 have the same array index they're
+00:08:20.960 staggered by 1/2 cell and they're in
+00:08:23.449 physically different locations we need
+00:08:26.270 to keep that in mind
+00:08:27.759 however the array indices make our
+00:08:30.439 derivative matrices and stuff like that
+00:08:32.089 more straightforward to formulate
+00:08:33.708 formulate so I will write the finite
+00:08:37.370 difference in this form as opposed to
+00:08:39.140 what we showed on the previous slide
+00:08:40.339 with X and Delta X
+00:08:46.939 so now we understand when we have
+00:08:49.050 multiple variables that we need to
+00:08:50.910 stagger the grid this is to have
+00:08:52.860 healthier and more accurate finite
+00:08:55.139 differences this affects how we write
+00:08:57.569 the derivative matrices on a staggered
+00:08:59.730 grid so let's take a look at this we
+00:09:06.839 have on the left our first differential
+00:09:09.269 equation written in finite difference
+00:09:10.980 form and array indices and so what we
+00:09:14.189 will do is we will look for every point
+00:09:16.499 on our grid every cell in our grid we
+00:09:18.990 will write that finite difference
+00:09:20.459 equation once so here we have five
+00:09:23.699 points on our grid so we write this fun
+00:09:26.399 a difference equation one two three four
+00:09:29.339 five different times now our finite
+00:09:33.360 difference equation contains an i plus 1
+00:09:36.389 term that means at the very last point
+00:09:39.649 that finite difference equation once F
+00:09:42.839 six which of course isn't stored and we
+00:09:45.839 need to do something about it and that's
+00:09:47.910 called a boundary condition no surprise
+00:09:50.579 there
+00:09:53.420 now we write our second finite
+00:09:56.339 difference equation notice this finite
+00:09:59.009 difference equation contains an i minus
+00:10:01.529 1 that means the first equation will
+00:10:04.980 contain a G naught for G sub 0 which
+00:10:08.519 doesn't exist and so we need to fix this
+00:10:11.639 and that's called a boundary condition
+00:10:13.679 as well now notice on the last slide
+00:10:20.839 that the two different differential
+00:10:23.670 equations had their boundary conditions
+00:10:26.339 at opposite sides of the grid and this
+00:10:29.670 is why we're going to need different
+00:10:31.470 derivative matrices whether we're doing
+00:10:33.629 derivatives on F or derivatives on G
+00:10:36.749 because of the staggering and the
+00:10:38.999 boundary conditions it forces those
+00:10:40.649 matrices to be slightly different
+00:10:42.480 we'll find out they're related but they
+00:10:44.910 can be slightly different so right now
+00:10:48.179 we have our five equations and we can
+00:10:51.420 put these into matrix form and so on the
+00:10:56.339 right we have our column vector of our
+00:10:58.319 G's which are not known yet
+00:11:00.060 this constant a we have our column
+00:11:02.550 vector of F's which is not known yet and
+00:11:04.790 we can take a look at our finite
+00:11:06.810 difference equations and write that this
+00:11:08.880 will be our derivative matrix notice the
+00:11:12.660 position it's not a symmetric matrix
+00:11:14.760 anymore it has negative ones going down
+00:11:17.460 the center diagonal positive ones in
+00:11:20.730 that +1 diagonal but zeros in that lower
+00:11:24.060 diagonal all of the derivative matrices
+00:11:26.790 when writing so far had symmetric
+00:11:28.890 matrices this is no longer symmetric and
+00:11:31.350 this is due to the staggering also
+00:11:34.380 notice for that last equation we use
+00:11:36.480 d-rush laydown 'dry conditions because
+00:11:39.060 that's the easiest so what came out of
+00:11:44.550 this is our derivative matrix that will
+00:11:48.180 call d with a superscript f that will
+00:11:51.330 remind us that that is a derivative
+00:11:53.300 matrix to take derivatives of f not G we
+00:11:57.060 would not want to apply that to G and so
+00:12:00.180 out of this analysis came that
+00:12:01.680 derivative matrix let's look at the
+00:12:04.680 other differential equation or the other
+00:12:07.590 finite difference equation and we write
+00:12:10.500 that finite difference equation once for
+00:12:12.780 each point and then put this into matrix
+00:12:16.410 form so we have our column vector of F
+00:12:20.670 on the right our constant B and on the
+00:12:23.460 Left we have our column vector of G's
+00:12:25.440 and if we look at our finite difference
+00:12:27.480 equations we can figure out this is the
+00:12:29.940 square matrix that would calculate a
+00:12:32.370 derivative on G and that becomes our
+00:12:36.090 derivative matrix which we'll write with
+00:12:38.460 a g superscript to remind us that that
+00:12:41.910 derivative matrix is taking a derivative
+00:12:43.470 of G now let's look at the symmetry of
+00:12:46.920 it it has ones going down the center
+00:12:49.290 diagonal negative ones going down the
+00:12:52.290 lower diagonal and zeros on the upper
+00:12:54.660 diagonal this is different than the
+00:12:57.330 previous derivative matrix so these are
+00:12:59.430 not the same and by the way for that
+00:13:02.130 first equation we use D relay battery
+00:13:04.230 conditions so our derivative matrices
+00:13:06.960 are different depending whether we're
+00:13:08.820 taking a derivative of F or derivative
+00:13:12.000 of G that's very
+00:13:13.500 important to realize when we stagger a
+00:13:14.850 grid the different the finite
+00:13:17.190 differences change so this is all we've
+00:13:24.750 done so far we've gone from our two
+00:13:26.910 analytical couple partial differential
+00:13:29.040 equations to two matrix equations and we
+00:13:32.760 realize that those derivative matrices
+00:13:34.650 are different now if we practice this
+00:13:38.270 what we've written here is the only step
+00:13:40.830 we need to do on paper we really don't
+00:13:42.570 ever have to explicitly touch finite
+00:13:44.730 differences so we went through more
+00:13:46.950 detail so you could understand what's
+00:13:48.750 happening when there's multiple
+00:13:49.770 variables and that those derivative
+00:13:52.230 matrices are actually a little bit
+00:13:53.700 different now at this point we want to
+00:13:58.110 think about solving this system of
+00:14:00.290 matrix equations and there's really two
+00:14:02.700 approaches that we could take so we have
+00:14:05.610 two equations two unknowns we could
+00:14:08.280 actually write a large block matrix a
+00:14:11.490 two by two block matrix and solve this
+00:14:14.660 simultaneously this works and for small
+00:14:18.750 problems it works just fine
+00:14:20.520 however this 2x2 block matrix is bigger
+00:14:24.089 than it needs to be we'd rather just
+00:14:25.890 write it with the same size matrices as
+00:14:28.500 the derivative matrices so to do that we
+00:14:33.390 would take one of our matrix equations
+00:14:35.640 and substitute it into the other to come
+00:14:38.940 up with a single matrix equation so what
+00:14:42.480 I've shown here is I solved this first
+00:14:45.870 equation for G plug that expression in
+00:14:49.650 for G in the second equation and then I
+00:14:52.080 have a matrix equation only with F and
+00:14:55.339 here's the original equation that I had
+00:14:57.630 solve for G so what we can do is solve
+00:15:00.120 this first matrix equation for F and
+00:15:02.850 once we have an answer just immediately
+00:15:05.640 calculate G from it this is a bit more
+00:15:09.060 numerically efficient so this really is
+00:15:11.190 the preferred way but maybe there's
+00:15:13.860 something happening with what you're
+00:15:14.850 doing that requires you to solving
+00:15:16.440 simultaneous as a block matrix and
+00:15:18.420 that's fine I just want you to see both
+00:15:20.580 approaches we will take the approach on
+00:15:22.890 the right
+00:15:28.110 now let's look at this equation and I
+00:15:31.660 want to point out something very
+00:15:33.040 interesting happened notice we are
+00:15:36.790 multiplying our two derivative matrices
+00:15:39.519 together really this is a second order
+00:15:43.410 derivative matrix but remember when we
+00:15:46.690 talked about this last time we took our
+00:15:48.880 two first order derivative matrices
+00:15:51.519 multiplied them together and got
+00:15:53.589 something that didn't work so well
+00:15:54.880 because we're spanning too far out into
+00:15:58.180 our grid so we had to build a whole
+00:16:01.630 separate second order derivative matrix
+00:16:03.850 that expressed our finite difference a
+00:16:05.949 little bit tighter on the grid that
+00:16:08.019 improved the accuracy but that's what
+00:16:10.660 happened before let's look at what
+00:16:12.910 happens now because we're multiplying
+00:16:14.500 two derivative matrices that look
+00:16:16.540 slightly different so when we do this
+00:16:22.209 when we multiply these together look at
+00:16:24.850 what we get this is exactly what we
+00:16:28.449 wanted for a second order derivative
+00:16:30.310 matrix that works perfectly
+00:16:33.100 so once we've staggered our grid we can
+00:16:36.069 multiply these first order derivative
+00:16:38.110 matrices together and get a very good
+00:16:40.360 second order derivative matrix so that's
+00:16:43.959 very cool and that saves us a lot of
+00:16:46.389 work when we're formulating now we look
+00:16:54.160 at our two derivative matrices we see
+00:16:56.230 that they're not symmetric and we see
+00:16:58.269 that they're kind of transverses of each
+00:17:01.540 other it turns out they are related and
+00:17:05.020 they're related through a first we take
+00:17:08.230 the transpose then take the complex
+00:17:11.559 conjugate and then make a bring a
+00:17:15.130 negative sign into the matrix so it's
+00:17:16.750 the negative hermitian transpose that's
+00:17:19.179 how they're related so why the hermitian
+00:17:21.849 transpose well it's not something we've
+00:17:24.549 talked about yet but when we start doing
+00:17:26.919 simulations with complex numbers
+00:17:29.260 we'll need the hermitian transpose there
+00:17:31.900 but for now we can just think of it
+00:17:33.280 being a transpose and as long as all the
+00:17:35.559 numbers are real the ordinary transpose
+00:17:38.110 will work and why the
+00:17:39.940 negative sign well that's because let's
+00:17:42.789 look at this first matrix if we take a
+00:17:44.259 transpose of it we will still have
+00:17:46.600 negative ones going down the diagonal
+00:17:48.399 will just have positive ones in this
+00:17:51.159 diagonal and zeros up here well the
+00:17:54.250 other matrix is the negative of that so
+00:17:57.759 that's why we need the negative sign
+00:17:59.139 here now I know from personal experience
+00:18:02.889 this works anytime I incorporate dearest
+00:18:05.590 sleighbough air conditions into my
+00:18:06.850 matrices periodic boundary conditions
+00:18:09.460 something else we haven't talked about I
+00:18:10.870 don't think we will in this course
+00:18:11.980 Floquet binary conditions and there's
+00:18:13.870 probably lots more this relation works
+00:18:16.710 other boundary conditions we talk about
+00:18:19.029 the Neumann boundary condition I know
+00:18:20.620 that this does not work for that and
+00:18:22.779 there may be other exceptions where this
+00:18:24.730 doesn't work so test it try it if you
+00:18:29.470 have a new boundary condition make sure
+00:18:31.360 that it does work but I can certainly
+00:18:32.950 confirm for dear asleep periodic and
+00:18:34.870 flow K so what this means when it comes
+00:18:40.240 time to build the derivative matrices
+00:18:42.750 assuming we're not using a Neumann
+00:18:44.830 boundary condition this means we only
+00:18:46.240 really have to build one we can
+00:18:48.700 construct the other just from the
+00:18:50.620 negative permission of the first one so
+00:18:52.840 it has the amount of work we have to do
+00:18:55.360 to build those derivative matrices some
+00:19:01.690 final notes and things I want to talk
+00:19:03.220 about after doing this a lot there's
+00:19:07.389 really two approaches we can start with
+00:19:09.340 our set of partial differential
+00:19:10.960 equations and convert immediately to
+00:19:12.940 matrix form and then start doing matrix
+00:19:15.669 algebra to combine equations until we
+00:19:18.159 finally get the equation that we want to
+00:19:20.289 solve or we could stay analytical
+00:19:23.980 combine our equations until we get this
+00:19:26.259 final equation and then bring that to
+00:19:28.840 matrix form in my experience that's more
+00:19:32.710 work to do to manipulate the equations
+00:19:35.169 analytically and a lot of the times the
+00:19:37.509 fixes that we'll put in to fix some
+00:19:39.700 numerical issues they're easier to fix
+00:19:42.309 in the very beginning so you will see me
+00:19:45.840 take the initial set of coupled partial
+00:19:48.369 differential equations and convert to
+00:19:50.289 matrix form very very early in the
+00:19:51.970 process
+00:19:52.590 and then formulate the final equation I
+00:19:55.860 want to solve with everything in matrix
+00:19:57.840 form the other thing would we convert
+00:20:02.129 early in the process is that usually we
+00:20:04.529 only ever need the first order
+00:20:05.999 derivative matrices not that I've
+00:20:08.970 simulated everything out there but I've
+00:20:10.529 never had to develop a higher order
+00:20:12.929 matrix than just first order when I'm
+00:20:16.139 doing these staggered grids so another
+00:20:18.240 benefit of going of jumping immediately
+00:20:20.669 to matrix form in the very beginning
+00:20:24.710 also use the fact that the derivative
+00:20:27.600 matrices are related through the
+00:20:29.730 negative her Michigan transpose so that
+00:20:31.710 halves our work when it comes time to
+00:20:33.389 build these things another really cool
+00:20:35.909 thing that happens if you were to
+00:20:38.279 formulate this analytically sometimes
+00:20:40.080 you'll end up with the derivative of a
+00:20:41.879 derivative
+00:20:42.539 but there's another function in there
+00:20:44.279 and then you end up having to use the
+00:20:46.139 product rule and you get a lot of terms
+00:20:47.789 and things become rather tedious but if
+00:20:50.309 you're doing this in terms of matrices
+00:20:51.929 you would just write it this way and
+00:20:54.149 everything works itself out so we don't
+00:20:56.309 have to use the product rule on here or
+00:20:58.799 think about it too much and some really
+00:21:01.499 magical stuff happens when we have an
+00:21:03.809 expression like this and it simplifies
+00:21:05.879 what we have to do okay
+00:21:11.309 let's do an example we are actually
+00:21:13.080 going to solve a real set of
+00:21:15.419 differential equations and take this all
+00:21:18.360 the way through so let's say we have
+00:21:24.690 these two coupled differential equations
+00:21:26.999 and we want to solve it in the integral
+00:21:28.860 of one to ten and we also have some
+00:21:31.769 boundary conditions here we know the
+00:21:33.360 value of F at either end of the bounds
+00:21:36.389 so we have enough information to solve
+00:21:38.970 this and we want to find both F and G
+00:21:43.850 the first step and that we could do this
+00:21:47.340 on paper but it's an immediate step we
+00:21:49.019 jump from the analytical equations to
+00:21:52.440 matrix form and we're doing the same
+00:21:54.509 thing we've always done we've gone term
+00:21:56.190 by term just now we recognize we need a
+00:21:59.610 staggered grid so we have different
+00:22:02.070 derivative matrices operating on F and G
+00:22:05.309 we would not want
+00:22:06.169 right those as the same derivative
+00:22:07.609 matrix so we already have the matrix
+00:22:10.549 form of what we want to solve step two I
+00:22:16.519 want to put the final equation all in
+00:22:18.980 terms of F why am i choosing F because
+00:22:21.859 the boundary values that we were given
+00:22:24.259 were given in terms of F so I want my
+00:22:26.629 final equation to be terms of F that
+00:22:28.429 means right now I want to take that
+00:22:30.710 first matrix equation and solve it for G
+00:22:36.249 once I have that I can now grab the
+00:22:39.379 second equation and replace G with the
+00:22:43.190 matrix equation that I just derived so
+00:22:46.190 I'm essentially combining the first and
+00:22:48.019 second matrix equations and I simplify
+00:22:51.379 and I end up here and I have my final
+00:22:53.450 matrix equation all in terms of F at
+00:22:59.929 this point I want to put my matrix
+00:23:02.570 equation in the standard form in this
+00:23:05.179 case it's a F equals 0 and I see that my
+00:23:08.480 a matrix is the derivative matrix
+00:23:11.299 operating on G times the derivative
+00:23:13.070 matrix operating on F plus 2 times the
+00:23:16.070 identity matrix ok now we're moving to
+00:23:24.470 matlab everything we've done there is
+00:23:26.960 something we would do on paper and with
+00:23:28.970 practice is very simple and quick to do
+00:23:32.710 so in matlab we want to set up our
+00:23:35.119 problem so I'll initialize matlab close
+00:23:38.299 all the figure windows clear the command
+00:23:40.309 window clear memory open a figure window
+00:23:42.889 with a white background so that we can
+00:23:44.509 plot the answer into and then we want to
+00:23:47.269 define everything about our problem so
+00:23:49.249 we have our bounds XA and xB we're
+00:23:51.980 solving as an interval 0 to 10 and then
+00:23:54.889 we have FA and FB those are our boundary
+00:23:58.159 values that's what the function is at
+00:24:00.129 points 0 and 10 and I choosing to use a
+00:24:04.340 thousand points here
+00:24:05.720 so that worked here but really what we'd
+00:24:08.299 want to do is probably choose 20 points
+00:24:10.639 solve the problem pick 40 points solve
+00:24:14.330 the problem does our answer change much
+00:24:16.279 and keep cranking up the number of
+00:24:18.230 points until the answer doesn't
+00:24:19.789 means much anymore and that would be
+00:24:21.739 convergence this is such a small problem
+00:24:24.440 I cranked up the number of points just
+00:24:26.720 so we got a nice answer and it really
+00:24:28.249 doesn't affect the speed too much but
+00:24:29.899 this is a little bit sloppy and lazy and
+00:24:32.330 when we get to bigger problems habits
+00:24:34.669 like this would hurt us but not really a
+00:24:37.340 big deal right now okay
+00:24:41.330 so now we're in the actual work and the
+00:24:43.369 first thing we want to do is calculate
+00:24:44.389 our grid so I calculate the grid spacing
+00:24:47.749 and then I calculate an array that tells
+00:24:51.019 me the position of each point in the
+00:24:53.690 interval from X a to X B now I want to
+00:24:59.899 build my derivative matrices so what
+00:25:02.749 I'll do is I'll build a derivative
+00:25:04.070 matrix that operates on F and then I
+00:25:07.039 don't have to do that again for the
+00:25:08.599 derivative matrix that operates on G
+00:25:10.489 I'll just calculate the derivative
+00:25:13.159 matrix for G immediately from the
+00:25:14.989 derivative matrix of F okay so how do I
+00:25:17.840 build a derivative matrix of F well
+00:25:19.729 first I'll declare it a sparse matrix
+00:25:23.049 then I'll add the diagonal along the
+00:25:26.359 center that has all negative ones and
+00:25:28.159 then the upper diagonal the diagonal
+00:25:30.619 number one I put all positive ones and
+00:25:32.809 then I divide it all by DX so I've built
+00:25:36.379 my D FX derivative matrix and then my d
+00:25:40.070 GX derivative matrix I'm now ready to
+00:25:43.879 build the matrix equation so that's step
+00:25:49.669 four and when I calculate a this is a an
+00:25:54.320 equation I feel like I'm just typing in
+00:25:56.269 the differential equation but the
+00:25:58.159 derivative matrix for G times the
+00:25:59.899 derivative matrix for X plus 2 times I
+00:26:02.029 so I had to build that identity matrix
+00:26:04.700 and so I created a sparse identity
+00:26:07.489 matrix we now have our matrix equation
+00:26:10.789 but it's not yet solvable because we
+00:26:13.279 have to build in our boundary values in
+00:26:16.580 fact at the boundaries we built deras
+00:26:19.580 lay binary conditions into those
+00:26:21.109 derivative matrices so things would go
+00:26:23.389 wrong at the boundaries but that's not a
+00:26:25.639 problem because we're throwing out the
+00:26:27.349 information at the boundaries and
+00:26:28.879 building in our boundary values just
+00:26:31.669 like we did before when we were
+00:26:33.260 an ordinary one dimensional finite
+00:26:35.750 difference equations so remember what we
+00:26:38.720 did we zeroed out the rows we threw out
+00:26:42.320 the finite difference equations at the
+00:26:43.820 boundary points put a 1 in the diagonal
+00:26:46.760 position and then over in the last
+00:26:49.070 column vector for our excitation that's
+00:26:51.440 where we put our boundary values and so
+00:26:53.420 that's exactly what we're doing here and
+00:26:54.980 it's no different than what we did
+00:26:56.450 before step six is to solve the matrix
+00:27:01.790 equation using backward division and so
+00:27:04.520 we solve for F and then from that we can
+00:27:07.250 calculate G during our formulations this
+00:27:10.130 was the very first equation that we
+00:27:11.750 derived by solving that first
+00:27:14.350 differential equation or matrix equation
+00:27:17.210 for G so we've now solved our problem
+00:27:20.480 the only thing really left to do is to
+00:27:22.310 plot the answer so here's the code for
+00:27:27.110 plotting and when we do that here's what
+00:27:31.430 I get for the answer so we see our F and
+00:27:36.230 we see our G and it looks like cosines
+00:27:39.260 and sines with slightly different phase
+00:27:41.210 and that's all there is to doing a one
+00:27:44.690 dimensional finite difference method
+00:27:46.400 involving multiple variables if we had
+00:27:49.160 or multiple unknowns that we had three
+00:27:51.680 four unknowns we would have three four
+00:27:54.290 matrix equations and we would just
+00:27:56.120 combine them until finally we had one
+00:27:59.270 matrix equation that we could solve or
+00:28:01.580 we could choose to build one big block
+00:28:03.530 matrix and solve it either way is fine
+00:28:05.720 my preference is to whittle it down to
+00:28:08.300 the smallest matrix equation possible so
+00:28:12.080 that's it for multivariable finite
+00:28:13.970 difference method
