@@ -1,0 +1,86 @@
+\documentclass[12pt,a4paper]{book}
+
+% --- Encoding and fonts ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+% --- Mathematics ---
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{mathtools}
+\usepackage{bm}
+\usepackage{physics}
+
+% --- Layout and formatting ---
+\usepackage[margin=1in]{geometry}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{parskip}
+\usepackage{titlesec}
+
+% --- Graphics ---
+\usepackage{graphicx}
+\usepackage{float}
+
+% --- Tables ---
+\usepackage{booktabs}
+\usepackage{array}
+
+% --- Hyperlinks ---
+\usepackage[colorlinks=true,linkcolor=blue!60!black,citecolor=green!50!black,urlcolor=blue!70!black]{hyperref}
+
+% --- Theorem environments ---
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[chapter]
+\newtheorem{example}{Example}[chapter]
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{proposition}{Proposition}[chapter]
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}[chapter]
+
+% --- Custom commands ---
+\newcommand{\E}{\vec{E}}
+\newcommand{\B}{\vec{B}}
+\newcommand{\A}{\vec{A}}
+\newcommand{\V}{\vec{V}}
+\newcommand{\F}{\vec{F}}
+\newcommand{\Lagr}{\mathcal{L}}
+
+% ============================================================
+\begin{document}
+
+% --- Title page ---
+\begin{titlepage}
+\centering
+\vspace*{3cm}
+{\Huge\bfseries Covariant Formulation of\\[0.4em] Classical Electrodynamics\par}
+\vspace{2cm}
+{\Large A concise and mathematically intuitive treatment\\[0.3em]
+of Maxwell's equations, the Lorentz force,\\[0.3em]
+and the electromagnetic energy-momentum tensor\par}
+\vspace{3cm}
+{\large Gaussian CGS units \quad$\bullet$\quad Metric signature $(+,-,-,-)$\par}
+\vfill
+\end{titlepage}
+
+% --- Front matter ---
+\frontmatter
+\tableofcontents
+
+% --- Main matter ---
+\mainmatter
+
+\include{chapter_1}
+\include{chapter_2}
+\include{chapter_3}
+\include{chapter_4}
+\include{chapter_5}
+\include{chapter_6}
+\include{chapter_7}
+\include{chapter_8}
+\include{chapter_9}
+\include{chapter_10}
+\include{chapter_11}
+
+\end{document}

@@ -1,0 +1,213 @@
+\chapter{The Electromagnetic Energy-Momentum Tensor}
+
+The energy-momentum tensor $T^{\mu\nu}$ is the central object connecting the electromagnetic field to energy, momentum, and stress. In this chapter we derive it by three complementary routes: from the Lagrangian density via the canonical procedure, from Noether's theorem applied to translational invariance, and directly from Maxwell's equations. We then obtain the most general, symmetric (Belinfante) form and discuss its physical content.
+
+\section{Motivation: Energy and Momentum of the Field}
+
+In mechanics, the energy and momentum of a particle are well-defined quantities. But the electromagnetic field also carries energy and momentum: light exerts radiation pressure, and electromagnetic waves transport energy at the speed of light. To describe this covariantly we need a rank-2 tensor $T^{\mu\nu}$ such that:
+
+\begin{itemize}
+\item $T^{00}$ is the energy density of the field,
+\item $T^{0i}/c$ is the momentum density (or equivalently $cT^{i0}$ is the energy flux),
+\item $T^{ij}$ is the Maxwell stress tensor (momentum flux).
+\end{itemize}
+
+Conservation of energy and momentum is then expressed as a single divergence equation:
+
+\begin{equation}
+\partial_\mu T^{\mu\nu} = 0 \qquad \text{(in the absence of sources)}.
+\end{equation}
+
+\section{The Canonical Energy-Momentum Tensor from the Lagrangian}
+
+\subsection{General construction}
+
+For a field theory with Lagrangian density $\mathcal{L}(\phi, \partial_\mu\phi)$, the \textbf{canonical energy-momentum tensor} is defined by
+
+\begin{equation}
+\Theta^{\mu\nu} = \frac{\partial\mathcal{L}}{\partial(\partial_\mu\phi)}\,\partial^\nu\phi - \eta^{\mu\nu}\,\mathcal{L}.
+\end{equation}
+
+For a multi-component field such as $A_\alpha$, this generalises to
+
+\begin{equation}
+\Theta^{\mu\nu} = \frac{\partial\mathcal{L}}{\partial(\partial_\mu A_\alpha)}\,\partial^\nu A_\alpha - \eta^{\mu\nu}\,\mathcal{L}.
+\end{equation}
+
+This construction follows from Noether's theorem applied to spacetime translations $x^\mu \to x^\mu + a^\mu$: translational invariance of the action implies $\partial_\mu\Theta^{\mu\nu} = 0$ when the field equations are satisfied.
+
+\subsection{Application to electromagnetism}
+
+From Chapter~5, the free-field Lagrangian density is $\mathcal{L} = -\frac{1}{16\pi}F_{\alpha\beta}F^{\alpha\beta}$, and we computed
+
+\begin{equation}
+\frac{\partial\mathcal{L}}{\partial(\partial_\mu A_\alpha)} = -\frac{1}{4\pi}\,F^{\mu\alpha}.
+\end{equation}
+
+Substituting into the canonical formula:
+
+\begin{equation}
+\Theta^{\mu\nu} = -\frac{1}{4\pi}\,F^{\mu\alpha}\,\partial^\nu A_\alpha - \eta^{\mu\nu}\!\left(-\frac{1}{16\pi}F_{\alpha\beta}F^{\alpha\beta}\right).
+\end{equation}
+
+Simplifying:
+
+\begin{equation}
+\Theta^{\mu\nu} = -\frac{1}{4\pi}\,F^{\mu\alpha}\,\partial^\nu A_\alpha + \frac{1}{16\pi}\,\eta^{\mu\nu}\,F_{\alpha\beta}\,F^{\alpha\beta}.
+\end{equation}
+
+\subsection{Problem: the canonical tensor is not symmetric}
+
+The canonical tensor $\Theta^{\mu\nu}$ is conserved ($\partial_\mu\Theta^{\mu\nu} = 0$) and gives the correct total energy and momentum. However, it is \emph{not symmetric} in $\mu$ and $\nu$ in general, and it is \emph{not gauge-invariant} (it depends on $A_\alpha$, not just on $F_{\mu\nu}$). Both deficiencies can be cured by adding a suitable total divergence term.
+
+\section{The Symmetric (Belinfante) Energy-Momentum Tensor}
+
+We add to $\Theta^{\mu\nu}$ a term of the form $\partial_\alpha K^{\alpha\mu\nu}$, where $K^{\alpha\mu\nu} = -K^{\mu\alpha\nu}$ (antisymmetric in the first two indices), which automatically satisfies $\partial_\mu\partial_\alpha K^{\alpha\mu\nu} = 0$ and therefore does not spoil conservation. The specific choice
+
+\begin{equation}
+K^{\alpha\mu\nu} = \frac{1}{4\pi}\,F^{\mu\alpha}\,A^\nu
+\end{equation}
+
+yields, after using the vacuum Maxwell equation $\partial_\alpha F^{\mu\alpha} = 0$:
+
+\begin{equation}
+\partial_\alpha K^{\alpha\mu\nu} = \frac{1}{4\pi}\,(\partial_\alpha F^{\mu\alpha})\,A^\nu + \frac{1}{4\pi}\,F^{\mu\alpha}\,\partial_\alpha A^\nu = \frac{1}{4\pi}\,F^{\mu\alpha}\,\partial_\alpha A^\nu.
+\end{equation}
+
+Adding this to $\Theta^{\mu\nu}$ replaces $\partial^\nu A_\alpha$ by $\partial^\nu A_\alpha + \partial_\alpha A^\nu$. Since $F^{\mu\alpha}$ is antisymmetric, only the antisymmetric part of this sum survives, giving $F^{\nu}{}_\alpha$ (up to sign). The result is the \textbf{symmetric energy-momentum tensor}:
+
+\begin{equation}
+\boxed{T^{\mu\nu} = \frac{1}{4\pi}\!\left(F^{\mu\alpha}\,F^{\nu}{}_{\alpha} - \frac{1}{4}\,\eta^{\mu\nu}\,F_{\alpha\beta}\,F^{\alpha\beta}\right).}
+\end{equation}
+
+This tensor is:
+\begin{itemize}
+\item \textbf{Symmetric}: $T^{\mu\nu} = T^{\nu\mu}$,
+\item \textbf{Gauge-invariant}: it depends only on $F_{\mu\nu}$, not on $A_\mu$,
+\item \textbf{Traceless}: $T^\mu{}_\mu = \eta_{\mu\nu}T^{\mu\nu} = 0$ (a special property of the electromagnetic field in four dimensions),
+\item \textbf{Conserved}: $\partial_\mu T^{\mu\nu} = 0$ in the absence of sources.
+\end{itemize}
+
+\section{Physical Components of $T^{\mu\nu}$}
+
+\subsection{Energy density ($T^{00}$)}
+
+\begin{equation}
+T^{00} = \frac{1}{4\pi}\!\left(F^{0\alpha}F^{0}{}_\alpha - \frac{1}{4}\,F_{\alpha\beta}F^{\alpha\beta}\right).
+\end{equation}
+
+Using $F^{0i} = -E_i$ and $F_{\alpha\beta}F^{\alpha\beta} = 2(B^2 - E^2)$:
+
+\begin{equation}
+T^{00} = \frac{1}{4\pi}\!\left(E^2 - \frac{1}{4}\cdot 2(B^2 - E^2)\right) = \frac{1}{4\pi}\!\left(E^2 + \frac{1}{2}(E^2 - B^2 + B^2 + B^2 - B^2)\right),
+\end{equation}
+
+which simplifies to
+
+\begin{equation}
+\boxed{T^{00} = u = \frac{|\vec{E}|^2 + |\vec{B}|^2}{8\pi}.}
+\end{equation}
+
+This is the well-known electromagnetic energy density in Gaussian units.
+
+\subsection{Energy flux / Poynting vector ($T^{0i}$)}
+
+\begin{equation}
+T^{0i} = \frac{1}{4\pi}\,F^{0\alpha}\,F^{i}{}_\alpha = \frac{1}{4\pi}\,F^{0j}\,F^{i}{}_j.
+\end{equation}
+
+Working through the components:
+
+\begin{equation}
+\boxed{T^{0i} = \frac{c}{4\pi}\,(\vec{E}\times\vec{B})^i = \frac{S^i}{c},}
+\end{equation}
+
+where $\vec{S} = \frac{c}{4\pi}\vec{E}\times\vec{B}$ is the \textbf{Poynting vector}. Thus $T^{0i}$ is the energy flux divided by $c$, or equivalently $c$ times the momentum density.
+
+\subsection{Maxwell stress tensor ($T^{ij}$)}
+
+The spatial components form the \textbf{Maxwell stress tensor}:
+
+\begin{equation}
+\boxed{T^{ij} = \frac{1}{4\pi}\!\left(E^i E^j + B^i B^j - \frac{1}{2}\delta^{ij}(E^2 + B^2)\right).}
+\end{equation}
+
+$T^{ij}$ gives the flux of the $i$-th component of momentum across a surface perpendicular to the $j$-th direction. The diagonal terms represent electromagnetic pressure; the off-diagonal terms represent shear stress.
+
+\section{Derivation from Maxwell's Equations}
+
+As an alternative to the Lagrangian approach, the energy-momentum tensor can be derived directly from Maxwell's equations. Starting from the Lorentz force density on charges:
+
+\begin{equation}
+f^\nu = \frac{1}{c}\,F^{\nu\mu}\,J_\mu,
+\end{equation}
+
+and substituting the inhomogeneous Maxwell equation $J_\mu = \frac{c}{4\pi}\partial_\alpha F^{\alpha}{}_\mu$:
+
+\begin{equation}
+f^\nu = \frac{1}{4\pi}\,F^{\nu\mu}\,\partial_\alpha F^{\alpha}{}_\mu.
+\end{equation}
+
+After using the identity
+
+\begin{equation}
+F^{\nu\mu}\,\partial_\alpha F^{\alpha}{}_\mu = \partial_\alpha(F^{\nu\mu}F^{\alpha}{}_\mu) - F^{\alpha}{}_\mu\,\partial_\alpha F^{\nu\mu},
+\end{equation}
+
+and the Bianchi identity to simplify the second term, one arrives at
+
+\begin{equation}
+f^\nu = -\partial_\mu T^{\mu\nu},
+\end{equation}
+
+where $T^{\mu\nu}$ is precisely the symmetric tensor derived above. In the presence of sources, the conservation law becomes
+
+\begin{equation}
+\boxed{\partial_\mu T^{\mu\nu} = -f^\nu = -\frac{1}{c}\,F^{\nu\mu}\,J_\mu.}
+\end{equation}
+
+This expresses the exchange of energy and momentum between the field and the charges: the total energy-momentum (field plus matter) is conserved.
+
+\section{The Most General Form of the Energy-Momentum Tensor}
+
+In general relativity, the energy-momentum tensor appears as the source of the gravitational field in Einstein's field equations:
+
+\begin{equation}
+G^{\mu\nu} = \frac{8\pi G}{c^4}\,T^{\mu\nu}.
+\end{equation}
+
+For this role, $T^{\mu\nu}$ must be:
+\begin{enumerate}
+\item symmetric ($T^{\mu\nu} = T^{\nu\mu}$),
+\item divergence-free in flat spacetime ($\partial_\mu T^{\mu\nu} = 0$ for the free field),
+\item gauge-invariant.
+\end{enumerate}
+
+The Belinfante tensor derived above satisfies all three conditions. It is the unique symmetric, gauge-invariant, conserved tensor quadratic in $F_{\mu\nu}$ (up to an overall constant). In curved spacetime, the partial derivatives $\partial_\mu$ are replaced by covariant derivatives $\nabla_\mu$, and the Minkowski metric $\eta^{\mu\nu}$ is replaced by the general metric $g^{\mu\nu}$:
+
+\begin{equation}
+T^{\mu\nu} = \frac{1}{4\pi}\!\left(F^{\mu\alpha}\,F^{\nu}{}_{\alpha} - \frac{1}{4}\,g^{\mu\nu}\,F_{\alpha\beta}\,F^{\alpha\beta}\right),
+\end{equation}
+
+with conservation $\nabla_\mu T^{\mu\nu} = 0$ (in the absence of sources). This expression couples naturally to gravity and is the form used in general-relativistic electrodynamics.
+
+\section{Summary}
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{ll}
+\toprule
+\textbf{Quantity} & \textbf{Expression} \\
+\midrule
+Symmetric EM energy-momentum tensor & $T^{\mu\nu} = \frac{1}{4\pi}\!\left(F^{\mu\alpha}F^{\nu}{}_\alpha - \frac{1}{4}\eta^{\mu\nu}F_{\alpha\beta}F^{\alpha\beta}\right)$ \\
+Energy density & $u = \frac{E^2 + B^2}{8\pi}$ \\
+Poynting vector & $\vec{S} = \frac{c}{4\pi}\vec{E}\times\vec{B}$ \\
+Maxwell stress tensor & $T^{ij} = \frac{1}{4\pi}\!\left(E^iE^j + B^iB^j - \frac{1}{2}\delta^{ij}(E^2+B^2)\right)$ \\
+Trace & $T^\mu{}_\mu = 0$ \\
+Conservation (with sources) & $\partial_\mu T^{\mu\nu} = -\frac{1}{c}F^{\nu\mu}J_\mu$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The energy-momentum tensor completes the dynamical description of the electromagnetic field. It tells us how much energy and momentum the field carries, how they flow through space, and how they are exchanged with charged matter. Its symmetry and tracelessness are deep properties of classical electromagnetism, and its role as the source of gravity connects electrodynamics to general relativity.

@@ -1,0 +1,141 @@
+\chapter{The Electromagnetic Field Tensor}
+
+In Chapter~1 we derived the equation of motion $m_0\ddot{X}_\alpha = \frac{q}{c}F_{\alpha\mu}\dot{X}^\mu$ and identified the electromagnetic field tensor $F_{\mu\nu} = \partial_\mu A_\nu - \partial_\nu A_\mu$. We also showed how the six independent components of this antisymmetric tensor decompose into $\vec{E}$ and $\vec{B}$. In this chapter we assemble $F_{\mu\nu}$ into an explicit $4\times4$ matrix and develop the contravariant form $F^{\mu\nu}$, which will be indispensable for writing Maxwell's equations and the energy-momentum tensor in later chapters.
+
+\section{Review: Components of $F_{\mu\nu}$}
+
+Recall from Chapter~1 the identifications:
+\begin{align}
+F_{0i} &= E_i, & F_{i0} &= -E_i, \\
+F_{ij} &= -\varepsilon_{ijk}\,B^k.
+\end{align}
+
+These follow directly from $F_{\mu\nu} = \partial_\mu A_\nu - \partial_\nu A_\mu$ and the covariant four-potential $A_\mu = (\phi, -\vec{A})$. Let us now write the full matrix.
+
+\section{The Covariant Field Tensor as a Matrix}
+
+Arranging the components with rows labelled by the first index and columns by the second, the covariant electromagnetic field tensor is
+
+\begin{equation}
+\boxed{
+F_{\mu\nu} = \begin{pmatrix}
+0 & E_1 & E_2 & E_3 \\
+-E_1 & 0 & -B_3 & B_2 \\
+-E_2 & B_3 & 0 & -B_1 \\
+-E_3 & -B_2 & B_1 & 0
+\end{pmatrix}.}
+\end{equation}
+
+One should verify this against the definitions: the $(0,i)$ entry is $F_{0i} = E_i$, while the spatial block satisfies $F_{12} = -\varepsilon_{123}B^3 = -B_3$, $F_{13} = -\varepsilon_{132}B^2 = B_2$, etc. The antisymmetry $F_{\mu\nu} = -F_{\nu\mu}$ is manifest --- the matrix is skew-symmetric.
+
+\subsection*{Why a matrix representation is useful}
+
+Writing $F_{\mu\nu}$ as an explicit matrix makes index contractions concrete: the equation of motion $m_0\ddot{X}_\alpha = \frac{q}{c}F_{\alpha\mu}\dot{X}^\mu$ becomes a matrix--vector product. It also makes Lorentz invariants (such as $F_{\mu\nu}F^{\mu\nu}$) straightforward to compute by inspection.
+
+\section{The Contravariant Field Tensor $F^{\mu\nu}$}
+
+To raise both indices we use the inverse metric twice:
+
+\begin{equation}
+F^{\mu\nu} = \eta^{\mu\alpha}\,\eta^{\nu\beta}\,F_{\alpha\beta}.
+\end{equation}
+
+Since $\eta^{00} = +1$ and $\eta^{ii} = -1$ (no sum), the effect on each component is:
+\begin{itemize}
+\item $F^{0i} = \eta^{00}\eta^{ii}F_{0i} = (+1)(-1)E_i = -E_i$,
+\item $F^{i0} = \eta^{ii}\eta^{00}F_{i0} = (-1)(+1)(-E_i) = +E_i$,
+\item $F^{ij} = \eta^{ii}\eta^{jj}F_{ij} = (-1)(-1)F_{ij} = F_{ij}$.
+\end{itemize}
+
+The spatial block is unchanged, while the electric-field entries flip sign. In matrix form:
+
+\begin{equation}
+\boxed{
+F^{\mu\nu} = \begin{pmatrix}
+0 & -E_1 & -E_2 & -E_3 \\
+E_1 & 0 & -B_3 & B_2 \\
+E_2 & B_3 & 0 & -B_1 \\
+E_3 & -B_2 & B_1 & 0
+\end{pmatrix}.}
+\end{equation}
+
+Note that $F^{\mu\nu}$ is also antisymmetric, as it must be.
+
+\section{The Dual Field Tensor $\widetilde{F}^{\mu\nu}$}
+
+It is often useful to define the \textbf{dual (Hodge dual)} of the field tensor:
+
+\begin{equation}
+\widetilde{F}^{\mu\nu} = \frac{1}{2}\,\varepsilon^{\mu\nu\alpha\beta}\,F_{\alpha\beta},
+\end{equation}
+
+where $\varepsilon^{\mu\nu\alpha\beta}$ is the totally antisymmetric Levi-Civita \emph{symbol} in four dimensions, with the convention $\varepsilon^{0123} = +1$.
+
+Evaluating the components one finds that the dual tensor is obtained from $F^{\mu\nu}$ by the replacements $\vec{E} \to \vec{B}$ and $\vec{B} \to -\vec{E}$:
+
+\begin{equation}
+\boxed{
+\widetilde{F}^{\mu\nu} = \begin{pmatrix}
+0 & -B_1 & -B_2 & -B_3 \\
+B_1 & 0 & E_3 & -E_2 \\
+B_2 & -E_3 & 0 & E_1 \\
+B_3 & E_2 & -E_1 & 0
+\end{pmatrix}.}
+\end{equation}
+
+The dual tensor will play a central role in writing the homogeneous Maxwell equations compactly.
+
+\section{Lorentz Invariants of the Electromagnetic Field}
+
+From $F_{\mu\nu}$ we can build two independent Lorentz scalars (quantities unchanged under Lorentz transformations):
+
+\subsection*{First invariant}
+
+\begin{equation}
+F_{\mu\nu}F^{\mu\nu} = \sum_{\mu,\nu} F_{\mu\nu}F^{\mu\nu}.
+\end{equation}
+
+Evaluating the double sum using the explicit matrices:
+
+\begin{equation}
+\boxed{F_{\mu\nu}F^{\mu\nu} = -2\!\left(|\vec{E}|^2 - |\vec{B}|^2\right) = 2\!\left(|\vec{B}|^2 - |\vec{E}|^2\right).}
+\end{equation}
+
+This tells us that the difference $|\vec{B}|^2 - |\vec{E}|^2$ is frame-independent: if $|\vec{E}| > |\vec{B}|$ in one frame, it is so in every frame.
+
+\subsection*{Second invariant}
+
+\begin{equation}
+\widetilde{F}^{\mu\nu}F_{\mu\nu} = \frac{1}{2}\,\varepsilon^{\mu\nu\alpha\beta}F_{\alpha\beta}\,F_{\mu\nu}.
+\end{equation}
+
+A direct computation yields
+
+\begin{equation}
+\boxed{\widetilde{F}^{\mu\nu}F_{\mu\nu} = -4\,\vec{E}\cdot\vec{B}.}
+\end{equation}
+
+Hence $\vec{E}\cdot\vec{B}$ is also a Lorentz invariant. If $\vec{E} \perp \vec{B}$ in one frame, they are perpendicular in every frame.
+
+\subsection*{Physical significance}
+
+These two invariants exhaust the independent scalar information in the field tensor. Any other scalar built from $F_{\mu\nu}$ alone can be expressed in terms of $|\vec{B}|^2 - |\vec{E}|^2$ and $\vec{E}\cdot\vec{B}$. They are crucial for classifying electromagnetic fields: a field is called \emph{electric-type} if $|\vec{E}|^2 > |\vec{B}|^2$, \emph{magnetic-type} if $|\vec{B}|^2 > |\vec{E}|^2$, and \emph{null} (or radiation-type) if both invariants vanish simultaneously.
+
+\section{Summary}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lll}
+\toprule
+\textbf{Object} & \textbf{Symbol} & \textbf{Key property} \\
+\midrule
+Covariant field tensor & $F_{\mu\nu}$ & $F_{0i}=E_i$,\; $F_{ij}=-\varepsilon_{ijk}B^k$ \\
+Contravariant field tensor & $F^{\mu\nu}$ & $F^{0i}=-E_i$,\; $F^{ij}=F_{ij}$ \\
+Dual field tensor & $\widetilde{F}^{\mu\nu}$ & $\vec{E}\to\vec{B}$, $\vec{B}\to-\vec{E}$ \\
+First Lorentz invariant & $F_{\mu\nu}F^{\mu\nu}$ & $2(|\vec{B}|^2-|\vec{E}|^2)$ \\
+Second Lorentz invariant & $\widetilde{F}^{\mu\nu}F_{\mu\nu}$ & $-4\,\vec{E}\cdot\vec{B}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The electromagnetic field tensor and its dual give us a complete, compact, and manifestly covariant language for describing electromagnetic fields. In the next chapter we will use this language to write the equations of motion at arbitrarily high velocities and to express the Lorentz force in fully covariant form.

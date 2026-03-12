@@ -1,0 +1,139 @@
+\chapter{Relativistic Equations of Motion and the Covariant Lorentz Force}
+
+In Chapter~1 we derived the equation of motion for a charged particle in the non-relativistic limit. In Chapter~2 we built the explicit matrix form of the field tensor. We now remove the restriction $|\vec{V}| \ll c$ and write the equations of motion valid at \emph{arbitrarily high velocities}, culminating in the fully covariant expression for the Lorentz force.
+
+\section{Proper Time and the Four-Velocity}
+
+The coordinate time $t$ measured by a laboratory observer is \emph{not} Lorentz-invariant. The invariant time parameter is the \textbf{proper time} $\tau$, related to $t$ by
+
+\begin{equation}
+d\tau = \frac{dt}{\gamma}, \qquad \gamma \equiv \frac{1}{\sqrt{1 - v^2/c^2}},
+\end{equation}
+
+where $v = |\vec{V}|$ is the particle's three-velocity. The \textbf{four-velocity} is then
+
+\begin{equation}
+U^\mu = \frac{dX^\mu}{d\tau} = \gamma\,\dot{X}^\mu = \gamma\,(c,\,\vec{V}),
+\end{equation}
+
+and satisfies the normalisation $U^\mu U_\mu = c^2$. Similarly, the \textbf{four-momentum} of a particle with rest mass $m_0$ is
+
+\begin{equation}
+p^\mu = m_0\,U^\mu = m_0\,\gamma\,(c,\,\vec{V}) = \left(\frac{\mathcal{E}}{c},\,\vec{p}\right),
+\end{equation}
+
+where $\mathcal{E} = \gamma m_0 c^2$ is the relativistic energy and $\vec{p} = \gamma m_0 \vec{V}$ is the relativistic three-momentum.
+
+\section{The Relativistic Equation of Motion}
+
+In Chapter~1 we obtained, using coordinate-time derivatives,
+
+\begin{equation}
+m_0\,\ddot{X}_\alpha = \frac{q}{c}\,F_{\alpha\mu}\,\dot{X}^\mu.
+\end{equation}
+
+This is valid in any single inertial frame but is not manifestly covariant because $\dot{X}^\mu = dX^\mu/dt$ does not transform as a four-vector. To obtain an expression valid at all velocities and manifestly Lorentz-covariant, we re-parametrise by proper time. Since $dt = \gamma\,d\tau$, we have $\dot{X}^\mu = U^\mu/\gamma$ and $\ddot{X}^\mu = \frac{1}{\gamma}\frac{d}{d\tau}(U^\mu/\gamma)$. After careful accounting of the $\gamma$ factors, the equation of motion becomes
+
+\begin{equation}
+\boxed{m_0\,\frac{dU_\alpha}{d\tau} = \frac{q}{c}\,F_{\alpha\mu}\,U^\mu.}
+\end{equation}
+
+This is exact --- it holds for any velocity, from $v = 0$ all the way to $v \to c$. The left-hand side is $m_0$ times the four-acceleration, and the right-hand side is the \textbf{Minkowski four-force} due to the electromagnetic field.
+
+\subsection*{The spatial components: relativistic three-force}
+
+Setting $\alpha = j$ (spatial) and expanding the sum over $\mu$:
+
+\begin{equation}
+m_0\,\frac{dU_j}{d\tau} = \frac{q}{c}\,F_{j0}\,U^0 + \frac{q}{c}\,F_{ji}\,U^i.
+\end{equation}
+
+Substituting $U^0 = \gamma c$, $U^i = \gamma V^i$, $F_{j0} = -E_j$, and $F_{ji} = \varepsilon_{jik}B^k$:
+
+\begin{equation}
+m_0\,\frac{dU_j}{d\tau} = \gamma\!\left[-qE_j + \frac{q}{c}\,\varepsilon_{jik}V^i B^k\right].
+\end{equation}
+
+Since $U_j = -U^j = -\gamma V^j$ (from the metric) and $\frac{d}{d\tau} = \gamma\frac{d}{dt}$, this simplifies after converting back to coordinate time:
+
+\begin{equation}
+\frac{d}{dt}\!\left(\gamma m_0 \vec{V}\right) = q\vec{E} + \frac{q}{c}\,\vec{V}\times\vec{B}.
+\end{equation}
+
+The crucial difference from the non-relativistic case is on the left: it is the time derivative of $\gamma m_0 \vec{V}$ (the relativistic momentum), not $m_0\vec{V}$. This reduces to Newton's second law when $v \ll c$ and $\gamma \approx 1$.
+
+\subsection*{The time component: energy equation}
+
+Setting $\alpha = 0$:
+
+\begin{equation}
+m_0\,\frac{dU^0}{d\tau} = \frac{q}{c}\,F^{0\mu}\,U_\mu = \frac{q}{c}\,F^{0i}\,U_i.
+\end{equation}
+
+Since $F^{0i} = -E_i$ and $U_i = -\gamma V_i$:
+
+\begin{equation}
+m_0\,\frac{d(\gamma c)}{d\tau} = \frac{q}{c}\,\gamma\,\vec{E}\cdot\vec{V}.
+\end{equation}
+
+Multiplying both sides by $c$ and using $\mathcal{E} = \gamma m_0 c^2$:
+
+\begin{equation}
+\boxed{\frac{d\mathcal{E}}{d\tau} = q\,\gamma\,\vec{E}\cdot\vec{V}, \qquad \text{or equivalently} \quad \frac{d\mathcal{E}}{dt} = q\,\vec{E}\cdot\vec{V}.}
+\end{equation}
+
+This is the relativistic work--energy theorem: only the electric field does work on the particle. The magnetic force, being always perpendicular to $\vec{V}$, contributes nothing to the energy change --- a result that holds at all velocities.
+
+\section{The Lorentz Force in Fully Covariant Form}
+
+Combining the spatial and temporal components, the \textbf{covariant Lorentz force} four-vector is
+
+\begin{equation}
+\boxed{f^\alpha = \frac{q}{c}\,F^{\alpha\mu}\,U_\mu = \frac{q}{c}\,\eta^{\alpha\beta}\,F_{\beta\mu}\,U^\mu,}
+\end{equation}
+
+so that the equation of motion reads $m_0\,dU^\alpha/d\tau = f^\alpha$, or equivalently $dp^\alpha/d\tau = f^\alpha$. This is the most compact form of the relativistic Lorentz force law.
+
+\subsection*{Orthogonality of force and four-velocity}
+
+An important consistency check: contracting the force with $U_\alpha$:
+
+\begin{equation}
+f^\alpha U_\alpha = \frac{q}{c}\,F^{\alpha\mu}\,U_\mu\,U_\alpha.
+\end{equation}
+
+Since $F^{\alpha\mu}$ is antisymmetric and $U_\mu U_\alpha$ is symmetric under $\alpha \leftrightarrow \mu$, their contraction vanishes:
+
+\begin{equation}
+f^\alpha U_\alpha = 0.
+\end{equation}
+
+This is the relativistic statement that the electromagnetic four-force is always perpendicular (in the Minkowski sense) to the four-velocity. It guarantees that the rest mass $m_0$ remains constant along the trajectory --- electromagnetic fields accelerate particles but do not change their rest mass.
+
+\section{Comparison of Non-Relativistic and Relativistic Forms}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lcc}
+\toprule
+& \textbf{Non-relativistic} & \textbf{Relativistic} \\
+\midrule
+Momentum & $\vec{p} = m_0\vec{V}$ & $\vec{p} = \gamma m_0\vec{V}$ \\[6pt]
+Force law & $m_0\dfrac{d\vec{V}}{dt} = q\vec{E} + \dfrac{q}{c}\vec{V}\times\vec{B}$ & $\dfrac{d(\gamma m_0\vec{V})}{dt} = q\vec{E} + \dfrac{q}{c}\vec{V}\times\vec{B}$ \\[12pt]
+Four-vector form & --- & $m_0\dfrac{dU^\alpha}{d\tau} = \dfrac{q}{c}F^{\alpha\mu}U_\mu$ \\[8pt]
+Energy equation & $\dfrac{d}{dt}\!\left(\tfrac{1}{2}m_0 v^2\right) = q\vec{E}\cdot\vec{V}$ & $\dfrac{d(\gamma m_0 c^2)}{dt} = q\vec{E}\cdot\vec{V}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The right-hand side of the three-force law is identical in both cases --- the Lorentz force $q\vec{E} + \frac{q}{c}\vec{V}\times\vec{B}$ takes the same form. What changes is the inertia: at relativistic speeds the effective inertial mass $\gamma m_0$ grows without bound as $v \to c$, preventing the particle from reaching the speed of light.
+
+\section{Summary}
+
+The fully relativistic, manifestly covariant equation of motion for a charged particle in an electromagnetic field is
+
+\begin{equation}
+m_0\,\frac{dU^\alpha}{d\tau} = \frac{q}{c}\,F^{\alpha\mu}\,U_\mu.
+\end{equation}
+
+Its spatial projection gives the familiar Lorentz force with $\gamma m_0\vec{V}$ replacing $m_0\vec{V}$; its time projection gives the relativistic energy equation. The four-force is orthogonal to the four-velocity, ensuring conservation of rest mass. This equation, together with the field tensor $F^{\mu\nu}$, provides a complete description of single-particle dynamics at any speed.

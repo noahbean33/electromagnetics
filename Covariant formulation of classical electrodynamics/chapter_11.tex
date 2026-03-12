@@ -1,0 +1,207 @@
+\chapter{Relativistic Motion in a Constant Uniform Electric Field}
+
+In this final chapter we solve exactly the relativistic equation of motion for a charged particle in a constant, uniform electric field. This is one of the few problems in relativistic mechanics that admits a closed-form solution, and it illustrates beautifully the differences between Newtonian and relativistic dynamics: constant force no longer implies constant acceleration, and the particle's speed asymptotically approaches $c$ without ever reaching it.
+
+\section{Setup of the Problem}
+
+Consider a particle of rest mass $m_0$ and charge $q$ in a constant, uniform electric field $\vec{E} = E\,\hat{x}$ (directed along the $x$-axis), with no magnetic field: $\vec{B} = 0$. The relativistic equation of motion from Chapter~3 is
+
+\begin{equation}
+\frac{d}{dt}\!\left(\gamma m_0 \vec{V}\right) = q\vec{E}.
+\end{equation}
+
+Since $\vec{E}$ is along $\hat{x}$ and we take the initial velocity to be along $\hat{x}$ as well (or zero), the motion is one-dimensional: $\vec{V} = v(t)\,\hat{x}$. The equation of motion reduces to
+
+\begin{equation}
+\frac{d}{dt}\!\left(\gamma m_0 v\right) = qE.
+\end{equation}
+
+\section{Solving for the Velocity}
+
+\subsection{Integration}
+
+Since the right-hand side is constant, we integrate directly:
+
+\begin{equation}
+\gamma m_0 v = qE\,t + p_0,
+\end{equation}
+
+where $p_0 = \gamma_0 m_0 v_0$ is the initial relativistic momentum. For simplicity, take the particle to start from rest at the origin: $v_0 = 0$, $x_0 = 0$. Then $p_0 = 0$ and
+
+\begin{equation}
+\gamma m_0 v = qEt.
+\end{equation}
+
+\subsection{Extracting $v(t)$}
+
+Since $\gamma = 1/\sqrt{1 - v^2/c^2}$, we have $\gamma^2 m_0^2 v^2 = q^2E^2t^2$, which gives $m_0^2 v^2/(1-v^2/c^2) = q^2E^2t^2$. Solving for $v$:
+
+\begin{equation}
+v^2\!\left(m_0^2 + \frac{q^2E^2t^2}{c^2}\right) = \frac{q^2E^2t^2}{m_0^2}\cdot\!\left(1 - \frac{v^2}{c^2}\right)\cdot m_0^2\ldots
+\end{equation}
+
+More directly, from $\gamma m_0 v = qEt$:
+
+\begin{equation}
+\frac{v/c}{\sqrt{1 - v^2/c^2}} = \frac{qEt}{m_0 c}.
+\end{equation}
+
+Letting $\beta = v/c$ and $\alpha = qE/(m_0 c)$:
+
+\begin{equation}
+\frac{\beta}{\sqrt{1-\beta^2}} = \alpha t \quad \Longrightarrow \quad \beta^2 = \frac{\alpha^2 t^2}{1 + \alpha^2 t^2}.
+\end{equation}
+
+Therefore:
+
+\begin{equation}
+\boxed{v(t) = \frac{qEt/m_0}{\sqrt{1 + (qEt/m_0 c)^2}} = \frac{c\,\alpha t}{\sqrt{1 + \alpha^2 t^2}},}
+\end{equation}
+
+where $\alpha = qE/(m_0 c)$ has dimensions of inverse time.
+
+\subsection{Limiting behaviour}
+
+\begin{itemize}
+\item \textbf{Short times} ($\alpha t \ll 1$, i.e.\ $v \ll c$): $v \approx (qE/m_0)t$, which is the familiar non-relativistic result $v = at$ with $a = qE/m_0$.
+\item \textbf{Long times} ($\alpha t \gg 1$): $v \approx c\!\left(1 - \frac{1}{2\alpha^2 t^2}\right) \to c$. The velocity asymptotically approaches $c$ but never reaches it.
+\end{itemize}
+
+\section{Solving for the Position}
+
+Integrating $v(t)$:
+
+\begin{equation}
+x(t) = \int_0^t v(t')\,dt' = \int_0^t \frac{c\,\alpha t'}{\sqrt{1 + \alpha^2 t'^2}}\,dt'.
+\end{equation}
+
+With the substitution $u = 1 + \alpha^2 t'^2$, $du = 2\alpha^2 t'\,dt'$:
+
+\begin{equation}
+x(t) = \frac{c}{2\alpha}\int_1^{1+\alpha^2 t^2} \frac{du}{\sqrt{u}} = \frac{c}{\alpha}\!\left[\sqrt{1 + \alpha^2 t^2} - 1\right].
+\end{equation}
+
+Therefore:
+
+\begin{equation}
+\boxed{x(t) = \frac{m_0 c^2}{qE}\!\left(\sqrt{1 + \left(\frac{qEt}{m_0 c}\right)^2} - 1\right).}
+\end{equation}
+
+\subsection{Limiting behaviour}
+
+\begin{itemize}
+\item \textbf{Short times}: expanding the square root, $x \approx \frac{1}{2}\frac{qE}{m_0}t^2 = \frac{1}{2}at^2$, the non-relativistic uniformly accelerated result.
+\item \textbf{Long times}: $x \approx ct - \frac{m_0 c^2}{qE}$, i.e.\ the particle moves at nearly $c$ with a constant offset.
+\end{itemize}
+
+\section{The Lorentz Factor}
+
+From $\gamma = 1/\sqrt{1-v^2/c^2}$ and $v(t)$:
+
+\begin{equation}
+\boxed{\gamma(t) = \sqrt{1 + \left(\frac{qEt}{m_0 c}\right)^2} = \sqrt{1 + \alpha^2 t^2}.}
+\end{equation}
+
+The Lorentz factor grows linearly with time at late times: $\gamma \approx \alpha t = qEt/(m_0 c)$ for $\alpha t \gg 1$. The relativistic energy $\mathcal{E} = \gamma m_0 c^2$ therefore grows linearly: $\mathcal{E} \approx qEct$, consistent with the work--energy theorem $d\mathcal{E}/dt = qEv \approx qEc$.
+
+\section{Proper Time and Hyperbolic Motion}
+
+\subsection{Proper time}
+
+The proper time elapsed is
+
+\begin{equation}
+\tau = \int_0^t \frac{dt'}{\gamma(t')} = \int_0^t \frac{dt'}{\sqrt{1 + \alpha^2 t'^2}} = \frac{1}{\alpha}\,\text{arcsinh}(\alpha t).
+\end{equation}
+
+Inverting: $\alpha t = \sinh(\alpha\tau)$, and substituting back:
+
+\begin{align}
+v &= c\,\tanh(\alpha\tau), \\
+\gamma &= \cosh(\alpha\tau), \\
+x &= \frac{c}{\alpha}\!\left(\cosh(\alpha\tau) - 1\right).
+\end{align}
+
+\subsection{The worldline as a hyperbola}
+
+Rearranging the position and time in terms of $\tau$:
+
+\begin{align}
+ct &= \frac{c}{\alpha}\sinh(\alpha\tau), \\
+x + \frac{c}{\alpha} &= \frac{c}{\alpha}\cosh(\alpha\tau).
+\end{align}
+
+Using $\cosh^2\theta - \sinh^2\theta = 1$:
+
+\begin{equation}
+\boxed{\left(x + \frac{c}{\alpha}\right)^2 - (ct)^2 = \left(\frac{c}{\alpha}\right)^2.}
+\end{equation}
+
+This is the equation of a \textbf{hyperbola} in the $(x, ct)$ plane, centred at $x = -c/\alpha$. The trajectory is therefore called \textbf{hyperbolic motion}. The quantity
+
+\begin{equation}
+g = \alpha c = \frac{qE}{m_0}
+\end{equation}
+
+is the \textbf{proper acceleration} --- the acceleration measured in the instantaneous rest frame of the particle. It is constant along the entire trajectory, even though the coordinate acceleration $dv/dt$ decreases as the particle speeds up.
+
+\subsection{The Rindler horizon}
+
+An observer undergoing hyperbolic motion has a \textbf{Rindler horizon}: signals emitted from the region $x < -c/\alpha$ (behind the vertex of the hyperbola) can never reach the accelerating observer. This is the flat-spacetime analogue of a black hole event horizon and plays an important role in the \textbf{Unruh effect} --- the prediction that a uniformly accelerating observer in vacuum perceives a thermal bath of particles at temperature $T = \hbar g/(2\pi c k_B)$.
+
+\section{Four-Vector Description}
+
+The four-position, four-velocity, and four-acceleration in terms of proper time are:
+
+\begin{align}
+X^\mu(\tau) &= \left(\frac{c}{\alpha}\sinh(\alpha\tau),\; \frac{c}{\alpha}(\cosh(\alpha\tau)-1),\; 0,\; 0\right), \\
+U^\mu(\tau) &= \left(c\cosh(\alpha\tau),\; c\sinh(\alpha\tau),\; 0,\; 0\right), \\
+a^\mu(\tau) &= \left(\alpha c\sinh(\alpha\tau),\; \alpha c\cosh(\alpha\tau),\; 0,\; 0\right).
+\end{align}
+
+One can verify:
+\begin{itemize}
+\item $U_\mu U^\mu = c^2(\cosh^2 - \sinh^2) = c^2$ \checkmark
+\item $a_\mu a^\mu = -\alpha^2 c^2(\cosh^2 - \sinh^2) = -\alpha^2 c^2 = -g^2/c^2$ (constant) \checkmark
+\item $U_\mu a^\mu = 0$ \checkmark
+\end{itemize}
+
+The proper acceleration $\sqrt{-a_\mu a^\mu} = g$ is indeed constant, confirming that the motion under a constant electric field is the electromagnetic analogue of uniform (hyperbolic) acceleration in special relativity.
+
+\section{Energy and Momentum}
+
+The four-momentum is
+
+\begin{equation}
+p^\mu = m_0 U^\mu = \left(m_0 c\cosh(\alpha\tau),\; m_0 c\sinh(\alpha\tau),\; 0,\; 0\right).
+\end{equation}
+
+The relativistic energy and momentum are:
+
+\begin{align}
+\mathcal{E} &= m_0 c^2\cosh(\alpha\tau) = m_0 c^2\sqrt{1 + \alpha^2 t^2}, \\
+p &= m_0 c\sinh(\alpha\tau) = qEt.
+\end{align}
+
+The momentum grows linearly with coordinate time, while the energy grows as $\sqrt{(m_0c^2)^2 + (pc)^2}$ --- exactly the relativistic energy-momentum relation $\mathcal{E}^2 = (m_0c^2)^2 + (pc)^2$.
+
+\section{Summary}
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{ll}
+\toprule
+\textbf{Quantity} & \textbf{Expression (starting from rest)} \\
+\midrule
+Velocity & $v = c\,\alpha t/\sqrt{1+\alpha^2t^2}$ \\
+Position & $x = (c/\alpha)(\sqrt{1+\alpha^2t^2}-1)$ \\
+Lorentz factor & $\gamma = \sqrt{1+\alpha^2t^2}$ \\
+Proper acceleration & $g = qE/m_0 = \alpha c$ (constant) \\
+Worldline & $(x+c/\alpha)^2 - (ct)^2 = (c/\alpha)^2$ (hyperbola) \\
+Proper time & $\tau = \text{arcsinh}(\alpha t)/\alpha$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The relativistic motion of a charged particle in a constant uniform electric field provides an exact, analytically tractable example that captures the essential features of relativistic dynamics: the velocity saturates at $c$, the coordinate acceleration diminishes even as the force remains constant, and the worldline traces a hyperbola in spacetime. This problem connects classical electrodynamics to deep ideas in general relativity (the equivalence principle, Rindler horizons) and quantum field theory (the Unruh effect).

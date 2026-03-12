@@ -1,0 +1,187 @@
+\chapter{Geometrical Optics}
+
+When the wavelength of an electromagnetic wave is much smaller than all other relevant length scales --- the size of apertures, the scale over which the refractive index varies, the curvature of wavefronts --- the wave can be described to excellent approximation by \emph{rays}. This is the regime of \textbf{geometrical optics}, and in this chapter we derive its governing equations directly from Maxwell's equations using the eikonal (short-wavelength) approximation.
+
+\section{The Eikonal Approximation}
+
+\subsection{Ansatz for short-wavelength fields}
+
+Consider a monochromatic electromagnetic wave in a medium (or vacuum) where the properties vary slowly compared to the wavelength. We write the four-potential in the form
+
+\begin{equation}
+A^\mu(x) = a^\mu(x)\,e^{i\,\psi(x)/\varepsilon},
+\end{equation}
+
+where $\psi(x)$ is a rapidly varying \textbf{phase} (the \textbf{eikonal}), $a^\mu(x)$ is a slowly varying \textbf{amplitude}, and $\varepsilon$ is a small parameter proportional to the wavelength $\lambda$. In the limit $\varepsilon \to 0$ (i.e.\ $\lambda \to 0$), the phase oscillates infinitely rapidly and the wave behaves like a ray.
+
+\subsection{Substituting into the wave equation}
+
+The wave equation $\Box A^\mu = 0$ (in vacuum) becomes, after substituting the ansatz and collecting powers of $1/\varepsilon$:
+
+\begin{equation}
+\frac{1}{\varepsilon^2}\!\left(-\partial_\mu\psi\,\partial^\mu\psi\right)a^\nu\,e^{i\psi/\varepsilon} + \frac{1}{\varepsilon}\!\left(2i\,\partial_\mu\psi\,\partial^\mu a^\nu + i\,a^\nu\,\Box\psi\right)e^{i\psi/\varepsilon} + O(1) = 0.
+\end{equation}
+
+At leading order ($1/\varepsilon^2$), for a non-trivial amplitude $a^\nu \neq 0$:
+
+\begin{equation}
+\boxed{\partial_\mu\psi\,\partial^\mu\psi = 0.}
+\end{equation}
+
+This is the \textbf{eikonal equation} --- the fundamental equation of geometrical optics.
+
+\section{The Eikonal Equation and Light Rays}
+
+\subsection{The wave vector}
+
+Define the \textbf{wave four-vector}
+
+\begin{equation}
+k_\mu = \partial_\mu\psi.
+\end{equation}
+
+The eikonal equation states that $k_\mu$ is a \textbf{null vector}:
+
+\begin{equation}
+k_\mu\,k^\mu = 0.
+\end{equation}
+
+In terms of the frequency $\omega$ and spatial wave vector $\vec{k}$:
+
+\begin{equation}
+k^\mu = \left(\frac{\omega}{c},\,\vec{k}\right), \qquad k_\mu k^\mu = \frac{\omega^2}{c^2} - |\vec{k}|^2 = 0.
+\end{equation}
+
+This gives the dispersion relation $\omega = c|\vec{k}|$, confirming that the wave propagates at speed $c$ in vacuum.
+
+\subsection{Surfaces of constant phase}
+
+The surfaces $\psi(x) = \text{const}$ are the \textbf{wavefronts}. The wave vector $k_\mu = \partial_\mu\psi$ is normal to these surfaces. In the geometrical optics limit, a ray is a curve whose tangent is everywhere parallel to $k^\mu$ --- it is perpendicular to the wavefronts and traces the path along which energy propagates.
+
+\section{The Ray Equation}
+
+\subsection{Rays as null geodesics}
+
+From the eikonal equation $k_\mu k^\mu = 0$ and the definition $k_\mu = \partial_\mu\psi$, we derive the ray equation. Taking the gradient of the eikonal equation:
+
+\begin{equation}
+\partial_\nu(k_\mu k^\mu) = 2\,k^\mu\,\partial_\nu k_\mu = 0.
+\end{equation}
+
+Since $k_\mu = \partial_\mu\psi$, we have $\partial_\nu k_\mu = \partial_\nu\partial_\mu\psi = \partial_\mu\partial_\nu\psi = \partial_\mu k_\nu$ (symmetry of mixed partials). Therefore
+
+\begin{equation}
+k^\mu\,\partial_\mu k_\nu = k^\mu\,\partial_\nu k_\mu = \frac{1}{2}\partial_\nu(k_\mu k^\mu) = 0.
+\end{equation}
+
+In other words:
+
+\begin{equation}
+\boxed{k^\mu\,\partial_\mu\,k_\nu = 0.}
+\end{equation}
+
+This states that $k^\mu$ is \textbf{parallel-transported along itself}: the wave vector does not change as we move along the ray. Parametrising the ray by an affine parameter $\lambda$ such that $dx^\mu/d\lambda = k^\mu$, this becomes
+
+\begin{equation}
+\frac{dk_\nu}{d\lambda} = 0,
+\end{equation}
+
+i.e.\ $k_\nu$ is constant along the ray. In flat (Minkowski) spacetime, rays are therefore straight lines --- light travels in straight lines in vacuum. This is the geometrical optics limit of the wave equation.
+
+\subsection{Curved spacetime generalisation}
+
+In curved spacetime (or equivalently in a medium with varying refractive index), the ordinary derivative $\partial_\mu$ is replaced by the covariant derivative $\nabla_\mu$, and the ray equation becomes
+
+\begin{equation}
+k^\mu\,\nabla_\mu\,k_\nu = 0,
+\end{equation}
+
+which is the \textbf{null geodesic equation}. Light rays follow null geodesics of the spacetime metric --- this is the foundation of gravitational lensing.
+
+\section{The Transport Equation for Amplitude}
+
+At the next order in $1/\varepsilon$, the wave equation gives the \textbf{transport equation}:
+
+\begin{equation}
+2\,k^\mu\,\partial_\mu a^\nu + a^\nu\,\partial_\mu k^\mu = 0,
+\end{equation}
+
+or equivalently:
+
+\begin{equation}
+\boxed{\partial_\mu(|a|^2\,k^\mu) = 0,}
+\end{equation}
+
+where $|a|^2 = a_\mu^* a^\mu$ (with appropriate sign conventions). This is a conservation law: the quantity $|a|^2 k^\mu$ is divergence-free. Physically, $|a|^2$ is proportional to the energy density and $k^\mu$ gives the direction of propagation, so this equation expresses \textbf{conservation of energy along a ray tube}.
+
+\subsection{Intensity and the inverse-square law}
+
+Consider a bundle of rays diverging from a point source. The cross-sectional area $\delta\Sigma$ of the ray tube at distance $r$ grows as $r^2$. Conservation of energy flux through the tube gives
+
+\begin{equation}
+|a|^2\,\delta\Sigma = \text{const} \quad \Longrightarrow \quad |a|^2 \propto \frac{1}{r^2}.
+\end{equation}
+
+Since the intensity (energy flux) is proportional to $|a|^2$, we recover the \textbf{inverse-square law}: the intensity of light falls off as $1/r^2$ from a point source. This familiar result emerges naturally from the transport equation.
+
+\section{Polarisation in the Geometrical Optics Limit}
+
+The Lorenz gauge condition $\partial_\mu A^\mu = 0$, applied to the eikonal ansatz at leading order, gives
+
+\begin{equation}
+k_\mu\,a^\mu = 0.
+\end{equation}
+
+The amplitude four-vector is orthogonal to the wave vector. Combined with the gauge freedom of choosing $a^0$, this leaves two independent transverse polarisation degrees of freedom, just as for exact plane waves.
+
+The transport equation additionally implies that the polarisation vector is \textbf{parallel-transported} along the ray:
+
+\begin{equation}
+k^\mu\,\partial_\mu\,e^\nu = 0,
+\end{equation}
+
+where $e^\nu$ is the unit polarisation vector. In flat spacetime the polarisation direction is constant along a ray; in curved spacetime it rotates (gravitational Faraday effect) according to the geometry.
+
+\section{Fermat's Principle}
+
+The ray equation can equivalently be derived from a variational principle. In a medium with refractive index $n(\vec{r})$, \textbf{Fermat's principle} states that a light ray between two points follows the path that extremises the optical path length:
+
+\begin{equation}
+\delta\int n(\vec{r})\,ds = 0,
+\end{equation}
+
+where $ds$ is the arc length element. In vacuum ($n = 1$), this reduces to straight-line propagation. Fermat's principle is the optical analogue of the principle of least action in mechanics; the eikonal $\psi$ plays the role of the action, and the wave vector $k_\mu$ plays the role of the momentum.
+
+\section{Breakdown of Geometrical Optics}
+
+The geometrical optics approximation fails when:
+
+\begin{itemize}
+\item The wavelength is comparable to the scale of variation of the medium ($\lambda \sim L$): \textbf{diffraction} effects become important.
+\item Rays cross or converge to a point: \textbf{caustics} form, where the amplitude diverges and the approximation breaks down. A more refined analysis (e.g.\ Airy functions near a fold caustic) is needed.
+\item The medium has sharp boundaries: \textbf{reflection} and \textbf{refraction} require matching boundary conditions, going beyond the eikonal ansatz.
+\end{itemize}
+
+In all these cases, one must return to the full wave equation --- but geometrical optics remains an indispensable first approximation in a vast range of practical situations.
+
+\section{Summary}
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{ll}
+\toprule
+\textbf{Concept} & \textbf{Equation} \\
+\midrule
+Eikonal ansatz & $A^\mu = a^\mu e^{i\psi/\varepsilon}$ \\
+Eikonal equation & $\partial_\mu\psi\,\partial^\mu\psi = 0$ \\
+Wave vector & $k_\mu = \partial_\mu\psi$,\; $k_\mu k^\mu = 0$ \\
+Ray equation & $k^\mu\partial_\mu k_\nu = 0$ (null geodesic) \\
+Transport equation & $\partial_\mu(|a|^2 k^\mu) = 0$ \\
+Polarisation transport & $k^\mu\partial_\mu e^\nu = 0$ \\
+Fermat's principle & $\delta\int n\,ds = 0$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Geometrical optics provides a bridge between the full wave theory of electromagnetism and the intuitive ray picture. Its equations follow systematically from Maxwell's equations in the short-wavelength limit, and its extension to curved spacetime connects electrodynamics to general relativity through the null geodesic equation.

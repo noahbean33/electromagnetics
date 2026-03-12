@@ -1,0 +1,188 @@
+\chapter{Electromagnetic Waves and Retarded Potentials}
+
+In this chapter we derive the wave equations for the electromagnetic potentials from Maxwell's equations, solve the wave equation in the case of spherical symmetry, and introduce retarded potentials --- the causal Green's function solution that gives the fields produced by an arbitrary distribution of moving charges.
+
+\section{Inhomogeneous Wave Equations from Maxwell's Equations}
+
+\subsection{Gauge freedom and the Lorenz gauge}
+
+The four-potential $A^\mu$ is not uniquely determined by the physical fields $F_{\mu\nu}$; under a gauge transformation $A_\mu \to A_\mu + \partial_\mu\chi$, the field tensor is unchanged. We exploit this freedom by imposing the \textbf{Lorenz gauge condition}:
+
+\begin{equation}
+\boxed{\partial_\mu A^\mu = \frac{1}{c}\frac{\partial\phi}{\partial t} + \vec{\nabla}\cdot\vec{A} = 0.}
+\end{equation}
+
+This is a Lorentz-covariant condition: if it holds in one inertial frame, it holds in all.
+
+\subsection{Deriving the wave equation}
+
+The inhomogeneous Maxwell equation is $\partial_\mu F^{\mu\nu} = \frac{4\pi}{c}J^\nu$. Writing $F^{\mu\nu}$ in terms of potentials:
+
+\begin{equation}
+F^{\mu\nu} = \eta^{\mu\alpha}\eta^{\nu\beta}(\partial_\alpha A_\beta - \partial_\beta A_\alpha) = \partial^\mu A^\nu - \partial^\nu A^\mu.
+\end{equation}
+
+Substituting:
+
+\begin{equation}
+\partial_\mu(\partial^\mu A^\nu - \partial^\nu A^\mu) = \frac{4\pi}{c}J^\nu.
+\end{equation}
+
+The first term is $\Box A^\nu$, where $\Box = \partial_\mu\partial^\mu = \frac{1}{c^2}\frac{\partial^2}{\partial t^2} - \nabla^2$ is the \textbf{d'Alembertian} (wave operator). The second term is $\partial^\nu(\partial_\mu A^\mu)$, which vanishes in the Lorenz gauge. Therefore:
+
+\begin{equation}
+\boxed{\Box A^\nu = \frac{4\pi}{c}\,J^\nu,}
+\end{equation}
+
+or in component form:
+
+\begin{align}
+\Box\,\phi &= \frac{1}{c^2}\frac{\partial^2\phi}{\partial t^2} - \nabla^2\phi = 4\pi\rho, \label{eq:wave_phi}\\
+\Box\,\vec{A} &= \frac{1}{c^2}\frac{\partial^2\vec{A}}{\partial t^2} - \nabla^2\vec{A} = \frac{4\pi}{c}\vec{J}. \label{eq:wave_A}
+\end{align}
+
+Each component of $A^\mu$ satisfies an \textbf{inhomogeneous wave equation} with the corresponding component of $J^\mu/c$ as source. In vacuum ($J^\mu = 0$), these reduce to the homogeneous wave equation $\Box A^\nu = 0$, whose solutions are electromagnetic waves propagating at speed $c$.
+
+\subsection{Covariant compactness}
+
+The single equation $\Box A^\nu = \frac{4\pi}{c}J^\nu$ encapsulates all four component wave equations. Its manifestly covariant form guarantees that the wave equation takes the same form in every inertial frame --- electromagnetic waves propagate at $c$ in all frames, which is of course the foundational postulate of special relativity.
+
+\section{Solution to the Wave Equation with Spherical Symmetry}
+
+\subsection{Reduction to a 1D wave equation}
+
+Consider a point source at the origin. In spherical coordinates $(r, \theta, \varphi)$, the scalar wave equation $\Box\,\phi = -4\pi\,q\,\delta^3(\vec{r})$ (for a point charge at rest) has spherical symmetry, so $\phi = \phi(r, t)$. The Laplacian in spherical coordinates acting on a function of $r$ alone gives
+
+\begin{equation}
+\nabla^2\phi = \frac{1}{r}\frac{\partial^2(r\phi)}{\partial r^2}.
+\end{equation}
+
+Defining $\psi(r,t) = r\,\phi(r,t)$, the wave equation becomes
+
+\begin{equation}
+\frac{1}{c^2}\frac{\partial^2\psi}{\partial t^2} - \frac{\partial^2\psi}{\partial r^2} = 0 \qquad (r > 0).
+\end{equation}
+
+This is the one-dimensional wave equation, whose general solution is
+
+\begin{equation}
+\psi(r,t) = f(t - r/c) + g(t + r/c),
+\end{equation}
+
+where $f$ and $g$ are arbitrary functions. Therefore
+
+\begin{equation}
+\phi(r,t) = \frac{f(t - r/c)}{r} + \frac{g(t + r/c)}{r}.
+\end{equation}
+
+\subsection{Retarded and advanced solutions}
+
+The two terms have distinct physical interpretations:
+
+\begin{itemize}
+\item $f(t - r/c)/r$: an \textbf{outgoing} (retarded) spherical wave. The field at distance $r$ and time $t$ depends on the source at the \emph{earlier} (retarded) time $t_{\text{ret}} = t - r/c$. This is the causal solution: the effect arrives after the cause.
+\item $g(t + r/c)/r$: an \textbf{incoming} (advanced) spherical wave. The field at time $t$ depends on the source at the \emph{later} time $t_{\text{adv}} = t + r/c$. This is acausal and is discarded on physical grounds.
+\end{itemize}
+
+Imposing \textbf{causality} (the retardation condition), we keep only the retarded solution:
+
+\begin{equation}
+\phi(r,t) = \frac{f(t - r/c)}{r}.
+\end{equation}
+
+\section{The Green's Function of the Wave Equation}
+
+The wave equation $\Box\,\phi = -4\pi\,s(x)$ with a general source $s(x^\mu)$ is solved by convolution with the \textbf{retarded Green's function}:
+
+\begin{equation}
+G_{\text{ret}}(\vec{r},t;\vec{r}',t') = \frac{\delta(t' - t + |\vec{r}-\vec{r}'|/c)}{|\vec{r}-\vec{r}'|}.
+\end{equation}
+
+The delta function enforces the retardation condition: only the source at the retarded time contributes. The solution is
+
+\begin{equation}
+\phi(\vec{r},t) = \int G_{\text{ret}}(\vec{r},t;\vec{r}',t')\,s(\vec{r}',t')\,d^3r'\,dt'.
+\end{equation}
+
+Performing the $t'$ integration using the delta function:
+
+\begin{equation}
+\phi(\vec{r},t) = \int \frac{s(\vec{r}',\,t - |\vec{r}-\vec{r}'|/c)}{|\vec{r}-\vec{r}'|}\,d^3r'.
+\end{equation}
+
+\section{Retarded Potentials}
+
+Applying the Green's function to the electromagnetic wave equations \eqref{eq:wave_phi} and \eqref{eq:wave_A}:
+
+\begin{equation}
+\boxed{\phi(\vec{r},t) = \int \frac{\rho(\vec{r}',\,t_{\text{ret}})}{|\vec{r}-\vec{r}'|}\,d^3r', \qquad \vec{A}(\vec{r},t) = \frac{1}{c}\int \frac{\vec{J}(\vec{r}',\,t_{\text{ret}})}{|\vec{r}-\vec{r}'|}\,d^3r',}
+\end{equation}
+
+where $t_{\text{ret}} = t - |\vec{r}-\vec{r}'|/c$ is the retarded time. These are the \textbf{retarded potentials} in Gaussian units. They state that the potential at the field point $(\vec{r}, t)$ is determined by the source distribution evaluated at the retarded time --- the time at which a light signal would have had to leave the source point $\vec{r}'$ in order to arrive at $\vec{r}$ at time $t$.
+
+\subsection{Covariant form}
+
+In manifestly covariant notation, the retarded potentials can be written as
+
+\begin{equation}
+A^\mu(x) = \frac{1}{c}\int G_{\text{ret}}(x - x')\,J^\mu(x')\,d^4x',
+\end{equation}
+
+where the retarded Green's function in four-dimensional form is
+
+\begin{equation}
+G_{\text{ret}}(x) = \frac{1}{2\pi}\,\theta(x^0)\,\delta(x_\mu x^\mu),
+\end{equation}
+
+with $\theta$ the Heaviside step function enforcing $x^0 > 0$ (future light cone).
+
+\section{The Li\'enard--Wiechert Potentials}
+
+For a single point charge $q$ moving along a worldline $\vec{r}_0(t)$ with velocity $\vec{v}(t)$, the charge and current densities are
+
+\begin{align}
+\rho(\vec{r}',t') &= q\,\delta^3(\vec{r}' - \vec{r}_0(t')), \\
+\vec{J}(\vec{r}',t') &= q\,\vec{v}(t')\,\delta^3(\vec{r}' - \vec{r}_0(t')).
+\end{align}
+
+Substituting into the retarded potential integrals and carefully evaluating the delta function (which requires a Jacobian factor from the retardation condition), one obtains the \textbf{Li\'enard--Wiechert potentials}:
+
+\begin{equation}
+\boxed{\phi(\vec{r},t) = \frac{q}{\left(R - \frac{\vec{R}\cdot\vec{v}}{c}\right)_{\text{ret}}}, \qquad \vec{A}(\vec{r},t) = \frac{q\,\vec{v}/c}{\left(R - \frac{\vec{R}\cdot\vec{v}}{c}\right)_{\text{ret}}},}
+\end{equation}
+
+where $\vec{R} = \vec{r} - \vec{r}_0$ and $R = |\vec{R}|$, with everything inside the parentheses evaluated at the retarded time determined by $c(t - t_{\text{ret}}) = |\vec{r} - \vec{r}_0(t_{\text{ret}})|$.
+
+\subsection{Covariant form}
+
+Introducing the four-velocity $U^\mu$ of the charge and the null four-vector $n^\mu$ from the retarded source point to the field point, the Li\'enard--Wiechert potential can be written as
+
+\begin{equation}
+A^\mu = \frac{q\,U^\mu}{U_\nu\,n^\nu}\bigg|_{\text{ret}},
+\end{equation}
+
+which is manifestly a four-vector and makes the covariance transparent.
+
+\subsection{Physical interpretation}
+
+The denominator $R - \vec{R}\cdot\vec{v}/c = R(1 - \hat{R}\cdot\vec{v}/c)$ shows that the potentials are enhanced when the charge moves \emph{toward} the observer ($\hat{R}\cdot\vec{v} > 0$) and diminished when it moves away. This is the electromagnetic analogue of the Doppler effect and is responsible for relativistic beaming --- the concentration of radiation in the forward direction of a fast-moving charge.
+
+\section{Summary}
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{ll}
+\toprule
+\textbf{Result} & \textbf{Expression} \\
+\midrule
+Lorenz gauge & $\partial_\mu A^\mu = 0$ \\
+Wave equation & $\Box A^\nu = \frac{4\pi}{c}J^\nu$ \\
+Spherical wave & $\phi = f(t-r/c)/r$ \\
+Retarded potentials & $\phi = \int\frac{\rho_{\text{ret}}}{|\vec{r}-\vec{r}'|}d^3r'$ \\
+Li\'enard--Wiechert & $\phi = \frac{q}{(R - \vec{R}\cdot\vec{v}/c)_{\text{ret}}}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The retarded potentials provide the complete solution to the classical radiation problem: given any distribution of charges and currents, the electromagnetic field everywhere and at all times is determined. In the next chapter we examine a remarkable consequence --- the self-force that a radiating charged particle exerts on itself.

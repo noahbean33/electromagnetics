@@ -1,0 +1,172 @@
+\chapter{Radiation Reaction and Self-Force}
+
+An accelerating charged particle radiates electromagnetic energy. By conservation of energy, this radiated power must come at the expense of the particle's kinetic energy, implying that the radiation exerts a back-reaction --- a \textbf{self-force} --- on the particle itself. This chapter derives the self-force, explores the Abraham--Lorentz--Dirac equation, and discusses the conceptual difficulties that arise.
+
+\section{Larmor's Formula: Radiated Power}
+
+\subsection{Non-relativistic Larmor formula}
+
+A non-relativistic point charge $q$ with acceleration $\vec{a}$ radiates electromagnetic energy at the rate
+
+\begin{equation}
+\boxed{P = \frac{2q^2}{3c^3}\,|\vec{a}|^2}
+\end{equation}
+
+(Gaussian units). This result, known as \textbf{Larmor's formula}, can be derived by computing the Poynting flux of the Li\'enard--Wiechert fields at large distances and integrating over a sphere.
+
+\subsection{Relativistic generalisation}
+
+For a particle with four-velocity $U^\mu$ and four-acceleration $a^\mu = dU^\mu/d\tau$, the covariant generalisation of Larmor's formula is
+
+\begin{equation}
+\boxed{P = -\frac{2q^2}{3c^3}\,a_\mu\,a^\mu = \frac{2q^2}{3c^3}\,\gamma^6\!\left(|\vec{a}|^2 - \frac{|\vec{v}\times\vec{a}|^2}{c^2}\right),}
+\end{equation}
+
+where the second form uses coordinate-time acceleration $\vec{a} = d\vec{v}/dt$. The $\gamma^6$ factor means that highly relativistic particles radiate enormously more than non-relativistic ones for the same coordinate acceleration. Note that $a_\mu a^\mu < 0$ (spacelike) for any timelike worldline, so $P > 0$ as required.
+
+\section{The Need for a Self-Force}
+
+Consider a charged particle subject to an external force $\vec{F}_{\text{ext}}$. Energy conservation demands
+
+\begin{equation}
+\frac{d\mathcal{E}_{\text{particle}}}{dt} = \vec{F}_{\text{ext}}\cdot\vec{v} - P,
+\end{equation}
+
+where $P$ is the radiated power. The $-P$ term means the particle loses energy to radiation. This energy loss must be accounted for by a radiation reaction force $\vec{F}_{\text{rad}}$ such that
+
+\begin{equation}
+\vec{F}_{\text{rad}}\cdot\vec{v} = -P.
+\end{equation}
+
+However, this condition alone does not uniquely determine $\vec{F}_{\text{rad}}$ --- it only fixes its component along $\vec{v}$. To find the full force we must examine the problem more carefully.
+
+\section{The Abraham--Lorentz Force (Non-Relativistic)}
+
+\subsection{Derivation via energy balance}
+
+For a non-relativistic particle, consider the total energy radiated over a time interval $[t_1, t_2]$:
+
+\begin{equation}
+\int_{t_1}^{t_2} P\,dt = \frac{2q^2}{3c^3}\int_{t_1}^{t_2} |\vec{a}|^2\,dt = \frac{2q^2}{3c^3}\int_{t_1}^{t_2} \dot{\vec{v}}\cdot\dot{\vec{v}}\,dt.
+\end{equation}
+
+Integrating by parts:
+
+\begin{equation}
+\int_{t_1}^{t_2} \dot{\vec{v}}\cdot\dot{\vec{v}}\,dt = \left[\dot{\vec{v}}\cdot\vec{v}\right]_{t_1}^{t_2} - \int_{t_1}^{t_2} \ddot{\vec{v}}\cdot\vec{v}\,dt.
+\end{equation}
+
+If the motion is periodic (or if the boundary terms vanish), the first term drops out and we can identify the radiation reaction force:
+
+\begin{equation}
+-\int_{t_1}^{t_2} P\,dt = \int_{t_1}^{t_2} \vec{F}_{\text{rad}}\cdot\vec{v}\,dt = -\frac{2q^2}{3c^3}\int_{t_1}^{t_2}\ddot{\vec{v}}\cdot\vec{v}\,dt.
+\end{equation}
+
+This suggests the identification
+
+\begin{equation}
+\boxed{\vec{F}_{\text{rad}} = \frac{2q^2}{3c^3}\,\dot{\vec{a}} = m_0\tau_0\,\dot{\vec{a}},}
+\end{equation}
+
+where $\dot{\vec{a}} = d\vec{a}/dt = d^2\vec{v}/dt^2$ is the time derivative of the acceleration (the ``jerk''), and
+
+\begin{equation}
+\tau_0 = \frac{2q^2}{3m_0 c^3}
+\end{equation}
+
+is the characteristic time scale (of order $10^{-24}$\,s for an electron). This is the \textbf{Abraham--Lorentz force}.
+
+\subsection{The equation of motion with radiation reaction}
+
+The non-relativistic equation of motion including radiation reaction is
+
+\begin{equation}
+m_0\vec{a} = \vec{F}_{\text{ext}} + m_0\tau_0\,\dot{\vec{a}}.
+\end{equation}
+
+This is a third-order ordinary differential equation --- it requires three initial conditions (position, velocity, \emph{and} acceleration) rather than the usual two. This leads to serious conceptual difficulties.
+
+\section{The Abraham--Lorentz--Dirac Equation (Relativistic)}
+
+\subsection{Covariant formulation}
+
+The relativistic generalisation, derived by Dirac (1938), is the \textbf{Abraham--Lorentz--Dirac (ALD) equation}:
+
+\begin{equation}
+\boxed{m_0\frac{dU^\mu}{d\tau} = \frac{q}{c}\,F^{\mu\nu}_{\text{ext}}\,U_\nu + \frac{2q^2}{3c^3}\!\left(\frac{d^2 U^\mu}{d\tau^2} + \frac{1}{c^2}\,U^\mu\,\frac{dU_\alpha}{d\tau}\frac{dU^\alpha}{d\tau}\right).}
+\end{equation}
+
+The first term on the right is the external Lorentz force. The second term in parentheses, $d^2U^\mu/d\tau^2$, is the covariant ``jerk.'' The third term, proportional to $U^\mu$, is required to maintain the constraint $U_\mu U^\mu = c^2$ (it ensures that the self-force is orthogonal to the four-velocity).
+
+\subsection{Structure of the radiation reaction four-force}
+
+Define the radiation reaction four-force:
+
+\begin{equation}
+f^\mu_{\text{rad}} = \frac{2q^2}{3c^3}\!\left(\frac{d^2 U^\mu}{d\tau^2} + \frac{1}{c^2}\,U^\mu\,a_\alpha\,a^\alpha\right),
+\end{equation}
+
+where $a^\alpha = dU^\alpha/d\tau$. One can verify:
+
+\begin{itemize}
+\item $f^\mu_{\text{rad}}\,U_\mu = 0$: the self-force is orthogonal to the four-velocity, as required for any force that does not change the rest mass.
+\item In the non-relativistic limit ($\gamma \to 1$), the spatial components reduce to $m_0\tau_0\dot{\vec{a}}$, recovering the Abraham--Lorentz force.
+\end{itemize}
+
+\section{Pathologies and Their Resolution}
+
+The ALD equation, despite its elegant derivation, exhibits two well-known pathologies:
+
+\subsection{Runaway solutions}
+
+In the absence of external forces ($\vec{F}_{\text{ext}} = 0$), the Abraham--Lorentz equation $m_0\vec{a} = m_0\tau_0\dot{\vec{a}}$ has the solution
+
+\begin{equation}
+\vec{a}(t) = \vec{a}_0\,e^{t/\tau_0}.
+\end{equation}
+
+The acceleration grows exponentially without bound --- a ``runaway'' solution in which the particle accelerates itself to arbitrarily high speeds without any external force. This is clearly unphysical.
+
+\subsection{Pre-acceleration}
+
+To eliminate runaways, one can impose the boundary condition that $\vec{a}(t) \to 0$ as $t \to \infty$. This leads to the integro-differential form
+
+\begin{equation}
+m_0\vec{a}(t) = \int_0^\infty e^{-s}\,\vec{F}_{\text{ext}}(t + \tau_0 s)\,ds,
+\end{equation}
+
+which shows that the particle begins to accelerate \emph{before} the external force is applied --- \textbf{pre-acceleration}. The time scale of this acausal behaviour is $\tau_0 \sim 10^{-24}$\,s, far below any observable scale and within the regime where quantum effects (pair production, vacuum fluctuations) dominate anyway.
+
+\subsection{Modern perspective}
+
+The pathologies of the ALD equation signal the breakdown of classical point-particle electrodynamics at scales comparable to the ``classical electron radius'' $r_0 = q^2/(m_0 c^2)$. At these scales, quantum electrodynamics (QED) takes over and provides a consistent framework. Nevertheless, the ALD equation remains the correct classical limit and is widely used in the study of synchrotron radiation, laser--plasma interactions, and astrophysical processes where quantum effects are subdominant.
+
+\subsection{The Landau--Lifshitz approximation}
+
+An order-reduction of the ALD equation, valid when the radiation reaction is a small perturbation, replaces $\dot{\vec{a}}$ by the time derivative of the external force divided by $m_0$:
+
+\begin{equation}
+m_0\vec{a} \approx \vec{F}_{\text{ext}} + \frac{\tau_0}{m_0}\!\left(\frac{d\vec{F}_{\text{ext}}}{dt} + \ldots\right).
+\end{equation}
+
+This \textbf{Landau--Lifshitz equation} is second-order, has no runaway solutions, no pre-acceleration, and agrees with the ALD equation to the relevant order in $\tau_0$. It is the form most often used in practical calculations.
+
+\section{Summary}
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{ll}
+\toprule
+\textbf{Result} & \textbf{Expression} \\
+\midrule
+Larmor formula & $P = \frac{2q^2}{3c^3}|\vec{a}|^2$ \\
+Characteristic time & $\tau_0 = \frac{2q^2}{3m_0 c^3}$ \\
+Abraham--Lorentz force & $\vec{F}_{\text{rad}} = m_0\tau_0\,\dot{\vec{a}}$ \\
+ALD equation & $m_0\frac{dU^\mu}{d\tau} = \frac{q}{c}F^{\mu\nu}_{\text{ext}}U_\nu + \frac{2q^2}{3c^3}\!\left(\ddot{U}^\mu + \frac{U^\mu}{c^2}a_\alpha a^\alpha\right)$ \\
+Landau--Lifshitz & Order-reduced, second-order, no pathologies \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The self-force problem reveals the limits of classical electrodynamics: it is a beautiful and internally consistent theory down to length scales of order $r_0$, below which quantum mechanics must take over. The ALD equation remains a landmark result --- it is the unique covariant equation of motion for a classical point charge that correctly accounts for radiation energy loss.

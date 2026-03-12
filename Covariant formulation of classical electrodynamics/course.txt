@@ -1,0 +1,100 @@
+
+This course aims to give a concise, complete and mathematically intuitive description of the fundamental laws of electromagnetism, namely: Maxwell's equations, Lorentz force, electromagnetic energy momentum tensor, etc.
+
+The following concepts are used extensively: tensors, Minkowski metric, lagrangian mechanics
+
+The covariant formulation of classical electromagnetism refers to ways of writing the laws of classical electromagnetism (in particular, Maxwell's equations and the Lorentz force) in a form that is clearly invariant under Lorentz transformations, in the formalism of special relativity (therefore using inertial coordinate systems). These expressions simply prove that the laws of classical electromagnetism take the same form in any inertial coordinate system, as well as provide a way to treat the fields and forces in different reference frames. However, this is not as general as Maxwell's equations in curved spacetime (i.e. non-rectilinear coordinate systems). Maxwell's equations can also be extended to curved spacetime without great effort.
+
+We will derive Maxwell's equations in vacuum, where they can be written as two tensor equations (instead of 4 vector equations).
+
+We will also see how to derive the electromagnetic tensor, starting from an intuitive Lagrangian approach, and also calculate the energy-momentum-tensor related to electromagnetic fields, by recalling some expressions derived in the course on General Relativity ("Mathematical Intuition behind Special and General Relativity").
+
+What you’ll learn
+covariant formulation of electrodynamics
+derivation of Maxwell's equations
+electromagnetic energy momentum tensor
+electromagnetic tensor
+Are there any course requirements or prerequisites?
+This course makes use of the concepts of: tensors, Minkowski metric, Lagrangian mechanics, which were introduced by the instructor in the course "Mathematical Intuition behind Special and General Relativity". This course is not for beginners, nevertheless emphasis is put on intuition rather than on mathematical rigor.
+tensors
+Minkowski metric
+Special Relativity
+Lagrangian mechanics
+Who this course is for:
+Students who aim to understand the subtle aspects of the theory of Electromagnetism
+Students who want to prove Maxwell's equations
+Students who seek to optimize their mastery of Lagrangian mechanics
+
+Course content
+Motion of a particle in an electromagnetic field part 1
+9:37
+Motion of a particle in an electromagnetic field part 2
+6:58
+Motion of a particle in an electromagnetic field part 3
+6:23
+Motion of a particle in an electromagnetic field part 4
+4:09
+Motion of a particle in an electromagnetic field part 5
+7:36
+Electromagnetic tensor and electric and magnetic fields
+9:25
+Magnetic field expressed in terms of the vector potential
+6:00
+Equations of motion at arbitrarily high velocities
+9:14
+Derivation of two Maxwell's equations
+5:31
+Lorentz force in covariant form
+6:00
+Electromagnetic tensor expressed as a matrix
+5:43
+First two Maxwell's equations written in covariant form
+7:39
+Electromagnetic energy momentum tensor part 1
+5:19
+Electromagnetic energy momentum tensor part 2
+8:52
+Electromagnetic energy momentum tensor part 3
+9:21
+Lagrangian density vs Lagrangian
+7:49
+Derivation of the remaining Maxwell's equation part 1
+5:49
+Derivation of the remaining Maxwell's equation part 2
+7:50
+Derivation of the remaining Maxwell's equation part 3
+8:02
+Energy momentum tensor from Lagrange equations
+11:15
+Energy momentum tensor from Lagrange equations part 2
+10:24
+Most general expression of the energy momentum tensor
+10:00
+Energy momentum tensor from Maxwell's equations part 1
+8:37
+Energy momentum tensor from Maxwell's equations part 2
+4:46
+Energy momentum tensor from Maxwell's equations part 3
+6:50
+Energy momentum tensor from Maxwell's equations part 4
+12:21
+Fundamental properties of the E.M. field
+9:52
+Lorentz force and 1st pair of Maxwell equations
+9:29
+Second pair of Maxwell equations
+12:52
+Inhomogeneous wave equations from Maxwell equations
+13:51
+Solution to the wave equation with spherical symmetry
+6:54
+Retarded potentials - field of moving charges
+12:33
+Self force acting on a particle
+27:38
+Equations of geometrical optics: part 1
+18:58
+Equations of geometrical optics: part 2
+19:15
+Relativistic motion of a particle in a constant uniform electric field
+18:56

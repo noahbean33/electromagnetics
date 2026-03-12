@@ -1,0 +1,104 @@
+\chapter{Fundamental Properties of the Electromagnetic Field}
+
+In this chapter we collect and prove several fundamental properties of the electromagnetic field that follow purely from the structure of the field tensor $F_{\mu\nu}$ and the energy-momentum tensor $T^{\mu\nu}$. These properties constrain the behaviour of electromagnetic fields in powerful ways and provide essential tools for analysing specific configurations.
+
+\section{Lorentz Invariants Revisited}
+
+From Chapter~2, the two independent Lorentz invariants of the electromagnetic field are
+
+\begin{align}
+\mathcal{I}_1 &= \frac{1}{2}\,F_{\mu\nu}F^{\mu\nu} = |\vec{B}|^2 - |\vec{E}|^2, \\
+\mathcal{I}_2 &= \frac{1}{4}\,\widetilde{F}^{\mu\nu}F_{\mu\nu} = -\vec{E}\cdot\vec{B}.
+\end{align}
+
+These two scalars are preserved under any Lorentz transformation. Several important consequences follow immediately.
+
+\subsection{Classification of electromagnetic fields}
+
+An electromagnetic field at a given spacetime point can be classified by the values of its invariants:
+
+\begin{enumerate}
+\item \textbf{Electric type} ($\mathcal{I}_1 < 0$, i.e.\ $|\vec{E}|^2 > |\vec{B}|^2$): there exists a Lorentz frame in which $\vec{B} = 0$ (provided $\mathcal{I}_2 = 0$).
+\item \textbf{Magnetic type} ($\mathcal{I}_1 > 0$, i.e.\ $|\vec{B}|^2 > |\vec{E}|^2$): there exists a Lorentz frame in which $\vec{E} = 0$ (provided $\mathcal{I}_2 = 0$).
+\item \textbf{Null (radiation) type} ($\mathcal{I}_1 = 0$ and $\mathcal{I}_2 = 0$): in this case $|\vec{E}| = |\vec{B}|$ and $\vec{E}\perp\vec{B}$ in every frame. This is the field configuration of a plane electromagnetic wave.
+\end{enumerate}
+
+\subsection{Proof: vanishing of $\vec{B}$ in a boosted frame}
+
+Suppose $\mathcal{I}_2 = \vec{E}\cdot\vec{B} = 0$ and $|\vec{E}| > |\vec{B}|$. Consider a Lorentz boost with velocity $\vec{v}$ perpendicular to $\vec{E}$. Under this boost, the fields transform as
+
+\begin{align}
+\vec{E}' &= \gamma(\vec{E} + \tfrac{1}{c}\vec{v}\times\vec{B}) - (\gamma - 1)(\hat{v}\cdot\vec{E})\,\hat{v}, \\
+\vec{B}' &= \gamma(\vec{B} - \tfrac{1}{c}\vec{v}\times\vec{E}) - (\gamma - 1)(\hat{v}\cdot\vec{B})\,\hat{v}.
+\end{align}
+
+Choosing $\vec{v}$ appropriately (with $|\vec{v}|/c = |\vec{B}|/|\vec{E}| < 1$), one can set $\vec{B}' = 0$. The condition $|\vec{E}| > |\vec{B}|$ ensures $v < c$, so the boost is physical. An analogous argument works for the magnetic-type case.
+
+\section{Positivity of the Electromagnetic Energy Density}
+
+The energy density of the electromagnetic field is
+
+\begin{equation}
+u = T^{00} = \frac{|\vec{E}|^2 + |\vec{B}|^2}{8\pi} \geq 0.
+\end{equation}
+
+This is manifestly non-negative and vanishes only when both $\vec{E} = 0$ and $\vec{B} = 0$. The electromagnetic field always carries non-negative energy --- there is no configuration with negative electromagnetic energy density. This positivity is a necessary condition for the physical stability of the theory.
+
+\section{Tracelessness of $T^{\mu\nu}$ and Conformal Invariance}
+
+The trace of the electromagnetic energy-momentum tensor vanishes:
+
+\begin{equation}
+T^\mu{}_\mu = \eta_{\mu\nu}\,T^{\mu\nu} = \frac{1}{4\pi}\!\left(F^{\mu\alpha}F_{\mu\alpha} - \frac{1}{4}\cdot 4\cdot F_{\alpha\beta}F^{\alpha\beta}\right) = \frac{1}{4\pi}(F^{\mu\alpha}F_{\mu\alpha} - F_{\alpha\beta}F^{\alpha\beta}) = 0.
+\end{equation}
+
+Tracelessness is equivalent to the statement that the Lagrangian density is conformally invariant in four spacetime dimensions. Physically, it means that electromagnetic radiation has the equation of state $p = u/3$ (radiation pressure equals one-third the energy density), which is the equation of state of a photon gas.
+
+\section{The Dominant Energy Condition}
+
+The energy-momentum tensor of the electromagnetic field satisfies the \textbf{dominant energy condition}: for any future-directed timelike vector $V^\mu$,
+
+\begin{equation}
+T^{\mu\nu}V_\mu V_\nu \geq 0, \qquad \text{and} \quad T^{\mu\nu}V_\nu \text{ is causal (non-spacelike)}.
+\end{equation}
+
+The first condition states that every observer measures non-negative energy density. The second states that energy flows at most at the speed of light. For the electromagnetic field, the energy flow velocity is
+
+\begin{equation}
+v_{\text{flow}} = \frac{|\vec{S}|}{u\,c} = \frac{|\vec{E}\times\vec{B}|}{(E^2 + B^2)/2} \leq c,
+\end{equation}
+
+where the inequality follows from $|\vec{E}\times\vec{B}| \leq |\vec{E}||\vec{B}| \leq \frac{1}{2}(E^2 + B^2)$ by the AM--GM inequality. Equality holds when $|\vec{E}| = |\vec{B}|$ and $\vec{E}\perp\vec{B}$, i.e.\ for a null field (plane wave), which propagates energy at exactly $c$.
+
+\section{Eigenvalues of the Field Tensor}
+
+The field tensor $F_{\mu\nu}$, viewed as a linear map via $F^\mu{}_\nu = \eta^{\mu\alpha}F_{\alpha\nu}$, has eigenvalues that can be expressed in terms of the two Lorentz invariants. The characteristic equation is
+
+\begin{equation}
+\lambda^4 + \mathcal{I}_1\,\lambda^2 + \mathcal{I}_2^2 = 0,
+\end{equation}
+
+which is quadratic in $\lambda^2$. The eigenvalues come in pairs $\pm\lambda$ (a consequence of the antisymmetry). For a null field ($\mathcal{I}_1 = \mathcal{I}_2 = 0$), all eigenvalues are zero --- the field tensor is nilpotent, with $F^\mu{}_\alpha F^\alpha{}_\nu \neq 0$ but $(F^3)^\mu{}_\nu = 0$.
+
+\section{Transformation of $\vec{E}$ and $\vec{B}$ under Lorentz Boosts}
+
+Consider a Lorentz boost along the $x^1$-direction with velocity $v$. Decompose the fields into components parallel ($\parallel$) and perpendicular ($\perp$) to the boost direction. The transformation laws are:
+
+\begin{align}
+E'_\parallel &= E_\parallel, & B'_\parallel &= B_\parallel, \\
+E'_\perp &= \gamma(E_\perp + \tfrac{v}{c}B_\perp'), & B'_\perp &= \gamma(B_\perp - \tfrac{v}{c}E_\perp'),
+\end{align}
+
+or more explicitly, for a boost along $\hat{x}$:
+
+\begin{align}
+E'_x &= E_x, & B'_x &= B_x, \\
+E'_y &= \gamma(E_y - \tfrac{v}{c}B_z), & B'_y &= \gamma(B_y + \tfrac{v}{c}E_z), \\
+E'_z &= \gamma(E_z + \tfrac{v}{c}B_y), & B'_z &= \gamma(B_z - \tfrac{v}{c}E_y).
+\end{align}
+
+These follow directly from the transformation $F'^{\mu\nu} = \Lambda^\mu{}_\alpha\,\Lambda^\nu{}_\beta\,F^{\alpha\beta}$ applied to the explicit matrix form of $F^{\mu\nu}$. One can verify that both Lorentz invariants $\mathcal{I}_1$ and $\mathcal{I}_2$ are preserved by these transformations.
+
+\section{Summary}
+
+The fundamental properties of the electromagnetic field --- the invariant classification into electric, magnetic, and null types; the positivity of energy density; the tracelessness of the energy-momentum tensor; the dominant energy condition; and the specific transformation laws of $\vec{E}$ and $\vec{B}$ --- all follow from the tensor structure of $F_{\mu\nu}$ and $T^{\mu\nu}$. These results are not specific to any particular field configuration; they hold universally for all classical electromagnetic fields in vacuum.

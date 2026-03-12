@@ -1,0 +1,204 @@
+\chapter{Maxwell's Equations in Covariant Form}
+
+Maxwell's four equations --- two homogeneous and two inhomogeneous --- govern the dynamics of the electromagnetic field itself. In this chapter we derive all four from the field tensor and show that they condense into just \emph{two} tensor equations, each elegant and manifestly Lorentz-covariant.
+
+\section{From Potentials to Fields: a Brief Recap}
+
+The electric and magnetic fields derive from the four-potential $A^\mu = (\phi, \vec{A})$ via the field tensor $F_{\mu\nu} = \partial_\mu A_\nu - \partial_\nu A_\mu$. In three-vector language:
+
+\begin{align}
+\vec{E} &= -\vec{\nabla}\phi - \frac{1}{c}\frac{\partial \vec{A}}{\partial t}, \label{eq:E_from_pot}\\
+\vec{B} &= \vec{\nabla}\times\vec{A}. \label{eq:B_from_pot}
+\end{align}
+
+These definitions already encode two of Maxwell's equations, as we will now show.
+
+\section{The Homogeneous Maxwell Equations}
+
+\subsection{Derivation from the potential representation}
+
+Consider the divergence of $\vec{B}$:
+
+\begin{equation}
+\vec{\nabla}\cdot\vec{B} = \vec{\nabla}\cdot(\vec{\nabla}\times\vec{A}) = 0,
+\end{equation}
+
+since the divergence of any curl vanishes identically. This is \textbf{Gauss's law for magnetism}: there are no magnetic monopoles.
+
+Next, take the curl of $\vec{E}$:
+
+\begin{equation}
+\vec{\nabla}\times\vec{E} = -\vec{\nabla}\times\vec{\nabla}\phi - \frac{1}{c}\frac{\partial}{\partial t}(\vec{\nabla}\times\vec{A}).
+\end{equation}
+
+The first term vanishes (curl of a gradient is zero), and $\vec{\nabla}\times\vec{A} = \vec{B}$, giving
+
+\begin{equation}
+\vec{\nabla}\times\vec{E} = -\frac{1}{c}\frac{\partial\vec{B}}{\partial t}.
+\end{equation}
+
+This is \textbf{Faraday's law of induction}. Together, these two equations --- $\vec{\nabla}\cdot\vec{B} = 0$ and $\vec{\nabla}\times\vec{E} + \frac{1}{c}\frac{\partial\vec{B}}{\partial t} = 0$ --- are called the \emph{homogeneous} Maxwell equations because they have no source terms on the right-hand side.
+
+\subsection{Covariant form: the Bianchi identity}
+
+Both homogeneous equations are consequences of a single tensor identity. Define the \textbf{cyclic sum}
+
+\begin{equation}
+\partial_\lambda F_{\mu\nu} + \partial_\mu F_{\nu\lambda} + \partial_\nu F_{\lambda\mu}.
+\end{equation}
+
+Substituting $F_{\mu\nu} = \partial_\mu A_\nu - \partial_\nu A_\mu$:
+
+\begin{align}
+&\partial_\lambda(\partial_\mu A_\nu - \partial_\nu A_\mu) + \partial_\mu(\partial_\nu A_\lambda - \partial_\lambda A_\nu) + \partial_\nu(\partial_\lambda A_\mu - \partial_\mu A_\lambda) \nonumber\\
+&= \partial_\lambda\partial_\mu A_\nu - \partial_\lambda\partial_\nu A_\mu + \partial_\mu\partial_\nu A_\lambda - \partial_\mu\partial_\lambda A_\nu + \partial_\nu\partial_\lambda A_\mu - \partial_\nu\partial_\mu A_\lambda.
+\end{align}
+
+Every term cancels with another (using the symmetry of mixed partial derivatives $\partial_\mu\partial_\nu = \partial_\nu\partial_\mu$), giving
+
+\begin{equation}
+\boxed{\partial_\lambda F_{\mu\nu} + \partial_\mu F_{\nu\lambda} + \partial_\nu F_{\lambda\mu} = 0.}
+\end{equation}
+
+This is the \textbf{Bianchi identity} for the electromagnetic field. It is an algebraic identity --- it holds for \emph{any} tensor of the form $F_{\mu\nu} = \partial_\mu A_\nu - \partial_\nu A_\mu$, regardless of the field equations.
+
+\subsection{Equivalently, using the dual tensor}
+
+The Bianchi identity can be written more compactly using the dual tensor $\widetilde{F}^{\mu\nu}$ introduced in Chapter~2:
+
+\begin{equation}
+\boxed{\partial_\mu \widetilde{F}^{\mu\nu} = 0.}
+\end{equation}
+
+This single equation, for each value of $\nu$, encodes both $\vec{\nabla}\cdot\vec{B} = 0$ (the $\nu = 0$ component) and Faraday's law (the $\nu = j$ components).
+
+\subsection{Extracting the three-vector equations}
+
+\textbf{Setting $\nu = 0$:}
+
+\begin{equation}
+\partial_\mu \widetilde{F}^{\mu 0} = \partial_i \widetilde{F}^{i0} = \partial_i B^i = \vec{\nabla}\cdot\vec{B} = 0,
+\end{equation}
+
+where we used $\widetilde{F}^{i0} = B_i$ from the explicit dual tensor matrix.
+
+\textbf{Setting $\nu = j$:}
+
+\begin{equation}
+\partial_0 \widetilde{F}^{0j} + \partial_i \widetilde{F}^{ij} = 0.
+\end{equation}
+
+From the dual tensor, $\widetilde{F}^{0j} = -B_j$ and $\widetilde{F}^{ij} = \varepsilon^{ijk}E_k$. With $\partial_0 = \frac{1}{c}\frac{\partial}{\partial t}$:
+
+\begin{equation}
+-\frac{1}{c}\frac{\partial B_j}{\partial t} + (\vec{\nabla}\times\vec{E})_j = 0 \quad \Longrightarrow \quad \vec{\nabla}\times\vec{E} = -\frac{1}{c}\frac{\partial\vec{B}}{\partial t}.
+\end{equation}
+
+Both homogeneous Maxwell equations are recovered.
+
+\section{The Inhomogeneous Maxwell Equations}
+
+The homogeneous equations followed from the structure of $F_{\mu\nu}$ alone (the Bianchi identity). The \emph{inhomogeneous} equations are dynamical --- they relate the field to its sources: charge density $\rho$ and current density $\vec{J}$.
+
+\subsection{The four-current}
+
+In Gaussian units the \textbf{four-current density} is
+
+\begin{equation}
+J^\mu = (c\rho,\, \vec{J}),
+\end{equation}
+
+where $\rho$ is the charge density and $\vec{J}$ is the current density. The continuity equation (charge conservation) takes the covariant form
+
+\begin{equation}
+\partial_\mu J^\mu = \frac{\partial\rho}{\partial t} + \vec{\nabla}\cdot\vec{J} = 0.
+\end{equation}
+
+\subsection{The inhomogeneous field equation}
+
+The two remaining Maxwell equations --- Gauss's law and the Amp\`ere--Maxwell law --- are contained in
+
+\begin{equation}
+\boxed{\partial_\mu F^{\mu\nu} = \frac{4\pi}{c}\,J^\nu.}
+\end{equation}
+
+This is the \textbf{inhomogeneous Maxwell equation} in covariant form (Gaussian units).
+
+\subsection{Extracting the three-vector equations}
+
+\textbf{Setting $\nu = 0$ (Gauss's law):}
+
+\begin{equation}
+\partial_\mu F^{\mu 0} = \partial_i F^{i0} = \partial_i E^i = \vec{\nabla}\cdot\vec{E} = \frac{4\pi}{c}\,J^0 = 4\pi\rho.
+\end{equation}
+
+Hence
+
+\begin{equation}
+\boxed{\vec{\nabla}\cdot\vec{E} = 4\pi\rho.}
+\end{equation}
+
+\textbf{Setting $\nu = j$ (Amp\`ere--Maxwell law):}
+
+\begin{equation}
+\partial_0 F^{0j} + \partial_i F^{ij} = \frac{4\pi}{c}\,J^j.
+\end{equation}
+
+From the contravariant tensor: $F^{0j} = -E_j$ and $F^{ij} = -\varepsilon^{ijk}B_k$. Then $\partial_0 F^{0j} = -\frac{1}{c}\frac{\partial E_j}{\partial t}$ and $\partial_i F^{ij} = (\vec{\nabla}\times\vec{B})_j$. Substituting:
+
+\begin{equation}
+-\frac{1}{c}\frac{\partial E_j}{\partial t} + (\vec{\nabla}\times\vec{B})_j = \frac{4\pi}{c}\,J_j,
+\end{equation}
+
+\begin{equation}
+\boxed{\vec{\nabla}\times\vec{B} = \frac{4\pi}{c}\vec{J} + \frac{1}{c}\frac{\partial\vec{E}}{\partial t}.}
+\end{equation}
+
+The second term on the right is Maxwell's \emph{displacement current}, whose inclusion ensures consistency with charge conservation: taking the divergence of both sides and using $\vec{\nabla}\cdot(\vec{\nabla}\times\vec{B}) = 0$ and Gauss's law, one recovers $\partial_\mu J^\mu = 0$.
+
+\section{Maxwell's Equations in Vacuum}
+
+In regions with no charges or currents ($\rho = 0$, $\vec{J} = 0$, i.e.\ $J^\mu = 0$), Maxwell's equations in covariant form reduce to the beautifully symmetric pair:
+
+\begin{align}
+\partial_\mu F^{\mu\nu} &= 0, \label{eq:maxwell_vac_inhom}\\
+\partial_\mu \widetilde{F}^{\mu\nu} &= 0. \label{eq:maxwell_vac_hom}
+\end{align}
+
+These two tensor equations replace the four three-vector equations. The first encodes $\vec{\nabla}\cdot\vec{E} = 0$ and $\vec{\nabla}\times\vec{B} = \frac{1}{c}\frac{\partial\vec{E}}{\partial t}$; the second encodes $\vec{\nabla}\cdot\vec{B} = 0$ and $\vec{\nabla}\times\vec{E} = -\frac{1}{c}\frac{\partial\vec{B}}{\partial t}$. In vacuum, the interchange $\vec{E} \to \vec{B}$, $\vec{B} \to -\vec{E}$ (electromagnetic duality) maps one equation into the other.
+
+\section{Consistency: Charge Conservation from the Field Equations}
+
+Taking the four-divergence of the inhomogeneous equation:
+
+\begin{equation}
+\partial_\nu\partial_\mu F^{\mu\nu} = \frac{4\pi}{c}\,\partial_\nu J^\nu.
+\end{equation}
+
+The left-hand side vanishes identically: $\partial_\nu\partial_\mu$ is symmetric in $\mu,\nu$ while $F^{\mu\nu}$ is antisymmetric, so their contraction is zero. Therefore
+
+\begin{equation}
+\partial_\nu J^\nu = 0,
+\end{equation}
+
+which is the continuity equation. Maxwell's equations are \emph{automatically consistent} with charge conservation --- this is not an additional assumption but a built-in consequence of the antisymmetry of $F^{\mu\nu}$.
+
+\section{Summary: The Complete Set of Maxwell's Equations}
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.6}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Equation} & \textbf{Covariant form} & \textbf{Three-vector form} \\
+\midrule
+Gauss (electric) & \multirow{2}{*}{$\partial_\mu F^{\mu\nu} = \dfrac{4\pi}{c}J^\nu$} & $\vec{\nabla}\cdot\vec{E} = 4\pi\rho$ \\
+Amp\`ere--Maxwell & & $\vec{\nabla}\times\vec{B} = \dfrac{4\pi}{c}\vec{J} + \dfrac{1}{c}\dfrac{\partial\vec{E}}{\partial t}$ \\[6pt]
+\midrule
+Gauss (magnetic) & \multirow{2}{*}{$\partial_\mu\widetilde{F}^{\mu\nu} = 0$} & $\vec{\nabla}\cdot\vec{B} = 0$ \\
+Faraday & & $\vec{\nabla}\times\vec{E} = -\dfrac{1}{c}\dfrac{\partial\vec{B}}{\partial t}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Four vector equations have been compressed into two tensor equations. This is one of the great achievements of the covariant formulation: it makes the Lorentz invariance of electromagnetism manifest and reduces the bookkeeping from twelve component equations to eight (four per tensor equation, of which one is redundant by antisymmetry).

@@ -1,0 +1,182 @@
+\chapter{Lagrangian Density and Classical Field Theory}
+
+So far our Lagrangian $L$ has described a single particle moving through a given external field. To derive Maxwell's equations from a variational principle --- and, later, the energy-momentum tensor --- we need to promote the electromagnetic field itself to a dynamical variable. This requires the transition from particle mechanics (finitely many degrees of freedom) to \emph{field theory} (infinitely many degrees of freedom), and the central object becomes the \textbf{Lagrangian density} $\mathcal{L}$.
+
+\section{From Lagrangian to Lagrangian Density}
+
+\subsection*{Discrete mechanics}
+
+In classical mechanics a system with $N$ generalized coordinates $q_a(t)$ has a Lagrangian $L(q_a, \dot{q}_a, t)$ and an action
+
+\begin{equation}
+S = \int L\,dt.
+\end{equation}
+
+The Euler--Lagrange equations follow from $\delta S = 0$:
+
+\begin{equation}
+\frac{d}{dt}\frac{\partial L}{\partial \dot{q}_a} - \frac{\partial L}{\partial q_a} = 0.
+\end{equation}
+
+\subsection*{Continuous fields}
+
+Now replace the discrete label $a$ by a continuous label: the spatial position $\vec{x}$. The ``coordinate'' at each point is the field value $\phi(x^\mu)$ (or, more generally, $A_\mu(x^\nu)$). The number of degrees of freedom is infinite --- one for each point in space.
+
+The Lagrangian is obtained by integrating a \textbf{Lagrangian density} $\mathcal{L}$ over all space:
+
+\begin{equation}
+L = \int \mathcal{L}\,d^3x.
+\end{equation}
+
+The action is then a four-dimensional integral:
+
+\begin{equation}
+\boxed{S = \int \mathcal{L}\,d^4x = \int \mathcal{L}\,c\,dt\,d^3x,}
+\end{equation}
+
+where $d^4x = dx^0\,dx^1\,dx^2\,dx^3 = c\,dt\,d^3x$. The Lagrangian density $\mathcal{L}$ depends on the fields and their first derivatives: $\mathcal{L} = \mathcal{L}(\phi, \partial_\mu\phi)$.
+
+\subsection*{Why density?}
+
+The key insight is \textbf{locality}: we demand that the physics at each spacetime point depends only on the field and its derivatives at that point, not on distant values. This is naturally achieved by building $S$ from a density $\mathcal{L}(x)$ integrated over spacetime.
+
+\section{The Euler--Lagrange Equations for Fields}
+
+Demanding $\delta S = 0$ under variations $\phi \to \phi + \delta\phi$ that vanish on the boundary of the integration region, and integrating by parts, yields the \textbf{Euler--Lagrange field equations}:
+
+\begin{equation}
+\boxed{\partial_\mu \frac{\partial \mathcal{L}}{\partial(\partial_\mu \phi)} - \frac{\partial \mathcal{L}}{\partial \phi} = 0.}
+\end{equation}
+
+For a field with multiple components (such as $A_\nu$), there is one equation for each component:
+
+\begin{equation}
+\partial_\mu \frac{\partial \mathcal{L}}{\partial(\partial_\mu A_\nu)} - \frac{\partial \mathcal{L}}{\partial A_\nu} = 0.
+\end{equation}
+
+This is the field-theoretic analogue of the familiar particle Euler--Lagrange equation, with $\partial_\mu$ replacing $d/dt$ and $\partial\mathcal{L}/\partial(\partial_\mu\phi)$ replacing $\partial L/\partial\dot{q}$.
+
+\section{The Electromagnetic Lagrangian Density}
+
+\subsection*{Free-field Lagrangian density}
+
+We seek a Lagrangian density $\mathcal{L}$ that:
+\begin{enumerate}
+\item is a Lorentz scalar (so the action is Lorentz-invariant),
+\item is built from the field tensor $F_{\mu\nu}$ and its contractions,
+\item yields the vacuum Maxwell equations via the Euler--Lagrange equations.
+\end{enumerate}
+
+The simplest Lorentz scalar quadratic in the fields is $F_{\mu\nu}F^{\mu\nu}$. The correct Lagrangian density (in Gaussian units) turns out to be
+
+\begin{equation}
+\boxed{\mathcal{L}_{\text{field}} = -\frac{1}{16\pi}\,F_{\mu\nu}\,F^{\mu\nu}.}
+\end{equation}
+
+The factor $-1/16\pi$ is fixed by requiring that the Euler--Lagrange equations reproduce Maxwell's equations with the correct normalisation.
+
+\subsection*{Expressing $\mathcal{L}_{\text{field}}$ in terms of $\vec{E}$ and $\vec{B}$}
+
+Using the result from Chapter~2 that $F_{\mu\nu}F^{\mu\nu} = 2(|\vec{B}|^2 - |\vec{E}|^2)$:
+
+\begin{equation}
+\mathcal{L}_{\text{field}} = -\frac{1}{16\pi}\cdot 2(|\vec{B}|^2 - |\vec{E}|^2) = \frac{1}{8\pi}(|\vec{E}|^2 - |\vec{B}|^2).
+\end{equation}
+
+This is $\frac{1}{8\pi}(E^2 - B^2)$, a familiar result from classical electrodynamics. The electric field contributes with a positive sign (like kinetic energy) and the magnetic field with a negative sign (like potential energy).
+
+\subsection*{Interaction Lagrangian density}
+
+When sources are present, we add a coupling between the four-current $J^\mu$ and the four-potential $A_\mu$:
+
+\begin{equation}
+\mathcal{L}_{\text{int}} = -\frac{1}{c}\,J^\mu A_\mu.
+\end{equation}
+
+The total electromagnetic Lagrangian density is
+
+\begin{equation}
+\boxed{\mathcal{L} = -\frac{1}{16\pi}\,F_{\mu\nu}\,F^{\mu\nu} - \frac{1}{c}\,J^\mu A_\mu.}
+\end{equation}
+
+\section{Deriving Maxwell's Equations from the Lagrangian Density}
+
+We treat $A_\nu$ as the dynamical field. The field tensor is $F_{\mu\nu} = \partial_\mu A_\nu - \partial_\nu A_\mu$, so $\mathcal{L}$ depends on $A_\nu$ (through $\mathcal{L}_{\text{int}}$) and on $\partial_\mu A_\nu$ (through $\mathcal{L}_{\text{field}}$).
+
+\subsection*{Step 1: Compute $\partial\mathcal{L}/\partial(\partial_\alpha A_\beta)$}
+
+We need the derivative of $F_{\mu\nu}F^{\mu\nu}$ with respect to $\partial_\alpha A_\beta$. Since
+
+\begin{equation}
+F_{\mu\nu}F^{\mu\nu} = (\partial_\mu A_\nu - \partial_\nu A_\mu)\eta^{\mu\rho}\eta^{\nu\sigma}(\partial_\rho A_\sigma - \partial_\sigma A_\rho),
+\end{equation}
+
+a careful application of the product rule yields
+
+\begin{equation}
+\frac{\partial(F_{\mu\nu}F^{\mu\nu})}{\partial(\partial_\alpha A_\beta)} = 4\,F^{\alpha\beta}.
+\end{equation}
+
+Therefore
+
+\begin{equation}
+\frac{\partial\mathcal{L}}{\partial(\partial_\alpha A_\beta)} = -\frac{1}{16\pi}\cdot 4\,F^{\alpha\beta} = -\frac{1}{4\pi}\,F^{\alpha\beta}.
+\end{equation}
+
+\subsection*{Step 2: Compute $\partial\mathcal{L}/\partial A_\beta$}
+
+Only the interaction term contributes:
+
+\begin{equation}
+\frac{\partial\mathcal{L}}{\partial A_\beta} = -\frac{1}{c}\,J^\beta.
+\end{equation}
+
+\subsection*{Step 3: Assemble the Euler--Lagrange equation}
+
+\begin{equation}
+\partial_\alpha\!\left(-\frac{1}{4\pi}F^{\alpha\beta}\right) + \frac{1}{c}J^\beta = 0,
+\end{equation}
+
+which gives
+
+\begin{equation}
+\boxed{\partial_\alpha F^{\alpha\beta} = \frac{4\pi}{c}\,J^\beta.}
+\end{equation}
+
+This is precisely the inhomogeneous Maxwell equation derived in Chapter~4. The homogeneous equation $\partial_\mu\widetilde{F}^{\mu\nu} = 0$ is an identity (the Bianchi identity) and does not require a separate variational derivation.
+
+\section{Gauge Invariance}
+
+The Lagrangian density depends on $A_\mu$ only through $F_{\mu\nu}$ (in the free-field part) and through $J^\mu A_\mu$ (in the interaction part). Under a \textbf{gauge transformation}
+
+\begin{equation}
+A_\mu \to A_\mu + \partial_\mu\chi
+\end{equation}
+
+for an arbitrary scalar function $\chi(x)$, the field tensor is invariant: $F_{\mu\nu} \to F_{\mu\nu}$. The interaction term shifts by
+
+\begin{equation}
+-\frac{1}{c}J^\mu\partial_\mu\chi = -\frac{1}{c}\partial_\mu(J^\mu\chi) + \frac{1}{c}\chi\,\partial_\mu J^\mu.
+\end{equation}
+
+The first term is a total divergence (which does not affect the equations of motion), and the second vanishes by charge conservation $\partial_\mu J^\mu = 0$. Hence the action is gauge-invariant, and the physics is independent of the choice of gauge --- a deep symmetry of electromagnetism.
+
+\section{Summary}
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{ll}
+\toprule
+\textbf{Concept} & \textbf{Expression} \\
+\midrule
+Lagrangian density & $\mathcal{L} = -\frac{1}{16\pi}F_{\mu\nu}F^{\mu\nu} - \frac{1}{c}J^\mu A_\mu$ \\
+Action & $S = \int\mathcal{L}\,d^4x$ \\
+Field Euler--Lagrange equation & $\partial_\mu\frac{\partial\mathcal{L}}{\partial(\partial_\mu A_\nu)} - \frac{\partial\mathcal{L}}{\partial A_\nu} = 0$ \\
+Result & $\partial_\mu F^{\mu\nu} = \frac{4\pi}{c}J^\nu$ \\
+Gauge invariance & $A_\mu \to A_\mu + \partial_\mu\chi$ leaves $S$ invariant \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The transition from a particle Lagrangian to a field Lagrangian density is the gateway to field theory. The electromagnetic Lagrangian density is uniquely determined (up to normalisation) by requiring Lorentz invariance and gauge invariance, and it yields Maxwell's inhomogeneous equations through the variational principle. In the next chapter we will use this Lagrangian density, together with Noether's theorem, to derive the electromagnetic energy-momentum tensor.
