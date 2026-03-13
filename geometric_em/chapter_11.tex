@@ -1,0 +1,179 @@
+\chapter{Charge Quantisation and the First Chern Number}
+
+This chapter delivers one of the most striking results of the geometric approach: the quantisation of electric charge as a \emph{topological theorem}. We classify principal $U(1)$-bundles over $S^2$ by an integer --- the first Chern number --- and show that this integer is the magnetic charge in appropriate units. The Dirac quantisation condition drops out as a mathematical necessity, not a semiclassical approximation.
+
+\section{Bundles over $S^2$: The Clutching Construction}
+
+\subsection{Covering $S^2$ with two patches}
+
+Cover the 2-sphere with two open sets:
+\begin{align}
+U_N &= S^2 \setminus \{\text{south pole}\} \cong \R^2, \\
+U_S &= S^2 \setminus \{\text{north pole}\} \cong \R^2.
+\end{align}
+
+Both patches are contractible, so any principal $U(1)$-bundle restricted to $U_N$ or $U_S$ is trivial. The global structure of the bundle is therefore entirely determined by the \textbf{transition function} on the overlap:
+\begin{equation}
+g_{NS}: U_N \cap U_S \to U(1).
+\end{equation}
+
+The overlap $U_N \cap U_S$ is homotopy equivalent to the equator $S^1$. So the transition function is (up to homotopy) a map $g: S^1 \to U(1) \cong S^1$.
+
+\subsection{Homotopy classification}
+
+Maps $S^1 \to S^1$ are classified by their \textbf{winding number} $n \in \Z$:
+\begin{equation}
+\pi_1(U(1)) = \pi_1(S^1) \cong \Z.
+\end{equation}
+
+A representative of winding number $n$ is $g_n(\varphi) = e^{in\varphi}$, where $\varphi$ is the azimuthal angle parametrising the equator.
+
+\begin{theorem}[Classification of $U(1)$-bundles over $S^2$]
+Principal $U(1)$-bundles over $S^2$ are classified (up to isomorphism) by a single integer $n \in \Z$:
+\begin{equation}
+\{\text{Principal } U(1)\text{-bundles over } S^2\} / {\sim} \;\;\cong\;\; \pi_1(U(1)) \cong \Z.
+\end{equation}
+The integer $n$ is the \textbf{first Chern number} $c_1$ of the bundle.
+\end{theorem}
+
+\section{The First Chern Number}
+
+\begin{definition}[First Chern number]
+For a principal $U(1)$-bundle $P$ over a closed oriented 2-manifold $\Sigma$, equipped with any connection $\omega$ with curvature $F$, the \textbf{first Chern number} is
+\begin{equation}
+\boxed{c_1(P) = \frac{1}{2\pi}\int_\Sigma F \;\in\; \Z.}
+\end{equation}
+\end{definition}
+
+The remarkable fact is that the right-hand side is always an integer, regardless of the choice of connection. It depends only on the topology of the bundle.
+
+\begin{theorem}[Integrality]
+For any connection on a principal $U(1)$-bundle over a closed oriented surface $\Sigma$:
+\begin{equation}
+\frac{1}{2\pi}\int_\Sigma F \in \Z.
+\end{equation}
+\end{theorem}
+
+\begin{proof}[Sketch]
+Using the two-patch cover of $S^2$ and Stokes' theorem on each patch:
+\begin{align}
+\int_{S^2} F &= \int_{U_N} \dd A_N + \int_{U_S} \dd A_S = \oint_{\text{equator}} (A_N - A_S).
+\end{align}
+On the equator, the gauge potentials are related by $A_N - A_S = g_{NS}^{-1}\,\dd g_{NS} = -in\,\dd\varphi$ (for the transition function $g_{NS} = e^{in\varphi}$). Therefore:
+\begin{equation}
+\int_{S^2} F = \oint_0^{2\pi} (-in)\,d\varphi = -2\pi i n.
+\end{equation}
+Identifying $\Lie{u}(1) \cong i\R$ and absorbing the factor of $i$ into the normalisation convention:
+\begin{equation}
+\frac{1}{2\pi}\int_{S^2} F = n \in \Z.
+\end{equation}
+\end{proof}
+
+\section{The Dirac Monopole}
+
+\subsection{Setup}
+
+Consider a static magnetic charge $q_m$ sitting at the origin of $\R^3$. The magnetic field is:
+\begin{equation}
+\vec{B} = \frac{q_m}{r^2}\,\hat{r},
+\end{equation}
+and the corresponding field strength 2-form on $\R^3 \setminus \{0\}$ is:
+\begin{equation}
+F = \frac{q_m}{2}\sin\theta\,\dd\theta \wedge \dd\varphi.
+\end{equation}
+
+\subsection{The flux integral}
+
+Integrating over any 2-sphere $S^2_r$ of radius $r$ enclosing the origin:
+\begin{equation}
+\int_{S^2_r} F = \frac{q_m}{2}\int_0^\pi\int_0^{2\pi}\sin\theta\,d\theta\,d\varphi = 2\pi q_m.
+\end{equation}
+
+\subsection{The quantisation condition}
+
+The first Chern number must be an integer:
+\begin{equation}
+c_1 = \frac{1}{2\pi}\int_{S^2} F = q_m \in \Z.
+\end{equation}
+
+In physical units (restoring $e$, $\hbar$, $c$), the Dirac quantisation condition is:
+\begin{equation}
+\boxed{\frac{e\,q_m}{\hbar c} = \frac{n}{2}, \qquad n \in \Z,}
+\end{equation}
+where $e$ is the electric charge and $q_m$ is the magnetic charge. The existence of even a single magnetic monopole would require all electric charges to be quantised in units of $\hbar c / (2q_m)$.
+
+\subsection{The Dirac string is a gauge artifact}
+
+In the bundle picture, the ``Dirac string'' --- the line singularity in the vector potential that troubled Dirac's original construction --- is simply the locus where a particular local section is undefined. It is an artifact of the choice of gauge (local trivialisation), not a physical singularity. Different sections have their string in different places; the transition function on the overlap patches them together consistently. The bundle itself is smooth and singularity-free.
+
+\section{The Wu--Yang Construction}
+
+Wu and Yang (1975) gave the explicit two-patch construction of the monopole bundle:
+
+\begin{itemize}
+\item On $U_N = S^2 \setminus \{\text{south pole}\}$:
+\begin{equation}
+A_N = \frac{n}{2}(1 - \cos\theta)\,\dd\varphi.
+\end{equation}
+\item On $U_S = S^2 \setminus \{\text{north pole}\}$:
+\begin{equation}
+A_S = -\frac{n}{2}(1 + \cos\theta)\,\dd\varphi.
+\end{equation}
+\end{itemize}
+
+On the equatorial overlap ($\theta = \pi/2$):
+\begin{equation}
+A_N - A_S = n\,\dd\varphi = \dd(n\varphi).
+\end{equation}
+
+This is a gauge transformation with $\chi = n\varphi$, and $g_{NS} = e^{in\varphi}$ has winding number $n$. Both $A_N$ and $A_S$ are smooth on their respective patches; neither has a Dirac string. The field strength $F = \dd A_N = \dd A_S = \frac{n}{2}\sin\theta\,\dd\theta\wedge\dd\varphi$ is globally smooth.
+
+\section{Physical Consequences}
+
+\subsection{Charge quantisation}
+
+If a magnetic monopole with charge $q_m$ exists anywhere in the universe, then the first Chern number $c_1 = eq_m/(\hbar c) \cdot 2$ must be an integer. This forces $e$ to be quantised:
+\begin{equation}
+e = \frac{n\hbar c}{2q_m}, \qquad n \in \Z.
+\end{equation}
+
+This is the most elegant known explanation for why electric charge appears to be quantised in nature. It is a purely topological argument.
+
+\subsection{No global potential for monopoles}
+
+For $n \neq 0$, the bundle is non-trivial: no global section exists, and no globally defined gauge potential $A$ on $S^2$ can produce the monopole field. This is the geometric content of the statement that $\vec{\nabla}\cdot\vec{B} \neq 0$ pointwise at the monopole --- the failure is a topological obstruction, not a local singularity in the equations.
+
+\section{Generalisation: Chern--Weil Theory}
+
+The first Chern number is the simplest instance of a general construction in Chern--Weil theory:
+
+\begin{theorem}[Chern--Weil]
+Let $P \to M$ be a principal $G$-bundle with connection $\omega$ and curvature $\Omega$. For any $\Ad$-invariant polynomial $p$ of degree $k$ on $\Lie{g}$, the $2k$-form $p(\Omega) \in \Omega^{2k}(M)$ is:
+\begin{enumerate}
+\item closed: $\dd\,p(\Omega) = 0$,
+\item independent of the connection: the de Rham cohomology class $[p(\Omega)] \in H^{2k}_{\text{dR}}(M)$ depends only on the bundle $P$, not on $\omega$.
+\end{enumerate}
+The resulting cohomology classes are the \textbf{characteristic classes} of the bundle.
+\end{theorem}
+
+For $G = U(1)$ and $p = \frac{1}{2\pi}\mathrm{id}$, the Chern--Weil form is $\frac{1}{2\pi}F$, and its integral over a closed surface is the first Chern number. The Chern--Weil theorem guarantees that this integral is a topological invariant --- it does not change under continuous deformations of the connection.
+
+\section{Summary}
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{lll}
+\toprule
+\textbf{Concept} & \textbf{Mathematics} & \textbf{Physics} \\
+\midrule
+Classification of $U(1)$-bundles/$S^2$ & $\pi_1(U(1)) \cong \Z$ & Magnetic charge is quantised \\
+First Chern number & $c_1 = \frac{1}{2\pi}\int F \in \Z$ & Integrality of flux \\
+Dirac condition & $eq_m/(\hbar c) \in \tfrac{1}{2}\Z$ & Electric charge quantisation \\
+Wu--Yang potentials & Two-patch construction & Dirac string is a gauge artifact \\
+Chern--Weil theory & Characteristic classes from curvature & Topological invariants of gauge fields \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The quantisation of charge is not a dynamical consequence of Maxwell's equations but a topological consequence of the classification of principal $U(1)$-bundles. De Rham cohomology enters physics decisively: the integer-valuedness of $\frac{1}{2\pi}\int F$ is the bridge between the continuous geometry of connections and the discrete arithmetic of charge.

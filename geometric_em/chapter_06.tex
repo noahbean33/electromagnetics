@@ -1,0 +1,159 @@
+\chapter{Principal Bundles}
+
+We now make a fundamental shift in perspective. Until this point, the gauge potential $A$ has been a 1-form on spacetime, and gauge invariance ($A \to A + \dd\chi$) has appeared as a mysterious redundancy. In this chapter we introduce the mathematical structure that \emph{explains} gauge invariance: the principal fiber bundle. The potential $A$ will be revealed not as a 1-form on spacetime but as a local representative of a \emph{connection} on a bundle, and gauge transformations will be derived as changes of local trivialisation.
+
+\section{Motivation: Why Bundles?}
+
+Consider the following puzzle from Chapter~5:
+\begin{itemize}
+\item The field strength $F = \dd A$ is gauge-invariant and globally defined.
+\item The potential $A$ is gauge-dependent. On spacetimes with non-trivial topology, $A$ may not even be globally definable.
+\item Yet $A$ contains physical information beyond $F$ (the Aharonov--Bohm effect).
+\end{itemize}
+
+These facts are naturally explained if $A$ is not ``really'' a 1-form on spacetime but rather a local pullback of an object that lives on a larger space --- the total space of a principal bundle. The global, gauge-invariant information resides in the bundle itself; the gauge-dependent potential arises from the (necessarily local) choice of how to represent the bundle data on spacetime.
+
+\section{Fiber Bundles: The General Idea}
+
+\begin{definition}[Fiber bundle]
+A \textbf{fiber bundle} is a quadruple $(E, \pi, M, F)$, where:
+\begin{itemize}
+\item $E$ is a smooth manifold called the \textbf{total space},
+\item $M$ is a smooth manifold called the \textbf{base space},
+\item $F$ is a smooth manifold called the \textbf{typical fiber},
+\item $\pi: E \to M$ is a smooth surjection called the \textbf{projection},
+\end{itemize}
+such that $E$ is \textbf{locally trivial}: for every $p \in M$ there exists an open neighbourhood $U \ni p$ and a diffeomorphism
+\begin{equation}
+\Phi: \pi^{-1}(U) \xrightarrow{\;\sim\;} U \times F
+\end{equation}
+satisfying $\mathrm{pr}_1 \circ \Phi = \pi$ (the first component of $\Phi$ is the projection $\pi$).
+\end{definition}
+
+The fiber over a point $p$ is $\pi^{-1}(p) \cong F$. Locally, $E$ looks like the product $M \times F$, but globally it may be ``twisted.''
+
+\begin{example}[Trivial bundle]
+$E = M \times F$ with $\pi = \mathrm{pr}_1$. This is untwisted.
+\end{example}
+
+\begin{example}[M\"obius band]
+The M\"obius band is a fiber bundle over $S^1$ with fiber $(-1, 1) \subset \R$. It is locally trivial (locally looks like $\text{interval} \times \text{interval}$) but globally non-orientable and non-trivial.
+\end{example}
+
+\section{Transition Functions}
+
+On overlapping trivialisations $U_\alpha \cap U_\beta \neq \varnothing$, the two local trivialisations are related by
+\begin{equation}
+\Phi_\beta \circ \Phi_\alpha^{-1}: (U_\alpha \cap U_\beta) \times F \to (U_\alpha \cap U_\beta) \times F, \qquad (p, f) \mapsto (p, t_{\alpha\beta}(p)(f)),
+\end{equation}
+where $t_{\alpha\beta}: U_\alpha \cap U_\beta \to \mathrm{Diff}(F)$ are the \textbf{transition functions}. They satisfy the \textbf{cocycle conditions}:
+\begin{align}
+t_{\alpha\alpha}(p) &= \id_F, \\
+t_{\alpha\beta}(p) \circ t_{\beta\gamma}(p) &= t_{\alpha\gamma}(p) \qquad \text{on triple overlaps}.
+\end{align}
+
+The transition functions encode the global twist of the bundle. A bundle is trivial if and only if all transition functions can be chosen to be the identity.
+
+\section{Principal Bundles}
+
+\begin{definition}[Lie group]
+A \textbf{Lie group} $G$ is a smooth manifold that is also a group, with smooth multiplication $G \times G \to G$ and smooth inversion $G \to G$.
+\end{definition}
+
+\begin{example}
+$U(1) = \{z \in \C : |z| = 1\}$ with multiplication. As a manifold, $U(1) \cong S^1$. Its Lie algebra is $\Lie{u}(1) \cong i\R \cong \R$.
+\end{example}
+
+\begin{definition}[Principal $G$-bundle]
+A \textbf{principal $G$-bundle} is a fiber bundle $\pi: P \to M$ with typical fiber $G$, equipped with a smooth \textbf{right action} $R: P \times G \to P$, written $R_g(u) = u \cdot g$, such that:
+\begin{enumerate}
+\item The action is \textbf{free}: $u \cdot g = u$ implies $g = e$ (the identity).
+\item The action is \textbf{fiber-preserving}: $\pi(u \cdot g) = \pi(u)$ for all $g \in G$.
+\item The base space is the orbit space: $M \cong P/G$.
+\item $P$ is locally trivial: there exist local trivialisations $\Phi_\alpha: \pi^{-1}(U_\alpha) \to U_\alpha \times G$ that are $G$-equivariant:
+\begin{equation}
+\Phi_\alpha(u \cdot g) = (\pi(u),\, \phi_\alpha(u) \cdot g),
+\end{equation}
+where $\Phi_\alpha(u) = (\pi(u), \phi_\alpha(u))$.
+\end{enumerate}
+\end{definition}
+
+\begin{remark}[Intuition]
+Think of a principal $G$-bundle as a copy of $G$ ``sitting over'' each point of $M$. The group element labels the ``internal'' (gauge) degree of freedom. For electromagnetism, $G = U(1)$, and the internal degree of freedom is the phase of the electromagnetic potential.
+\end{remark}
+
+\subsection{Transition functions for principal bundles}
+
+On overlaps $U_\alpha \cap U_\beta$, the transition functions take values in the structure group:
+\begin{equation}
+g_{\alpha\beta}: U_\alpha \cap U_\beta \to G,
+\end{equation}
+with $g_{\alpha\beta}(p) = \phi_\alpha(u) \cdot \phi_\beta(u)^{-1}$ for any $u \in \pi^{-1}(p)$. The cocycle conditions become:
+\begin{align}
+g_{\alpha\alpha} &= e, \\
+g_{\alpha\beta} \cdot g_{\beta\gamma} &= g_{\alpha\gamma}.
+\end{align}
+
+\begin{theorem}[Reconstruction]
+A principal $G$-bundle over $M$ is completely determined (up to isomorphism) by an open cover $\{U_\alpha\}$ and a set of transition functions $\{g_{\alpha\beta}\}$ satisfying the cocycle conditions.
+\end{theorem}
+
+\section{Sections of Principal Bundles}
+
+\begin{definition}[Section]
+A \textbf{(local) section} of $\pi: P \to M$ over $U \subseteq M$ is a smooth map $\sigma: U \to P$ with $\pi \circ \sigma = \id_U$.
+\end{definition}
+
+A local section picks out one element of the fiber over each point of $U$ --- it is a ``gauge choice.'' Given a local trivialisation $\Phi_\alpha$, there is a canonical section $\sigma_\alpha: U_\alpha \to P$ defined by $\sigma_\alpha(p) = \Phi_\alpha^{-1}(p, e)$.
+
+\begin{proposition}
+A principal $G$-bundle is \textbf{trivial} (isomorphic to $M \times G$) if and only if it admits a \textbf{global section} $\sigma: M \to P$.
+\end{proposition}
+
+For electromagnetism: if the $U(1)$-bundle is trivial, a global gauge potential $A$ exists. If it is non-trivial (as in the presence of a magnetic monopole), no global section exists, and $A$ must be defined in patches with gauge-dependent transition rules.
+
+\section{The Principal $U(1)$-Bundle of Electromagnetism}
+
+For classical electrodynamics, the relevant bundle is:
+\begin{itemize}
+\item \textbf{Structure group}: $G = U(1) \cong S^1$,
+\item \textbf{Base space}: $M = $ spacetime,
+\item \textbf{Total space}: $P = $ a principal $U(1)$-bundle over $M$,
+\item \textbf{Transition functions}: $g_{\alpha\beta}: U_\alpha \cap U_\beta \to U(1)$.
+\end{itemize}
+
+The simplest case is $M = \R^4$ (Minkowski spacetime). Since $\R^4$ is contractible, every principal bundle over it is trivial: $P \cong \R^4 \times U(1)$. A global section exists, and the gauge potential $A$ is a globally defined 1-form. There are no topological subtleties.
+
+The non-trivial case arises when spacetime has ``holes'' --- for example, $M = \R^3 \setminus \{0\}$ (a point charge) or $M = S^2$ (the Dirac monopole construction). In these cases, the bundle may be non-trivial, and the physics of charge quantisation emerges.
+
+\section{Classification of $U(1)$-Bundles}
+
+\begin{theorem}
+Principal $U(1)$-bundles over a manifold $M$ are classified (up to isomorphism) by the first Chern class $c_1 \in H^2(M, \Z)$. In particular:
+\begin{itemize}
+\item Over $S^2$: $U(1)$-bundles are classified by $\Z$. The integer is the magnetic charge (in appropriate units).
+\item Over a contractible space (like $\R^n$): there is only the trivial bundle.
+\end{itemize}
+\end{theorem}
+
+We will prove and exploit this classification in Chapter~11 when we derive the Dirac quantisation condition.
+
+\section{Summary}
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{lll}
+\toprule
+\textbf{Concept} & \textbf{Definition} & \textbf{Physical meaning} \\
+\midrule
+Principal bundle $P$ & Total space with $G$-action & Gauge structure of EM \\
+Fiber $\pi^{-1}(p) \cong G$ & Copy of $G$ over each point & Internal (phase) degree of freedom \\
+Section $\sigma$ & Smooth map $M \to P$, $\pi\circ\sigma = \id$ & Gauge choice \\
+Transition functions & $g_{\alpha\beta}: U_\alpha\cap U_\beta \to G$ & Gauge transformations on overlaps \\
+Triviality & Global section exists & Global gauge potential exists \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+We have the space (the principal $U(1)$-bundle). In the next chapter, we furnish it with geometry by introducing a \emph{connection} --- the object whose local representative is the gauge potential $A$.

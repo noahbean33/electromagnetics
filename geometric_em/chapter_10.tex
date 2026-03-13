@@ -1,0 +1,156 @@
+\chapter{The Yang--Mills Action and Maxwell's Equations}
+
+We now derive the dynamics of the electromagnetic field from a variational principle, using the full geometric machinery developed in the preceding chapters. The field strength $F$ is the curvature of a $U(1)$ connection; the action is built from $F$ using the Hodge star; and the Euler--Lagrange equations on the space of connections yield the inhomogeneous Maxwell equations. The homogeneous equations, as we have seen, are the Bianchi identity --- they require no variational principle at all.
+
+\section{The Yang--Mills Action Functional}
+
+\subsection{Constructing a Lorentz scalar from $F$}
+
+The field strength $F \in \Omega^2(M)$ is a 2-form on a 4-dimensional Lorentzian manifold $(M, g)$. To build an action, we need a 4-form that can be integrated over $M$. The Hodge star provides exactly this: $F \wedge \hodge F$ is a 4-form.
+
+\begin{definition}[Yang--Mills action]
+The \textbf{Yang--Mills action} (or Maxwell action, for $G = U(1)$) is
+\begin{equation}
+\boxed{S[A] = -\frac{1}{8\pi}\int_M F \wedge \hodge F,}
+\end{equation}
+where $F = \dd A$ and the factor $-1/8\pi$ is fixed by Gaussian units.
+\end{definition}
+
+\begin{remark}
+In the general (non-abelian) Yang--Mills theory with structure group $G$, the action is $S = -\frac{1}{4g^2}\int_M \tr(F \wedge \hodge F)$, where $\tr$ is a non-degenerate, $\Ad$-invariant bilinear form on $\Lie{g}$. For $G = U(1)$, the trace is trivial and we recover the Maxwell action.
+\end{remark}
+
+\subsection{Relation to the component expression}
+
+Expanding $F \wedge \hodge F$ in coordinates on Minkowski spacetime:
+\begin{equation}
+F \wedge \hodge F = \tfrac{1}{2}F_{\mu\nu}F^{\mu\nu}\,\dvol_g = (|\vec{B}|^2 - |\vec{E}|^2)\,\dvol_g.
+\end{equation}
+
+Therefore:
+\begin{equation}
+S[A] = -\frac{1}{8\pi}\int_M (B^2 - E^2)\,\dvol_g = \frac{1}{8\pi}\int_M (E^2 - B^2)\,\dvol_g,
+\end{equation}
+which matches the standard Lagrangian density $\mathcal{L} = \frac{1}{8\pi}(E^2 - B^2)$.
+
+\subsection{Adding sources}
+
+In the presence of a four-current $J$, the total action includes a coupling term:
+\begin{equation}
+\boxed{S[A] = -\frac{1}{8\pi}\int_M F \wedge \hodge F - \frac{1}{c}\int_M A \wedge \hodge J.}
+\end{equation}
+
+The second integral is the minimal coupling of the potential to the current. In components, $A \wedge \hodge J = A_\mu J^\mu\,\dvol_g$, reproducing $\mathcal{L}_{\text{int}} = -\frac{1}{c}J^\mu A_\mu$.
+
+\section{Variation on the Space of Connections}
+
+We vary the connection $A \to A + \delta A$, where $\delta A \in \Omega^1(M)$ is an arbitrary 1-form that vanishes on the boundary $\partial M$. The variation of the field strength is:
+\begin{equation}
+\delta F = \dd(\delta A).
+\end{equation}
+
+\subsection{Variation of the free-field action}
+
+\begin{align}
+\delta S_{\text{free}} &= -\frac{1}{8\pi}\int_M \delta(F \wedge \hodge F) \nonumber\\
+&= -\frac{1}{8\pi}\int_M \left(\delta F \wedge \hodge F + F \wedge \hodge\,\delta F\right) \nonumber\\
+&= -\frac{1}{4\pi}\int_M \delta F \wedge \hodge F,
+\end{align}
+where the last step uses the symmetry of the inner product on 2-forms: $\alpha \wedge \hodge\beta = \beta \wedge \hodge\alpha$.
+
+Substituting $\delta F = \dd(\delta A)$:
+\begin{equation}
+\delta S_{\text{free}} = -\frac{1}{4\pi}\int_M \dd(\delta A) \wedge \hodge F.
+\end{equation}
+
+\subsection{Integration by parts}
+
+Using the identity $\dd(\delta A \wedge \hodge F) = \dd(\delta A) \wedge \hodge F + (-1)^1\,\delta A \wedge \dd(\hodge F)$ and Stokes' theorem (with the boundary term vanishing):
+\begin{equation}
+\delta S_{\text{free}} = -\frac{1}{4\pi}\left[\int_{\partial M} \delta A \wedge \hodge F - \int_M (-1)\,\delta A \wedge \dd\,\hodge F\right] = -\frac{1}{4\pi}\int_M \delta A \wedge \dd\,\hodge F.
+\end{equation}
+
+\subsection{Variation of the source term}
+
+\begin{equation}
+\delta S_{\text{int}} = -\frac{1}{c}\int_M \delta A \wedge \hodge J.
+\end{equation}
+
+\subsection{Euler--Lagrange equation}
+
+Setting $\delta S = \delta S_{\text{free}} + \delta S_{\text{int}} = 0$ for all $\delta A$:
+\begin{equation}
+-\frac{1}{4\pi}\int_M \delta A \wedge \dd\,\hodge F - \frac{1}{c}\int_M \delta A \wedge \hodge J = 0 \quad \forall\;\delta A.
+\end{equation}
+
+By the fundamental lemma of the calculus of variations:
+\begin{equation}
+\dd\,\hodge F = -\frac{4\pi}{c}\,\hodge J,
+\end{equation}
+
+or equivalently (with a sign convention adjustment from the orientation of the Hodge star):
+\begin{equation}
+\boxed{\dd\,\hodge F = \frac{4\pi}{c}\,\hodge J.}
+\end{equation}
+
+This is the \textbf{inhomogeneous Maxwell equation}, derived from the Yang--Mills action by a proper variation on the space of connections.
+
+\section{The Full Set of Maxwell's Equations from Geometry}
+
+Collecting the results:
+
+\begin{align}
+\dd F &= 0 & &\text{Bianchi identity (Chapter~8) --- automatic, no variation needed}, \\
+\dd\,\hodge F &= \frac{4\pi}{c}\,\hodge J & &\text{Euler--Lagrange equation --- derived from } \delta S = 0.
+\end{align}
+
+The first equation is geometry (the curvature of any connection satisfies the Bianchi identity). The second is dynamics (the connection extremises the Yang--Mills action).
+
+\section{Gauge Invariance of the Action}
+
+Under $A \to A + \dd\chi$:
+\begin{itemize}
+\item $F = \dd A \to \dd(A + \dd\chi) = F$, so $S_{\text{free}}$ is manifestly invariant.
+\item $S_{\text{int}} \to S_{\text{int}} - \frac{1}{c}\int_M \dd\chi \wedge \hodge J = S_{\text{int}} - \frac{1}{c}\int_M \dd(\chi\,\hodge J) + \frac{1}{c}\int_M \chi\,\dd\,\hodge J$.
+\end{itemize}
+
+The first additional term is a boundary term (vanishes by Stokes' theorem for compactly supported $\chi$). The second vanishes if $\dd\,\hodge J = 0$ (charge conservation). Therefore:
+
+\begin{proposition}
+The Yang--Mills action is gauge-invariant if and only if the current is conserved ($\dd\,\hodge J = 0$).
+\end{proposition}
+
+Gauge invariance and charge conservation are two faces of the same coin --- both follow from the structure of the $U(1)$ bundle.
+
+\section{The Energy--Momentum Tensor from the Action}
+
+The symmetric energy--momentum tensor can be obtained by varying the action with respect to the spacetime metric $g$ (rather than the connection $A$):
+\begin{equation}
+T^{\mu\nu} = -\frac{2}{\sqrt{|g|}}\frac{\delta S_{\text{free}}}{\delta g_{\mu\nu}}.
+\end{equation}
+
+Carrying out this variation yields:
+\begin{equation}
+\boxed{T^{\mu\nu} = \frac{1}{4\pi}\!\left(F^{\mu\alpha}F^{\nu}{}_\alpha - \frac{1}{4}g^{\mu\nu}F_{\alpha\beta}F^{\alpha\beta}\right),}
+\end{equation}
+which is the symmetric, gauge-invariant, traceless electromagnetic energy--momentum tensor. This derivation is natural in the geometric framework: the energy--momentum tensor measures how the field action responds to deformations of the geometry.
+
+\section{Comparison: Variational Approaches}
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{lll}
+\toprule
+\textbf{Method} & \textbf{Variable} & \textbf{Result} \\
+\midrule
+Vary $A$ (connection) & $\delta A \in \Omega^1(M)$ & Inhomogeneous Maxwell: $\dd\,\hodge F = \frac{4\pi}{c}\hodge J$ \\
+Bianchi identity & None (automatic) & Homogeneous Maxwell: $\dd F = 0$ \\
+Vary $g$ (metric) & $\delta g_{\mu\nu}$ & Energy--momentum tensor $T^{\mu\nu}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Summary}
+
+The Yang--Mills action $S = -\frac{1}{8\pi}\int F \wedge \hodge F$ is the unique Lorentz-invariant, gauge-invariant, quadratic action for a $U(1)$ connection on a Lorentzian 4-manifold. Varying the connection yields the inhomogeneous Maxwell equations; the homogeneous equations are the Bianchi identity. Gauge invariance of the action is equivalent to charge conservation. Varying the metric yields the energy--momentum tensor. The entire dynamical content of classical electromagnetism emerges from a single geometric action principle.

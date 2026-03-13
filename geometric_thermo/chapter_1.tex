@@ -1,0 +1,75 @@
+\chapter{Introduction: The Geometric Vision of Thermal Physics}
+
+The traditional exposition of thermodynamics often relies on a historical sequence of empirical observations, beginning with the efficiency of steam engines and progressing through a collection of laws labeled by integers. While pedagogically standard, this approach frequently leaves the student of theoretical physics with a sense of ``conceptual clutter,'' where partial derivatives are manipulated without a clear underlying manifold structure.
+
+The pedagogical philosophy of Frederic Schuller posits that physics is essentially the study of the structure of manifolds. This shift in perspective allows for a reformulation of thermal physics not as a set of messy empirical rules, but as a rigorous application of contact geometry, measure theory on phase space, and information geometry. This text examines the architecture of such a curriculum, which treats thermodynamic states as submanifolds and statistical ensembles as Radon--Nikodym derivatives.
+
+\section{Why Geometry?}
+
+The power of the geometric approach lies in its ability to separate the \emph{invariant content} of physical laws from the \emph{coordinate artifacts} introduced by particular parameterisations. In classical mechanics, this insight led from Newton's equations to the symplectic geometry of Hamiltonian mechanics. In general relativity, it led from gravitational ``forces'' to the curvature of spacetime. Thermodynamics, despite being one of the oldest branches of physics, has been the last to receive this treatment.
+
+The perceived complexity of thermodynamics is often an artifact of poor coordinate choices. By shifting the focus to the invariant structure of the manifold, several deeper insights emerge:
+
+\begin{itemize}
+\item The First Law of Thermodynamics is not an energy conservation equation imposed externally, but a \emph{contact constraint} on a $(2n+1)$-dimensional manifold.
+\item Equilibrium states are not merely ``states where variables are constant,'' but \emph{Legendrian submanifolds} of maximal dimension.
+\item The Second Law, in Carath\'eodory's formulation, is a statement about the \emph{non-integrability} of a differential 1-form, leading via the Frobenius theorem to the existence of entropy.
+\item Phase transitions are not ad hoc classifications, but \emph{singularities in the curvature} of a Riemannian metric on the space of probability distributions.
+\end{itemize}
+
+\section{Structure of This Course}
+
+This text is organised into three modules, each building upon the mathematical structures introduced in the preceding one.
+
+\subsection{Module I: Contact Geometry and Thermodynamics (Chapters 2--4)}
+
+The first module establishes the thermodynamic phase space as a \emph{contact manifold} --- an odd-dimensional manifold equipped with a maximally non-integrable 1-form. The First Law is encoded in this contact structure, equilibrium states are identified with Legendrian submanifolds, and the Second Law is derived from Carath\'eodory's topological principle via the Frobenius integrability theorem.
+
+\subsection{Module II: Measure Theory and Statistical Mechanics (Chapters 5--7)}
+
+The second module transitions from the macroscopic contact manifold to the microscopic symplectic phase space. The Liouville measure provides the natural volume form, the ergodic hypothesis is recast as a topological property of Hamiltonian flow, and statistical ensembles are defined rigorously as Radon--Nikodym derivatives with respect to the Liouville measure.
+
+\subsection{Module III: Information Geometry and Phase Transitions (Chapters 8--9)}
+
+The final module introduces the Fisher information metric on the space of probability distributions, identifying thermodynamic response functions as geometric quantities. Phase transitions are reinterpreted as divergences in the scalar curvature of this statistical manifold.
+
+\subsection{Synthesis (Chapter 10)}
+
+The concluding chapter draws together the three modules, examining the holonomy of entropy, gradient flows on contact manifolds, and the role of information geometry as a probe of complexity at critical points.
+
+\section{Prerequisites}
+
+The reader is assumed to be familiar with:
+\begin{itemize}
+\item Multivariable calculus and linear algebra.
+\item Basic differential geometry: smooth manifolds, tangent and cotangent bundles, differential forms, the exterior derivative.
+\item Elementary classical mechanics in the Hamiltonian formulation.
+\item A first course in thermodynamics (the laws, equations of state, thermodynamic potentials).
+\end{itemize}
+
+No prior knowledge of contact geometry, measure theory, or information geometry is required; these subjects are developed from first principles as needed.
+
+\section{Notation and Conventions}
+
+Throughout this text we adopt the following conventions:
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{ll}
+\toprule
+\textbf{Symbol} & \textbf{Meaning} \\
+\midrule
+$\M$ & Smooth manifold (thermodynamic phase space or statistical manifold) \\
+$\ContactForm$ & Contact 1-form (Gibbs form) \\
+$\SympForm$ & Symplectic 2-form on mechanical phase space \\
+$\Lie_X$ & Lie derivative along vector field $X$ \\
+$\dd$ & Exterior derivative \\
+$\iota_X$ & Interior product (contraction) with vector field $X$ \\
+$\mu$ & Liouville measure on phase space \\
+$\FisherG$ & Components of the Fisher information metric \\
+$\beta$ & Inverse temperature $1/(k_B T)$ \\
+$\Partition$ & Partition function \\
+\bottomrule
+\end{tabular}
+\end{table}

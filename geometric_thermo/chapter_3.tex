@@ -1,0 +1,147 @@
+\chapter{Legendrian Submanifolds and the Definition of Equilibrium}
+
+The Schuller framework provides a rigorous definition of equilibrium that replaces the often vague notion of ``quasi-static processes.'' Equilibrium states are defined as $n$-dimensional \emph{Legendrian submanifolds} of the $(2n+1)$-dimensional contact manifold. This chapter develops this definition and explores its physical consequences.
+
+\section{Legendrian Submanifolds}
+
+\begin{definition}[Legendrian submanifold]
+Let $(\M^{2n+1}, \ContactForm)$ be a contact manifold. A \textbf{Legendrian submanifold} is a submanifold $L^n \hookrightarrow \M^{2n+1}$ of dimension $n$ (the maximal possible dimension) such that the pullback of the contact form to $L$ vanishes identically:
+\begin{equation}
+\boxed{\ContactForm\big|_L = 0.}
+\end{equation}
+\end{definition}
+
+\begin{remark}
+The maximal dimension of a submanifold on which $\ContactForm$ vanishes is $n$ (half of the contact dimension minus one). This is the contact-geometric analogue of Lagrangian submanifolds in symplectic geometry, where the maximal isotropic dimension is also $n$ in a $2n$-dimensional symplectic manifold.
+\end{remark}
+
+\subsection{Why dimension $n$?}
+
+The contact condition $\ContactForm \wedge (\dd\ContactForm)^n \neq 0$ implies that $(\dd\ContactForm)^n$ is a non-degenerate $2n$-form on the contact distribution $\xi = \ker\ContactForm$. On any submanifold $L$ where $\ContactForm|_L = 0$, the tangent space $T_pL$ lies inside $\xi_p$. Since $\dd\ContactForm|_\xi$ is a non-degenerate 2-form (i.e.\ symplectic on the $2n$-dimensional distribution $\xi$), the condition $\dd\ContactForm|_L = 0$ implies that $T_pL$ is an isotropic subspace with respect to this symplectic form. The maximal dimension of an isotropic subspace in a $2n$-dimensional symplectic vector space is $n$.
+
+\section{Equilibrium as a Legendrian Condition}
+
+\begin{definition}[Thermodynamic equilibrium]
+An \textbf{equilibrium state} is a point lying on a Legendrian submanifold $L^n$ of the thermodynamic phase space $(\T^{2n+1}, \ContactForm)$. The Legendrian submanifold itself represents the \textbf{equilibrium manifold} --- the set of all equilibrium states accessible to the system under a given set of constraints.
+\end{definition}
+
+The condition $\ContactForm|_L = 0$ means that at every point of $L$:
+\begin{equation}
+\dd U = T\,\dd S - P\,\dd V + \cdots
+\end{equation}
+is satisfied identically. All points on the Legendrian submanifold satisfy the \textbf{fundamental thermodynamic relation}. The equilibrium manifold is therefore the surface in the full $(2n+1)$-dimensional phase space on which all thermodynamic identities hold simultaneously.
+
+\subsection{Example: the ideal gas}
+
+For a simple compressible system, the thermodynamic phase space is 5-dimensional with coordinates $(U, S, V, T, P)$ and contact form:
+\begin{equation}
+\ContactForm = \dd U - T\,\dd S + P\,\dd V.
+\end{equation}
+
+The ideal gas is defined by the two equations of state:
+\begin{align}
+U &= nC_V T, \label{eq:ideal_U}\\
+PV &= nRT. \label{eq:ideal_PV}
+\end{align}
+
+These two equations, together with the fundamental relation $\dd U = T\,\dd S - P\,\dd V$, define a 2-dimensional surface $L^2$ in the 5-dimensional phase space (since $n = 2$ conjugate pairs, we expect a Legendrian submanifold of dimension 2). Using $(S, V)$ as coordinates on $L$, the embedding is:
+\begin{align}
+T &= T(S, V), \qquad P = P(S, V), \qquad U = U(S, V),
+\end{align}
+where the explicit forms follow from integrating the fundamental relation with the equations of state. One can verify:
+\begin{equation}
+\ContactForm\big|_L = \dd U - T\,\dd S + P\,\dd V = 0
+\end{equation}
+identically on $L$, confirming that the equilibrium states of the ideal gas form a Legendrian submanifold.
+
+\section{Quasi-Static Processes as Curves on Legendrian Submanifolds}
+
+\begin{definition}[Quasi-static process]
+A \textbf{quasi-static process} is a smooth curve $\gamma: [a, b] \to L^n$ lying entirely within the equilibrium Legendrian submanifold.
+\end{definition}
+
+Since $\gamma$ lies on $L$ and $\ContactForm|_L = 0$, the pullback of $\ContactForm$ along $\gamma$ vanishes:
+\begin{equation}
+\gamma^*\ContactForm = 0.
+\end{equation}
+
+This means that at every instant along the process, the fundamental thermodynamic relation is satisfied --- the system passes through a continuous sequence of equilibrium states. This is the geometric content of the traditional requirement that a quasi-static process proceeds ``infinitely slowly.''
+
+\subsection{Non-equilibrium states}
+
+Non-equilibrium states are points in the full $(2n+1)$-dimensional phase space $\T$ that do \emph{not} lie on the Legendrian submanifold $L$. At such points, the contact form does not vanish:
+\begin{equation}
+\ContactForm \neq 0 \qquad \text{(non-equilibrium)}.
+\end{equation}
+
+The system is ``off the equilibrium surface,'' and the standard thermodynamic identities do not hold. The intensive variables $T$ and $P$ may still be defined as coordinates on $\T$, but they no longer satisfy the equations of state that characterise the equilibrium manifold.
+
+\section{Contact Hamiltonian Dynamics and Relaxation}
+
+Recent research into contact Hamiltonian dynamics reveals a beautiful connection between the geometry of the contact manifold and the physics of relaxation to equilibrium.
+
+\begin{definition}[Contact Hamiltonian vector field]
+Given a smooth function $h: \T \to \R$ on a contact manifold $(\T, \ContactForm)$, the \textbf{contact Hamiltonian vector field} $X_h$ is the unique vector field satisfying:
+\begin{align}
+\iota_{X_h}\,\dd\ContactForm &= \dd h - (R(h) + h)\,\ContactForm, \\
+\ContactForm(X_h) &= -h,
+\end{align}
+where $R$ is the Reeb vector field defined by $\iota_R\,\dd\ContactForm = 0$ and $\ContactForm(R) = 1$.
+\end{definition}
+
+Unlike Hamiltonian mechanics on symplectic manifolds, contact Hamiltonian flows are \emph{dissipative}: they do not preserve the contact form but instead satisfy:
+\begin{equation}
+\Lie_{X_h}\ContactForm = f \cdot \ContactForm
+\end{equation}
+for some function $f$. This built-in dissipation makes contact geometry the natural arena for thermodynamic processes, which are generically irreversible.
+
+\begin{proposition}
+Under suitable conditions on the contact Hamiltonian $h$, the Legendrian submanifold $L$ acts as an \textbf{attractor} for the contact Hamiltonian flow. Points in $\T$ that begin off $L$ flow toward it under the dynamics generated by $X_h$.
+\end{proposition}
+
+This provides a geometric bridge between the \emph{dynamics} of relaxation (an irreversible, non-equilibrium process) and the \emph{statics} of equilibrium (the Legendrian submanifold). The equilibrium manifold is not merely a collection of special states; it is a dynamical attractor in the contact phase space.
+
+\section{Legendre Transformations as Contactomorphisms}
+
+In traditional thermodynamics, Legendre transformations are used to switch between thermodynamic potentials (e.g.\ from the internal energy $U(S,V)$ to the Helmholtz free energy $F(T,V)$ or the Gibbs free energy $G(T,P)$). In the geometric framework, these transformations acquire a natural interpretation.
+
+\begin{definition}[Contactomorphism]
+A diffeomorphism $\phi: \T \to \T$ is a \textbf{contactomorphism} if it preserves the contact structure:
+\begin{equation}
+\phi^*\ContactForm = f \cdot \ContactForm
+\end{equation}
+for some nowhere-vanishing smooth function $f$.
+\end{definition}
+
+\begin{proposition}
+The Legendre transformation exchanging a conjugate pair $(q^i, p_i)$ for $(p_i, -q^i)$ while replacing the potential $z$ by $z - p_i q^i$ is a contactomorphism of the thermodynamic phase space.
+\end{proposition}
+
+For example, the passage from the energy representation $(U, S, V, T, -P)$ to the Helmholtz representation $(F, T, V, -S, -P)$ is realised by:
+\begin{equation}
+F = U - TS, \qquad (S, T) \mapsto (T, -S),
+\end{equation}
+and one verifies:
+\begin{equation}
+\dd F - (-S)\,\dd T + P\,\dd V = \dd(U - TS) + S\,\dd T + P\,\dd V = \dd U - T\,\dd S + P\,\dd V = \ContactForm.
+\end{equation}
+
+The contact form is invariant under this transformation (with $f = 1$). Thus all thermodynamic potentials are different coordinate descriptions of the \emph{same} Legendrian submanifold.
+
+\section{Summary}
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.6}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Concept} & \textbf{Traditional Definition} & \textbf{Geometric Definition} \\
+\midrule
+Equilibrium & State where variables are constant & Legendrian submanifold of $(\T, \ContactForm)$ \\
+Quasi-static process & Infinitely slow process & Curve on Legendrian submanifold \\
+Non-equilibrium & ``Far from equilibrium'' & Point off the Legendrian submanifold \\
+Legendre transform & Change of independent variables & Contactomorphism of $\T$ \\
+Relaxation & Empirical approach to equilibrium & Contact Hamiltonian flow to attractor \\
+\bottomrule
+\end{tabular}
+\end{table}

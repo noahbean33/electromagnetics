@@ -1,0 +1,215 @@
+\chapter{The de Rham Complex, Exterior Derivative, and Stokes' Theorem}
+
+This chapter introduces the single most important operator in the differential-forms approach to electromagnetism: the \textbf{exterior derivative} $\dd$. It generalises gradient, curl, and divergence simultaneously, requires no metric, and satisfies the identity $\dd^2 = 0$ --- the topological fact that will encode half of Maxwell's equations. We close with the generalised Stokes' theorem, which unifies all classical integral theorems into one line.
+
+\section{The Exterior Derivative}
+
+\begin{definition}[Exterior derivative]
+The \textbf{exterior derivative} is the unique family of $\R$-linear maps
+\begin{equation}
+\dd: \Omega^k(\sm) \to \Omega^{k+1}(\sm), \qquad k = 0, 1, \ldots, n,
+\end{equation}
+satisfying:
+\begin{enumerate}
+\item \textbf{On functions} ($k=0$): $\dd f$ is the differential of $f$, i.e.\ $\dd f(v) = v(f)$.
+\item \textbf{Graded Leibniz rule}: for $\alpha \in \Omega^k(\sm)$ and $\beta \in \Omega^l(\sm)$,
+\begin{equation}
+\dd(\alpha \wedge \beta) = \dd\alpha \wedge \beta + (-1)^k\,\alpha \wedge \dd\beta.
+\end{equation}
+\item \textbf{Nilpotency}: $\dd \circ \dd = 0$, i.e.\ $\dd^2 = 0$.
+\end{enumerate}
+\end{definition}
+
+\begin{proposition}[Coordinate expression]
+In a chart $(U, x)$, for $\omega = \frac{1}{k!}\omega_{i_1\cdots i_k}\,\dd x^{i_1}\wedge\cdots\wedge\dd x^{i_k}$:
+\begin{equation}
+\dd\omega = \frac{1}{k!}\frac{\partial \omega_{i_1\cdots i_k}}{\partial x^j}\,\dd x^j \wedge \dd x^{i_1}\wedge\cdots\wedge\dd x^{i_k}.
+\end{equation}
+\end{proposition}
+
+\begin{remark}
+The exterior derivative is defined \emph{without any reference to a metric}. It depends only on the smooth structure of the manifold. This is the key to understanding why half of Maxwell's equations are metric-independent.
+\end{remark}
+
+\subsection{Recovering gradient, curl, and divergence}
+
+On $\R^3$ with Cartesian coordinates $(x^1, x^2, x^3)$:
+
+\begin{itemize}
+\item \textbf{Gradient}: For $f \in \Omega^0(\R^3)$, $\dd f = \frac{\partial f}{\partial x^i}\,\dd x^i$ corresponds to $\vec{\nabla}f$.
+\item \textbf{Curl}: For $\alpha = \alpha_i\,\dd x^i \in \Omega^1(\R^3)$, $\dd\alpha$ is a 2-form whose components correspond to $\vec{\nabla}\times\vec{\alpha}$ (after using the Hodge star to convert the 2-form back to a 1-form --- this step requires a metric).
+\item \textbf{Divergence}: For $\beta \in \Omega^2(\R^3)$, $\dd\beta$ is a 3-form corresponding to $\vec{\nabla}\cdot\vec{\beta}$ (again, after Hodge dualisation).
+\end{itemize}
+
+The identities $\vec{\nabla}\times(\vec{\nabla}f) = 0$ and $\vec{\nabla}\cdot(\vec{\nabla}\times\vec{\alpha}) = 0$ are \emph{both} consequences of $\dd^2 = 0$.
+
+\section{The Proof that $\dd^2 = 0$}
+
+\begin{theorem}
+For any smooth form $\omega \in \Omega^k(\sm)$, $\dd(\dd\omega) = 0$.
+\end{theorem}
+
+\begin{proof}
+It suffices to check on a coordinate basis element. For a 0-form (smooth function) $f$:
+\begin{equation}
+\dd f = \frac{\partial f}{\partial x^i}\,\dd x^i.
+\end{equation}
+Applying $\dd$ again:
+\begin{equation}
+\dd(\dd f) = \frac{\partial^2 f}{\partial x^j \partial x^i}\,\dd x^j \wedge \dd x^i.
+\end{equation}
+The partial derivatives $\frac{\partial^2 f}{\partial x^j \partial x^i}$ are symmetric in $i, j$ (by smoothness), while $\dd x^j \wedge \dd x^i$ is antisymmetric. A symmetric object contracted with an antisymmetric object vanishes:
+\begin{equation}
+\dd^2 f = 0.
+\end{equation}
+For a general $k$-form, the result follows from the Leibniz rule and this base case, since every $k$-form is locally a sum of terms $f\,\dd x^{i_1}\wedge\cdots\wedge\dd x^{i_k}$, and $\dd(\dd x^i) = 0$.
+\end{proof}
+
+\begin{remark}[Physical significance]
+The identity $\dd^2 = 0$ is the differential-forms statement of ``the boundary of a boundary is zero.'' In electromagnetism:
+\begin{itemize}
+\item If the field strength $F$ is written as $F = \dd A$ (locally), then $\dd F = \dd^2 A = 0$ automatically. This is the homogeneous Maxwell equation $\dd F = 0$ --- Faraday's law and the absence of magnetic monopoles --- obtained for free.
+\item The identity ensures that closed forms (those with $\dd\omega = 0$) are automatically exact locally (by the Poincar\'e lemma), but \emph{not} necessarily globally --- the failure of global exactness is measured by de Rham cohomology and is the mathematical origin of magnetic charge.
+\end{itemize}
+\end{remark}
+
+\section{The de Rham Complex}
+
+The exterior derivative organises the spaces of differential forms into a \textbf{cochain complex}:
+
+\begin{equation}
+\boxed{0 \xrightarrow{} \Omega^0(\sm) \xrightarrow{\dd} \Omega^1(\sm) \xrightarrow{\dd} \Omega^2(\sm) \xrightarrow{\dd} \cdots \xrightarrow{\dd} \Omega^n(\sm) \xrightarrow{} 0.}
+\end{equation}
+
+The property $\dd^2 = 0$ means $\im(\dd: \Omega^{k-1} \to \Omega^k) \subseteq \ker(\dd: \Omega^k \to \Omega^{k+1})$: every exact form is closed.
+
+\begin{definition}[de Rham cohomology]
+The \textbf{$k$-th de Rham cohomology group} of $\sm$ is the quotient
+\begin{equation}
+H^k_{\text{dR}}(\sm) = \frac{\ker(\dd: \Omega^k \to \Omega^{k+1})}{\im(\dd: \Omega^{k-1} \to \Omega^k)} = \frac{\{\text{closed $k$-forms}\}}{\{\text{exact $k$-forms}\}}.
+\end{equation}
+\end{definition}
+
+The cohomology group $H^k_{\text{dR}}(\sm)$ measures the ``topological obstructions'' to writing closed forms as exact forms. If $H^k_{\text{dR}}(\sm) = 0$, then every closed $k$-form is exact. If $H^k_{\text{dR}}(\sm) \neq 0$, there exist closed forms that are \emph{not} globally the exterior derivative of anything.
+
+\begin{example}
+$H^0_{\text{dR}}(\sm) \cong \R^b$, where $b$ is the number of connected components of $\sm$.
+\end{example}
+
+\begin{example}
+$H^2_{\text{dR}}(S^2) \cong \R$. This means there exist closed 2-forms on $S^2$ that are not exact. The area form on $S^2$ is the standard generator. This fact is directly responsible for the quantisation of magnetic charge.
+\end{example}
+
+\begin{theorem}[Poincar\'e lemma]
+If $U \subseteq \R^n$ is a star-shaped open set, then $H^k_{\text{dR}}(U) = 0$ for all $k \geq 1$. Equivalently, every closed form on $U$ is exact.
+\end{theorem}
+
+The Poincar\'e lemma tells us that the distinction between closed and exact forms is a \emph{global} phenomenon. Locally, $\dd F = 0$ always implies $F = \dd A$. Globally, it need not.
+
+\section{On a 4-Manifold: The Electromagnetic de Rham Complex}
+
+On a 4-dimensional spacetime manifold $\sm$, the de Rham complex is:
+
+\begin{equation}
+0 \to \Omega^0(\sm) \xrightarrow{\;\dd\;} \Omega^1(\sm) \xrightarrow{\;\dd\;} \Omega^2(\sm) \xrightarrow{\;\dd\;} \Omega^3(\sm) \xrightarrow{\;\dd\;} \Omega^4(\sm) \to 0.
+\end{equation}
+
+The electromagnetic players occupy specific slots:
+\begin{itemize}
+\item $A \in \Omega^1(\sm)$: the gauge potential 1-form,
+\item $F = \dd A \in \Omega^2(\sm)$: the field strength 2-form,
+\item $\dd F = \dd^2 A = 0$: the homogeneous Maxwell equations (automatic).
+\end{itemize}
+
+The \emph{inhomogeneous} Maxwell equations will require the Hodge star, introduced in Chapter~4. Until then, we note that $\dd F = 0$ already encodes two of the four Maxwell equations --- without any metric at all.
+
+\section{Integration of Forms}
+
+\subsection{Integration on $\R^n$}
+
+An $n$-form on an open set $U \subseteq \R^n$ is of the form $\omega = f(x)\,\dd x^1 \wedge \cdots \wedge \dd x^n$. Its integral is defined as
+\begin{equation}
+\int_U \omega = \int_U f(x)\,dx^1\cdots dx^n,
+\end{equation}
+reducing to the ordinary Lebesgue integral.
+
+\subsection{Integration on manifolds}
+
+On an oriented $n$-manifold, integration of an $n$-form is defined via a partition of unity subordinate to an atlas, pulling the form back to $\R^n$ in each chart. The key point: \emph{only $n$-forms can be integrated over an $n$-dimensional manifold}. More generally, $k$-forms are integrated over $k$-dimensional submanifolds (or $k$-chains).
+
+\begin{definition}[Integration of a $k$-form over a $k$-chain]
+Let $\sigma: \Delta^k \to \sm$ be a smooth singular $k$-simplex (a smooth map from the standard $k$-simplex to $\sm$), and $\omega \in \Omega^k(\sm)$. Then
+\begin{equation}
+\int_\sigma \omega = \int_{\Delta^k} \sigma^*\omega,
+\end{equation}
+where $\sigma^*\omega$ is the pullback of $\omega$ to $\Delta^k$.
+\end{definition}
+
+\section{The Generalised Stokes' Theorem}
+
+\begin{theorem}[Stokes' theorem]
+Let $\sm$ be an oriented smooth manifold with boundary $\partial\sm$, and let $\omega \in \Omega^{n-1}(\sm)$. Then
+\begin{equation}
+\boxed{\int_\sm \dd\omega = \int_{\partial\sm} \omega.}
+\end{equation}
+\end{theorem}
+
+This single equation subsumes all classical integral theorems:
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{llll}
+\toprule
+\textbf{Classical theorem} & $\dim\sm$ & $\omega$ & \textbf{Stokes form} \\
+\midrule
+Fund.\ theorem of calculus & 1 & 0-form $f$ & $\int_a^b \dd f = f(b) - f(a)$ \\
+Green's theorem & 2 & 1-form & $\int_\Sigma \dd\omega = \oint_{\partial\Sigma}\omega$ \\
+Classical Stokes' & 2 (surface) & 1-form & $\int_\Sigma \dd\alpha = \oint_{\partial\Sigma}\alpha$ \\
+Divergence theorem & 3 & 2-form & $\int_V \dd\beta = \oint_{\partial V}\beta$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{remark}[Integral Maxwell equations from Stokes' theorem]
+Faraday's law in integral form, $\oint_{\partial\Sigma} E = -\frac{1}{c}\frac{d}{dt}\int_\Sigma B$, is a direct application of Stokes' theorem to the 2-form $F$ and the relation $\dd F = 0$. Similarly, Gauss's law $\oint_{\partial V} \hodge E = 4\pi Q_{\text{enc}}$ follows from the inhomogeneous equation applied with Stokes' theorem. The entire edifice of integral electromagnetism is $\int_{\sm}\dd\omega = \int_{\partial\sm}\omega$.
+\end{remark}
+
+\section{Closed Forms, Exact Forms, and Physics}
+
+We collect the key terminology:
+
+\begin{definition}
+A form $\omega \in \Omega^k(\sm)$ is:
+\begin{itemize}
+\item \textbf{Closed} if $\dd\omega = 0$.
+\item \textbf{Exact} if $\omega = \dd\alpha$ for some $\alpha \in \Omega^{k-1}(\sm)$.
+\end{itemize}
+Every exact form is closed ($\dd^2 = 0$). The converse holds locally (Poincar\'e lemma) but not globally.
+\end{definition}
+
+The failure of the converse globally has profound physical consequences:
+\begin{itemize}
+\item $F$ is a closed 2-form ($\dd F = 0$). If $H^2_{\text{dR}}(\sm) = 0$, then $F = \dd A$ globally for some 1-form $A$. If $H^2_{\text{dR}}(\sm) \neq 0$, the potential $A$ may not exist globally --- this is the situation of a magnetic monopole.
+\item The integral $\oint_\gamma A$ around a closed loop $\gamma$ in a region where $F = 0$ is a topological invariant (it depends only on the homology class of $\gamma$). This is the Aharonov--Bohm phase.
+\end{itemize}
+
+\section{Summary}
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{lll}
+\toprule
+\textbf{Concept} & \textbf{Statement} & \textbf{Physical consequence} \\
+\midrule
+$\dd^2 = 0$ & Boundary of a boundary is zero & $\dd F = 0$ (homogeneous Maxwell) \\
+de Rham complex & $\Omega^0 \xrightarrow{\dd} \Omega^1 \xrightarrow{\dd} \Omega^2 \xrightarrow{\dd} \cdots$ & Organises potentials and fields \\
+Poincar\'e lemma & Closed $\Rightarrow$ exact locally & $A$ always exists locally \\
+$H^k_{\text{dR}}(\sm)$ & Global obstruction & Monopoles, Aharonov--Bohm \\
+Stokes' theorem & $\int_\sm \dd\omega = \int_{\partial\sm}\omega$ & All integral EM theorems \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The exterior derivative and the de Rham complex provide a complete, metric-free calculus of differential forms. Half of Maxwell's equations --- the topological half --- live here. To access the other half, we need a metric. That is the subject of Block II.

@@ -1,0 +1,41 @@
+The Schuller method in a nutshell: Never introduce a physical concept without first having the mathematical object that carries it. No "physicist's vector" that secretly lives in three different spaces simultaneously. Every map has a domain, codomain, and well-defined transformation behavior.
+
+Block I — Topological and Smooth Foundations (weeks 1–3)
+Start where Schuller always starts: topological spaces, then smooth manifolds. But here, oriented toward the specific structures EM will need. The key deliverable of this block is a clean definition of orientable smooth manifolds with the de Rham complex (Ω⁰ → Ω¹ → Ω² → Ω³ → Ω⁴ on a 4-manifold) and the proof that d² = 0. This is non-negotiable groundwork because half of Maxwell's equations are literally just d² = 0.
+He'd also set up integration of forms on chains here, leading to Stokes' theorem in its proper generality — not as three separate theorems (Green's, divergence, classical Stokes) that students later have to be told are "all the same theorem."
+Block II — Metric Structure and Hodge Theory (weeks 4–5)
+Now introduce what the topological block deliberately omitted: a metric. Define the Hodge star ⋆: Ωᵏ → Ωⁿ⁻ᵏ and show that it depends on both the metric and the orientation. This is where Schuller would make his characteristic pedagogical point — Maxwell's equations split into two groups, and the split is not a matter of convention but of mathematical substance:
+
+dF = 0 (purely topological, needs no metric, is the Bianchi identity)
+d⋆F = J (requires the Hodge star, hence the metric, hence is the dynamical content)
+
+He'd spend real time on this because it's the kind of structural insight most EM courses completely obscure. The fact that half of electromagnetism is metric-independent is physically profound — it tells you which aspects of EM are topological and which are geometric.
+Block III — Fiber Bundles and Connections (weeks 6–9)
+This is the heart. Schuller would build principal G-bundles from scratch, then specialize to G = U(1). The progression:
+
+Principal U(1)-bundle P over spacetime M
+Connection 1-form ω on P (the gauge potential, living where it actually lives — on the total space, not on the base)
+Local sections σ: U → P, and the pullback A = σ*ω giving "the vector potential" on a patch of spacetime
+Transition functions and how A transforms under gauge transformations — derived, not postulated
+Curvature 2-form F = dA + A∧A, which for U(1) simplifies to F = dA since the Lie algebra is abelian
+
+The crucial Schuller move: he'd show that the gauge potential A is not a globally defined 1-form on spacetime in general. It's a local representative of a connection. The field strength F, by contrast, is a globally defined 2-form. This isn't pedantry — it's exactly the distinction that makes the Aharonov-Bohm effect inevitable rather than mysterious.
+Block IV — Maxwell's Equations as Bundle Geometry (weeks 10–12)
+Now everything assembles. Maxwell's equations on a Lorentzian 4-manifold (M, g):
+
+dF = 0 — automatically satisfied because F = dA locally (and globally if the bundle is trivial); in general, this is the Bianchi identity for a U(1) connection
+d⋆F = ⋆J — the dynamical equation, derivable from the Yang-Mills Lagrangian L = −½ F∧⋆F + A∧⋆J
+
+He'd derive the Euler-Lagrange equations properly on the space of connections, not by the "vary and pray" method. Then the payoff results:
+
+Charge quantization: Classify principal U(1)-bundles over S² by π₁(U(1)) ≅ ℤ. The first Chern number is the magnetic charge. Dirac's quantization condition drops out as a topological theorem, not a semiclassical argument.
+Aharonov-Bohm: Holonomy of a flat connection around a non-contractible loop. F = 0 everywhere accessible, but A has nontrivial holonomy. Impossible to even state this clearly without the bundle language.
+Topological obstructions: When can you define a global gauge potential? Exactly when the bundle is trivial. H²(M, ℤ) classifies the obstructions. de Rham cohomology enters physics with teeth.
+
+Block V — Matter Coupling and Quantization Prologue (weeks 13–15)
+Associated vector bundles: take the principal U(1)-bundle and form associated bundles via representations of U(1). Charged matter fields are sections of these associated bundles. The covariant derivative ∇ = d + ieA on sections is the minimal coupling prescription, derived from the connection rather than guessed.
+Schuller would likely close with the classical-to-quantum bridge: the path integral over connections modulo gauge transformations, how the bundle topology gives rise to theta-sectors, and why quantization of EM is secretly about the geometry of an infinite-dimensional space of connections. He wouldn't do full QED — but he'd make sure you know exactly what mathematical structure you'd need to do it honestly.
+
+What's characteristically Schuller about this vs. a standard math-physics EM course:
+The thing that separates this from, say, Frankel's Geometry of Physics treatment or even Baez & Muniain, is the order of exposition. Schuller refuses to introduce a physical concept and then retrofit the mathematics. He builds the full fiber bundle apparatus before telling you it's electromagnetism. So when F = dA appears, it's not "let's rewrite Maxwell's equations in fancy notation" — it's "we've been studying connections on U(1)-bundles, and look, the curvature of such a connection on a Lorentzian manifold is the electromagnetic field."
+That inversion is what makes his approach so powerful for someone like you who already has the physics intuition from CEM work — it shows you exactly where each computational tool you already use (curl, divergence, potentials, gauge fixing) lives in the actual mathematical hierarchy, and more importantly, which of those things are structure and which are choices.

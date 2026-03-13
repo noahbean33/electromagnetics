@@ -1,0 +1,146 @@
+\chapter{Ensembles as Radon--Nikodym Derivatives}
+
+A central innovation in the Schuller pedagogical style is the treatment of statistical ensembles using the Radon--Nikodym theorem from measure theory. Instead of the traditional ``sum over states,'' an ensemble is defined as a probability measure on the phase space manifold that is absolutely continuous with respect to the Liouville measure. The probability density is then the Radon--Nikodym derivative.
+
+\section{Measures and Absolute Continuity}
+
+\begin{definition}[Measure]
+A \textbf{measure} $\nu$ on a measurable space $(\Gamma, \Sigma)$ is a function $\nu: \Sigma \to [0, \infty]$ satisfying:
+\begin{enumerate}
+\item $\nu(\varnothing) = 0$.
+\item $\nu\!\left(\bigcup_{k=1}^\infty A_k\right) = \sum_{k=1}^\infty \nu(A_k)$ for pairwise disjoint $A_k \in \Sigma$ (countable additivity).
+\end{enumerate}
+A \textbf{probability measure} additionally satisfies $\nu(\Gamma) = 1$.
+\end{definition}
+
+\begin{definition}[Absolute continuity]
+A measure $\nu$ is \textbf{absolutely continuous} with respect to a measure $\mu$ (written $\nu \ll \mu$) if:
+\begin{equation}
+\mu(A) = 0 \quad \Longrightarrow \quad \nu(A) = 0 \qquad \forall\, A \in \Sigma.
+\end{equation}
+In words: every $\mu$-negligible set is also $\nu$-negligible.
+\end{definition}
+
+Physically, absolute continuity of the ensemble measure $\nu$ with respect to the Liouville measure $\mu_L$ means that the ensemble assigns zero probability to any region of phase space that has zero Liouville volume. This is the mathematical expression of the principle that ``the probability of a set of microstates is determined by its phase-space volume.''
+
+\section{The Radon--Nikodym Theorem}
+
+\begin{theorem}[Radon--Nikodym]
+Let $\mu$ be a $\sigma$-finite measure and $\nu$ a $\sigma$-finite measure on $(\Gamma, \Sigma)$ with $\nu \ll \mu$. Then there exists a unique (up to $\mu$-a.e.\ equality) measurable function $\rho: \Gamma \to [0, \infty)$ such that for every measurable set $A$:
+\begin{equation}
+\boxed{\nu(A) = \int_A \rho\,\dd\mu.}
+\end{equation}
+The function $\rho$ is called the \textbf{Radon--Nikodym derivative} of $\nu$ with respect to $\mu$, and is denoted:
+\begin{equation}
+\rho = \dv{\nu}{\mu}.
+\end{equation}
+\end{theorem}
+
+This theorem converts the abstract notion of ``a probability measure on phase space'' into the concrete notion of ``a probability density function.''
+
+\section{Statistical Ensembles as Radon--Nikodym Derivatives}
+
+\begin{definition}[Statistical ensemble]
+A \textbf{statistical ensemble} is a probability measure $\nu$ on the phase space $(\Gamma, \mu_L)$ that is absolutely continuous with respect to the Liouville measure: $\nu \ll \mu_L$. The \textbf{probability density} of the ensemble is the Radon--Nikodym derivative:
+\begin{equation}
+\boxed{\rho = \dv{\nu}{\mu_L}.}
+\end{equation}
+\end{definition}
+
+The probability of finding the system in a region $A \subset \Gamma$ is:
+\begin{equation}
+\text{Prob}(A) = \nu(A) = \int_A \rho\,\dd\mu_L = \int_A \rho(q,p)\,\prod_{i=1}^N \dd q^i\,\dd p_i.
+\end{equation}
+
+\section{The Microcanonical Ensemble}
+
+The microcanonical ensemble describes an isolated system with fixed energy $E$. The probability measure is concentrated on the energy hypersurface $\Sigma_E = \{H = E\}$:
+\begin{equation}
+\rho_{\text{mc}}(q, p) = \frac{1}{\Omega(E)}\,\delta(H(q,p) - E),
+\end{equation}
+where $\Omega(E) = \int_\Gamma \delta(H - E)\,\dd\mu_L$ is the density of states. This is the uniform measure on $\Sigma_E$: all microstates with the correct energy are equally probable.
+
+In the Radon--Nikodym language, the microcanonical measure is absolutely continuous with respect to the surface measure $\mu_{\Sigma_E}$ induced on $\Sigma_E$ by the Liouville measure, and the Radon--Nikodym derivative is simply the constant $1/\Omega(E)$.
+
+\section{The Canonical Ensemble}
+
+The canonical ensemble describes a system in thermal contact with a heat bath at inverse temperature $\beta = 1/(k_B T)$. The probability density is the \textbf{Gibbs distribution}:
+\begin{equation}
+\boxed{\rho_{\text{can}}(q, p) = \dv{\nu_{\text{can}}}{\mu_L} = \frac{1}{\Partition}\,e^{-\beta H(q,p)},}
+\end{equation}
+where the \textbf{partition function} is:
+\begin{equation}
+\Partition(\beta) = \int_\Gamma e^{-\beta H(q,p)}\,\dd\mu_L.
+\end{equation}
+
+\subsection{Derivation from maximum entropy}
+
+The canonical distribution can be derived as the measure that maximises the Gibbs entropy:
+\begin{equation}
+S_G[\rho] = -k_B \int_\Gamma \rho\,\ln\rho\;\dd\mu_L,
+\end{equation}
+subject to the constraints:
+\begin{align}
+\int_\Gamma \rho\,\dd\mu_L &= 1 \qquad \text{(normalisation)}, \\
+\int_\Gamma H\,\rho\,\dd\mu_L &= \langle E \rangle \qquad \text{(fixed mean energy)}.
+\end{align}
+
+Using Lagrange multipliers $(\alpha, \beta)$ for the two constraints, the variational condition $\delta S_G = 0$ yields:
+\begin{equation}
+\rho = e^{-\alpha - \beta H},
+\end{equation}
+and enforcing normalisation gives $e^\alpha = \Partition(\beta)$, recovering the Gibbs distribution.
+
+\subsection{Thermodynamic quantities from the partition function}
+
+The partition function encodes all equilibrium thermodynamics:
+\begin{align}
+\langle E \rangle &= -\pdv{}{\beta}\ln\Partition, \\
+S &= k_B\!\left(\ln\Partition + \beta\langle E\rangle\right), \\
+F &= -k_B T \ln\Partition \qquad \text{(Helmholtz free energy)}.
+\end{align}
+
+\section{The Grand Canonical Ensemble}
+
+For a system exchanging both energy and particles with a reservoir at temperature $T$ and chemical potential $\mu_{\text{chem}}$, the grand canonical ensemble is defined on the \textbf{Fock-space bundle} --- the disjoint union of phase spaces for all particle numbers:
+\begin{equation}
+\Gamma_{\text{Fock}} = \bigsqcup_{N=0}^{\infty} \Gamma_N,
+\end{equation}
+where $\Gamma_N$ is the $2 \cdot 3N$-dimensional phase space for $N$ particles. The probability density on $\Gamma_N$ is:
+\begin{equation}
+\rho_{\text{gc}}^{(N)}(q, p) = \frac{1}{\Xi}\,\frac{e^{-\beta(H_N - \mu_{\text{chem}} N)}}{N!\,h^{3N}},
+\end{equation}
+where $\Xi$ is the grand partition function:
+\begin{equation}
+\Xi(\beta, \mu_{\text{chem}}) = \sum_{N=0}^{\infty} \frac{1}{N!\,h^{3N}}\int_{\Gamma_N} e^{-\beta(H_N - \mu_{\text{chem}} N)}\,\dd\mu_L^{(N)}.
+\end{equation}
+
+In the measure-theoretic language, $\rho_{\text{gc}}^{(N)}$ is the Radon--Nikodym derivative of the grand canonical measure restricted to the $N$-particle sector, with respect to the Liouville measure on $\Gamma_N$.
+
+\section{Beyond Exponential Distributions: Non-Conservative Systems}
+
+In the contact geometry formulation of non-conservative (dissipative) systems, the invariant measure may \emph{not} be the standard Liouville measure. When the dynamics are generated by a contact Hamiltonian rather than a symplectic Hamiltonian, the natural invariant measure can be a \emph{power-law distribution} rather than an exponential one:
+\begin{equation}
+\rho(q, p) \propto \left(1 + (\beta' - 1)\,H(q,p)\right)^{-1/(\beta'-1)},
+\end{equation}
+where $\beta'$ is a parameter characterising the departure from standard thermodynamics. In the limit $\beta' \to 1$, this recovers the Gibbs distribution $e^{-\beta H}$.
+
+This provides a geometric explanation for the prevalence of \textbf{power-law distributions} in nature: they arise naturally when the underlying phase-space dynamics is dissipative (contact) rather than conservative (symplectic).
+
+\section{Summary}
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.6}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Ensemble} & \textbf{Traditional Formulation} & \textbf{Geometric (Measure) Formulation} \\
+\midrule
+Microcanonical & $\displaystyle\frac{1}{\Omega}\,\delta(H - E)$ & Uniform measure on $\Sigma_E$ \\[6pt]
+Canonical & $\displaystyle\frac{e^{-\beta H}}{\Partition}$ & Radon--Nikodym derivative $\displaystyle\dv{\nu_{\text{can}}}{\mu_L}$ \\[6pt]
+Grand Canonical & $\displaystyle\frac{e^{-\beta(H - \mu N)}}{\Xi}$ & Measure on Fock-space manifold bundle \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The Radon--Nikodym theorem provides the rigorous mathematical framework for defining statistical ensembles as probability measures on phase space. The probability density --- the central object of statistical mechanics --- is revealed to be the Radon--Nikodym derivative of the ensemble measure with respect to the Liouville measure. This formulation generalises naturally to non-conservative systems, where power-law distributions replace exponential ones.

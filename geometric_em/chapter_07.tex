@@ -1,0 +1,134 @@
+\chapter{Connections on Principal Bundles}
+
+A principal bundle is a bare topological/smooth structure: it tells us how fibers are glued together but says nothing about how to compare elements in different fibers. A \textbf{connection} provides exactly this: a rule for ``parallel transport'' along the base manifold, or equivalently, a decomposition of each tangent space of $P$ into ``horizontal'' and ``vertical'' subspaces. The local representative of a connection is the gauge potential $A$ used by physicists.
+
+\section{Vertical and Horizontal Subspaces}
+
+\subsection{The vertical subspace}
+
+At any point $u \in P$, the fiber through $u$ is $\pi^{-1}(\pi(u)) \cong G$. Since the fiber is a submanifold of $P$, its tangent space sits inside $T_u P$.
+
+\begin{definition}[Vertical subspace]
+The \textbf{vertical subspace} at $u \in P$ is the kernel of the pushforward of the projection:
+\begin{equation}
+V_u P = \ker(\pi_*: T_u P \to T_{\pi(u)}M).
+\end{equation}
+A vector $X \in T_u P$ is \textbf{vertical} if $\pi_*(X) = 0$, i.e.\ it is tangent to the fiber.
+\end{definition}
+
+The vertical subspace is canonically defined --- it requires no additional structure.
+
+\begin{proposition}
+The vertical subspace is isomorphic to the Lie algebra $\Lie{g}$ of $G$:
+\begin{equation}
+V_u P \cong \Lie{g}.
+\end{equation}
+The isomorphism is given by the \textbf{fundamental vector field}: for $\xi \in \Lie{g}$, define $\xi^\sharp_u = \frac{d}{dt}\big|_0 u \cdot \exp(t\xi) \in V_u P$.
+\end{proposition}
+
+\subsection{The need for a horizontal subspace}
+
+We have a canonical splitting $T_u P = V_u P \oplus \ldots$, but the complement of $V_u P$ is \emph{not} canonical. There are many possible choices. A connection is precisely the choice of a complement.
+
+\begin{definition}[Connection (Ehresmann)]
+A \textbf{connection} on a principal $G$-bundle $\pi: P \to M$ is a smooth assignment of a \textbf{horizontal subspace} $H_u P \subset T_u P$ at each $u \in P$ such that:
+\begin{enumerate}
+\item \textbf{Complementarity}: $T_u P = V_u P \oplus H_u P$.
+\item \textbf{$G$-equivariance}: $(R_g)_*(H_u P) = H_{u \cdot g} P$ for all $g \in G$.
+\end{enumerate}
+\end{definition}
+
+The first condition says that every tangent vector to $P$ can be uniquely decomposed into a vertical part (along the fiber) and a horizontal part (``along the base''). The second condition says that the horizontal distribution is compatible with the group action --- the notion of ``horizontal'' does not depend on where we are in the fiber.
+
+\section{The Connection 1-Form}
+
+There is an equivalent, and often more convenient, description of a connection using a Lie-algebra-valued 1-form on $P$.
+
+\begin{definition}[Connection 1-form]
+A \textbf{connection 1-form} is a $\Lie{g}$-valued 1-form $\omega \in \Omega^1(P, \Lie{g})$ satisfying:
+\begin{enumerate}
+\item \textbf{Reproduction of generators}: $\omega(\xi^\sharp) = \xi$ for all $\xi \in \Lie{g}$.
+\item \textbf{$G$-equivariance}: $R_g^*\omega = \Ad_{g^{-1}}\omega$ for all $g \in G$.
+\end{enumerate}
+\end{definition}
+
+The horizontal subspace is recovered as $H_u P = \ker\omega_u$.
+
+\begin{remark}
+The connection 1-form $\omega$ lives on the \textbf{total space} $P$, \emph{not} on the base $M$. This is where the gauge potential ``actually lives.'' The physicist's $A$ on spacetime is a derived, local object obtained by pulling $\omega$ back through a section.
+\end{remark}
+
+\subsection{The $U(1)$ case}
+
+For $G = U(1)$, the Lie algebra is $\Lie{u}(1) \cong i\R \cong \R$ (identifying $i\R$ with $\R$ by dividing by $i$). The connection 1-form is a real-valued 1-form on $P$ satisfying the two conditions above. The equivariance condition simplifies because $U(1)$ is abelian: $\Ad_g = \id$ for all $g$, so $R_g^*\omega = \omega$.
+
+\section{Local Representatives: The Gauge Potential}
+
+\begin{definition}[Local gauge potential]
+Given a local section $\sigma_\alpha: U_\alpha \to P$ (a gauge choice), the \textbf{local gauge potential} is the pullback:
+\begin{equation}
+\boxed{A_\alpha = \sigma_\alpha^*\omega \in \Omega^1(U_\alpha, \Lie{g}).}
+\end{equation}
+\end{definition}
+
+This is the ``vector potential'' $A$ of physics, now understood as the local representative of the connection $\omega$ in the gauge determined by $\sigma_\alpha$.
+
+\begin{theorem}[Transformation under change of section]
+Let $\sigma_\alpha$ and $\sigma_\beta$ be two local sections related by $\sigma_\beta(p) = \sigma_\alpha(p) \cdot g_{\alpha\beta}(p)$ on $U_\alpha \cap U_\beta$. Then the corresponding gauge potentials are related by:
+\begin{equation}
+\boxed{A_\beta = g_{\alpha\beta}^{-1}\,A_\alpha\,g_{\alpha\beta} + g_{\alpha\beta}^{-1}\,\dd g_{\alpha\beta}.}
+\end{equation}
+For $G = U(1)$ (abelian), writing $g_{\alpha\beta}(p) = e^{i\chi(p)}$, this simplifies to:
+\begin{equation}
+A_\beta = A_\alpha + \dd\chi.
+\end{equation}
+\end{theorem}
+
+This is the \textbf{gauge transformation law}. It is not postulated --- it is \emph{derived} from the geometric fact that $A$ is a pullback of a connection form through different sections. The transformation $A \to A + \dd\chi$ is a theorem, not an axiom.
+
+\section{Parallel Transport}
+
+A connection defines parallel transport: given a curve $\gamma: [0,1] \to M$ in the base and an initial point $u_0 \in \pi^{-1}(\gamma(0))$ in the fiber above the starting point, there exists a unique \textbf{horizontal lift} $\tilde{\gamma}: [0,1] \to P$ with:
+\begin{enumerate}
+\item $\pi \circ \tilde{\gamma} = \gamma$ (the lift projects down to the original curve),
+\item $\tilde{\gamma}(0) = u_0$ (starts at the specified fiber element),
+\item $\dot{\tilde{\gamma}}(t) \in H_{\tilde{\gamma}(t)}P$ (the tangent to the lift is horizontal at every point).
+\end{enumerate}
+
+\begin{definition}[Parallel transport]
+The \textbf{parallel transport} along $\gamma$ is the map
+\begin{equation}
+\tau_\gamma: \pi^{-1}(\gamma(0)) \to \pi^{-1}(\gamma(1))
+\end{equation}
+defined by $\tau_\gamma(u_0) = \tilde{\gamma}(1)$. It is a $G$-equivariant diffeomorphism between fibers.
+\end{definition}
+
+Physically, parallel transport tells us how the phase of a charged particle changes as it moves through spacetime. The phase acquired along a path $\gamma$ is $\exp\!\left(i\frac{q}{\hbar c}\int_\gamma A\right)$ --- the exponential of the line integral of the gauge potential.
+
+\section{The Space of Connections}
+
+\begin{proposition}
+The space of all connections on a principal $G$-bundle $P$ is an \textbf{affine space} modelled on $\Omega^1(M, \Ad P)$ --- the space of $\Lie{g}$-valued 1-forms on the base (more precisely, 1-forms valued in the adjoint bundle).
+\end{proposition}
+
+This means: the difference of two connections is a tensorial 1-form, but a single connection is \emph{not} a tensor. This is why the gauge potential $A$ does not transform as a tensor under gauge transformations (it has the inhomogeneous $\dd\chi$ term), while the \emph{difference} of two gauge potentials does transform tensorially.
+
+\section{Summary}
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{lll}
+\toprule
+\textbf{Object} & \textbf{Lives on} & \textbf{Physical role} \\
+\midrule
+Connection $\omega$ & Total space $P$ & Global, gauge-invariant \\
+Horizontal subspace $H_uP$ & $T_uP$ & ``No fiber component'' \\
+Gauge potential $A_\alpha = \sigma_\alpha^*\omega$ & Patch $U_\alpha \subset M$ & Local, gauge-dependent \\
+Parallel transport $\tau_\gamma$ & Between fibers & Phase transport along paths \\
+$A_\beta - A_\alpha = \dd\chi$ & $U_\alpha \cap U_\beta$ & Gauge transformation \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The connection is the geometry of the principal bundle. Its local representative is the gauge potential, and gauge transformations are changes of local section. In the next chapter we extract the \emph{curvature} of the connection --- the field strength $F$.

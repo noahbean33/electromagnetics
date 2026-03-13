@@ -1,0 +1,139 @@
+\chapter{Associated Vector Bundles and Matter Fields}
+
+Until now, our geometric framework has described the electromagnetic field itself --- a connection on a principal $U(1)$-bundle. But electromagnetism exists to interact with \emph{matter}: electrons, protons, and other charged particles. In the geometric language, matter fields are not functions on spacetime but \emph{sections of associated vector bundles} constructed from the principal bundle via representations of the structure group. This chapter builds the associated bundle construction and identifies matter fields as its sections.
+
+\section{Representations of $U(1)$}
+
+\begin{definition}[Representation]
+A \textbf{representation} of a Lie group $G$ on a vector space $V$ is a smooth group homomorphism $\rho: G \to GL(V)$, where $GL(V)$ is the group of invertible linear maps $V \to V$.
+\end{definition}
+
+For $G = U(1)$, every irreducible representation is one-dimensional and labelled by an integer $n \in \Z$:
+\begin{equation}
+\rho_n: U(1) \to GL(\C), \qquad \rho_n(e^{i\theta}) = e^{in\theta}.
+\end{equation}
+
+The integer $n$ is the \textbf{charge} of the representation (in units of the fundamental charge $e$). An electron has $n = -1$; a proton has $n = +1$; a neutral particle has $n = 0$.
+
+\begin{remark}
+The fact that representations of $U(1)$ are labelled by integers is a consequence of $\pi_1(U(1)) \cong \Z$ and is the representation-theoretic counterpart of charge quantisation. The integer labelling the representation is the same integer that appears as the first Chern number.
+\end{remark}
+
+\section{The Associated Bundle Construction}
+
+\begin{definition}[Associated vector bundle]
+Let $\pi: P \to M$ be a principal $G$-bundle and $\rho: G \to GL(V)$ a representation. The \textbf{associated vector bundle} is
+\begin{equation}
+E = P \times_\rho V = (P \times V) / \sim,
+\end{equation}
+where the equivalence relation identifies $(u \cdot g, v) \sim (u, \rho(g)\,v)$ for all $u \in P$, $g \in G$, $v \in V$.
+\end{definition}
+
+The projection $\pi_E: E \to M$ is defined by $\pi_E([u, v]) = \pi(u)$. The fiber over each point $p \in M$ is a copy of $V$:
+\begin{equation}
+E_p = \pi_E^{-1}(p) \cong V.
+\end{equation}
+
+\begin{remark}[Intuition]
+The associated bundle ``attaches'' a copy of the representation space $V$ to each point of $M$, with the attachment twisted by the principal bundle. If $P$ is trivial ($P = M \times G$), then $E = M \times V$ is also trivial. If $P$ is non-trivial (e.g.\ a monopole bundle), the associated bundle inherits the twist.
+\end{remark}
+
+\subsection{The electromagnetic case}
+
+For electromagnetism:
+\begin{itemize}
+\item $G = U(1)$,
+\item $V = \C$ (one complex dimension),
+\item $\rho = \rho_n$ for a particle of charge $n$.
+\end{itemize}
+
+The associated bundle $E_n = P \times_{\rho_n} \C$ is a complex line bundle over spacetime. An electron field of charge $-1$ is a section of $E_{-1}$.
+
+\section{Sections of Associated Bundles as Matter Fields}
+
+\begin{definition}[Section]
+A \textbf{section} of the associated bundle $E = P \times_\rho V$ is a smooth map $\psi: M \to E$ with $\pi_E \circ \psi = \id_M$. The space of sections is denoted $\Gamma(E)$.
+\end{definition}
+
+Equivalently, a section of $E$ can be described as an \textbf{equivariant function} on $P$:
+\begin{equation}
+\hat{\psi}: P \to V, \qquad \hat{\psi}(u \cdot g) = \rho(g)^{-1}\,\hat{\psi}(u) \qquad \text{for all } g \in G.
+\end{equation}
+
+This equivariance condition is the geometric origin of the transformation law of charged fields under gauge transformations.
+
+\subsection{Local representatives}
+
+Given a local section $\sigma_\alpha: U_\alpha \to P$ (a gauge choice), the local representative of $\psi$ is the function
+\begin{equation}
+\psi_\alpha = \hat{\psi} \circ \sigma_\alpha: U_\alpha \to V.
+\end{equation}
+
+On overlaps $U_\alpha \cap U_\beta$, with transition function $g_{\alpha\beta}: U_\alpha \cap U_\beta \to G$:
+\begin{equation}
+\boxed{\psi_\beta(p) = \rho(g_{\alpha\beta}(p))^{-1}\,\psi_\alpha(p).}
+\end{equation}
+
+For $U(1)$ with $\rho_n$ and $g_{\alpha\beta} = e^{i\chi}$:
+\begin{equation}
+\psi_\beta = e^{-in\chi}\,\psi_\alpha.
+\end{equation}
+
+Under a gauge transformation $\chi$, a matter field of charge $n$ transforms as:
+\begin{equation}
+\psi \to e^{-in\chi}\,\psi.
+\end{equation}
+
+This is the standard gauge transformation law of quantum mechanics, now \emph{derived} from the bundle structure rather than postulated.
+
+\section{Examples of Associated Bundles}
+
+\begin{example}[The adjoint bundle]
+For any $G$, the adjoint representation $\Ad: G \to GL(\Lie{g})$ gives the \textbf{adjoint bundle} $\ad P = P \times_{\Ad} \Lie{g}$. Sections of $\ad P$ are ``infinitesimal gauge transformations.'' For $U(1)$, since $\Ad = \id$, the adjoint bundle is trivial: $\ad P = M \times \R$.
+\end{example}
+
+\begin{example}[The frame bundle and tensor bundles]
+The tangent bundle $TM$ is an associated bundle of the frame bundle $FM$ (a principal $GL(n, \R)$-bundle) via the standard representation. All tensor bundles ($T^*M$, $\Lambda^k T^*M$, etc.) are associated bundles of $FM$ via appropriate representations. This shows that the associated bundle construction is not exotic --- it underlies all of differential geometry.
+\end{example}
+
+\begin{example}[Spinor bundles]
+Spin-$\frac{1}{2}$ particles (electrons, quarks) are sections of a \textbf{spinor bundle}, which is an associated bundle of the spin frame bundle (a principal $\mathrm{Spin}(3,1)$-bundle) via the spinor representation. When coupled to electromagnetism, the full bundle is a product involving both the spin structure and the $U(1)$-bundle.
+\end{example}
+
+\section{The Tensor Product of Bundles}
+
+\begin{definition}
+Given two vector bundles $E_1, E_2 \to M$, their \textbf{tensor product} $E_1 \otimes E_2$ is the bundle whose fiber at each point is $(E_1)_p \otimes (E_2)_p$. Similarly for direct sums $E_1 \oplus E_2$, duals $E^*$, and exterior powers $\Lambda^k E$.
+\end{definition}
+
+A charged spinor field (e.g.\ the Dirac electron) is a section of $S \otimes E_{-1}$, where $S$ is the spinor bundle and $E_{-1}$ is the charge $-1$ associated line bundle. The covariant derivative on this tensor product combines the spin connection (from gravity) and the $U(1)$ connection (from electromagnetism) --- this is the geometric origin of the interaction between gravity, spin, and charge.
+
+\section{Gauge-Invariant Quantities from Matter Fields}
+
+A section $\psi$ of $E_n$ is not gauge-invariant (it transforms as $\psi \to e^{-in\chi}\psi$). To construct observables, we need gauge-invariant combinations:
+
+\begin{itemize}
+\item \textbf{Charge density}: $|\psi|^2 = \bar{\psi}\psi$ is gauge-invariant (the phase cancels). It represents the probability density or charge density.
+\item \textbf{Current}: $\bar{\psi}\,\nabla_\mu\psi - (\nabla_\mu\bar{\psi})\,\psi$ is gauge-invariant and gives the probability current (where $\nabla$ is the covariant derivative, introduced in the next chapter).
+\item \textbf{Products of different charges}: $\psi_1 \cdot \psi_2$ for sections of $E_{n_1}$ and $E_{n_2}$ is a section of $E_{n_1 + n_2}$. It is gauge-invariant only if $n_1 + n_2 = 0$.
+\end{itemize}
+
+\section{Summary}
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{lll}
+\toprule
+\textbf{Object} & \textbf{Bundle language} & \textbf{Physical role} \\
+\midrule
+Representation $\rho_n$ & $U(1) \to GL(\C)$, $e^{i\theta} \mapsto e^{in\theta}$ & Charge $n$ \\
+Associated bundle $E_n$ & $P \times_{\rho_n} \C$ & Where charge-$n$ fields live \\
+Matter field $\psi$ & Section of $E_n$ & Electron, proton, etc. \\
+Gauge transformation & $\psi \to e^{-in\chi}\psi$ & Derived from bundle structure \\
+Observable & $|\psi|^2$, currents & Gauge-invariant \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Matter fields are sections of associated vector bundles. Their transformation law under gauge transformations is dictated by the representation, not postulated. In the next chapter we equip these bundles with a derivative --- the covariant derivative --- which is the geometric origin of the minimal coupling prescription $\partial_\mu \to \partial_\mu + ieA_\mu$.

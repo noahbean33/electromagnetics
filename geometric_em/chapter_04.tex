@@ -1,0 +1,188 @@
+\chapter{The Metric Tensor and the Hodge Star Operator}
+
+Until now, every structure we have built --- smooth manifolds, tangent spaces, differential forms, the exterior derivative, Stokes' theorem --- has been \emph{metric-free}. We could define all of these without ever speaking of distances, angles, or durations. In this chapter we introduce the metric tensor as an \emph{additional} structure layered on top of the smooth manifold, and we construct the Hodge star operator $\hodge$ that it induces. The Hodge star is the missing ingredient needed to write the dynamical (inhomogeneous) Maxwell equations.
+
+\section{The Metric Tensor}
+
+\begin{definition}[Metric tensor]
+A \textbf{metric} on a smooth manifold $\sm$ is a smooth, symmetric, non-degenerate $(0,2)$-tensor field $g$. That is, at each point $p \in \sm$:
+\begin{equation}
+g_p: T_p\sm \times T_p\sm \to \R
+\end{equation}
+is bilinear, symmetric ($g(v,w) = g(w,v)$), and non-degenerate ($g(v,w) = 0$ for all $w$ implies $v = 0$).
+\end{definition}
+
+In coordinates:
+\begin{equation}
+g = g_{ij}\,\dd x^i \otimes \dd x^j.
+\end{equation}
+
+\begin{definition}[Signature]
+The \textbf{signature} $(p, q)$ of a metric is the number of positive and negative eigenvalues of the matrix $g_{ij}$ at any point (this is constant by continuity and non-degeneracy).
+\begin{itemize}
+\item \textbf{Riemannian}: signature $(n, 0)$ --- all positive. Measures ``ordinary'' distances.
+\item \textbf{Lorentzian}: signature $(1, n{-}1)$ or $(n{-}1, 1)$ --- one sign differs. This is the metric of spacetime.
+\end{itemize}
+\end{definition}
+
+For electrodynamics on 4-dimensional spacetime, we use a Lorentzian metric with signature $(+, -, -, -)$:
+\begin{equation}
+g = \eta_{\mu\nu}\,\dd x^\mu \otimes \dd x^\nu, \qquad \eta_{\mu\nu} = \mathrm{diag}(+1, -1, -1, -1).
+\end{equation}
+
+\subsection*{What the metric buys us}
+
+The metric provides three essential capabilities that the bare smooth manifold lacks:
+
+\begin{enumerate}
+\item \textbf{The musical isomorphisms}: a canonical identification between vectors and covectors.
+\item \textbf{An inner product on forms}: the ability to measure ``lengths'' and ``angles'' of differential forms.
+\item \textbf{The Hodge star}: a map between $k$-forms and $(n{-}k)$-forms.
+\end{enumerate}
+
+\section{The Musical Isomorphisms}
+
+\begin{definition}[Flat and sharp]
+The metric defines a canonical isomorphism
+\begin{equation}
+\flat: T_p\sm \xrightarrow{\;\sim\;} T_p^*\sm, \qquad v \mapsto v^\flat = g(v, \cdot),
+\end{equation}
+called \textbf{lowering an index} (or ``flat''). In components: $(v^\flat)_i = g_{ij}\,v^j$.
+
+Its inverse is
+\begin{equation}
+\sharp: T_p^*\sm \xrightarrow{\;\sim\;} T_p\sm, \qquad \omega \mapsto \omega^\sharp,
+\end{equation}
+called \textbf{raising an index} (or ``sharp''). In components: $(\omega^\sharp)^i = g^{ij}\,\omega_j$, where $g^{ij}$ is the inverse matrix of $g_{ij}$.
+\end{definition}
+
+\begin{warning}
+Without a metric, there is \emph{no canonical identification} between vectors and covectors. The ``physicist's trick'' of freely raising and lowering indices \emph{presupposes} a metric. In the structuralist approach, we are always explicit about when this identification is being used.
+\end{warning}
+
+\section{Inner Product on Forms}
+
+The metric on $T_p\sm$ induces an inner product on each exterior power $\Lambda^k(T_p^*\sm)$.
+
+\begin{definition}
+For $k$-forms $\alpha$ and $\beta$, the \textbf{pointwise inner product} is defined by
+\begin{equation}
+\langle \alpha, \beta \rangle = \frac{1}{k!}\,g^{i_1 j_1}\cdots g^{i_k j_k}\,\alpha_{i_1\cdots i_k}\,\beta_{j_1\cdots j_k}.
+\end{equation}
+\end{definition}
+
+For Lorentzian metrics, this inner product is \emph{indefinite} (it can be negative), reflecting the indefiniteness of the spacetime metric.
+
+\section{The Volume Form}
+
+\begin{definition}[Volume form]
+On an oriented $n$-dimensional manifold with metric $g$, the \textbf{volume form} is
+\begin{equation}
+\dvol_g = \sqrt{|g|}\,\dd x^1 \wedge \dd x^2 \wedge \cdots \wedge \dd x^n,
+\end{equation}
+where $|g| = |\det(g_{ij})|$. This is a nowhere-vanishing $n$-form, well-defined (independent of coordinates) on an oriented manifold with metric.
+\end{definition}
+
+On Minkowski spacetime with Cartesian coordinates, $|g| = 1$ and $\dvol = \dd x^0 \wedge \dd x^1 \wedge \dd x^2 \wedge \dd x^3 = c\,\dd t \wedge \dd x \wedge \dd y \wedge \dd z$.
+
+\section{The Hodge Star Operator}
+
+\begin{definition}[Hodge star]
+On an oriented $n$-dimensional manifold with metric $g$, the \textbf{Hodge star} is the linear map
+\begin{equation}
+\hodge: \Omega^k(\sm) \to \Omega^{n-k}(\sm)
+\end{equation}
+uniquely defined by the property that for any two $k$-forms $\alpha, \beta$:
+\begin{equation}
+\boxed{\alpha \wedge \hodge\beta = \langle\alpha, \beta\rangle\,\dvol_g.}
+\end{equation}
+\end{definition}
+
+This definition says: ``$\hodge\beta$ is the $(n{-}k)$-form such that wedging it with $\alpha$ gives the inner product of $\alpha$ and $\beta$ times the volume form.''
+
+\subsection{Explicit action on basis forms}
+
+On a 4-dimensional Lorentzian manifold with orthonormal coframe $\{e^0, e^1, e^2, e^3\}$ (where $g(e^\mu, e^\nu) = \eta^{\mu\nu}$), the Hodge star acts as:
+
+\begin{align}
+\hodge 1 &= e^0 \wedge e^1 \wedge e^2 \wedge e^3 = \dvol, \\
+\hodge(e^0 \wedge e^1) &= e^2 \wedge e^3, \\
+\hodge(e^2 \wedge e^3) &= -e^0 \wedge e^1, \\
+\hodge(e^0 \wedge e^2) &= -e^1 \wedge e^3, \\
+\hodge\dvol &= -1.
+\end{align}
+
+The signs depend on the metric signature. For a Lorentzian metric in 4 dimensions, the key property is:
+
+\begin{proposition}
+On a 4-dimensional Lorentzian manifold, acting on $k$-forms:
+\begin{equation}
+\hodge\hodge\,\alpha = (-1)^{k(4-k)+1}\,\alpha = -(-1)^{k(4-k)}\,\alpha.
+\end{equation}
+In particular, for $k = 2$ (the case of the field strength $F$):
+\begin{equation}
+\hodge\hodge\,F = -F.
+\end{equation}
+\end{proposition}
+
+\subsection{The Hodge star depends on the metric}
+
+This is the crucial point: the exterior derivative $\dd$ is metric-independent, but $\hodge$ depends on $g$. Any equation involving $\hodge$ therefore carries information about the geometry of spacetime. This is why the inhomogeneous Maxwell equations (which involve $\hodge$) are dynamical, while the homogeneous ones (which involve only $\dd$) are topological.
+
+\section{The Codifferential}
+
+\begin{definition}[Codifferential]
+The \textbf{codifferential} is the ``formal adjoint'' of $\dd$ with respect to the Hodge inner product:
+\begin{equation}
+\delta: \Omega^k(\sm) \to \Omega^{k-1}(\sm), \qquad \delta = (-1)^{n(k+1)+1}\,s\;\hodge\,\dd\,\hodge,
+\end{equation}
+where $s = \pm 1$ is the sign of $\det(g_{ij})$ ($s = -1$ for Lorentzian signature).
+\end{definition}
+
+On 4-dimensional Lorentzian spacetime, for a $k$-form:
+\begin{equation}
+\delta\omega = -\hodge\,\dd\,\hodge\,\omega.
+\end{equation}
+
+The codifferential satisfies $\delta^2 = 0$ (as a consequence of $\dd^2 = 0$) and generalises the divergence operator.
+
+\section{The Hodge Decomposition on 3-Space}
+
+On $\R^3$ with the Euclidean metric, the Hodge star maps:
+\begin{itemize}
+\item 0-forms (functions) $\mapsto$ 3-forms,
+\item 1-forms $\mapsto$ 2-forms,
+\item 2-forms $\mapsto$ 1-forms,
+\item 3-forms $\mapsto$ 0-forms.
+\end{itemize}
+
+This is why, in three dimensions, the magnetic field can be treated as either a 2-form or (via $\hodge$) a 1-form, and then (via $\sharp$) a vector. The chain of identifications vector $\leftrightarrow$ 1-form $\leftrightarrow$ 2-form that physicists do implicitly is really: metric ($\flat/\sharp$) + Hodge star. Being explicit about this chain prevents the confusion between ``true vectors'' and ``pseudovectors'' (which are really 2-forms).
+
+\section{Preview: The Two Halves of Maxwell}
+
+With $\dd$ and $\hodge$ in hand, Maxwell's equations on a Lorentzian 4-manifold $(\sm, g)$ can be stated as:
+
+\begin{align}
+\dd F &= 0 & &\text{(topological --- no metric needed)}, \\
+\dd\,\hodge F &= \hodge J & &\text{(dynamical --- requires the metric)}.
+\end{align}
+
+The first equation uses only the smooth structure (the exterior derivative). The second uses the metric (through the Hodge star). This bifurcation into topological and geometric content is \emph{the} structural insight of the geometric approach to electrodynamics, and it is the subject of the next chapter.
+
+\section{Summary}
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{lll}
+\toprule
+\textbf{Object} & \textbf{Requires} & \textbf{What it does} \\
+\midrule
+Metric $g$ & Smooth manifold + extra structure & Distances, angles, duality \\
+$\flat / \sharp$ & Metric & Vector $\leftrightarrow$ covector \\
+Volume form $\dvol_g$ & Metric + orientation & Integration, Hodge star \\
+Hodge star $\hodge$ & Metric + orientation & $\Omega^k \to \Omega^{n-k}$ \\
+Codifferential $\delta$ & $\hodge$ (hence metric) & Adjoint of $\dd$, divergence \\
+\bottomrule
+\end{tabular}
+\end{table}

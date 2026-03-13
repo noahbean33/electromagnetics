@@ -1,0 +1,183 @@
+\chapter{The Structural Bifurcation of Maxwell's Equations}
+
+We now possess two independent pieces of mathematical machinery: the exterior derivative $\dd$ (metric-free) and the Hodge star $\hodge$ (metric-dependent). In this chapter we assemble them to write Maxwell's equations in their most transparent form, making the split into topological and dynamical content explicit and precise.
+
+\section{The Electromagnetic Field Strength as a 2-Form}
+
+\begin{definition}[Field strength 2-form]
+The \textbf{electromagnetic field strength} is a 2-form $F \in \Omega^2(\sm)$ on a 4-dimensional spacetime manifold $\sm$. In a coordinate chart $(x^0, x^1, x^2, x^3) = (ct, x, y, z)$:
+\begin{equation}
+F = \tfrac{1}{2}\,F_{\mu\nu}\,\dd x^\mu \wedge \dd x^\nu.
+\end{equation}
+\end{definition}
+
+Expanding in terms of the electric and magnetic fields (in Gaussian units):
+\begin{equation}
+\boxed{F = E_i\,\dd x^0 \wedge \dd x^i + \tfrac{1}{2}\,B_{ij}\,\dd x^i \wedge \dd x^j,}
+\end{equation}
+where $B_{ij} = -\varepsilon_{ijk}B^k$. Written out explicitly:
+\begin{align}
+F &= E_1\,\dd x^0 \wedge \dd x^1 + E_2\,\dd x^0 \wedge \dd x^2 + E_3\,\dd x^0 \wedge \dd x^3 \nonumber\\
+&\quad - B_3\,\dd x^1 \wedge \dd x^2 + B_2\,\dd x^1 \wedge \dd x^3 - B_1\,\dd x^2 \wedge \dd x^3.
+\end{align}
+
+The 2-form $F$ is a single geometric object that packages all six components of the electromagnetic field. The split into $\vec{E}$ and $\vec{B}$ is observer-dependent (it depends on the choice of time direction $x^0$), but $F$ itself is observer-independent.
+
+\section{The Gauge Potential as a 1-Form}
+
+\begin{definition}[Gauge potential]
+The \textbf{electromagnetic gauge potential} is a 1-form $A \in \Omega^1(\sm)$:
+\begin{equation}
+A = A_\mu\,\dd x^\mu = \phi\,\dd x^0 - A_i\,\dd x^i,
+\end{equation}
+where $\phi$ is the scalar potential and $A_i$ are the components of the vector potential.
+\end{definition}
+
+The field strength is obtained from the potential by the exterior derivative:
+\begin{equation}
+\boxed{F = \dd A.}
+\end{equation}
+
+This is the content of the relations $\vec{E} = -\vec{\nabla}\phi - \frac{1}{c}\frac{\partial\vec{A}}{\partial t}$ and $\vec{B} = \vec{\nabla}\times\vec{A}$, compressed into two characters.
+
+\section{The Homogeneous Maxwell Equations: $\dd F = 0$}
+
+\begin{theorem}[Homogeneous Maxwell equations]
+The equation
+\begin{equation}
+\boxed{\dd F = 0}
+\end{equation}
+is equivalent to the pair of three-vector equations:
+\begin{align}
+\vec{\nabla}\cdot\vec{B} &= 0, & &\text{(Gauss's law for magnetism)} \\
+\vec{\nabla}\times\vec{E} + \frac{1}{c}\frac{\partial\vec{B}}{\partial t} &= 0. & &\text{(Faraday's law)}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+If $F = \dd A$, then $\dd F = \dd^2 A = 0$ by the nilpotency of $\dd$. The converse (on contractible domains) follows from the Poincar\'e lemma. The expansion of $\dd F = 0$ in components yields the two stated equations.
+\end{proof}
+
+\begin{remark}[What this equation does \emph{not} use]
+The equation $\dd F = 0$ uses:
+\begin{itemize}
+\item the smooth structure of $\sm$ (to define $\dd$),
+\item nothing else.
+\end{itemize}
+It does \emph{not} use the metric $g$, the orientation, or any other structure. It is purely topological. This means that Faraday's law and $\vec{\nabla}\cdot\vec{B} = 0$ would hold unchanged even if we deformed the geometry of spacetime arbitrarily. They are constraints on the \emph{topology} of the field, not on its dynamics.
+\end{remark}
+
+\section{The Hodge Dual of the Field Strength}
+
+Using the Hodge star on Minkowski spacetime, the dual of the field strength is:
+
+\begin{equation}
+\hodge F = -B_1\,\dd x^0 \wedge \dd x^1 - B_2\,\dd x^0 \wedge \dd x^2 - B_3\,\dd x^0 \wedge \dd x^3 - E_3\,\dd x^1 \wedge \dd x^2 + E_2\,\dd x^1 \wedge \dd x^3 - E_1\,\dd x^2 \wedge \dd x^3.
+\end{equation}
+
+Comparing with $F$, we see that $\hodge$ implements the duality transformation $\vec{E} \to -\vec{B}$, $\vec{B} \to \vec{E}$ (up to signs from the Lorentzian signature). This is \textbf{electromagnetic duality}.
+
+\section{The Current 3-Form}
+
+\begin{definition}[Current 3-form]
+The \textbf{current 3-form} is defined as $J_3 = \hodge J$, where $J = J_\mu\,\dd x^\mu$ is the current 1-form with $J^\mu = (c\rho, \vec{J})$. Explicitly:
+\begin{equation}
+\hodge J = c\rho\,\dd x^1 \wedge \dd x^2 \wedge \dd x^3 - J_1\,\dd x^0 \wedge \dd x^2 \wedge \dd x^3 + \cdots
+\end{equation}
+\end{definition}
+
+Alternatively, using the conventional four-current density, the inhomogeneous equations can be written with a source 3-form.
+
+\section{The Inhomogeneous Maxwell Equations: $\dd\,\hodge F = \frac{4\pi}{c}\,\hodge J$}
+
+\begin{theorem}[Inhomogeneous Maxwell equations]
+The equation
+\begin{equation}
+\boxed{\dd\,\hodge F = \frac{4\pi}{c}\,\hodge J}
+\end{equation}
+is equivalent to:
+\begin{align}
+\vec{\nabla}\cdot\vec{E} &= 4\pi\rho, & &\text{(Gauss's law)} \\
+\vec{\nabla}\times\vec{B} - \frac{1}{c}\frac{\partial\vec{E}}{\partial t} &= \frac{4\pi}{c}\vec{J}. & &\text{(Amp\`ere--Maxwell law)}
+\end{align}
+\end{theorem}
+
+\begin{proof}[Sketch]
+Expanding $\hodge F$ in components and applying $\dd$, one obtains a 3-form whose four independent components match Gauss's law and the three components of the Amp\`ere--Maxwell equation.
+\end{proof}
+
+\begin{remark}[What this equation \emph{does} use]
+The equation $\dd\,\hodge F = \frac{4\pi}{c}\hodge J$ uses:
+\begin{itemize}
+\item the smooth structure (via $\dd$),
+\item the metric $g$ (via $\hodge$),
+\item the orientation (also via $\hodge$).
+\end{itemize}
+It is a \emph{dynamical} equation: it tells the field how to respond to sources, and its form depends on the geometry of spacetime. In curved spacetime, the same equation holds with $\hodge$ computed from the curved metric $g_{\mu\nu}$. The coupling between electromagnetism and gravity enters entirely through the Hodge star.
+\end{remark}
+
+\section{The Bifurcation at a Glance}
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.6}
+\begin{tabular}{lcc}
+\toprule
+& $\dd F = 0$ & $\dd\,\hodge F = \frac{4\pi}{c}\hodge J$ \\
+\midrule
+\textbf{Mathematical nature} & Bianchi identity & Field equation \\
+\textbf{Metric dependence} & None & Full ($\hodge$ requires $g$) \\
+\textbf{Physical content} & Topological constraints & Dynamics, coupling to matter \\
+\textbf{Classical form} & $\vec{\nabla}\cdot\vec{B}=0$, Faraday & Gauss, Amp\`ere--Maxwell \\
+\textbf{Survives on any manifold?} & Yes (any smooth manifold) & Requires $(M, g)$ \\
+\textbf{Source terms} & None (homogeneous) & $\rho$, $\vec{J}$ (inhomogeneous) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Charge Conservation from the Structure}
+
+Applying $\dd$ to the inhomogeneous equation:
+\begin{equation}
+\dd\,\dd\,\hodge F = \frac{4\pi}{c}\,\dd\,\hodge J.
+\end{equation}
+The left side vanishes by $\dd^2 = 0$, giving:
+\begin{equation}
+\boxed{\dd\,\hodge J = 0,}
+\end{equation}
+which is the covariant continuity equation $\partial_\mu J^\mu = 0$ (charge conservation). Charge conservation is not an independent physical law but a mathematical consequence of $\dd^2 = 0$ applied to the field equation. The topological identity $\dd^2 = 0$ enforces conservation of charge.
+
+\section{Electromagnetic Duality in Vacuum}
+
+In vacuum ($J = 0$), Maxwell's equations become:
+\begin{equation}
+\dd F = 0, \qquad \dd\,\hodge F = 0.
+\end{equation}
+
+These are symmetric under $F \mapsto \hodge F$ (up to the sign from $\hodge^2 = -1$ on 2-forms in Lorentzian 4-space). This \textbf{electromagnetic duality} exchanges electric and magnetic fields:
+\begin{equation}
+\vec{E} \to \vec{B}, \qquad \vec{B} \to -\vec{E}.
+\end{equation}
+
+Duality is broken by the presence of electric charges (the source $J$ appears only in the inhomogeneous equation). If magnetic charges existed, duality would be restored with a modified homogeneous equation $\dd F = \hodge J_m$. The \emph{absence} of magnetic charges is the statement that $F$ is a closed 2-form; the \emph{presence} of magnetic charges would make $F$ non-closed, requiring a non-trivial bundle structure --- the subject of Block III.
+
+\section{Gauge Invariance}
+
+Under a gauge transformation $A \to A + \dd\chi$ for any $\chi \in \Omega^0(\sm)$:
+\begin{equation}
+F = \dd A \to \dd(A + \dd\chi) = \dd A + \dd^2\chi = \dd A = F.
+\end{equation}
+
+The field strength $F$ is gauge-invariant: it does not change under gauge transformations. The potential $A$ is gauge-dependent. This distinction between the observable ($F$) and the gauge-dependent ($A$) will find its deepest explanation in the bundle language of Block III, where $A$ is a local representative of a connection and $F$ is its curvature.
+
+\section{Summary}
+
+Maxwell's equations in the language of differential forms are:
+\begin{align}
+\dd F &= 0, \\
+\dd\,\hodge F &= \frac{4\pi}{c}\,\hodge J.
+\end{align}
+
+Two equations replace four. The first is metric-free and topological; the second is metric-dependent and dynamical. Charge conservation ($\dd\,\hodge J = 0$) follows from $\dd^2 = 0$. Gauge invariance ($F = \dd A$ is invariant under $A \to A + \dd\chi$) follows from $\dd^2 = 0$. The entire logical structure of classical electromagnetism rests on the interplay between the topological operator $\dd$ and the geometric operator $\hodge$.
+
+This completes the ``premetric + metric'' description of electromagnetism as a theory on spacetime. In Block III, we go deeper: the potential $A$ is not merely a 1-form on spacetime but a \emph{connection on a principal $U(1)$-bundle}, and the field strength $F$ is its \emph{curvature}. This perspective explains gauge invariance, the Aharonov--Bohm effect, and charge quantisation.

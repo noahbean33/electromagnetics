@@ -1,0 +1,124 @@
+\documentclass[12pt,a4paper]{book}
+
+% --- Encoding and fonts ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+% --- Mathematics ---
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{mathtools}
+\usepackage{bm}
+\usepackage{tikz-cd}
+\usepackage{xfrac}
+
+% --- Layout and formatting ---
+\usepackage[margin=1in]{geometry}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{parskip}
+\usepackage{enumitem}
+
+% --- Graphics ---
+\usepackage{graphicx}
+\usepackage{float}
+
+% --- Tables ---
+\usepackage{booktabs}
+\usepackage{array}
+
+% --- Hyperlinks ---
+\usepackage[colorlinks=true,linkcolor=blue!60!black,citecolor=green!50!black,urlcolor=blue!70!black]{hyperref}
+
+% --- Theorem environments ---
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[chapter]
+\newtheorem{example}{Example}[chapter]
+\newtheorem{notation}{Notation}[chapter]
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{proposition}{Proposition}[chapter]
+\newtheorem{lemma}{Lemma}[chapter]
+\newtheorem{corollary}{Corollary}[chapter]
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}[chapter]
+\newtheorem{warning}{Warning}[chapter]
+
+% --- Custom commands ---
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\sm}{\mathcal{M}}
+\newcommand{\Ck}{C^{\infty}}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\hodge}{\star}
+\newcommand{\Lie}{\mathfrak}
+\newcommand{\ad}{\mathrm{ad}}
+\newcommand{\Ad}{\mathrm{Ad}}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\dvol}{vol}
+
+% ============================================================
+\begin{document}
+
+% --- Title page ---
+\begin{titlepage}
+\centering
+\vspace*{2cm}
+{\Huge\bfseries The Geometrical Anatomy\\[0.4em] of Electrodynamics\par}
+\vspace{1.5cm}
+{\Large A Structuralist Approach\\[0.3em]
+from Differential Forms to Fiber Bundles\par}
+\vspace{2cm}
+{\large\itshape No physical concept is introduced without\\[0.2em]
+first having the mathematical object that carries it.\par}
+\vspace{3cm}
+{\large Manifolds $\bullet$ Differential Forms $\bullet$ Hodge Theory\\[0.3em]
+Principal Bundles $\bullet$ Connections $\bullet$ Curvature\par}
+\vfill
+\end{titlepage}
+
+% --- Front matter ---
+\frontmatter
+\tableofcontents
+
+% --- Main matter ---
+\mainmatter
+
+% Block I: Topological and Smooth Foundations
+\part{Topological and Smooth Foundations}
+\include{chapter_01}
+\include{chapter_02}
+\include{chapter_03}
+
+% Block II: Metric Structure and Hodge Theory
+\part{Metric Structure and Hodge Theory}
+\include{chapter_04}
+\include{chapter_05}
+
+% Block III: Fiber Bundles and Connections
+\part{Fiber Bundles and Connections}
+\include{chapter_06}
+\include{chapter_07}
+\include{chapter_08}
+\include{chapter_09}
+
+% Block IV: Maxwell's Equations as Bundle Geometry
+\part{Maxwell's Equations as Bundle Geometry}
+\include{chapter_10}
+\include{chapter_11}
+\include{chapter_12}
+
+% Block V: Matter Coupling and Quantization Prologue
+\part{Matter Coupling and the Quantum Horizon}
+\include{chapter_13}
+\include{chapter_14}
+\include{chapter_15}
+
+\end{document}

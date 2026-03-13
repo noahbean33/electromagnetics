@@ -1,0 +1,182 @@
+\chapter{Curvature, Correlation, and Criticality}
+
+The most profound application of information geometry in this course is the study of phase transitions. Phase transitions are reinterpreted as points where the geometric curvature of the thermodynamic manifold diverges. This chapter develops the Ruppeiner geometry, connects curvature to correlation length, and uses these tools to classify phase transitions.
+
+\section{The Ruppeiner Metric}
+
+In 1979, George Ruppeiner introduced a Riemannian metric on the space of thermodynamic states that is closely related to the Fisher metric:
+
+\begin{definition}[Ruppeiner metric]
+The \textbf{Ruppeiner metric} is defined as the negative Hessian of the entropy $S$ with respect to the extensive variables $X^i = (U, V, N, \ldots)$:
+\begin{equation}
+g_{ij}^{(R)} = -\frac{\partial^2 S}{\partial X^i\,\partial X^j}.
+\end{equation}
+\end{definition}
+
+Since the entropy is a concave function of the extensive variables (a consequence of the Second Law and thermodynamic stability), the Hessian $-\partial^2 S / \partial X^i\partial X^j$ is positive-definite, making $g^{(R)}$ a bona fide Riemannian metric.
+
+\begin{proposition}
+The Ruppeiner metric coincides (up to a factor of $k_B$) with the Fisher information metric of the canonical ensemble when the coordinates are chosen appropriately:
+\begin{equation}
+g_{ij}^{(R)} = \frac{1}{k_B}\,g_{ij}^{(\text{Fisher})}.
+\end{equation}
+\end{proposition}
+
+\subsection{The Weinhold metric}
+
+An alternative thermodynamic metric, introduced by Frank Weinhold in 1975, uses the Hessian of the \emph{internal energy} $U$ with respect to extensive variables:
+\begin{equation}
+g_{ij}^{(W)} = \frac{\partial^2 U}{\partial X^i\,\partial X^j}.
+\end{equation}
+
+The Weinhold and Ruppeiner metrics are conformally related:
+\begin{equation}
+g_{ij}^{(R)} = \frac{1}{T}\,g_{ij}^{(W)},
+\end{equation}
+where $T$ is the temperature. The Ruppeiner metric is generally considered the more physically meaningful of the two, because its curvature has a direct interpretation in terms of correlations.
+
+\section{Scalar Curvature and Interactions}
+
+The Riemann curvature tensor of the Ruppeiner metric encodes information about the \emph{interactions} between the microscopic constituents of the system. The key result is:
+
+\begin{theorem}[Ruppeiner's curvature--interaction correspondence]
+The \textbf{scalar curvature} $R$ of the Ruppeiner metric satisfies:
+\begin{enumerate}
+\item $R = 0$ for systems with no inter-particle interactions (ideal systems).
+\item $R \neq 0$ for interacting systems.
+\item The \textbf{sign} of $R$ distinguishes the nature of the dominant interactions:
+\begin{itemize}
+\item $R < 0$: attractive interactions dominate.
+\item $R > 0$: repulsive interactions dominate.
+\end{itemize}
+\end{enumerate}
+\end{theorem}
+
+\subsection{Example: the ideal gas}
+
+For an ideal gas with fundamental relation $S = Nk_B\ln\!\left(\frac{V}{N}\left(\frac{U}{N}\right)^{c_V/k_B}\right) + \text{const}$, one computes:
+\begin{equation}
+g_{ij}^{(R)} = -\pdv[2]{S}{X^i}{X^j}, \qquad R = 0.
+\end{equation}
+
+The ideal gas is \textbf{geometrically flat}: its thermodynamic manifold has zero curvature. This is the geometric expression of the absence of inter-particle interactions.
+
+\subsection{Example: the van der Waals gas}
+
+For the van der Waals gas, the scalar curvature $R$ is non-zero and negative (indicating attractive interactions). Near the critical point $(T_c, V_c, P_c)$, the curvature diverges:
+\begin{equation}
+R \to -\infty \qquad \text{as} \quad T \to T_c^+, \quad V \to V_c.
+\end{equation}
+
+\section{Curvature and Correlation Length}
+
+The deepest connection between information geometry and statistical mechanics is the relation between the Ruppeiner scalar curvature and the correlation volume:
+
+\begin{theorem}[Curvature--correlation correspondence]
+Near a critical point, the Ruppeiner scalar curvature $R$ is proportional to the \textbf{correlation volume}:
+\begin{equation}
+\boxed{|R| \sim \xi^d,}
+\end{equation}
+where $\xi$ is the \textbf{correlation length} and $d$ is the spatial dimension of the system.
+\end{theorem}
+
+The correlation length $\xi$ characterises the distance over which microscopic fluctuations are correlated. In a typical fluid, $\xi$ is of order a few molecular diameters. But near a second-order phase transition, $\xi$ diverges:
+\begin{equation}
+\xi \sim |T - T_c|^{-\nu},
+\end{equation}
+where $\nu$ is a critical exponent. Consequently, the Ruppeiner curvature also diverges:
+\begin{equation}
+|R| \sim |T - T_c|^{-\nu d}.
+\end{equation}
+
+\begin{remark}
+This provides a purely thermodynamic (macroscopic) probe of the correlation length, which is fundamentally a microscopic quantity. The information-geometric approach allows one to extract correlation information from the equation of state alone, without computing correlation functions explicitly.
+\end{remark}
+
+\section{Phase Transitions as Curvature Singularities}
+
+Phase transitions are reinterpreted as \textbf{singularities in the curvature of the statistical manifold}:
+
+\begin{definition}[Geometric classification of phase transitions]
+A \textbf{phase transition} at a point $\theta_c$ in the statistical manifold is a point where:
+\begin{enumerate}
+\item The Fisher/Ruppeiner metric degenerates (one or more eigenvalues diverge or vanish), and/or
+\item The scalar curvature $R$ diverges: $|R(\theta)| \to \infty$ as $\theta \to \theta_c$.
+\end{enumerate}
+\end{definition}
+
+\subsection{First-order transitions}
+
+At a first-order phase transition, the thermodynamic potential has a discontinuity in its first derivative. Geometrically, the statistical manifold has a ``fold'' or ``crease'' --- the metric itself may remain finite, but the manifold is not smooth (the Legendrian submanifold has a singularity).
+
+\subsection{Second-order (continuous) transitions}
+
+At a second-order phase transition, the thermodynamic potential is continuous but has a divergent second derivative (e.g.\ the heat capacity diverges). Since the Fisher metric involves second derivatives of the free energy, the metric components diverge, and consequently the scalar curvature diverges.
+
+\subsection{The critical point of a fluid}
+
+Near the liquid--gas critical point:
+\begin{equation}
+C_V \sim |T - T_c|^{-\alpha}, \qquad \kappa_T \sim |T - T_c|^{-\gamma}, \qquad \xi \sim |T - T_c|^{-\nu}.
+\end{equation}
+
+The Fisher metric components diverge as $g_{ij} \sim |T - T_c|^{-\alpha}$ or $|T - T_c|^{-\gamma}$, and the Ruppeiner curvature diverges as:
+\begin{equation}
+|R| \sim |T - T_c|^{-\nu d} \sim |T - T_c|^{-2 + \alpha},
+\end{equation}
+where the last relation uses the hyperscaling relation $\nu d = 2 - \alpha$.
+
+\section{Universality and Critical Exponents from Geometry}
+
+The scaling behaviour of the Ruppeiner curvature near a critical point provides a \textbf{new set of universal critical exponents} that can be computed from the geometry of the statistical manifold.
+
+For lattice spin models (e.g.\ the Ising model), studies have confirmed:
+\begin{enumerate}
+\item At criticality, the statistical manifold exhibits a \textbf{hyperbolic geometry} with negative scalar curvature.
+\item The curvature diverges with the critical exponents predicted by the universality class.
+\item The sign of $R$ at criticality is negative for ferromagnetic interactions and positive for antiferromagnetic interactions.
+\end{enumerate}
+
+\begin{example}[2D Ising model]
+For the two-dimensional Ising model on a square lattice ($d = 2$), the exact solution gives:
+\begin{equation}
+|R| \sim |T - T_c|^{-2} \qquad (T \to T_c),
+\end{equation}
+consistent with $\xi^d$ where $\xi \sim |T - T_c|^{-1}$ and $d = 2$. The curvature is negative ($R < 0$), reflecting the attractive (ferromagnetic) interactions between spins.
+\end{example}
+
+\section{Geometry of the Full Phase Diagram}
+
+The information-geometric approach provides a global picture of the phase diagram:
+
+\begin{itemize}
+\item \textbf{Single-phase regions}: The statistical manifold is smooth with moderate curvature. The sign of $R$ reflects the nature of interactions.
+\item \textbf{Coexistence curves}: The manifold has boundaries or creases corresponding to first-order transitions.
+\item \textbf{Critical points}: The curvature diverges, signalling the breakdown of the smooth manifold structure.
+\item \textbf{Triple points}: Multiple singular structures intersect.
+\end{itemize}
+
+The phase diagram is thus a \textbf{map of the curvature landscape} of the statistical manifold. Phase transitions are not ad hoc empirical classifications but intrinsic geometric features.
+
+\section{Summary}
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.6}
+\begin{tabular}{ll}
+\toprule
+\textbf{Geometric Feature} & \textbf{Physical Interpretation} \\
+\midrule
+Metric $g_{ij}$ & Covariance of fluctuations \\
+Geodesic distance & Informational difference between states \\
+Scalar curvature $R$ & Measure of inter-particle interactions \\
+$R = 0$ & Ideal (non-interacting) system \\
+$R < 0$ & Attractive interactions dominate \\
+$R > 0$ & Repulsive interactions dominate \\
+$|R| \to \infty$ & Phase transition (critical point) \\
+$|R| \sim \xi^d$ & Curvature--correlation correspondence \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Phase transitions are curvature singularities of the statistical manifold. The Ruppeiner scalar curvature provides a macroscopic probe of microscopic correlations, and its divergence at critical points links the mathematics of differential geometry to the physics of universality and critical phenomena.

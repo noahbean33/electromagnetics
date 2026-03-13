@@ -1,0 +1,192 @@
+\chapter{Tangent Spaces, Cotangent Spaces, and Differential Forms}
+
+With the smooth manifold in hand, we now construct the objects that \emph{live on it}. The central idea of this chapter is that tangent vectors are not arrows floating in an ambient Euclidean space but are intrinsically defined as derivations on the algebra of smooth functions. Their duals --- covectors, or 1-forms --- are the natural objects that pair with vectors to produce numbers. Higher-rank exterior forms will package all of classical electrodynamics.
+
+\section{The Tangent Space as a Space of Derivations}
+
+\begin{definition}[Tangent vector]
+Let $\sm$ be a smooth manifold and $p \in \sm$. A \textbf{tangent vector} at $p$ is an $\R$-linear map $v: \Ck(\sm) \to \R$ that satisfies the \textbf{Leibniz rule}:
+\begin{equation}
+v(fg) = f(p)\,v(g) + g(p)\,v(f) \qquad \text{for all } f, g \in \Ck(\sm).
+\end{equation}
+The set of all tangent vectors at $p$ is the \textbf{tangent space} $T_p\sm$.
+\end{definition}
+
+\begin{proposition}
+$T_p\sm$ is a real vector space of dimension $\dim\sm = n$.
+\end{proposition}
+
+\begin{proof}[Sketch]
+Given a chart $(U, x)$ with $p \in U$, the operators
+\begin{equation}
+\left.\frac{\partial}{\partial x^i}\right|_p : f \mapsto \frac{\partial(f \circ x^{-1})}{\partial x^i}\bigg|_{x(p)}, \qquad i = 1, \ldots, n,
+\end{equation}
+are derivations at $p$. One shows that they are linearly independent and span $T_p\sm$.
+\end{proof}
+
+Thus every tangent vector can be written as
+\begin{equation}
+v = v^i \left.\frac{\partial}{\partial x^i}\right|_p,
+\end{equation}
+where $v^i \in \R$ are the \textbf{components} of $v$ in the chart $(U, x)$, and we sum over repeated indices.
+
+\begin{warning}
+The components $v^i$ depend on the chart. The tangent vector $v \in T_p\sm$ is chart-independent. Never confuse the geometric object with its coordinate representation.
+\end{warning}
+
+\subsection*{Why not ``arrows''?}
+
+The traditional physicist's definition of a vector as ``an arrow at a point'' secretly assumes an embedding $\sm \hookrightarrow \R^N$. The derivation definition is \emph{intrinsic}: it uses only the smooth structure of $\sm$ itself, requires no embedding, and generalises immediately to manifolds that have no natural ambient space (such as spacetime in general relativity).
+
+\section{The Cotangent Space and Covectors}
+
+\begin{definition}[Cotangent space]
+The \textbf{cotangent space} at $p$ is the dual vector space
+\begin{equation}
+T_p^*\sm = \Hom(T_p\sm, \R) = \{\omega_p : T_p\sm \to \R \mid \omega_p \text{ is linear}\}.
+\end{equation}
+Elements $\omega_p \in T_p^*\sm$ are called \textbf{covectors} (or \textbf{1-forms at $p$}).
+\end{definition}
+
+\begin{definition}[The differential of a function]
+Given $f \in \Ck(\sm)$, the \textbf{differential} $\dd f|_p \in T_p^*\sm$ is defined by
+\begin{equation}
+\dd f|_p(v) = v(f) \qquad \text{for all } v \in T_p\sm.
+\end{equation}
+\end{definition}
+
+In coordinates, $\dd f = \frac{\partial f}{\partial x^i}\,\dd x^i$. The coordinate differentials $\{\dd x^1, \ldots, \dd x^n\}$ form the \textbf{dual basis} to $\{\partial/\partial x^1, \ldots, \partial/\partial x^n\}$:
+\begin{equation}
+\dd x^i\!\left(\frac{\partial}{\partial x^j}\right) = \delta^i_j.
+\end{equation}
+
+\begin{remark}[The electric field is a covector]
+The electric field $E$ naturally \emph{eats a displacement and returns the work done}. This is the definition of a covector: a linear map from vectors to scalars. Writing the electric field as a 1-form $E = E_i\,\dd x^i$ makes this pairing manifest, and explains why the electric field has \emph{lower} (covariant) indices in tensor notation.
+\end{remark}
+
+\section{The Tangent and Cotangent Bundles}
+
+\begin{definition}[Tangent bundle]
+The \textbf{tangent bundle} of $\sm$ is the disjoint union of all tangent spaces:
+\begin{equation}
+T\sm = \bigsqcup_{p \in \sm} T_p\sm = \{(p, v) : p \in \sm,\; v \in T_p\sm\}.
+\end{equation}
+It carries a natural smooth manifold structure of dimension $2n$, with the projection $\pi: T\sm \to \sm$, $(p,v) \mapsto p$.
+\end{definition}
+
+\begin{definition}[Cotangent bundle]
+Similarly, the \textbf{cotangent bundle} is
+\begin{equation}
+T^*\sm = \bigsqcup_{p \in \sm} T_p^*\sm,
+\end{equation}
+a smooth manifold of dimension $2n$.
+\end{definition}
+
+\begin{definition}[Vector field and 1-form field]
+A \textbf{vector field} is a smooth section $X: \sm \to T\sm$ (i.e.\ $\pi \circ X = \id_\sm$). The space of all vector fields is denoted $\Gamma(T\sm)$.
+
+A \textbf{1-form} (or \textbf{covector field}) is a smooth section $\omega: \sm \to T^*\sm$. The space of all 1-forms is denoted $\Omega^1(\sm)$.
+\end{definition}
+
+\section{Tensors}
+
+\begin{definition}[$(r,s)$-tensor at a point]
+An \textbf{$(r,s)$-tensor} at $p$ is a multilinear map
+\begin{equation}
+T: \underbrace{T_p^*\sm \times \cdots \times T_p^*\sm}_{r} \times \underbrace{T_p\sm \times \cdots \times T_p\sm}_{s} \to \R.
+\end{equation}
+It takes $r$ covectors and $s$ vectors and returns a real number, linearly in each argument.
+\end{definition}
+
+In components:
+\begin{equation}
+T = T^{i_1 \cdots i_r}{}_{j_1 \cdots j_s}\, \frac{\partial}{\partial x^{i_1}} \otimes \cdots \otimes \frac{\partial}{\partial x^{i_r}} \otimes \dd x^{j_1} \otimes \cdots \otimes \dd x^{j_s}.
+\end{equation}
+
+The metric tensor (to be introduced in Chapter~4) will be a $(0,2)$-tensor. The electromagnetic field strength will be an antisymmetric $(0,2)$-tensor --- a 2-form.
+
+\section{Exterior Algebra and Differential Forms}
+
+\subsection{The wedge product}
+
+\begin{definition}[Wedge product]
+The \textbf{wedge product} $\wedge: \Lambda^k(V^*) \times \Lambda^l(V^*) \to \Lambda^{k+l}(V^*)$ is the antisymmetrised tensor product. For 1-forms $\alpha, \beta$:
+\begin{equation}
+(\alpha \wedge \beta)(v, w) = \alpha(v)\,\beta(w) - \alpha(w)\,\beta(v).
+\end{equation}
+\end{definition}
+
+Key algebraic properties:
+\begin{enumerate}
+\item \textbf{Anticommutativity}: $\alpha \wedge \beta = (-1)^{kl}\,\beta \wedge \alpha$ for $\alpha \in \Lambda^k$, $\beta \in \Lambda^l$.
+\item \textbf{Associativity}: $(\alpha \wedge \beta) \wedge \gamma = \alpha \wedge (\beta \wedge \gamma)$.
+\item \textbf{Nilpotency on 1-forms}: $\alpha \wedge \alpha = 0$ for any 1-form $\alpha$.
+\end{enumerate}
+
+\begin{definition}[$k$-form]
+A \textbf{differential $k$-form} on $\sm$ is a smooth section of $\Lambda^k(T^*\sm)$. In coordinates:
+\begin{equation}
+\omega = \frac{1}{k!}\,\omega_{i_1 \cdots i_k}\,\dd x^{i_1} \wedge \cdots \wedge \dd x^{i_k},
+\end{equation}
+where the components $\omega_{i_1\cdots i_k}$ are totally antisymmetric. The space of $k$-forms is denoted $\Omega^k(\sm)$.
+\end{definition}
+
+\subsection{Counting degrees of freedom}
+
+On an $n$-dimensional manifold, a $k$-form has $\binom{n}{k}$ independent components. On a 4-dimensional spacetime:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{ccl}
+\toprule
+$k$ & $\binom{4}{k}$ & \textbf{Physical example} \\
+\midrule
+0 & 1 & Scalar potential $\phi$ \\
+1 & 4 & Four-potential $A = A_\mu\,\dd x^\mu$ \\
+2 & 6 & Field strength $F = \tfrac{1}{2}F_{\mu\nu}\,\dd x^\mu \wedge \dd x^\nu$ \\
+3 & 4 & Current 3-form $\hodge J$ \\
+4 & 1 & Volume form \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The electromagnetic field strength is a 2-form with 6 independent components --- precisely the 3 components of $\vec{E}$ and 3 of $\vec{B}$.
+
+\section{The Pushforward and Pullback}
+
+\begin{definition}[Pushforward]
+A smooth map $\varphi: \sm \to \mathcal{N}$ induces the \textbf{pushforward} (or differential)
+\begin{equation}
+\varphi_*: T_p\sm \to T_{\varphi(p)}\mathcal{N}, \qquad (\varphi_* v)(f) = v(f \circ \varphi),
+\end{equation}
+which maps tangent vectors forward along $\varphi$.
+\end{definition}
+
+\begin{definition}[Pullback]
+The \textbf{pullback} maps forms backward:
+\begin{equation}
+\varphi^*: \Omega^k(\mathcal{N}) \to \Omega^k(\sm), \qquad (\varphi^*\omega)(v_1, \ldots, v_k) = \omega(\varphi_* v_1, \ldots, \varphi_* v_k).
+\end{equation}
+\end{definition}
+
+The pullback will be essential in the bundle formulation of gauge theory: the physicist's ``vector potential'' $A$ on spacetime is the pullback $\sigma^*\omega$ of a connection form $\omega$ on the total space of a principal bundle, via a local section $\sigma$.
+
+\section{Summary}
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{lll}
+\toprule
+\textbf{Object} & \textbf{Definition} & \textbf{Physical role} \\
+\midrule
+$T_p\sm$ & Derivations on $\Ck(\sm)$ & Velocity, displacement \\
+$T_p^*\sm$ & Linear maps $T_p\sm \to \R$ & Force, electric field \\
+$\Omega^k(\sm)$ & Smooth sections of $\Lambda^k(T^*\sm)$ & $F \in \Omega^2$, $A \in \Omega^1$ \\
+$\varphi_*$ & Pushforward of vectors & Change of frame \\
+$\varphi^*$ & Pullback of forms & Gauge potential from connection \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+We now have vectors, covectors, and differential forms. What is missing is the derivative operator that acts on forms \emph{without a metric}: the exterior derivative. This is the subject of the next chapter.

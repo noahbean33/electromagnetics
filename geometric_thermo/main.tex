@@ -1,0 +1,92 @@
+\documentclass[12pt,a4paper]{book}
+
+% --- Encoding and fonts ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+% --- Mathematics ---
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{mathtools}
+\usepackage{bm}
+\usepackage{physics}
+
+% --- Layout and formatting ---
+\usepackage[margin=1in]{geometry}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{parskip}
+\usepackage{titlesec}
+
+% --- Graphics ---
+\usepackage{graphicx}
+\usepackage{float}
+
+% --- Tables ---
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+
+% --- Hyperlinks ---
+\usepackage[colorlinks=true,linkcolor=blue!60!black,citecolor=green!50!black,urlcolor=blue!70!black]{hyperref}
+
+% --- Theorem environments ---
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[chapter]
+\newtheorem{example}{Example}[chapter]
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{proposition}{Proposition}[chapter]
+\newtheorem{lemma}{Lemma}[chapter]
+\newtheorem{corollary}{Corollary}[chapter]
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}[chapter]
+
+% --- Custom commands ---
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\T}{\mathcal{T}}
+\newcommand{\Lie}{\mathcal{L}}
+\newcommand{\Ham}{\mathcal{H}}
+\newcommand{\Ent}{\mathcal{S}}
+\newcommand{\Partition}{\mathcal{Z}}
+\newcommand{\FisherG}{g_{ij}}
+\newcommand{\ContactForm}{\eta}
+\newcommand{\SympForm}{\omega}
+
+% ============================================================
+\begin{document}
+
+% --- Title page ---
+\begin{titlepage}
+\centering
+\vspace*{3cm}
+{\Huge\bfseries The Geometric Anatomy of\\[0.4em] Thermal Physics\par}
+\vspace{2cm}
+{\Large Contact Geometry, Measure Theory,\\[0.3em]
+and Information Geometry\\[0.3em]
+in the Schuller Pedagogical Framework\par}
+\vspace{3cm}
+{\large Differential-geometric formulation \quad$\bullet$\quad Manifold-centric pedagogy\par}
+\vfill
+\end{titlepage}
+
+% --- Front matter ---
+\frontmatter
+\tableofcontents
+
+% --- Main matter ---
+\mainmatter
+
+\include{chapter_1}
+\include{chapter_2}
+\include{chapter_3}
+\include{chapter_4}
+\include{chapter_5}
+\include{chapter_6}
+\include{chapter_7}
+\include{chapter_8}
+\include{chapter_9}
+\include{chapter_10}
+
+\end{document}

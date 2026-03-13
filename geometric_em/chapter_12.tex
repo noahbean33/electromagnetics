@@ -1,0 +1,154 @@
+\chapter{Topological Obstructions and Magnetic Monopoles}
+
+In the previous chapter we saw that the first Chern number classifies $U(1)$-bundles over $S^2$ and yields the Dirac quantisation condition. In this chapter we develop the general theory of topological obstructions: the cohomological conditions that determine when a global gauge potential exists, when it does not, and what physical consequences follow from the failure.
+
+\section{When Does a Global Potential Exist?}
+
+\subsection{The question}
+
+Given a closed 2-form $F$ on a manifold $M$ (satisfying $\dd F = 0$), when does there exist a globally defined 1-form $A$ with $F = \dd A$?
+
+By the Poincar\'e lemma, such an $A$ always exists \emph{locally}. The question is whether the local potentials can be patched together into a global one.
+
+\subsection{The cohomological answer}
+
+\begin{theorem}
+A closed 2-form $F$ on $M$ is exact (i.e.\ $F = \dd A$ globally) if and only if its de Rham cohomology class vanishes:
+\begin{equation}
+[F] = 0 \;\in\; H^2_{\text{dR}}(M).
+\end{equation}
+\end{theorem}
+
+For the electromagnetic field strength, $[F] \neq 0$ signals the presence of a topological obstruction --- the bundle is non-trivial, and no global potential exists.
+
+\subsection{The integrality condition}
+
+Not every closed 2-form represents the curvature of a $U(1)$ connection. The additional requirement is that the cohomology class be \emph{integral}:
+
+\begin{theorem}
+A closed 2-form $F$ on $M$ is the curvature of a connection on some principal $U(1)$-bundle if and only if
+\begin{equation}
+\frac{1}{2\pi}\int_\Sigma F \in \Z
+\end{equation}
+for every closed 2-cycle $\Sigma$ in $M$.
+\end{theorem}
+
+This is the link between the continuous world of differential forms and the discrete world of bundle topology: the curvature must integrate to integers.
+
+\section{The Classifying Cohomology Group $H^2(M, \Z)$}
+
+\begin{definition}
+The \textbf{second cohomology group with integer coefficients} $H^2(M, \Z)$ classifies principal $U(1)$-bundles over $M$ up to isomorphism. There is a natural map
+\begin{equation}
+H^2(M, \Z) \hookrightarrow H^2_{\text{dR}}(M)
+\end{equation}
+that sends the isomorphism class of a bundle to the de Rham class of its curvature (divided by $2\pi$).
+\end{definition}
+
+\begin{example}
+$H^2(S^2, \Z) \cong \Z$. The generator corresponds to the unit monopole bundle (first Chern number $c_1 = 1$).
+\end{example}
+
+\begin{example}
+$H^2(\R^3 \setminus \{0\}, \Z) \cong \Z$. Removing a point from $\R^3$ creates an obstruction: non-trivial $U(1)$-bundles exist, corresponding to magnetic charges at the origin.
+\end{example}
+
+\begin{example}
+$H^2(\R^4, \Z) = 0$. Over Minkowski spacetime (topologically $\R^4$), every $U(1)$-bundle is trivial and a global potential always exists. Topological effects require non-trivial spacetime topology.
+\end{example}
+
+\section{The Dirac Monopole in Detail}
+
+\subsection{The bundle}
+
+The Dirac monopole of charge $n$ is described by a principal $U(1)$-bundle $P_n$ over $S^2$ with first Chern number $c_1 = n$.
+
+\begin{itemize}
+\item $n = 0$: trivial bundle $S^2 \times U(1)$. No monopole. Global potential exists.
+\item $n = 1$: the \textbf{Hopf bundle} $S^3 \to S^2$, with fiber $U(1) \cong S^1$. This is the unit monopole.
+\item $n = -1$: the anti-monopole (same total space, opposite orientation).
+\item $|n| > 1$: higher-charge monopoles, obtained by ``winding'' the transition function $n$ times.
+\end{itemize}
+
+\subsection{The Hopf bundle}
+
+The Hopf bundle deserves special attention as the simplest non-trivial principal $U(1)$-bundle.
+
+\begin{definition}[Hopf bundle]
+The \textbf{Hopf fibration} is the map $\pi: S^3 \to S^2$ defined by viewing $S^3 \subset \C^2$ as $\{(z_1, z_2) : |z_1|^2 + |z_2|^2 = 1\}$ and mapping
+\begin{equation}
+\pi(z_1, z_2) = [z_1 : z_2] \in \C P^1 \cong S^2.
+\end{equation}
+The fiber over each point is a copy of $U(1)$, acting by $(z_1, z_2) \mapsto (e^{i\theta}z_1, e^{i\theta}z_2)$.
+\end{definition}
+
+The Hopf bundle is non-trivial: $S^3$ is not diffeomorphic to $S^2 \times S^1$ (for instance, $\pi_1(S^3) = 0$ while $\pi_1(S^2 \times S^1) = \Z$). Its first Chern number is $c_1 = 1$.
+
+\subsection{The Dirac string revisited}
+
+In Dirac's original (1931) construction, the vector potential of a monopole has a line singularity --- the ``Dirac string'' --- extending from the monopole to infinity. Different gauge choices move the string to different locations.
+
+In the bundle picture:
+\begin{itemize}
+\item The potential $A_N$ on $U_N$ (north patch) is smooth everywhere except the south pole. The apparent singularity at the south pole is the ``string'' pointing downward.
+\item The potential $A_S$ on $U_S$ (south patch) is smooth everywhere except the north pole.
+\item On the overlap, $A_N$ and $A_S$ are related by a gauge transformation.
+\end{itemize}
+
+The Dirac string is \emph{not physical}: it is the boundary of the domain of a particular local section. The bundle and the connection are perfectly smooth. The ``singularity'' is an artifact of trying to describe a non-trivial bundle with a single global trivialisation that does not exist.
+
+\section{Monopoles and de Rham Cohomology}
+
+The de Rham cohomology class $[\tfrac{1}{2\pi}F] \in H^2_{\text{dR}}(M)$ encodes the ``total magnetic charge'' visible to 2-cycles in $M$. More precisely:
+
+\begin{proposition}
+For each closed oriented 2-surface $\Sigma \subset M$:
+\begin{equation}
+\frac{1}{2\pi}\int_\Sigma F = c_1(P|_\Sigma) \in \Z,
+\end{equation}
+where $P|_\Sigma$ is the restriction of the bundle to $\Sigma$. This integer is the total magnetic charge enclosed by $\Sigma$.
+\end{proposition}
+
+Gauss's law for magnetism ($\vec{\nabla}\cdot\vec{B} = 0$, i.e.\ $\dd F = 0$) still holds everywhere \emph{away from} the monopole. The monopole manifests not as a violation of $\dd F = 0$ on $M$ but as a topological non-triviality of the bundle over $M$.
+
+\section{Non-Abelian Generalisations}
+
+The classification of principal $G$-bundles over a manifold $M$ by characteristic classes generalises beyond $U(1)$:
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{llll}
+\toprule
+\textbf{Group $G$} & \textbf{Base} & \textbf{Classification} & \textbf{Physical context} \\
+\midrule
+$U(1)$ & $S^2$ & $\pi_1(U(1)) \cong \Z$ & Dirac monopole \\
+$SU(2)$ & $S^4$ & $\pi_3(SU(2)) \cong \Z$ & Yang--Mills instantons \\
+$SU(3)$ & $S^4$ & $\pi_3(SU(3)) \cong \Z$ & QCD vacuum structure \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+In each case, the relevant homotopy group of the structure group determines the possible ``topological charges,'' and these charges are quantised by the same mechanism: the transition functions must be continuous maps between spheres, and such maps are classified by integers (winding/wrapping numbers).
+
+\section{Summary}
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{lll}
+\toprule
+\textbf{Question} & \textbf{Answer} & \textbf{Controlled by} \\
+\midrule
+Does a global $A$ exist? & Iff the bundle is trivial & $H^2(M, \Z) = 0$ \\
+Is $\frac{1}{2\pi}\int F$ an integer? & Always, for a $U(1)$ curvature & Chern--Weil integrality \\
+What are the monopole charges? & Integers $n \in \Z$ & $\pi_1(U(1)) \cong \Z$ \\
+What is the Dirac string? & Artifact of local section & Not physical \\
+Unit monopole bundle & Hopf fibration $S^3 \to S^2$ & $c_1 = 1$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Topological obstructions are not exotic curiosities but the mechanism by which the discrete (integer charges) emerges from the continuous (smooth connections and curvatures). The classification of bundles by cohomology is the deepest explanation we have for charge quantisation in classical gauge theory.
+
+This completes Block IV. In Block V, we couple the gauge field to matter by constructing associated vector bundles and deriving the covariant derivative as the geometric origin of minimal coupling.

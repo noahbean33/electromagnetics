@@ -1,0 +1,158 @@
+\chapter{Topological Spaces and Smooth Manifolds}
+
+Before we can speak of electric fields, magnetic fields, or any physical quantity defined ``at each point of space,'' we must first say precisely what ``space'' is. This chapter builds the hierarchy of mathematical structures --- from bare sets, through topological spaces, to smooth manifolds --- that will serve as the arena for all of electrodynamics. The guiding principle is one of \emph{minimal structure}: we introduce only what is logically necessary at each stage, and we are explicit about what each new layer of structure buys us.
+
+\section{Sets and Maps}
+
+\begin{definition}[Map]
+A \textbf{map} (or function) $f: A \to B$ between sets $A$ and $B$ is an assignment of exactly one element $f(a) \in B$ to each element $a \in A$. The set $A$ is the \textbf{domain} and $B$ is the \textbf{codomain}.
+\end{definition}
+
+Every map we use in this course has a precisely specified domain and codomain. This is not pedantry: in electrodynamics, the electric field, the vector potential, and the gauge transformation are all maps, and much confusion arises from failing to specify \emph{where they live}.
+
+\begin{definition}[Composition and invertibility]
+Given maps $f: A \to B$ and $g: B \to C$, their \textbf{composition} is $g \circ f: A \to C$, $(g\circ f)(a) = g(f(a))$. A map $f$ is:
+\begin{itemize}
+\item \textbf{injective} if $f(a_1) = f(a_2) \Rightarrow a_1 = a_2$,
+\item \textbf{surjective} if for every $b \in B$ there exists $a \in A$ with $f(a) = b$,
+\item \textbf{bijective} if it is both injective and surjective; then it has an inverse $f^{-1}: B \to A$.
+\end{itemize}
+\end{definition}
+
+\section{Topological Spaces}
+
+A \emph{topology} on a set is the minimum structure needed to define continuity.
+
+\begin{definition}[Topological space]
+A \textbf{topological space} is a pair $(X, \mathcal{O})$, where $X$ is a set and $\mathcal{O} \subseteq \mathcal{P}(X)$ (the power set of $X$) is a collection of subsets called \textbf{open sets}, satisfying:
+\begin{enumerate}
+\item $\varnothing \in \mathcal{O}$ and $X \in \mathcal{O}$,
+\item any union of elements of $\mathcal{O}$ is in $\mathcal{O}$,
+\item any \emph{finite} intersection of elements of $\mathcal{O}$ is in $\mathcal{O}$.
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[Continuous map]
+A map $f: (X, \mathcal{O}_X) \to (Y, \mathcal{O}_Y)$ between topological spaces is \textbf{continuous} if the preimage of every open set is open: $f^{-1}(V) \in \mathcal{O}_X$ for all $V \in \mathcal{O}_Y$.
+\end{definition}
+
+\begin{definition}[Homeomorphism]
+A bijective map $f: X \to Y$ is a \textbf{homeomorphism} if both $f$ and $f^{-1}$ are continuous. Homeomorphic spaces are ``the same'' from the point of view of topology.
+\end{definition}
+
+\begin{remark}
+At the level of topology alone, we can discuss \emph{connectivity} (is the space one piece or several?), \emph{compactness} (does every open cover have a finite subcover?), and the \emph{fundamental group} $\pi_1(X)$ (what are the inequivalent loops?). All of these will have direct physical significance: the fundamental group of the region accessible to an electron determines whether the Aharonov--Bohm effect can occur.
+\end{remark}
+
+\section{Topological Manifolds}
+
+\begin{definition}[Topological manifold]
+An $n$-dimensional \textbf{topological manifold} is a topological space $\sm$ that is:
+\begin{enumerate}
+\item \textbf{Hausdorff}: for any two distinct points $p \neq q$, there exist disjoint open sets $U \ni p$ and $V \ni q$,
+\item \textbf{second-countable}: the topology has a countable base,
+\item \textbf{locally Euclidean}: every point $p \in \sm$ has an open neighbourhood $U$ that is homeomorphic to an open subset of $\R^n$.
+\end{enumerate}
+\end{definition}
+
+The third condition is the essential one: locally, the manifold ``looks like'' $\R^n$. But \emph{globally} it may have a very different topology --- it may be compact, have holes, or be non-orientable.
+
+\begin{definition}[Chart and atlas]
+A \textbf{chart} on $\sm$ is a pair $(U, x)$ where $U \subseteq \sm$ is open and $x: U \to x(U) \subseteq \R^n$ is a homeomorphism. The component functions $x^1, \ldots, x^n$ are called \textbf{coordinates}. An \textbf{atlas} is a collection $\{(U_\alpha, x_\alpha)\}_{\alpha \in \mathcal{A}}$ of charts such that $\bigcup_\alpha U_\alpha = \sm$.
+\end{definition}
+
+\begin{definition}[Transition functions]
+If $(U_\alpha, x_\alpha)$ and $(U_\beta, x_\beta)$ are charts with $U_\alpha \cap U_\beta \neq \varnothing$, the \textbf{transition function} is the map
+\begin{equation}
+x_\beta \circ x_\alpha^{-1}: x_\alpha(U_\alpha \cap U_\beta) \to x_\beta(U_\alpha \cap U_\beta),
+\end{equation}
+which is a map between open subsets of $\R^n$. Since both $x_\alpha$ and $x_\beta$ are homeomorphisms, this map is a homeomorphism of open subsets of $\R^n$.
+\end{definition}
+
+The transition functions encode all the information about how coordinate patches are ``glued together.'' The nature of the transition functions determines what additional structure the manifold carries.
+
+\section{Smooth Manifolds}
+
+\begin{definition}[Smooth atlas]
+An atlas is \textbf{smooth} (or $\Ck$) if all transition functions $x_\beta \circ x_\alpha^{-1}$ are smooth ($\Ck$) maps between open subsets of $\R^n$. A \textbf{maximal smooth atlas} is one that contains every chart compatible with it.
+\end{definition}
+
+\begin{definition}[Smooth manifold]
+A \textbf{smooth manifold} is a topological manifold $\sm$ equipped with a maximal smooth atlas. The dimension of $\sm$ is $n = \dim \sm$.
+\end{definition}
+
+\begin{definition}[Smooth map between manifolds]
+A map $\varphi: \sm \to \mathcal{N}$ between smooth manifolds is \textbf{smooth} if for every pair of charts $(U, x)$ on $\sm$ and $(V, y)$ on $\mathcal{N}$, the \textbf{coordinate representation} $y \circ \varphi \circ x^{-1}$ is a smooth map between open subsets of Euclidean spaces.
+\end{definition}
+
+\begin{definition}[Diffeomorphism]
+A smooth bijection $\varphi: \sm \to \mathcal{N}$ whose inverse is also smooth is called a \textbf{diffeomorphism}. Diffeomorphic manifolds are ``the same'' as smooth manifolds.
+\end{definition}
+
+\begin{remark}
+The progression is:
+\[
+\text{Set} \;\xrightarrow{\text{topology}}\; \text{Topological space} \;\xrightarrow{\text{local } \R^n}\; \text{Manifold} \;\xrightarrow{\text{smooth transitions}}\; \text{Smooth manifold}.
+\]
+At each stage, a new layer of structure is added. The smooth manifold is the minimum setting in which we can do calculus --- define derivatives, tangent vectors, and differential forms --- without a metric.
+\end{remark}
+
+\section{The Algebra of Smooth Functions}
+
+\begin{definition}
+The set of all smooth functions $f: \sm \to \R$ is denoted $\Ck(\sm)$. It is a commutative algebra over $\R$ under pointwise addition and multiplication:
+\begin{equation}
+(f + g)(p) = f(p) + g(p), \qquad (f \cdot g)(p) = f(p) \cdot g(p), \qquad (\lambda f)(p) = \lambda\, f(p).
+\end{equation}
+\end{definition}
+
+The algebra $\Ck(\sm)$ plays a central role: we will define tangent vectors as \emph{derivations} on $\Ck(\sm)$, avoiding the need to embed $\sm$ in any ambient Euclidean space.
+
+\section{Orientability}
+
+\begin{definition}[Orientable manifold]
+A smooth manifold $\sm$ of dimension $n$ is \textbf{orientable} if it admits an atlas $\{(U_\alpha, x_\alpha)\}$ such that all transition functions have \emph{positive} Jacobian determinant:
+\begin{equation}
+\det\!\left(\frac{\partial x_\beta^i}{\partial x_\alpha^j}\right) > 0 \quad \text{on } U_\alpha \cap U_\beta.
+\end{equation}
+An \textbf{orientation} is a choice of such an atlas (equivalently, a choice of a nowhere-vanishing $n$-form).
+\end{definition}
+
+Orientability is essential for electrodynamics: it is needed to distinguish between genuine fields and \emph{pseudo}-fields (like the magnetic field $\vec{B}$, which is really a 2-form, not a vector). It is also required for integration of top-forms, which underpins charge conservation.
+
+\section{Key Examples}
+
+\begin{example}[$\R^n$]
+Euclidean space $\R^n$ is a smooth manifold covered by a single chart (the identity). It is orientable, non-compact, and simply connected.
+\end{example}
+
+\begin{example}[The $n$-sphere $S^n$]
+$S^n = \{x \in \R^{n+1} : |x| = 1\}$ is a compact, orientable $n$-manifold. It requires at least two charts (e.g.\ stereographic projections from the north and south poles). For $n \geq 2$, $S^n$ is simply connected ($\pi_1(S^n) = 0$). The 2-sphere $S^2$ will be the arena for the Dirac monopole construction.
+\end{example}
+
+\begin{example}[Minkowski spacetime]
+$\R^4$ with its standard smooth structure is the manifold underlying Minkowski spacetime. At this stage it is \emph{just a smooth manifold} --- no metric has been specified. We will add the Lorentzian metric in Block II.
+\end{example}
+
+\begin{example}[$\R^3 \setminus \{0\}$]
+Three-space with a point removed. This is a non-simply-connected manifold: $\pi_1(\R^3 \setminus \{0\}) = 0$ but $\pi_2(\R^3 \setminus \{0\}) = \Z$. The non-trivial second homotopy group means there exist non-contractible 2-spheres, which is directly relevant to magnetic charge.
+\end{example}
+
+\section{Summary}
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{lll}
+\toprule
+\textbf{Structure} & \textbf{Defining property} & \textbf{What it buys us} \\
+\midrule
+Topological space & Open sets, continuity & Connectivity, compactness, $\pi_1$ \\
+Topological manifold & Locally $\cong \R^n$ & Coordinates, dimension \\
+Smooth manifold & $\Ck$ transition functions & Calculus, tangent spaces, forms \\
+Orientable manifold & Positive Jacobian atlas & Integration, volume forms \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+We have the arena. In the next chapter we populate it with the objects that live on it: tangent vectors (as derivations), covectors (1-forms), and their higher-rank generalisations.

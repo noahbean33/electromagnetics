@@ -1,0 +1,166 @@
+\chapter{Minimal Coupling and the Covariant Derivative}
+
+The ordinary derivative $\partial_\mu\psi$ of a section $\psi$ of an associated vector bundle is \emph{not} a section of the same bundle --- it does not transform correctly under gauge transformations. The cure is the \textbf{covariant derivative}, induced by the connection on the principal bundle. The ``minimal coupling'' prescription of physics textbooks --- replace $\partial_\mu$ by $\partial_\mu + ieA_\mu$ --- is not a guess but a geometric necessity: it is the unique derivative that respects the bundle structure.
+
+\section{The Problem with Ordinary Derivatives}
+
+Let $\psi$ be a section of the associated line bundle $E_n$ (a matter field of charge $n$). In a local trivialisation, $\psi$ is a complex-valued function on a patch $U \subset M$. Under a gauge transformation:
+\begin{equation}
+\psi \to e^{-in\chi}\psi.
+\end{equation}
+
+Taking the ordinary partial derivative:
+\begin{equation}
+\partial_\mu\psi \to \partial_\mu(e^{-in\chi}\psi) = e^{-in\chi}(\partial_\mu\psi - in\,\partial_\mu\chi\;\psi).
+\end{equation}
+
+The result is \emph{not} simply $e^{-in\chi}\partial_\mu\psi$. The ordinary derivative does not transform covariantly --- it ``sees'' the gauge transformation and produces an unwanted $\partial_\mu\chi$ term. Physically, this means that $\partial_\mu\psi$ is not a meaningful quantity for a charged field: it depends on the (arbitrary) choice of gauge.
+
+\section{The Covariant Derivative on Associated Bundles}
+
+\begin{definition}[Covariant derivative]
+Let $\omega$ be a connection on a principal $G$-bundle $P \to M$, and let $E = P \times_\rho V$ be an associated vector bundle. The connection $\omega$ induces a \textbf{covariant derivative}
+\begin{equation}
+\nabla: \Gamma(E) \to \Gamma(T^*M \otimes E),
+\end{equation}
+defined as follows. Represent a section $\psi \in \Gamma(E)$ as an equivariant function $\hat{\psi}: P \to V$. For a vector field $X$ on $M$, let $\tilde{X}$ be its horizontal lift to $P$. Then
+\begin{equation}
+\widehat{\nabla_X\psi}(u) = \tilde{X}_u(\hat{\psi}).
+\end{equation}
+\end{definition}
+
+In words: to differentiate a section along $X$, lift $X$ horizontally to the total space $P$ (using the connection), and differentiate the equivariant function $\hat{\psi}$ along this horizontal vector. The result is again equivariant, hence defines a section of $E$.
+
+\subsection{Local expression}
+
+In a local trivialisation (gauge), the covariant derivative takes the form:
+\begin{equation}
+\boxed{\nabla_\mu\psi = \partial_\mu\psi + \rho_*(A_\mu)\,\psi,}
+\end{equation}
+where $A_\mu$ is the local gauge potential (a $\Lie{g}$-valued function) and $\rho_*: \Lie{g} \to \End(V)$ is the induced Lie algebra representation.
+
+For $G = U(1)$, $\rho_n(e^{i\theta}) = e^{in\theta}$, so $\rho_{n*}(i\xi) = in\xi$ for $\xi \in \R$. Writing $A_\mu$ as a real-valued quantity (absorbing the $i$ into conventions):
+\begin{equation}
+\boxed{\nabla_\mu\psi = \partial_\mu\psi + inA_\mu\,\psi.}
+\end{equation}
+
+In the physics convention with charge $e$ and $\hbar$:
+\begin{equation}
+\nabla_\mu\psi = \partial_\mu\psi + i\frac{e}{\hbar c}A_\mu\,\psi,
+\end{equation}
+which is exactly the ``minimal coupling'' prescription $\partial_\mu \to D_\mu = \partial_\mu + i\frac{e}{\hbar c}A_\mu$.
+
+\section{Covariance Under Gauge Transformations}
+
+\begin{theorem}
+The covariant derivative transforms covariantly:
+\begin{equation}
+\nabla_\mu\psi \to e^{-in\chi}\,\nabla_\mu\psi
+\end{equation}
+under the gauge transformation $\psi \to e^{-in\chi}\psi$, $A_\mu \to A_\mu + \partial_\mu\chi$.
+\end{theorem}
+
+\begin{proof}
+\begin{align}
+\nabla_\mu'\psi' &= (\partial_\mu + in(A_\mu + \partial_\mu\chi))(e^{-in\chi}\psi) \\
+&= e^{-in\chi}(\partial_\mu\psi - in\partial_\mu\chi\;\psi) + in A_\mu\,e^{-in\chi}\psi + in\partial_\mu\chi\;e^{-in\chi}\psi \\
+&= e^{-in\chi}(\partial_\mu\psi + inA_\mu\psi) \\
+&= e^{-in\chi}\nabla_\mu\psi.
+\end{align}
+\end{proof}
+
+The unwanted $\partial_\mu\chi$ term from differentiating $\psi$ is exactly cancelled by the $\partial_\mu\chi$ term from the transformation of $A_\mu$. This cancellation is not a coincidence --- it is the defining property of the covariant derivative. The quantity $\nabla_\mu\psi$ transforms in the same way as $\psi$ itself: it is a section of $T^*M \otimes E_n$.
+
+\section{The Covariant Derivative as a Geometric Necessity}
+
+The covariant derivative is not a convenient trick but a \emph{necessity}:
+
+\begin{enumerate}
+\item \textbf{Sections of a vector bundle do not have a canonical derivative.} The bundle $E$ is not $M \times V$ in general; there is no canonical way to compare fibers at different points. A connection is needed precisely to make this comparison.
+
+\item \textbf{The covariant derivative is the unique derivative that:}
+\begin{itemize}
+\item is $\Ck(M)$-linear in $X$ (i.e.\ $\nabla_{fX}\psi = f\nabla_X\psi$),
+\item satisfies the Leibniz rule: $\nabla_X(f\psi) = (Xf)\psi + f\nabla_X\psi$,
+\item reduces to the ordinary derivative when the bundle is trivialised and the connection is zero.
+\end{itemize}
+
+\item \textbf{Minimal coupling is derived, not assumed.} In physics courses, one ``guesses'' $\partial_\mu \to D_\mu = \partial_\mu + ieA_\mu$ by analogy or by requiring gauge invariance. In the geometric framework, this replacement is the unique local expression for the covariant derivative induced by the connection.
+\end{enumerate}
+
+\section{The Curvature as the Commutator of Covariant Derivatives}
+
+\begin{theorem}
+For any section $\psi \in \Gamma(E)$ and any vector fields $X, Y$ on $M$:
+\begin{equation}
+\boxed{[\nabla_X, \nabla_Y]\psi - \nabla_{[X,Y]}\psi = \rho_*(F(X, Y))\,\psi,}
+\end{equation}
+where $F$ is the curvature 2-form of the connection.
+\end{theorem}
+
+In local coordinates:
+\begin{equation}
+[\nabla_\mu, \nabla_\nu]\psi = \rho_*(F_{\mu\nu})\,\psi = inF_{\mu\nu}\,\psi.
+\end{equation}
+
+This is the geometric meaning of the field strength: it measures the failure of covariant derivatives to commute. For a flat connection ($F = 0$), covariant derivatives commute, and parallel transport is path-independent. For a non-flat connection, the order of differentiation matters, and the discrepancy is precisely the curvature acting on the section.
+
+\section{The Schr\"odinger Equation in the Geometric Framework}
+
+The time-independent Schr\"odinger equation for a charged particle in an electromagnetic field is:
+\begin{equation}
+\frac{1}{2m}\left(-i\hbar\nabla_i\right)^2\psi + e\phi\,\psi = E\,\psi,
+\end{equation}
+where $\nabla_i = \partial_i + i\frac{e}{\hbar c}A_i$ is the covariant derivative acting on a section of $E_{-1}$ (charge $-e$ for an electron). The kinetic energy operator $(-i\hbar\nabla)^2$ is the \textbf{connection Laplacian} on the associated bundle --- it is the natural generalisation of $-\hbar^2\nabla^2$ to a bundle with connection.
+
+The gauge invariance of the Schr\"odinger equation is manifest: under $\psi \to e^{ie\chi/\hbar c}\psi$ and $A \to A + \dd\chi$, the covariant derivative transforms covariantly, so the entire equation is form-invariant.
+
+\section{The Dirac Equation}
+
+For a relativistic spin-$\frac{1}{2}$ particle, the field is a section of $S \otimes E_{-1}$, where $S$ is the spinor bundle. The Dirac equation is:
+\begin{equation}
+(i\hbar\gamma^\mu\nabla_\mu - mc)\psi = 0,
+\end{equation}
+where $\gamma^\mu$ are the Dirac matrices (encoding the Clifford algebra of the metric) and $\nabla_\mu$ is the total covariant derivative on $S \otimes E_{-1}$, combining the spin connection and the $U(1)$ connection:
+\begin{equation}
+\nabla_\mu = \partial_\mu + \Gamma_\mu^{\text{spin}} + i\frac{e}{\hbar c}A_\mu.
+\end{equation}
+
+The Dirac equation is gauge-covariant by construction, and the interaction with the electromagnetic field enters through the connection --- not through an ad hoc coupling.
+
+\section{Gauge-Covariant Field Equations: A Summary}
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{lll}
+\toprule
+\textbf{Equation} & \textbf{Standard form} & \textbf{Geometric form} \\
+\midrule
+Klein--Gordon & $(\partial_\mu + ieA_\mu)^2\phi + m^2\phi = 0$ & $\nabla^\mu\nabla_\mu\phi + m^2\phi = 0$ \\
+Schr\"odinger & $i\hbar\partial_t\psi = \frac{1}{2m}(-i\hbar\vec{\nabla} + \frac{e}{c}\vec{A})^2\psi + e\phi\,\psi$ & Connection Laplacian on $E_{-1}$ \\
+Dirac & $(i\gamma^\mu D_\mu - m)\psi = 0$ & $\nabla$ on $S \otimes E_{-1}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+In every case, the interaction with the electromagnetic field is encoded in the covariant derivative $\nabla$, which is the local expression of the connection on the appropriate associated bundle. Minimal coupling is geometry.
+
+\section{Summary}
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{lll}
+\toprule
+\textbf{Concept} & \textbf{Geometric content} & \textbf{Physical content} \\
+\midrule
+$\partial_\mu\psi$ & Not a section of $E$ & Not gauge-covariant \\
+$\nabla_\mu\psi = \partial_\mu\psi + inA_\mu\psi$ & Section of $T^*M \otimes E$ & Gauge-covariant derivative \\
+Minimal coupling & Unique derivative from connection & $\partial \to D = \partial + ieA$ \\
+$[\nabla_\mu,\nabla_\nu]\psi = inF_{\mu\nu}\psi$ & Curvature = commutator & $F$ from parallel transport failure \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The covariant derivative completes the geometric picture of electromagnetism coupled to matter: the gauge field is a connection, the field strength is its curvature, matter fields are sections of associated bundles, and the interaction is the covariant derivative. Everything is derived from the structure of the principal $U(1)$-bundle.

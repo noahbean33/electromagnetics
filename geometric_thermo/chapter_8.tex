@@ -1,0 +1,151 @@
+\chapter{The Fisher Information Metric}
+
+The final module of the Schuller curriculum examines the ``geometry of probability'' itself. This field, known as \emph{information geometry}, introduces a Riemannian metric on the space of parameters of a statistical model (the \emph{statistical manifold}), allowing for a geometric interpretation of fluctuations, response functions, and phase transitions.
+
+\section{The Statistical Manifold}
+
+\begin{definition}[Statistical manifold]
+A \textbf{statistical manifold} is a smooth manifold $\M$ whose points are probability distributions. A coordinate system $\theta = (\theta^1, \ldots, \theta^m)$ on $\M$ parameterises a family of distributions $\{p(x; \theta)\}_{\theta \in \M}$, where $x$ denotes the random variable (or microstate).
+\end{definition}
+
+In thermodynamics, the coordinates on the statistical manifold are typically the intensive variables. For the canonical ensemble:
+\begin{equation}
+\theta = (\beta, \beta P, -\beta\mu_{\text{chem}}, \ldots),
+\end{equation}
+and the corresponding probability distribution is the Gibbs measure:
+\begin{equation}
+p(x; \theta) = \frac{1}{\Partition(\theta)}\exp\!\left(-\sum_i \theta^i\,F_i(x)\right),
+\end{equation}
+where $F_i(x)$ are the conserved quantities (energy, volume, particle number, etc.). This is an \emph{exponential family} in the language of statistics.
+
+\section{The Fisher Information Metric}
+
+\begin{definition}[Fisher information metric]
+The \textbf{Fisher information metric} on the statistical manifold $\M$ is the Riemannian metric $g$ with components:
+\begin{equation}
+\boxed{g_{ij}(\theta) = \int p(x; \theta)\,\pdv{\ln p(x;\theta)}{\theta^i}\,\pdv{\ln p(x;\theta)}{\theta^j}\,\dd x = \left\langle \pdv{\ell}{\theta^i}\,\pdv{\ell}{\theta^j} \right\rangle,}
+\end{equation}
+where $\ell(x; \theta) = \ln p(x; \theta)$ is the log-likelihood function.
+\end{definition}
+
+The Fisher metric quantifies the ``distance'' between two nearby probability distributions based on their \emph{statistical distinguishability}. If two distributions at $\theta$ and $\theta + \dd\theta$ are easily distinguished by observations, the Fisher distance $\dd s^2 = g_{ij}\,\dd\theta^i\,\dd\theta^j$ is large; if they are nearly identical, the distance is small.
+
+\begin{remark}
+The Fisher metric is the unique (up to a constant factor) Riemannian metric on the space of probability distributions that is invariant under sufficient statistics --- this is the content of the \v{C}encov (Chentsov) uniqueness theorem. In this sense, the Fisher metric is the ``natural'' geometry of probability.
+\end{remark}
+
+\subsection{Equivalent form via the Hessian}
+
+An equivalent expression for the Fisher metric is:
+\begin{equation}
+g_{ij} = -\left\langle \frac{\partial^2 \ell}{\partial\theta^i\,\partial\theta^j} \right\rangle.
+\end{equation}
+
+This form makes manifest that the Fisher metric measures the \emph{curvature} (in the sense of second derivatives) of the log-likelihood --- distributions that are ``sharply peaked'' in parameter space correspond to large Fisher information.
+
+\section{The Fisher Metric for Exponential Families}
+
+For an exponential family with natural parameters $\theta^i$ and partition function $\Partition(\theta)$:
+\begin{equation}
+p(x; \theta) = \exp\!\left(\sum_i \theta^i F_i(x) - \Psi(\theta)\right),
+\end{equation}
+where $\Psi(\theta) = \ln\Partition(\theta)$ is the \textbf{Massieu potential} (log-partition function), the Fisher metric simplifies dramatically:
+\begin{equation}
+\boxed{g_{ij} = \frac{\partial^2 \Psi}{\partial\theta^i\,\partial\theta^j}.}
+\end{equation}
+
+The Fisher metric is the \emph{Hessian of the Massieu potential}. Since $\Psi$ is convex for exponential families, the Hessian is positive-definite, confirming that $g$ is a bona fide Riemannian metric.
+
+\section{Thermodynamic Response Functions as Metric Components}
+
+The components of the Fisher metric are directly related to the thermodynamic response functions. For the canonical ensemble with $\theta = (\beta)$:
+\begin{equation}
+g_{\beta\beta} = \pdv[2]{\Psi}{\beta} = -\pdv{\langle E \rangle}{\beta} = k_B T^2\,C_V,
+\end{equation}
+where $C_V$ is the \textbf{heat capacity at constant volume}. More generally, for a system with $\theta = (\beta, \beta P)$:
+\begin{equation}
+g_{ij} = \begin{pmatrix}
+k_B T^2\,C_V & \text{cross-response} \\
+\text{cross-response} & k_B T\,\kappa_T\,V
+\end{pmatrix},
+\end{equation}
+where $\kappa_T$ is the \textbf{isothermal compressibility}. The off-diagonal terms are related to cross-susceptibilities.
+
+\begin{proposition}
+The Fisher information metric identifies the thermodynamic response functions --- heat capacity, compressibility, susceptibility --- as the \textbf{geometric ``lengths''} of the statistical manifold. A large response function corresponds to a large metric component, meaning that small changes in the corresponding intensive variable lead to large changes in the probability distribution.
+\end{proposition}
+
+\section{The Fisher Metric as a Covariance Matrix}
+
+For an exponential family, the Fisher metric components are:
+\begin{equation}
+g_{ij} = \pdv[2]{\Psi}{\theta^i}{\theta^j} = \langle F_i F_j \rangle - \langle F_i \rangle\langle F_j \rangle = \text{Cov}(F_i, F_j).
+\end{equation}
+
+The Fisher metric is the \textbf{covariance matrix of the fluctuations} in the extensive variables. This provides the deep connection between information geometry and thermodynamic fluctuation theory:
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.6}
+\begin{tabular}{ll}
+\toprule
+\textbf{Geometric Feature} & \textbf{Physical Interpretation} \\
+\midrule
+Metric $g_{ij}$ & Covariance of fluctuations (e.g.\ $\langle \Delta E^2\rangle$, $\langle \Delta V^2\rangle$) \\
+Geodesic distance & Informational difference between equilibrium states \\
+Large $g_{ij}$ & High sensitivity to parameter changes \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Dual Connections and the $\alpha$-Geometry}
+
+The statistical manifold carries a richer geometric structure than a simple Riemannian manifold. In addition to the Levi-Civita connection $\nabla^{(0)}$ of the Fisher metric, there exists a one-parameter family of affine connections $\nabla^{(\alpha)}$ indexed by $\alpha \in \R$:
+
+\begin{definition}[$\alpha$-connection]
+The \textbf{$\alpha$-connection} $\nabla^{(\alpha)}$ is defined by:
+\begin{equation}
+\Gamma_{ij,k}^{(\alpha)} = \int p(x;\theta)\left(\partial_i\partial_j\ell + \frac{1-\alpha}{2}\,\partial_i\ell\,\partial_j\ell\right)\partial_k\ell\;\dd x,
+\end{equation}
+where $\partial_i = \partial/\partial\theta^i$ and $\ell = \ln p$.
+\end{definition}
+
+The cases $\alpha = \pm 1$ are of particular importance:
+\begin{itemize}
+\item $\alpha = 1$: the \textbf{exponential connection} (``e-connection''), which is flat for exponential families.
+\item $\alpha = -1$: the \textbf{mixture connection} (``m-connection''), which is flat for mixture families.
+\item $\alpha = 0$: the Levi-Civita connection of the Fisher metric.
+\end{itemize}
+
+The pair $(\nabla^{(1)}, \nabla^{(-1)})$ forms a \textbf{dually flat structure}: the e-connection and m-connection are dual with respect to the Fisher metric. This duality underlies the Legendre transform structure of thermodynamics when viewed from the information-geometric perspective.
+
+\section{Divergence Functions}
+
+The ``distance'' between two points on the statistical manifold can also be measured by divergence functions, which are not symmetric and hence not true metrics:
+
+\begin{definition}[Kullback--Leibler divergence]
+The \textbf{KL divergence} from $p(x; \theta)$ to $p(x; \theta')$ is:
+\begin{equation}
+D_{\text{KL}}(\theta \| \theta') = \int p(x; \theta)\,\ln\frac{p(x;\theta)}{p(x;\theta')}\,\dd x.
+\end{equation}
+\end{definition}
+
+For nearby distributions ($\theta' = \theta + \dd\theta$), the KL divergence reduces to the Fisher metric:
+\begin{equation}
+D_{\text{KL}}(\theta \| \theta + \dd\theta) = \frac{1}{2}\,g_{ij}\,\dd\theta^i\,\dd\theta^j + O(\dd\theta^3).
+\end{equation}
+
+The Fisher metric is thus the \emph{infinitesimal} form of the KL divergence. In thermodynamics, the KL divergence between two equilibrium states measures the \textbf{irreversible work} (or dissipated free energy) required to transform one state into the other.
+
+\section{Summary}
+
+The Fisher information metric equips the space of equilibrium states with a natural Riemannian geometry:
+\begin{itemize}
+\item The metric components are the Hessian of the Massieu potential (or free energy).
+\item They equal the covariance matrix of fluctuations in the extensive variables.
+\item Thermodynamic response functions (heat capacity, compressibility) are geometric invariants.
+\item The statistical manifold carries a dually flat structure reflecting the Legendre transform.
+\item The KL divergence provides a measure of irreversibility.
+\end{itemize}
+
+This sets the stage for the study of curvature and its divergence at phase transitions in the next chapter.
